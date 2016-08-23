@@ -7,7 +7,7 @@
 
 require('enable-mobile');
 const css = require('insert-styles');
-const build = require('./build');
+const build = require('./');
 const uid = require('get-uid');
 
 css(`
@@ -22,13 +22,15 @@ document.body.style.overflow = 'hidden';
 
 let id = uid();
 
-addToFonts(build({name: `wf-${id}`}).toArrayBuffer(), `wf-${id}`);
+addToFonts(build({
+	name: `wf-${id}`,
+	symmetrical: false
+}).toArrayBuffer(), `wf-${id}`);
 
 
 //add font to included font-faces
 function addToFonts (buffer, id) {
 	//CSS fonts API
-	//TODO: document.fonts.delete(fontface↓)
 	document.fonts.clear();
 
 	let fontface = new window.FontFace(id, buffer)
@@ -78,10 +80,13 @@ el.style.cssText = `
 `;
 let str = '';
 
+let rate = 44100;
 let len = 44100;
 let offset = 0x0200;
 for (let i = .5; i < len; i++) {
-	let amp = Math.sin(Math.PI * 2 * i / 50) * .5;
+	let f = 1000;
+	let amp = Math.sin(Math.PI * 2 * i * f*2 / rate)*.5 + Math.sin(Math.PI * 2 * i * f*3 / rate)*.25 + Math.sin(Math.PI * 2 * i * f*4 / rate)*.25;
+	amp *= Math.exp(-i/400);
 	// let amp = Math.random();
 	let idx = Math.floor(offset + amp * 127);
 	str += String.fromCharCode(idx);

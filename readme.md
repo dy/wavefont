@@ -2,7 +2,7 @@
 
 A typeface for rendering data: waveforms, spectrums, diagrams, bars etc.
 
-The character codes fall under _Letters_ unicode category, in that the characters are recognized as word boundary in regexps and can be selected by <kbd>Ctrl</kbd> + <kbd>→</kbd> or _double click_ anywhere where the font is used.
+The charcodes for the data fall under _Letters_ unicode category, therefore recognized as word boundary in regexps and can be selected by <kbd>Ctrl</kbd> + <kbd>→</kbd> or _double click_ .
 
 Latin set is covered with empty values to allow for recognizing the font by system.
 
@@ -65,7 +65,7 @@ To build or debug own wavefont:
 
 `npm install wavefont`
 
-And then you get builder function, available in node or browser:
+You get builder function, available in node or browser:
 
 ```js
 const createFont = require('wavefont');
@@ -81,7 +81,7 @@ let font = createFont({
 font.download();
 ```
 
-`font` now is an _ArrayBuffer_ object, you can attach it to window fonts with [add-font](https://npmjs.org/package/add-font), output to stdout, download etc, see [opentype.js](https://github.com/nodebox/opentype.js) for reference.
+`font` now is an _opentype.Font_ instance, you can attach it to window fonts with [add-font](https://npmjs.org/package/add-font), output to stdout, download etc, see [opentype.js](https://github.com/nodebox/opentype.js) for reference.
 
 
 ## Credits
