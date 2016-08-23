@@ -72,14 +72,36 @@ You get builder function, available in node or browser:
 const createFont = require('wavefont');
 
 let font = createFont({
-	width: 10,
-	height: 20,
-	range: [],
-	symmetrical: true
-});
+	name: 'wavefont',
 
-//will download or create font
-font.download();
+	//letter-spacing
+	spacing: -1.35,
+
+	//letter width/height proportion
+	ratio: 1/64,
+
+	//unicode range start
+	//ideally the letter range, good ones (for 255 levels):
+	//0x0100, 0x1100, 0x1500 0x1e00, 0xa000, 0xb000, 0xc000, 0xd000
+	//symmetrical offset is 0x0200
+	offset: 0x0200,
+
+	//number of amplitude levels
+	//values span from -128..-1 and 0..127
+	levels: 256,
+
+	//symmetrical mode
+	symmetrical: false,
+
+	//style - bars, [line, dashes, dots] coming
+	type: 'bars',
+
+	//values outside the amplitude range
+	clip: 1.5,
+
+	//width for spacers
+	shortWidth: .15
+});
 ```
 
 `font` now is an _opentype.Font_ instance, you can attach it to window fonts with [add-font](https://npmjs.org/package/add-font), output to stdout, download etc, see [opentype.js](https://github.com/nodebox/opentype.js) for reference.
