@@ -6,7 +6,7 @@ The charcodes for the data fall under _Letters_ unicode category, therefore reco
 
 Latin set is covered with empty values to allow for recognizing the font by system.
 
-[image]
+[![wavefont](https://raw.githubusercontent.com/dfcreative/wavefont/gh-pages/preview.png "wavefont")](http://dfcreative.github.io/wavefont/)
 
 Available styles (coming soon):
 
