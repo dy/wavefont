@@ -11,3 +11,11 @@ let font = build({
 });
 
 font.download();
+
+
+font = build({
+	name: 'wavefont',
+	symmetrical: true
+});
+
+font.download();

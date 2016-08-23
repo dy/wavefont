@@ -126,7 +126,7 @@ function createWavefont (opts) {
 	//create font
 	let font = new opentype.Font({
 		familyName: opts.name,
-		styleName: opts.type + (opts.symmetrical ? 'symmetrical' : ''),
+		styleName: opts.type + (opts.symmetrical ? '-symmetrical' : ''),
 		unitsPerEm: opts.levels,
 		ascender: middle - 1,
 		descender: -middle,

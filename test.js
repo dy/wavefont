@@ -7,48 +7,54 @@
 
 require('enable-mobile');
 const css = require('insert-styles');
-const build = require('./');
 const uid = require('get-uid');
-const Panel = require('../settings-panel');
+const Panel = require('settings-panel');
 
 css(`
 	@font-face {
 		font-family: "wavefont";
 		src: url("./wavefont-bars.otf");
 	}
+	@font-face {
+		font-family: "wavefont-symmetrical";
+		src: url("./wavefont-bars-symmetrical.otf");
+	}
 `);
 
 document.body.style.overflow = 'hidden';
 
 
-let id = uid();
+
+// Build
+// const build = require('./');
+
+// let id = uid();
+
+// document.fonts.clear();
+
+// addToFonts(build({
+// 	name: `wf-${id}`,
+// 	symmetrical: false
+// }).toArrayBuffer(), `wf-${id}`);
+
+// addToFonts(build({
+// 	name: `wf-${id}-symm`,
+// 	symmetrical: true
+// }).toArrayBuffer(), `wf-${id}-symm`);
 
 
-document.fonts.clear();
+// //add font to included font-faces
+// function addToFonts (buffer, id) {
+// 	//CSS fonts API
 
-addToFonts(build({
-	name: `wf-${id}`,
-	symmetrical: false
-}).toArrayBuffer(), `wf-${id}`);
+// 	let fontface = new window.FontFace(id, buffer)
 
-addToFonts(build({
-	name: `wf-${id}-symm`,
-	symmetrical: true
-}).toArrayBuffer(), `wf-${id}-symm`);
+// 	if ( fontface.status === 'error' ) {
+// 		throw new Error('Fontface is invalid and cannot be displayed');
+// 	}
 
-
-//add font to included font-faces
-function addToFonts (buffer, id) {
-	//CSS fonts API
-
-	let fontface = new window.FontFace(id, buffer)
-
-	if ( fontface.status === 'error' ) {
-		throw new Error('Fontface is invalid and cannot be displayed');
-	}
-
-	document.fonts.add( fontface );
-};
+// 	document.fonts.add( fontface );
+// };
 
 
 
@@ -76,10 +82,11 @@ function addToFonts (buffer, id) {
 // }
 
 
+
 //draw natural ranges with sine
 let el = document.body.appendChild(document.createElement('textarea'));
 el.style.cssText = `
-	font-family: "wf-${id}";
+	font-family: "wavefont";
 	width: 100vw;
 	height: 100vh;
 	line-height: 1;
@@ -96,7 +103,8 @@ let panel = Panel({
 		label: 'Symmetrical',
 		value: false,
 		change: v => {
-			el.style.fontFamily = `wf-${id}` + (v ? '-symm' : '');
+			// el.style.fontFamily = `wf-${id}` + (v ? '-symm' : '');
+			el.style.fontFamily = `wavefont` + (v ? '-symmetrical' : '');
 		}
 	},
 	fontSize: {
@@ -118,7 +126,7 @@ let panel = Panel({
 		}
 	}
 }, {
-	theme: require('../settings-panel/theme/typer'),
+	theme: require('settings-panel/theme/typer'),
 	title: `<a href="https://github.com/dfcreative/wavefont" style="margin-left: -1em">Wavefont <span style="position: absolute; opacity: 1; margin-top: .12em; margin-left: .4em; width: .9em; height: .9em;">${ghIcon}</span></a>`,
 	css: `
 		:host {
@@ -126,8 +134,8 @@ let panel = Panel({
 			z-index: 1;
 			top: 50%;
 			left: 50%;
-			width: 16rem;
-			margin-left: -8rem;
+			width: 20rem;
+			margin-left: -10rem;
 			margin-top: -5rem;
 		}
 
@@ -137,7 +145,7 @@ let panel = Panel({
 
 		:host .settings-panel-checkbox-label {
 			position: relative;
-			left: 8em;
+			left: 13.2em;
 		}
 	`
 });

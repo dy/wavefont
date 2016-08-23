@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "budo test.js",
-    "build": "node build.js"
+    "build": "node build.js",
+    "build-demo": "browserify test.js -g bubleify -o demo/index.js"
   },
   "repository": {
     "type": "git",
@@ -25,11 +26,12 @@
   },
   "homepage": "https://github.com/audio-lab/wavefont#readme",
   "devDependencies": {
-    "enable-mobile": "^1.0.4",
-    "opentype.js": "github:nodebox/opentype.js",
     "autosize": "^3.0.17",
+    "bubleify": "^0.5.1",
+    "enable-mobile": "^1.0.4",
     "get-uid": "^1.0.1",
     "just-extend": "^1.1.21",
+    "opentype.js": "github:nodebox/opentype.js",
     "settings-panel": "^1.8.15"
   },
   "dependencies": {
