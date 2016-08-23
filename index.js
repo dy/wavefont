@@ -81,12 +81,13 @@ function createWavefont (opts) {
 
 		else {
 			path = new opentype.Path();
-			let y = opts.symmetrical ? clamp(-offset, -middle, middle) : 0;
+			let top = clamp(offset, -middle, middle);
+			let bottom = opts.symmetrical ? -top : 0;
 
-			path.moveTo(0, y);
-			path.lineTo(offset ? width : width*opts.shortWidth, y);
-			path.lineTo(offset ? width : width*opts.shortWidth, clamp(offset, -middle, middle));
-			path.lineTo(0, clamp(offset, -middle, middle));
+			path.moveTo(0, bottom);
+			path.lineTo(offset ? width : width*opts.shortWidth, bottom);
+			path.lineTo(offset ? width : width*opts.shortWidth, top);
+			path.lineTo(0, top);
 		}
 
 		let glyph = new opentype.Glyph({
