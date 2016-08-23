@@ -7,15 +7,16 @@
 const build = require('./');
 
 let font = build({
-	name: 'wavefont'
+	name: 'wavefont',
+	spacing: 0,
+	symmetrical: false
 });
-
 font.download();
 
 
 font = build({
 	name: 'wavefont',
+	spacing: 0,
 	symmetrical: true
 });
-
 font.download();
