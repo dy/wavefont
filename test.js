@@ -160,7 +160,7 @@ function genData () {
 	let f1 = 5000 * Math.random();
 	let f2 = 3000 * Math.random();
 	let f3 = Math.random() * 13 + 17;
-	let f4 = Math.random() * 17 + 23;
+	let f4 = Math.random() * 27 + 43;
 
 	let str = '';
 	for (let i = .5; i < len; i++) {
@@ -169,13 +169,19 @@ function genData () {
 		// amp *= Math.sin(Math.PI * 2 * i * 2 * Math.sin(Math.PI * 2 * i * f1*2 / rate) / rate);
 		// let amp = Math.random();
 		amp *= Math.sin(Math.PI * 2 * i * f2*2 / rate + 13 * Math.sin(Math.PI * 2 * i * f2*.08 / rate));
-		amp *=  Math.max(Math.sin(Math.PI * 2 * i * f3 * 2 / rate  + 1), Math.sin(Math.PI * 2 * i * f4 * 2 / rate  + 3));
 
-		let idx = Math.floor(offset + amp * 127);
+		//spacer sins
+		let spacerAmp1 =  Math.max(Math.sin(Math.PI * 2 * i * f3 * 2 / rate  + 1) * .5 + .5, 0);
+		let spacerAmp2 = Math.max(Math.sin(Math.PI * 2 * i * f4 * 2 / rate  + 3) * .5 + .5, 0);
+		amp *= spacerAmp1;
+		amp *= spacerAmp2;
+
+		//insert spaces where spacer amp is low
+		let idx = (!spacerAmp1 || !spacerAmp2)  ? 0x0020 :Math.floor(offset + amp * 127);
 
 		str += String.fromCharCode(idx);
 	}
 
-	el.innerHTML = str;
+	el.value = str;
 }
 genData();
