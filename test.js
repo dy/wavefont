@@ -1,7 +1,7 @@
 /**
  * @module wavefont/test
  *
- * Render waveform typeface
+ * Render waveform typeface in browser
  */
 'use strict';
 
@@ -20,17 +20,9 @@ css(`
 document.body.style.overflow = 'hidden';
 
 
+let id = uid();
 
-//TODO: cover punctuations/space/etc with silence
-
-let name = `wf-${uid()}`;
-let font = build({
-	name: name
-});
-
-let buffer = font.toArrayBuffer();
-
-addToFonts(buffer, name);
+addToFonts(build({name: `wf-${id}`}).toArrayBuffer(), `wf-${id}`);
 
 
 //add font to included font-faces
@@ -77,19 +69,19 @@ function addToFonts (buffer, id) {
 //draw natural ranges with sine
 let el = document.body.appendChild(document.createElement('textarea'));
 el.style.cssText = `
-	font-family: "${name}";
+	font-family: "wf-${id}";
 	width: 100vw;
 	height: 100vh;
 	line-height: 1;
 	letter-spacing: 0px;
-	font-size: 25.6px;
+	font-size: 72px;
 `;
 let str = '';
 
 let len = 44100;
 let offset = 0x0200;
 for (let i = .5; i < len; i++) {
-	let amp = Math.sin(Math.PI * 2 * i / 50);
+	let amp = Math.sin(Math.PI * 2 * i / 50) * .5;
 	// let amp = Math.random();
 	let idx = Math.floor(offset + amp * 127);
 	str += String.fromCharCode(idx);
