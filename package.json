@@ -1,0 +1,37 @@
+{
+  "name": "wavefont",
+  "version": "1.0.0",
+  "description": "Typeface for drawing waveforms and data",
+  "main": "index.js",
+  "scripts": {
+    "test": "budo test.js",
+    "build": "node build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/audio-lab/wavefont.git"
+  },
+  "keywords": [
+    "sound",
+    "audio",
+    "waveform",
+    "spectrum",
+    "fft"
+  ],
+  "author": "ΔY <dfcreative@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/audio-lab/wavefont/issues"
+  },
+  "homepage": "https://github.com/audio-lab/wavefont#readme",
+  "devDependencies": {
+    "enable-mobile": "^1.0.4",
+    "opentype.js": "^0.6.4",
+    "autosize": "^3.0.17",
+    "settings-panel": "^1.8.15"
+  },
+  "dependencies": {
+    "get-uid": "^1.0.1",
+    "just-extend": "^1.1.21"
+  }
+}
