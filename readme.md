@@ -2,26 +2,27 @@
 
 A typeface for rendering data: waveforms, spectrums, diagrams, bars etc.
 
+[![wavefont](https://raw.githubusercontent.com/dfcreative/wavefont/gh-pages/preview.png "wavefont")](http://dfcreative.github.io/wavefont/)
+
 The charcodes for the data fall under _Letters_ unicode category, therefore recognized as word boundary in regexps and can be selected by <kbd>Ctrl</kbd> + <kbd>→</kbd> or _double click_ .
 
 Latin set is covered with empty values to allow for recognizing the font by system.
 
-[![wavefont](https://raw.githubusercontent.com/dfcreative/wavefont/gh-pages/preview.png "wavefont")](http://dfcreative.github.io/wavefont/)
 
-Available styles (coming soon):
+Available styles:
 
-* wavefont-symmetrical
-* wavefont-light
-* wavefont-regular
-* wavefont-bold
-* wavefont-dots
-* wavefont-dashes
-* wavefont-outline
+* [x] wavefont-symmetrical
+* [ ] wavefont-light
+* [x] wavefont-regular
+* [ ] wavefont-bold
+* [ ] wavefont-dots
+* [ ] wavefont-dashes
+* [ ] wavefont-outline
 
 
 ## Usage
 
-Include font as a css directive:
+Include font as a `@font-face` directive:
 
 ```css
 @font-face {
@@ -63,7 +64,7 @@ Or you can use [add-font](https://npmjs.org/package/font) package, which inserts
 
 To build or debug own wavefont:
 
-`npm install wavefont`
+[![npm install wavefont](https://nodei.co/npm/wavefont.png?mini=true)](https://npmjs.org/package/wavefont/)
 
 You get builder function, available in node or browser:
 
