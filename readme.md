@@ -23,6 +23,8 @@ Available styles:
 
 [![npm install wavefont](https://nodei.co/npm/wavefont.png?mini=true)](https://npmjs.org/package/wavefont/)
 
+Place `./font/wavefont-*.otf` to your fonts directory, for example, `font/`.
+
 ```js
 const includeFont = require('wavefont');
 
@@ -36,6 +38,9 @@ let fromAmp = includeFont({
 
 	//normal for 1/32, light for 1/64, bold for 1/16, bolder for 1/8
 	weight: 'normal',
+
+	//path to the fonts directory, relative to bundle’s basepath
+	path: './font',
 
 	//@font-face properties
 	css: `
@@ -135,8 +140,8 @@ let font = createFont({
 	//values outside the amplitude range
 	clip: 1.5,
 
-	//width for spacers
-	shortWidth: .15
+	//size of dot, number of levels
+	dotSize: 2
 });
 ```
 

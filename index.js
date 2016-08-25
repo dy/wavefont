@@ -46,8 +46,8 @@ function createWavefont (opts) {
 		//values outside the range
 		clip: 1.5,
 
-		//width for spacers
-		shortWidth: 0
+		//height of dot, number of levels
+		dotSize: 2
 	}, opts);
 
 
@@ -59,12 +59,10 @@ function createWavefont (opts) {
 	let glyphs = [];
 
 	let spacePath = new opentype.Path();
-	if (opts.shortWidth) {
-		spacePath.moveTo(0, 0);
-		spacePath.lineTo(width*opts.shortWidth, 0);
-		spacePath.lineTo(width*opts.shortWidth, 1);
-		spacePath.lineTo(0, 1);
-	}
+	spacePath.moveTo(0, -opts.dotSize/2);
+	spacePath.lineTo(width, -opts.dotSize/2);
+	spacePath.lineTo(width, opts.dotSize/2);
+	spacePath.lineTo(0, opts.dotSize/2);
 
 	//advanceWidth always takes +1px, to compensate we have to increase width by 1.
 	let notDefGlyph = new opentype.Glyph({
@@ -91,7 +89,7 @@ function createWavefont (opts) {
 
 			//fots type only paints outline
 			if (opts.type === 'dots') {
-				let h = opts.levels / 128;
+				let h = opts.dotSize/2;
 				path.moveTo(0, top + h);
 				path.lineTo(offset ? width : width*opts.shortWidth, top + h);
 				path.lineTo(offset ? width : width*opts.shortWidth, top - h);

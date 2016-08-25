@@ -18,10 +18,12 @@ document.body.style.overflow = 'hidden';
 let fontName = 'wavefont';
 
 // Require way
+let dir = './font';
 for (let weight = 100; weight <= 900; weight+=100) {
 	includeFont({
 		weight: weight,
 		type: 'bars',
+		path: dir,
 		css: `
 			font-style: normal;
 			font-weight: ${weight};
@@ -31,6 +33,7 @@ for (let weight = 100; weight <= 900; weight+=100) {
 		weight: weight,
 		type: 'bars',
 		reflect: true,
+		path: dir,
 		css: `
 			font-style: oblique;
 			font-weight: ${weight};
@@ -39,6 +42,7 @@ for (let weight = 100; weight <= 900; weight+=100) {
 	includeFont({
 		weight: weight,
 		type: 'dots',
+		path: dir,
 		css: `
 			font-style: italic;
 			font-weight: ${weight};
@@ -170,7 +174,6 @@ let panel = Panel({
 		value: 0,
 		step: .25,
 		change: v => {
-			console.log(v + 'px');
 			el.style.letterSpacing = v + 'px';
 		}
 	},

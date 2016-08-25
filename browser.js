@@ -21,12 +21,15 @@ function includeFont (opts) {
 	let desc = opts.css || '';
 	let name = opts.name || 'wavefont';
 	let fileName = `wavefont-${type}${reflect ? '-reflected' : ''}-${weight}`;
-	console.log(fileName, desc)
+	let path = opts.path || './font';
+	if (!/\\\//.test(path[path.length - 1])) {
+		path += '/';
+	}
 
 	css(`
 		@font-face {
 			font-family: ${name};
-			src: url("./font/${ fileName }.otf") format("opentype");
+			src: url("${path}${ fileName }.otf") format("opentype");
 			${desc}
 		}
 	`, {id: fileName});
