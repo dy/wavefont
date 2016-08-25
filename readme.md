@@ -2,7 +2,7 @@
 
 A typeface for rendering data: waveforms, spectrums, diagrams, bars etc.
 
-[![wavefont](https://raw.githubusercontent.com/dfcreative/wavefont/gh-pages/preview.png "wavefont")](http://dfcreative.github.io/wavefont/)
+[![wavefont](https://raw.githubusercontent.com/audio-lab/wavefont/gh-pages/preview.png "wavefont")](http://audio-lab.github.io/wavefont/)
 
 The charcodes for the data fall under _Letters_ unicode category, therefore recognized as word boundary in regexps and can be selected by <kbd>Ctrl</kbd> + <kbd>→</kbd> or _double click_ .
 
