@@ -60,3 +60,4 @@ for (let weight in ratios) {
 		fs.rename(fontName, dir + fontName);
 	});
 }
+console.log(`Wavefonts placed to '${dir}'`);
