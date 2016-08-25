@@ -9,20 +9,13 @@ require('enable-mobile');
 const css = require('insert-styles');
 const uid = require('get-uid');
 const Panel = require('settings-panel');
+const addFont = require('add-font');
 
-css(`
-	@font-face {
-		font-family: "wavefont";
-		src: url("./wavefont-bars.otf");
-	}
-	@font-face {
-		font-family: "wavefont-symmetrical";
-		src: url("./wavefont-bars-symmetrical.otf");
-	}
-`);
 
 document.body.style.overflow = 'hidden';
 
+addFont('./wavefont-bars.otf', 'font-family: wavefont; font-style: normal;');
+addFont('./wavefont-bars-symmetrical.otf', 'font-family: wavefont; font-style: italic;');
 
 
 // Build
@@ -86,7 +79,7 @@ document.body.style.overflow = 'hidden';
 //draw natural ranges with sine
 let el = document.body.appendChild(document.createElement('textarea'));
 el.style.cssText = `
-	font-family: "wavefont";
+	font-family: wavefont;
 	width: 100vw;
 	height: 100vh;
 	line-height: 1;
@@ -103,14 +96,13 @@ let panel = Panel({
 		label: 'Symmetrical',
 		value: false,
 		change: v => {
-			// el.style.fontFamily = `wf-${id}` + (v ? '-symm' : '');
-			el.style.fontFamily = `wavefont` + (v ? '-symmetrical' : '');
+			el.style.fontStyle = v ? 'italic' : 'normal';
 		}
 	},
 	fontSize: {
 		label: 'Font size',
 		type: 'range',
-		value: 72,
+		value: 64,
 		min: 9,
 		max: 200,
 		step: 1,
@@ -159,10 +151,11 @@ function genData () {
 
 	let f1 = 5000 * Math.random();
 	let f2 = 3000 * Math.random();
-	let f3 = Math.random() * 13 + 17;
-	let f4 = Math.random() * 27 + 43;
+	let f3 = Math.random() * 53 + 17;
+	let f4 = Math.random() * 27 + 173;
 
 	let str = '';
+	let isZero = false;
 	for (let i = .5; i < len; i++) {
 		let amp = Math.sin(Math.PI * 2 * i * f1*2 / rate)*.5 + Math.sin(Math.PI * 2 * i * f1*3 / rate)*.25 + Math.sin(Math.PI * 2 * i * f1*4 / rate)*.25;
 		// amp *= Math.exp(-i/44100);
@@ -171,13 +164,21 @@ function genData () {
 		amp *= Math.sin(Math.PI * 2 * i * f2*2 / rate + 13 * Math.sin(Math.PI * 2 * i * f2*.08 / rate));
 
 		//spacer sins
-		let spacerAmp1 =  Math.max(Math.sin(Math.PI * 2 * i * f3 * 2 / rate  + 1) * .5 + .5, 0);
-		let spacerAmp2 = Math.max(Math.sin(Math.PI * 2 * i * f4 * 2 / rate  + 3) * .5 + .5, 0);
+		let spacerAmp1 =  Math.max(Math.sin(Math.PI * 2 * i * f3 * 2 / rate  + 1) * .5 + .49, 0);
+		let spacerAmp2 = Math.max(Math.sin(Math.PI * 2 * i * f4 * 2 / rate  + 3) * .5 + .49, 0);
 		amp *= spacerAmp1;
 		amp *= spacerAmp2;
 
 		//insert spaces where spacer amp is low
-		let idx = (!spacerAmp1 || !spacerAmp2)  ? 0x0020 :Math.floor(offset + amp * 127);
+		let idx
+		if (!spacerAmp1 || !spacerAmp2) {
+			idx = isZero ? 0x0020 : 0x007c;
+			isZero = true;
+		}
+		else {
+			isZero = false;
+			idx = Math.floor(offset + amp * 127);
+		}
 
 		str += String.fromCharCode(idx);
 	}

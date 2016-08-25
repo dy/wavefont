@@ -19,10 +19,10 @@ function createWavefont (opts) {
 		name: 'wavefont',
 
 		//shift advanceWidth to the amount
-		spacing: -1.35,
+		spacing: 0,
 
 		//letter width/height proportion
-		ratio: 1/64,
+		ratio: 2/64,
 
 		//unicode range start
 		//ideally the letter range, good ones (for 255 levels):

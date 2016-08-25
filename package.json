@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/audio-lab/wavefont#readme",
   "devDependencies": {
+    "add-font": "^1.0.0",
     "autosize": "^3.0.17",
     "bubleify": "^0.5.1",
     "enable-mobile": "^1.0.4",
