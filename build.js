@@ -22,6 +22,13 @@ let ratios = {
 };
 let types = ['bars', 'dots'];
 
+console.log('Building wavefonts...');
+
+let dir = __dirname + '/font/';
+
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
 
 for (let weight in ratios) {
 	let ratio = ratios[weight];
@@ -34,7 +41,7 @@ for (let weight in ratios) {
 			type: type
 		});
 		font.download();
-		console.log(`wavefont-${type}-${weight} is done`);
+		// console.log(`wavefont-${type}-${weight} is done`);
 
 		//reflected
 		font = build({
@@ -45,11 +52,11 @@ for (let weight in ratios) {
 			reflect: true
 		});
 		font.download();
-		console.log(`wavefont-${type}-reflected-${weight} is done`);
+		// console.log(`wavefont-${type}-reflected-${weight} is done`);
 
 		let fontName = `wavefont-${type}-${weight}.otf`;
-		fs.rename(fontName, __dirname + '/font/' + fontName);
+		fs.rename(fontName, dir + fontName);
 		fontName = `wavefont-${type}-reflected-${weight}.otf`;
-		fs.rename(fontName, __dirname + '/font/' + fontName);
+		fs.rename(fontName, dir + fontName);
 	});
 }
