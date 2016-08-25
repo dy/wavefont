@@ -33,9 +33,9 @@
     "get-uid": "^1.0.1",
     "just-extend": "^1.1.21",
     "opentype.js": "github:nodebox/opentype.js",
+    "mumath": "^3.0.0",
     "settings-panel": "^1.8.15"
   },
   "dependencies": {
-    "mumath": "^3.0.0"
   }
 }

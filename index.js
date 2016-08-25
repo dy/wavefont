@@ -1,7 +1,7 @@
 /**
  * @module  wavefont
  *
- * Wavefont generator
+ * Wavefont generator.
  */
 'use strict';
 
@@ -35,7 +35,7 @@ function createWavefont (opts) {
 		levels: 256,
 
 		//symmetrical mode
-		symmetrical: false,
+		reflect: false,
 
 		//style - bars, line, dashes, dots
 		type: 'bars',
@@ -82,7 +82,7 @@ function createWavefont (opts) {
 		else {
 			path = new opentype.Path();
 			let top = clamp(offset, -middle, middle);
-			let bottom = opts.symmetrical ? -top : 0;
+			let bottom = opts.reflect ? -top : 0;
 
 			path.moveTo(0, bottom);
 			path.lineTo(offset ? width : width*opts.shortWidth, bottom);
@@ -126,7 +126,7 @@ function createWavefont (opts) {
 	//create font
 	let font = new opentype.Font({
 		familyName: opts.name,
-		styleName: opts.type + (opts.symmetrical ? '-symmetrical' : ''),
+		styleName: opts.type + (opts.reflect ? '-reflected' : ''),
 		unitsPerEm: opts.levels,
 		ascender: middle - 1,
 		descender: -middle,

@@ -22,7 +22,43 @@ Available styles:
 
 ## Usage
 
-Include font as a `@font-face` directive:
+### As a package
+
+[![npm install wavefont](https://nodei.co/npm/wavefont.png?mini=true)](https://npmjs.org/package/wavefont/)
+
+```js
+const includeFont = require('wavefont');
+
+//register 'wavefont' font-face based on passed options
+let fromAmp = includeFont({
+	//bars, dots, dashes or line
+	style: 'bars',
+
+	//symmetrical mode
+	reflect: false,
+
+	//normal for 1/32, light for 1/64, bold for 1/16, bolder for 1/8
+	weight: 'normal',
+
+	//reassign styles, font name etc, optional
+	css: `
+		font-name: wavefont;
+		font-weight: normal;
+		font-style: normal;
+	`
+});
+
+let input = document.body.appendChild(document.createElement('input'));
+input.style.fontFamily = 'wavefont';
+
+//fromAmp gets symbol corresponding to value from -1..1 range
+input.value = [-1, -.75, -.5, -.25, 0, .25, .5, .75, 1].map(fromAmp);
+```
+
+
+### As a web-font
+
+Include font as `@font-face` directive:
 
 ```css
 @font-face {
@@ -75,7 +111,7 @@ let font = createFont({
 	name: 'wavefont',
 
 	//letter-spacing
-	spacing: -1.35,
+	spacing: 0,
 
 	//letter width/height proportion
 	ratio: 1/64,
@@ -91,7 +127,7 @@ let font = createFont({
 	levels: 256,
 
 	//symmetrical mode
-	symmetrical: false,
+	reflect: false,
 
 	//style - bars, [line, dashes, dots] coming
 	type: 'bars',
