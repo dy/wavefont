@@ -23,12 +23,11 @@ Available styles:
 
 [![npm install wavefont](https://nodei.co/npm/wavefont.png?mini=true)](https://npmjs.org/package/wavefont/)
 
-Place `./font/wavefont-*.otf` to your fonts directory, for example, `font/`.
+Place `./font/wavefont-*.otf` to your fonts directory, for example, `font/` and use font in the following way:
 
 ```js
 const includeFont = require('wavefont');
 
-//register 'wavefont' font-face based on options, unnecessary
 let fromAmp = includeFont({
 	//bars or dots
 	type: 'bars',
@@ -36,13 +35,14 @@ let fromAmp = includeFont({
 	//symmetrical mode
 	reflect: false,
 
-	//normal for 1/32, light for 1/64, bold for 1/16, bolder for 1/8
-	weight: 'normal',
+	//100..900, normal or bold
+	weight: 400,
 
 	//path to the fonts directory, relative to bundle’s basepath
 	path: './font',
 
-	//@font-face properties
+	//@font-face properties.
+	//Note that font-style: oblique does not work in iOS, and font-variant nowhere
 	css: `
 		font-name: wavefont;
 		font-weight: normal;
@@ -66,18 +66,18 @@ Include font as `@font-face` directive:
 @font-face {
 	font-family: "wavefont";
 	font-weight: normal;
-	src: url("./wavefont-bars.otf");
+	src: url("./wavefont-bars-400.otf");
 }
 ```
 
 There are 256 characters available for the levels of amplitude from `-128..127` range.
-Use `0x200` offset for `0` level of amplitude:
+Use `0x200` offset for `0` level, `0x201` for `1` level etc:
 
 ```js
 //Strings
 '\u0180'; //-128
 //...
-'\u01fe'; //-1
+'\u01fe'; //-2
 '\u01ff'; //-1
 '\u0200'; //0
 '\u0201'; //1
@@ -95,7 +95,7 @@ Use `0x200` offset for `0` level of amplitude:
 let char = String.fromCharCode(0x200 + level);
 ```
 
-Or you can use [add-font](https://npmjs.org/package/font) package, which inserts font to css from url or as a buffer.
+Or you can use [add-font](https://npmjs.org/package/add-font) package, which inserts font to css from url or as a buffer.
 
 
 ## Building
@@ -104,7 +104,8 @@ To build or debug own wavefont:
 
 [![npm install wavefont](https://nodei.co/npm/wavefont.png?mini=true)](https://npmjs.org/package/wavefont/)
 
-You get builder function, available in node or browser:
+
+You get builder function, available in node:
 
 ```js
 const createFont = require('wavefont');
@@ -145,7 +146,7 @@ let font = createFont({
 });
 ```
 
-`font` now is an _opentype.Font_ instance, you can attach it to window fonts with [add-font](https://npmjs.org/package/add-font), output to stdout, download etc, see [opentype.js](https://github.com/nodebox/opentype.js) for reference.
+`font` now is an _opentype.Font_ instance, you can attach it to window fonts with [add-font](https://npmjs.org/package/add-font), output to stdout, download, save to file etc., see [opentype.js](https://github.com/nodebox/opentype.js) for reference.
 
 
 ## Credits
