@@ -6,7 +6,8 @@
   "scripts": {
     "test": "budo test.js",
     "build": "node build.js",
-    "build-demo": "browserify test.js -g bubleify -o demo/index.js"
+    "build-demo": "browserify test.js -g bubleify -o demo/index.js",
+    "postinstall": "npm run build"
   },
   "browser": "browser.js",
   "repository": {

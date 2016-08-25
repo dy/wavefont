@@ -11,13 +11,10 @@ Latin set is covered with empty values to allow for recognizing the font by syst
 
 Available styles:
 
-* [x] wavefont-symmetrical
-* [ ] wavefont-light
-* [x] wavefont-regular
-* [ ] wavefont-bold
-* [ ] wavefont-dots
-* [ ] wavefont-dashes
-* [ ] wavefont-outline
+* [x] wavefont-bars
+* [x] wavefont-dots
+* [x] wavefont-bars-reflected
+* [x] wavefont-dots-reflected
 
 
 ## Usage
