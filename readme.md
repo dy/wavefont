@@ -29,10 +29,10 @@ Available styles:
 ```js
 const includeFont = require('wavefont');
 
-//register 'wavefont' font-face based on passed options
+//register 'wavefont' font-face based on options, unnecessary
 let fromAmp = includeFont({
-	//bars, dots, dashes or line
-	style: 'bars',
+	//bars or dots
+	type: 'bars',
 
 	//symmetrical mode
 	reflect: false,
@@ -40,7 +40,7 @@ let fromAmp = includeFont({
 	//normal for 1/32, light for 1/64, bold for 1/16, bolder for 1/8
 	weight: 'normal',
 
-	//reassign styles, font name etc, optional
+	//@font-face properties
 	css: `
 		font-name: wavefont;
 		font-weight: normal;
@@ -110,6 +110,9 @@ const createFont = require('wavefont');
 let font = createFont({
 	name: 'wavefont',
 
+	//append to the end of the name, e.g. `-bold`
+	postfix: '',
+
 	//letter-spacing
 	spacing: 0,
 
@@ -129,7 +132,7 @@ let font = createFont({
 	//symmetrical mode
 	reflect: false,
 
-	//style - bars, [line, dashes, dots] coming
+	//style - bars or dots
 	type: 'bars',
 
 	//values outside the amplitude range

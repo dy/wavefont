@@ -1,7 +1,7 @@
 /**
  * @module  wavefont
  *
- * Wavefont generator.
+ * Wavefont generator
  */
 'use strict';
 
@@ -17,6 +17,9 @@ module.exports = createWavefont;
 function createWavefont (opts) {
 	opts = extend({
 		name: 'wavefont',
+
+		//append to the end of the name
+		postfix: '',
 
 		//shift advanceWidth to the amount
 		spacing: 0,
@@ -37,14 +40,14 @@ function createWavefont (opts) {
 		//symmetrical mode
 		reflect: false,
 
-		//style - bars, line, dashes, dots
+		//style - bars, dots
 		type: 'bars',
 
 		//values outside the range
 		clip: 1.5,
 
 		//width for spacers
-		shortWidth: .15
+		shortWidth: 0
 	}, opts);
 
 
@@ -56,10 +59,12 @@ function createWavefont (opts) {
 	let glyphs = [];
 
 	let spacePath = new opentype.Path();
-	spacePath.moveTo(0, 0);
-	spacePath.lineTo(width*opts.shortWidth, 0);
-	spacePath.lineTo(width*opts.shortWidth, 1);
-	spacePath.lineTo(0, 1);
+	if (opts.shortWidth) {
+		spacePath.moveTo(0, 0);
+		spacePath.lineTo(width*opts.shortWidth, 0);
+		spacePath.lineTo(width*opts.shortWidth, 1);
+		spacePath.lineTo(0, 1);
+	}
 
 	//advanceWidth always takes +1px, to compensate we have to increase width by 1.
 	let notDefGlyph = new opentype.Glyph({
@@ -84,10 +89,28 @@ function createWavefont (opts) {
 			let top = clamp(offset, -middle, middle);
 			let bottom = opts.reflect ? -top : 0;
 
-			path.moveTo(0, bottom);
-			path.lineTo(offset ? width : width*opts.shortWidth, bottom);
-			path.lineTo(offset ? width : width*opts.shortWidth, top);
-			path.lineTo(0, top);
+			//fots type only paints outline
+			if (opts.type === 'dots') {
+				let h = opts.levels / 128;
+				path.moveTo(0, top + h);
+				path.lineTo(offset ? width : width*opts.shortWidth, top + h);
+				path.lineTo(offset ? width : width*opts.shortWidth, top - h);
+				path.lineTo(0, top - h);
+
+				//paing bottom part
+				if (opts.reflect) {
+					path.moveTo(0, -top - h);
+					path.lineTo(offset ? width : width*opts.shortWidth, -top - h);
+					path.lineTo(offset ? width : width*opts.shortWidth, -top + h);
+					path.lineTo(0, -top + h);
+				}
+			}
+			else {
+				path.moveTo(0, bottom);
+				path.lineTo(offset ? width : width*opts.shortWidth, bottom);
+				path.lineTo(offset ? width : width*opts.shortWidth, top);
+				path.lineTo(0, top);
+			}
 		}
 
 		let glyph = new opentype.Glyph({
@@ -126,7 +149,7 @@ function createWavefont (opts) {
 	//create font
 	let font = new opentype.Font({
 		familyName: opts.name,
-		styleName: opts.type + (opts.reflect ? '-reflected' : ''),
+		styleName: opts.type + (opts.reflect ? '-reflected' : '') + (opts.postfix ? `-${opts.postfix}` : ''),
 		unitsPerEm: opts.levels,
 		ascender: middle - 1,
 		descender: -middle,

@@ -1,46 +1,55 @@
 /**
  * @module  wavefont/build
  *
- * Build wavefont file
+ * Build basic wavefont files
  */
+'use strict';
 
 const build = require('./');
 const fs = require('fs');
 
 
-let widths = {
-	bolder: 1/8,
-	bold: 1/16,
-	normal: 1/32,
-	light: 1/64,
-	lighter: 1/128
+let ratios = {
+	900: 1/4,
+	800: 1/8,
+	700: 1/12,
+	600: 1/16,
+	500: 1/24,
+	400: 1/32,
+	300: 1/48,
+	200: 1/64,
+	100: 1/128
 };
-let types = ['bars', 'dashes', 'line', 'dots'];
+let types = ['bars', 'dots'];
 
 
-for (let width in widths) {
-	let ratio = widths[width];
+for (let weight in ratios) {
+	let ratio = ratios[weight];
 	types.forEach((type) => {
 		//normal
 		let font = build({
-			name: `wavefont-${width}`,
+			name: `wavefont`,
+			postfix: weight,
 			ratio: ratio,
 			type: type
 		});
 		font.download();
+		console.log(`wavefont-${type}-${weight} is done`);
 
 		//reflected
 		font = build({
-			name: `wavefont-${width}`,
+			name: `wavefont`,
+			postfix: weight,
 			ratio: ratio,
 			type: type,
 			reflect: true
 		});
 		font.download();
+		console.log(`wavefont-${type}-reflected-${weight} is done`);
 
-		let fontName = `wavefont-${width}-${type}.otf`;
+		let fontName = `wavefont-${type}-${weight}.otf`;
 		fs.rename(fontName, __dirname + '/font/' + fontName);
-		fontName = `wavefont-${width}-${type}-reflected.otf`;
+		fontName = `wavefont-${type}-reflected-${weight}.otf`;
 		fs.rename(fontName, __dirname + '/font/' + fontName);
 	});
 }

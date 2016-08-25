@@ -8,6 +8,7 @@
     "build": "node build.js",
     "build-demo": "browserify test.js -g bubleify -o demo/index.js"
   },
+  "browser": "browser.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/audio-lab/wavefont.git"
