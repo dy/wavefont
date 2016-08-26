@@ -9,6 +9,6 @@
 module.exports = fromAmplitude;
 
 function fromAmplitude (amp) {
-	offset = 0x0200;
+	let offset = 0x0200;
 	return String.fromCharCode(offset + Math.floor(amp*127));
 }

@@ -136,6 +136,10 @@ el.style.cssText = `
 	line-height: 1;
 	letter-spacing: 0px;
 	font-size: 72px;
+	text-rendering: optimizeSpeed;
+	-webkit-font-smoothing: none;
+	-moz-osx-font-smoothing: unset;
+	font-smooth: never;
 `;
 
 
