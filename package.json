@@ -1,6 +1,6 @@
 {
   "name": "wavefont",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Typeface for drawing waveforms and data",
   "main": "index.js",
   "scripts": {
