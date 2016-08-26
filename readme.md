@@ -19,48 +19,9 @@ Available styles:
 
 ## Usage
 
-### As a package
-
 [![npm install wavefont](https://nodei.co/npm/wavefont.png?mini=true)](https://npmjs.org/package/wavefont/)
 
-Place `./font/wavefont-*.otf` to your fonts directory, for example, `font/` and use font in the following way:
-
-```js
-const includeFont = require('wavefont');
-
-let fromAmp = includeFont({
-	//bars or dots
-	type: 'bars',
-
-	//symmetrical mode
-	reflect: false,
-
-	//100..900, normal or bold
-	weight: 400,
-
-	//path to the fonts directory, relative to bundle’s basepath
-	path: './font',
-
-	//@font-face properties.
-	//Note that font-style: oblique does not work in iOS, and font-variant nowhere
-	css: `
-		font-name: wavefont;
-		font-weight: normal;
-		font-style: normal;
-	`
-});
-
-let input = document.body.appendChild(document.createElement('input'));
-input.style.fontFamily = 'wavefont';
-
-//fromAmp gets symbol corresponding to value from -1..1 range
-input.value = [-1, -.75, -.5, -.25, 0, .25, .5, .75, 1].map(fromAmp);
-```
-
-
-### As a web-font
-
-Include font as `@font-face` directive:
+Include `@font-face` directive:
 
 ```css
 @font-face {
@@ -70,8 +31,20 @@ Include font as `@font-face` directive:
 }
 ```
 
-There are 256 characters available for the levels of amplitude from `-128..127` range.
-Use `0x200` offset for `0` level, `0x201` for `1` level etc:
+Include amplitude to letter converter:
+
+```js
+const fromAmp = require('wavefont');
+
+let input = document.body.appendChild(document.createElement('input'));
+input.style.fontFamily = 'wavefont';
+
+//fromAmp gets symbol corresponding to value from -1..1 range
+input.value = [-1, -.75, -.5, -.25, 0, .25, .5, .75, 1].map(fromAmp);
+```
+
+Or you can use font directly. There are 256 characters available for the levels of amplitude from `-128..127` range.
+Use `0x200` offset for `0` level, `0x201` for `1` level etc.
 
 ```js
 //Strings
@@ -94,9 +67,6 @@ Use `0x200` offset for `0` level, `0x201` for `1` level etc:
 //Programmatically
 let char = String.fromCharCode(0x200 + level);
 ```
-
-Or you can use [add-font](https://npmjs.org/package/add-font) package, which inserts font to css from url or as a buffer.
-
 
 ## Building
 

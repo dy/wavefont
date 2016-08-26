@@ -10,10 +10,34 @@ const css = require('insert-styles');
 const uid = require('get-uid');
 const Panel = require('settings-panel');
 const addFont = require('add-font');
-const includeFont = require('./');
+const amp = require('./');
 
 
 document.body.style.overflow = 'hidden';
+
+
+function includeFont (opts) {
+	opts = opts || {};
+
+	let type = opts.type || 'bars';
+	let reflect = opts.reflect || false;
+	let weight = opts.weight === 'bold' ? 700 : opts.weight === 'normal' ? 400 : opts.weight || 400;
+	let desc = opts.css || '';
+	let name = opts.name || 'wavefont';
+	let fileName = `wavefont-${type}${reflect ? '-reflected' : ''}-${weight}`;
+	let path = opts.path || './font';
+	if (!/\\\//.test(path[path.length - 1])) {
+		path += '/';
+	}
+
+	css(`
+		@font-face {
+			font-family: ${name};
+			src: url("${path}${ fileName }.otf") format("opentype");
+			${desc}
+		}
+	`, {id: fileName});
+}
 
 let fontName = 'wavefont';
 
