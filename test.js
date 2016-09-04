@@ -10,7 +10,7 @@ const css = require('insert-styles');
 const uid = require('get-uid');
 const Panel = require('settings-panel');
 const addFont = require('add-font');
-const amp = require('./');
+const amp = require('./index');
 
 
 document.body.style.overflow = 'hidden';

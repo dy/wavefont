@@ -5,8 +5,9 @@
  */
 'use strict';
 
-const build = require('./');
+const build = require('./font');
 const fs = require('fs');
+const path = require('path');
 
 
 let ratios = {
@@ -24,7 +25,7 @@ let types = ['bars', 'dots'];
 
 console.log('Building wavefonts...');
 
-let dir = __dirname + '/font/';
+let dir = __dirname + path.sep + 'font' + path.sep;
 
 if (!fs.existsSync(dir)){
     fs.mkdirSync(dir);
