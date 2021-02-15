@@ -1,17 +1,4 @@
-/**
- * @module  wavefont
- *
- * Wavefont generator
- */
-'use strict';
-
-const extend = require('just-extend');
-const opentype = require('opentype.js');
-const uid = require('get-uid');
-const clamp = require('mumath/clamp');
-
-module.exports = createWavefont;
-
+import opentype from 'opentype.js'
 
 //build wavefont from options
 function createWavefont (opts) {
@@ -162,3 +149,14 @@ function createWavefont (opts) {
 
 	return font;
 }
+
+
+// main run
+font = build({
+	name: `wavefont`,
+	postfix: weight,
+	ratio: ratio,
+	type: type,
+	reflect: true
+});
+font.download();

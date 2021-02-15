@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wavefont Demo</title>
+<link rel="stylesheet" href="https://unpkg.com/modern-normalize@1.0.0/modern-normalize.css"/>
+<style>
+@font-face {
+  font-family: 'wavefont';
+  font-style: normal;
+  font-display: swap;
+  src: url(./font/wavefont.otf);
+}
+:root {
+  font-size: 100%/1.5;
+}
+.wavefont {
+  font-family: wavefont, sans-serif;
+  font-size: 4rem;
+  line-height: 1;
+  padding: 0;
+}
+</style>
+
+<h1>Wavefont 1.0</h1>
+
+
+
+<!-- <p>Single ranges: U+A000, U+1500, U+1E00, U+A500, U+AC00 (~0x1fff!), U+E000 (private, but not selectable)</p> -->
+
+<!--
+<h2>Latin ranges</h2>
+<textarea class="wavefont" spellcheck="false">
+0123456789
+abcdefghijklmnopqrstuvwxyz
+</textarea>
+-->
+
+<h2>Hex pairs</h2>
+<textarea class="wavefont" spellcheck="false" cols="120" rows="3">
+000102030405060708090a0b0c0d0e0f
+101112131415161718191a1b1c1d1e1f
+</textarea>
+
+<h2>Latin substitute ranges</h2>
+<textarea class="wavefont" spellcheck="false">
+a0a1a2a3a4a5a6a7a8a9
+b0b1b2b3b4b5b6b7b8b9
+c0c1c2c3c4c5c6c7c8c9
+d0d1d2d3d4d5d6d7d8d9
+e0e1e2e3e4e5e6e7e8e9
+f0f1f2f3f4f5f6f7f8f9
+g0g1g2g3g4g5g6g7g8g9
+h0h1h2h3h4h5h6h7h8h9
+i0i1i2i3i4i5i6i7i8i9
+j0j1j2j3j4j5j6j7j8j9
+k0k1k2k3k4k5k6k7k8k9
+l0l1l2l3l4l5l6l7l8l9
+m0m1m2m3m4m5m6m7m8m9
+n0n1n2n3n4n5n6n7n8n9
+o0o1o2o3o4o5o6o7o8o9
+p0p1p2p3p4p5p6p7p8p9
+q0q1q2q3q4q5q6q7q8q9
+r0r1r2r3r4r5r6r7r8r9
+s0s1s2s3s4s5s6s7s8s9
+t0t1t2t3t4t5t6t7t8t9
+u0u1u2u3u4u5u6u7u8u9
+v0v1v2v3v4v5v6v7v8v9
+w0w1w2w3w4w5w6w7w8w9
+x0x1x2x3x4x5x6x7x8x9
+y0y1y2y3y4y5y6y7y8y9
+z0z1z2z3z4z5z6z7z8z9
+</textarea>
+
+<h2>Absolute values</h2>
+
+<h2>Space, newline</h2>
+
+<h2>Level change</h2>
+
+<script type="module">
+import autosize from './lib/autosize.js'
+
+autosize(wavearea);
+
+let str = ''
+let offset = 0x0200, range = 256
+for (let i = 0; i < 1000; i++) {
+  str += String.fromCharCode(offset + i);
+}
+
+wavearea.textContent = str
+</script>
+
+
+
+<a style="position:absolute;right:0;" href="https://github.com/audio-lab/wavefont"><img loading="lazy" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_white_ffffff.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
