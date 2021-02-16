@@ -4,7 +4,7 @@
   "description": "Typeface for visualizing waveform data",
   "main": "index.js",
   "scripts": {
-    "build-otf": "fontmake -u wavefont.ufo -o otf --output-dir ./font"
+    "build-otf": "fontmake -a -u wavefont.ufo -o otf --output-dir ./font"
   },
   "repository": {
     "type": "git",

@@ -1,3 +1,17 @@
+languagesystem DFLT dflt;
 
+feature mark {
+  pos [_1]' <0 200 0 0> agrave agrave;
+  pos [_1]' <0 100 0 0> agrave;
+  # pos _1' <0 100 0 0> u' <0 200 0 0>;
+  # sub _0 _0 by _00;
+  # sub _0 agrave by _00;
+  # pos _0 _0 -100;
+  # sub _0 _0 by _00;
+  # sub _0 _1 by _1;
+  # pos _0 _1 -100;
+  # pos _0 _2 -100;
+  # sub _0 _2 by _2;
+  # sub _1 _2 by _2;
 
-
+} mark;
