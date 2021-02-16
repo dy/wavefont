@@ -7,7 +7,7 @@
 @font-face {
   font-family: 'wavefont';
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   src: url(./font/wavefont.otf);
 }
 :root {
@@ -18,6 +18,8 @@
   font-size: 150px;
   line-height: 1;
   padding: 0;
+  -webkit-font-smoothing: antialiased; /* Chrome, Safari */
+  -moz-osx-font-smoothing: grayscale; /* Firefox */
 }
 </style>
 
@@ -37,7 +39,8 @@ abcdefghijklmnopqrstuvwxyz
 
 <h2>Hex pairs</h2>
 <textarea class="wavefont" spellcheck="false" rows="3">
-01̀̀23456789
+01&#x0306;2&#x0305;3&#x0304;4&#x0303;5&#x0303;6&#x0304;7&#x0302;8&#x0303;9&#x0303;
+01u23456789
 </textarea>
 <!-- 000102030405060708090a0b0c0d0e0f -->
 <!-- 101112131415161718191a1b1c1d1e1f -->
