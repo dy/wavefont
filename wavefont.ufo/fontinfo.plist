@@ -91,8 +91,17 @@
       <integer>0</integer>
       <integer>0</integer>
     </array>
-    <key>openTypeOS2WidthClass</key>
-    <integer>5</integer>
+
+    <!-- it doesn't affect anything tbh, the avg width is calculated from latin range -->
+    <key>postscriptDefaultWidthX</key>
+    <integer>10</integer>
+    <key>postscriptNominalWidthX</key>
+    <integer>10</integer>
+    <key>xAvgCharWidth</key>
+    <integer>10</integer>
+    <!-- <key>openTypeOS2WidthClass</key> -->
+    <!-- <integer>5</integer> -->
+
     <key>openTypeOS2WeightClass</key>
     <integer>400</integer>
     <key>openTypeOS2VendorID</key>

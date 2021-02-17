@@ -1,6 +1,6 @@
 offset=256
 
-for((i=0;i<10;i++))
+for((i=0;i<=100;i++))
   do
     charCode=$(expr $offset + $i)
     hex=$(printf '0%x' $charCode)
@@ -12,8 +12,8 @@ for((i=0;i<10;i++))
   <unicode hex="'${hex}'"/>
   <outline>
     <contour>
-      <point x="0" y="'${i}'0" type="line"/>
-      <point x="10" y="'${i}'0" type="line"/>
+      <point x="0" y="'${i}'" type="line"/>
+      <point x="10" y="'${i}'" type="line"/>
       <point x="10" y="0" type="line"/>
       <point x="0" y="0" type="line"/>
     </contour>

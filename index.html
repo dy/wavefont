@@ -21,35 +21,54 @@
   -webkit-font-smoothing: antialiased; /* Chrome, Safari */
   -moz-osx-font-smoothing: grayscale; /* Firefox */
 }
+#wavearea {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  resize: none;
+  z-index: -1;
+  /* cleartype fix */
+  letter-spacing: -1px;
+  word-break: break-all;
+}
+#panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: fit-content;
+  height: fit-content;
+  background: rgba(255,255,255,.95);
+  box-shadow: 0 3px 12px -8px black;
+  padding: 2rem;
+  border-radius: .66rem;
+}
+#panel h1 {
+  margin: 0 0 .33rem;
+}
 </style>
 
+<form id="panel">
 <h1>Wavefont 1.0</h1>
+<br/>
+<label for="width">Width</label> <input id="width" type="range"/>
+<br/>
+<label for="align">Align</label> <input id="align" type="range"/>
+</form>
 
-<h2>Latin ranges</h2>
-<textarea class="wavefont" spellcheck="false">
-&#x0100;&#x0101;&#x0102;&#x0301;&#x0103;&#x0104;&#x0105;
-</textarea>
+<textarea id="wavearea" class="wavefont" spellcheck="false">
+&#x0100;&#x0101;&#x0102;&#x0301;&#x0103;&#x0104;&#x0105;&#x0301;&#x0301;&#x0106;&#x0107;&#x010a;&#x0110;&#x0120;&#x0300;&#x0300;&#x0300;&#x0300;&#x0130;&#x0150;&#x0150;&#x0300;&#x0300;&#x0300;&#x0300;&#x0160;&#x0162;</textarea>
 
-<h2>Absolute values</h2>
-
-<h2>Space, newline</h2>
-
-<h2>Level change</h2>
-
-<script type="module">
-import autosize from './lib/autosize.js'
-
-autosize(wavearea);
-
-let str = ''
-let offset = 0x0200, range = 256
-for (let i = 0; i < 1000; i++) {
-  str += String.fromCharCode(offset + i);
+<script>
+function populate(N) {
+  return Array(N).fill(0).map((v, i) => Math.floor(Math.sin(i / 7) * 50 + 50)).map(v => !v ? ' ' : String.fromCharCode(0x0100 + v)).join('')
 }
 
-wavearea.textContent = str
+wavearea.innerHTML = populate(1000)
 </script>
 
-
-
-<a style="position:absolute;right:0;" href="https://github.com/audio-lab/wavefont"><img loading="lazy" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_white_ffffff.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+<a style="position:absolute;right:0;top:0;" href="https://github.com/audio-lab/wavefont"><img loading="lazy" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_white_ffffff.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
