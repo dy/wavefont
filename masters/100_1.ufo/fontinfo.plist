@@ -9,10 +9,10 @@
     <key>postscriptFullName</key>
     <string>Wavefont</string>
     <key>openTypeNameUniqueID</key>
-    <string>1.000;NONE;Wavefont-Regular</string>
+    <string>1.000;NONE;Wavefont-Black</string>
 
     <key>styleName</key>
-    <string>Regular</string>
+    <string>Black</string>
     <key>postscriptWeightName</key>
     <string>Book</string>
 
@@ -99,8 +99,8 @@
     <!-- <integer>10</integer> -->
     <!-- <key>xAvgCharWidth</key> -->
     <!-- <integer>10</integer> -->
-    <!-- <key>openTypeOS2WidthClass</key> -->
-    <!-- <integer>5</integer> -->
+    <key>openTypeOS2WidthClass</key>
+    <integer>9</integer>
 
     <key>openTypeOS2WeightClass</key>
     <integer>400</integer>

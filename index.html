@@ -8,6 +8,7 @@
   font-family: 'wavefont';
   font-style: normal;
   font-display: block;
+  font-weight: 900;
   src: url(./font/wavefont.ttf);
   /* src: url(./font/wavefont.otf); */
 }
@@ -16,7 +17,7 @@
 }
 .wavefont {
   font-family: wavefont, sans-serif;
-  font-size: 150px;
+  font-size: 48px;
   line-height: 1;
   padding: 0;
   -webkit-font-smoothing: antialiased; /* Chrome, Safari */
@@ -33,10 +34,9 @@
   /* cleartype fix */
   letter-spacing: -1px;
   word-break: break-all;
-  --wdth: 10;
-  --algn: 0;
+  --wdth: 5;
+  --algn: 0.5;
   font-variation-settings: 'wdth' var(--wdth), 'algn' var(--algn);
-  /* font-variation-settings: 'wdth' var(--wdth); */
 }
 #panel {
   position: absolute;
@@ -59,11 +59,11 @@
 </style>
 
 <form id="panel">
-<h1>Wavefont 1.0</h1>
+<h1>Wavefont</h1>
 <br/>
 <label for="width">Width</label> <input id="width" type="range" min="0" value="2.3" step="0.01" max="4"/>
 <br/>
-<label for="align">Align</label> <input id="align" type="range" min="0" value="0" max="1" step="0.25"/>
+<label for="align">Align</label> <input id="align" type="range" min="0" value=".5" max="1" step="0.5"/>
 <script>
   width.oninput = e => {
     let value = Math.exp(+width.value);
@@ -85,10 +85,10 @@
 
 <script>
 function populate(N) {
-  return Array(N).fill(0).map((v, i) => Math.floor(Math.sin(i / 7) * 50 + 50)).map(v => !v ? ' ' : String.fromCharCode(0x0100 + v)).join('')
+  return Array(N).fill(0).map((v, i) => Math.floor(Math.sin(i * i / 1e3) * 50 + 50)).map(v => !v ? ' ' : String.fromCharCode(0x0100 + v)).join('')
 }
 
-wavearea.innerHTML = populate(1000)
+wavearea.innerHTML = populate(44100)
 </script>
 
 <a style="position:absolute;right:0;top:0;" href="https://github.com/audio-lab/wavefont"><img loading="lazy" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_white_ffffff.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
