@@ -18,5 +18,7 @@ for((i=0;i<10;i++))
       <point x="0" y="0" type="line"/>
     </contour>
   </outline>
+  <anchor name="entry" x="0" y="0"/>
+  <anchor name="exit" x="10" y="0"/>
 </glyph>' > "$PWD/wavefont.ufo/glyphs/${i}.glif"
   done

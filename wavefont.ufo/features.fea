@@ -2,8 +2,11 @@ languagesystem DFLT dflt;
 
 @value = [_0 - _9];
 
+anchorDef 0 0 entry;
+anchorDef 10 0 exit;
+
 feature mark {
-  pos cursive @value <anchor 0 0> <anchor 10 0>;
-  pos cursive up <anchor 0 0> <anchor 0 10>;
-  pos cursive down <anchor 0 0> <anchor 0 -10>;
+  pos cursive @value <anchor entry> <anchor exit>;
+  pos cursive up <anchor entry> <anchor 0 10>;
+  pos cursive down <anchor entry> <anchor 0 -10>;
 } mark;
