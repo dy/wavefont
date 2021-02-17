@@ -23,6 +23,6 @@ for((i=0;i<=100;i++))
     </contour>
   </outline>
   <anchor name="entry" x="0" y="0"/>
-  <anchor name="exit" x="10" y="0"/>
+  <anchor name="exit" x="'$width'" y="0"/>
 </glyph>' > "$PWD/masters/$width.ufo/glyphs/$i.glif"
   done

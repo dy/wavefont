@@ -93,12 +93,12 @@
     </array>
 
     <!-- it doesn't affect anything tbh, the avg width is calculated from latin range -->
-    <key>postscriptDefaultWidthX</key>
-    <integer>10</integer>
-    <key>postscriptNominalWidthX</key>
-    <integer>10</integer>
-    <key>xAvgCharWidth</key>
-    <integer>10</integer>
+    <!-- <key>postscriptDefaultWidthX</key> -->
+    <!-- <integer>10</integer> -->
+    <!-- <key>postscriptNominalWidthX</key> -->
+    <!-- <integer>10</integer> -->
+    <!-- <key>xAvgCharWidth</key> -->
+    <!-- <integer>10</integer> -->
     <!-- <key>openTypeOS2WidthClass</key> -->
     <!-- <integer>5</integer> -->
 
