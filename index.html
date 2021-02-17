@@ -34,7 +34,9 @@
   letter-spacing: -1px;
   word-break: break-all;
   --wdth: 10;
-  font-variation-settings: 'wdth' var(--wdth);
+  --algn: 0;
+  font-variation-settings: 'wdth' var(--wdth), 'algn' var(--algn);
+  /* font-variation-settings: 'wdth' var(--wdth); */
 }
 #panel {
   position: absolute;
@@ -43,8 +45,8 @@
   top: 0;
   bottom: 0;
   margin: auto;
-  width: fit-content;
-  height: fit-content;
+  width: 42ch;
+  height: 24ch;
   background: rgba(255,255,255,.95);
   box-shadow: 0 3px 12px -8px black;
   padding: 2rem;
@@ -59,21 +61,27 @@
 <form id="panel">
 <h1>Wavefont 1.0</h1>
 <br/>
-<label for="width">Width</label> <input id="width" type="range" min="0" value="1" step="0.01" max="4"/>
+<label for="width">Width</label> <input id="width" type="range" min="0" value="2.3" step="0.01" max="4"/>
 <br/>
-<label for="align">Align</label> <input id="align" type="range"/>
-
+<label for="align">Align</label> <input id="align" type="range" min="0" value="0" max="1" step="0.25"/>
 <script>
   width.oninput = e => {
     let value = Math.exp(+width.value);
     width.title = value;
+    console.log(value)
     wavearea.style.setProperty('--wdth', value)
+  }
+  align.oninput = e => {
+    let value = +align.value;
+    align.title = value;
+    wavearea.style.setProperty('--algn', value)
   }
 </script>
 </form>
 
 <textarea id="wavearea" class="wavefont" spellcheck="false">
-&#x0100;&#x0101;&#x0102;&#x0301;&#x0103;&#x0104;&#x0105;&#x0301;&#x0301;&#x0106;&#x0107;&#x010a;&#x0110;&#x0120;&#x0300;&#x0300;&#x0300;&#x0300;&#x0130;&#x0150;&#x0150;&#x0300;&#x0300;&#x0300;&#x0300;&#x0160;&#x0162;</textarea>
+&#x0100;&#x0101;&#x0102;&#x0103;&#x0104;&#x0105;&#x0106;&#x0107;
+</textarea>
 
 <script>
 function populate(N) {

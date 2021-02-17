@@ -4,17 +4,15 @@ offset=256
 
 # FIXME: fallback to default or show error
 width=$1
-align=$2
-
 
 height=100
 max=128
 
 for((i=0;i<=max;i++))
   do
-    ((baseline= $align \* $height))
-    ((bottom= $baseline - $align \* $i))
-    ((top= $baseline + $(expr 1 - $align) \* $i))
+    ((baseline= $height / 2))
+    ((bottom= $baseline - ($i+1) / 2))
+    ((top= $baseline + ($i) / 2))
     ((charCode= $offset + $i))
     hex=$(printf '0%x' $charCode)
     echo "Creating $i.glif"
@@ -32,5 +30,5 @@ for((i=0;i<=max;i++))
   </outline>
   <anchor name="entry" x="0" y="'$baseline'"/>
   <anchor name="exit" x="'$width'" y="'$baseline'"/>
-</glyph>' > "$PWD/masters/${width}_${align}.ufo/glyphs/$i.glif"
+</glyph>' > "$PWD/masters/${width}_center.ufo/glyphs/$i.glif"
   done

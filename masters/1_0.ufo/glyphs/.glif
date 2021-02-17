@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyph name="_" format="2">
+  <advance width="1"/>
+  <unicode hex="00"/>
+  <outline>
+    <contour>
+      <point x="0" y="" type="line"/>
+      <point x="1" y="" type="line"/>
+      <point x="1" y="" type="line"/>
+      <point x="0" y="" type="line"/>
+    </contour>
+  </outline>
+  <anchor name="entry" x="0" y=""/>
+  <anchor name="exit" x="1" y=""/>
+</glyph>
