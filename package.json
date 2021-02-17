@@ -1,12 +1,16 @@
 {
   "name": "wavefont",
-  "version": "1.2.2",
-  "description": "Typeface for drawing waveforms and data",
+  "version": "2.0.0",
+  "description": "Typeface for visualizing waveform data",
   "main": "index.js",
   "scripts": {
-    "test": "budo test.js",
-    "build": "node build.js",
-    "build-demo": "browserify test.js -g bubleify -o demo/index.js"
+    "build-values-1-0": "build-values.sh 1 0",
+    "build-values-1-1": "build-values.sh 1 1",
+    "build-values-1-center": "build-values-center.sh 1",
+    "build-values-100-0": "build-values.sh 100 0",
+    "build-values-100-1": "build-values.sh 100 1",
+    "build-otf": "fontmake -a -u masters/1.ufo -o otf --output-path ./font/wavefont.otf",
+    "build-dsp": "fontmake -a -m masters/wavefont.designspace -o variable --output-path ./font/wavefont.ttf"
   },
   "repository": {
     "type": "git",
@@ -15,26 +19,20 @@
   "keywords": [
     "sound",
     "audio",
+    "datavis",
+    "opentype",
     "waveform",
     "spectrum",
     "fft"
   ],
-  "author": "ΔY <dfcreative@gmail.com>",
+  "author": "Dmitry Iv <dfcreative@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/audio-lab/wavefont/issues"
   },
   "homepage": "https://github.com/audio-lab/wavefont#readme",
   "devDependencies": {
-    "add-font": "^1.0.0",
-    "autosize": "^3.0.17",
-    "bubleify": "^0.5.1",
-    "enable-mobile": "^1.0.4",
-    "get-uid": "^1.0.1",
-    "just-extend": "^1.1.21",
-    "opentype.js": "latest",
-    "mumath": "^3.0.0",
-    "settings-panel": "^1.8.15"
+    "opentype.js": "latest"
   },
   "dependencies": {}
 }

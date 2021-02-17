@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+<designspace format="3">
+    <axes>
+        <axis initial="1.0" default="1.0" maximum="100.0" minimum="1.0" name="width" tag="wdth">
+            <labelname xml:lang="en">Width</labelname>
+        </axis>
+        <axis default="0.0" maximum="1.0" minimum="0.0" name="align" tag="algn">
+            <labelname xml:lang="en">Align</labelname>
+        </axis>
+    </axes>
+    <sources>
+        <source familyname="Wavefont" filename="1_0.ufo" name="Master_1_0" stylename="Default">
+            <lib copy="1" />
+            <groups copy="1" />
+            <info copy="1" />
+            <location>
+                <dimension name="width" xvalue="1" />
+                <dimension name="align" xvalue="0" />
+            </location>
+        </source>
+        <source familyname="Wavefont" filename="1_1.ufo" name="Master_1_1" stylename="Master 1_1">
+            <location>
+                <dimension name="width" xvalue="1" />
+                <dimension name="align" xvalue="1" />
+            </location>
+        </source>
+        <source familyname="Wavefont" filename="1_center.ufo" name="Master_1_center" stylename="Master 1_center">
+            <location>
+                <dimension name="width" xvalue="1" />
+                <dimension name="align" xvalue="0.5" />
+            </location>
+        </source>
+        <source familyname="Wavefont" filename="100_0.ufo" name="Master_100_0" stylename="Master 100_0">
+            <location>
+                <dimension name="width" xvalue="100" />
+                <dimension name="align" xvalue="0" />
+            </location>
+        </source>
+        <source familyname="Wavefont" filename="100_1.ufo" name="Master_100_1" stylename="Master 100_1">
+            <location>
+                <dimension name="width" xvalue="100" />
+                <dimension name="align" xvalue="1" />
+            </location>
+        </source>
+    </sources>
+    <instances>
+        <instance familyname="Wavefont" filename="wavefont.ufo" name="Regular" postscriptfontname="Wavefont-Regular" stylename="Regular">
+            <location>
+                <dimension name="width" xvalue="5" />
+                <dimension name="align" xvalue="0" />
+            </location>
+            <info />
+        </instance>
+    </instances>
+</designspace>
