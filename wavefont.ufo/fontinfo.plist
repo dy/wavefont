@@ -27,16 +27,16 @@
     <string>Copyright (c) 2021, Dmitry Iv</string>
 
     <key>unitsPerEm</key>
-    <integer>1500</integer>
+    <integer>100</integer>
 
     <key>ascender</key>
-    <integer>1500</integer>
+    <integer>100</integer>
     <key>openTypeHheaAscender</key>
-    <integer>1500</integer>
+    <integer>100</integer>
     <key>openTypeOS2TypoAscender</key>
-    <integer>1500</integer>
+    <integer>100</integer>
     <key>openTypeOS2WinAscent</key>
-    <integer>1500</integer>
+    <integer>100</integer>
 
     <key>descender</key>
     <integer>0</integer>
@@ -48,35 +48,35 @@
     <integer>0</integer>
 
     <key>xHeight</key>
-    <integer>1000</integer>
+    <integer>100</integer>
 
     <key>openTypeOS2TypoLineGap</key>
     <integer>0</integer>
     <key>openTypeOS2SubscriptXSize</key>
-    <integer>1000</integer>
+    <integer>100</integer>
     <key>openTypeOS2SubscriptYSize</key>
-    <integer>1000</integer>
+    <integer>100</integer>
     <key>openTypeOS2SubscriptXOffset</key>
     <integer>0</integer>
     <key>openTypeOS2SubscriptYOffset</key>
     <integer>0</integer>
     <key>openTypeOS2SuperscriptXSize</key>
-    <integer>1000</integer>
+    <integer>100</integer>
     <key>openTypeOS2SuperscriptYSize</key>
-    <integer>1000</integer>
+    <integer>100</integer>
     <key>openTypeOS2SuperscriptXOffset</key>
     <integer>0</integer>
     <key>openTypeOS2SuperscriptYOffset</key>
-    <integer>1000</integer>
+    <integer>100</integer>
 
     <key>openTypeOS2StrikeoutSize</key>
-    <integer>50</integer>
+    <integer>5</integer>
     <key>openTypeOS2StrikeoutPosition</key>
-    <integer>500</integer>
+    <integer>50</integer>
     <key>postscriptUnderlineThickness</key>
     <integer>50</integer>
     <key>postscriptUnderlinePosition</key>
-    <integer>-100</integer>
+    <integer>0</integer>
 
     <key>openTypeOS2Panose</key>
     <array>

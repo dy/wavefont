@@ -1,34 +1,9 @@
 languagesystem DFLT dflt;
 
 @value = [_0 - _9];
-@up = [u1];
-# @down = [down1];
 
 feature mark {
-  pos @value <0 1500 0 0> uf;
-  pos @value <0 1400 0 0> ue;
-  pos @value <0 1300 0 0> ud;
-  pos @value <0 1200 0 0> uc;
-  pos @value <0 1100 0 0> ub;
-  pos @value <0 1000 0 0> ua;
-  pos @value <0 900 0 0> u9;
-  pos @value <0 800 0 0> u8;
-  pos @value <0 700 0 0> u7;
-  pos @value <0 600 0 0> u6;
-  pos @value <0 500 0 0> u5;
-  pos @value <0 400 0 0> u4;
-  pos @value <0 300 0 0> u3;
-  pos @value <0 200 0 0> u2;
-  pos @value <0 100 0 0> u1;
-  # pos _1' <0 100 0 0> u' <0 200 0 0>;
-  # sub _0 _0 by _00;
-  # sub _0 agrave by _00;
-  # pos _0 _0 -100;
-  # sub _0 _0 by _00;
-  # sub _0 _1 by _1;
-  # pos _0 _1 -100;
-  # pos _0 _2 -100;
-  # sub _0 _2 by _2;
-  # sub _1 _2 by _2;
-
+  pos cursive @value <anchor 0 0> <anchor 10 0>;
+  pos cursive up <anchor 0 0> <anchor 0 10>;
+  pos cursive down <anchor 0 0> <anchor 0 -10>;
 } mark;

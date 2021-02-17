@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<glyph name="ub" format="2">
+<glyph name="down" format="2">
   <advance width="0"/>
-  <unicode hex="030b"/>
+  <unicode hex="0300"/>
 </glyph>

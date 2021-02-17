@@ -3,7 +3,9 @@
 <plist version="1.0">
   <dict>
     <key>.notdef</key><string>_notdef.glif</string>
-    <key>blank</key><string>blank.glif</string>
+    <key>up</key><string>up.glif</string>
+    <key>down</key><string>down.glif</string>
+    <key>_</key><string>_.glif</string>
     <key>_0</key><string>0.glif</string>
     <key>_1</key><string>1.glif</string>
     <key>_2</key><string>2.glif</string>
@@ -14,26 +16,5 @@
     <key>_7</key><string>7.glif</string>
     <key>_8</key><string>8.glif</string>
     <key>_9</key><string>9.glif</string>
-    <key>_a</key><string>a.glif</string>
-    <key>_b</key><string>b.glif</string>
-    <key>_c</key><string>c.glif</string>
-    <key>_d</key><string>d.glif</string>
-    <key>_e</key><string>e.glif</string>
-    <key>_f</key><string>f.glif</string>
-    <key>u1</key><string>u1.glif</string>
-    <key>u2</key><string>u2.glif</string>
-    <key>u3</key><string>u3.glif</string>
-    <key>u4</key><string>u4.glif</string>
-    <key>u5</key><string>u5.glif</string>
-    <key>u6</key><string>u6.glif</string>
-    <key>u7</key><string>u7.glif</string>
-    <key>u8</key><string>u8.glif</string>
-    <key>u9</key><string>u9.glif</string>
-    <key>ua</key><string>ua.glif</string>
-    <key>ub</key><string>ub.glif</string>
-    <key>uc</key><string>uc.glif</string>
-    <key>ud</key><string>ud.glif</string>
-    <key>ue</key><string>ue.glif</string>
-    <key>uf</key><string>uf.glif</string>
   </dict>
 </plist>
