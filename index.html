@@ -59,12 +59,16 @@
 <form id="panel">
 <h1>Wavefont 1.0</h1>
 <br/>
-<label for="width">Width</label> <input id="width" type="range" min="1" value="10" max="100"/>
+<label for="width">Width</label> <input id="width" type="range" min="0" value="1" step="0.01" max="4"/>
 <br/>
 <label for="align">Align</label> <input id="align" type="range"/>
 
 <script>
-  width.oninput = e => wavearea.style.setProperty('--wdth', width.value)
+  width.oninput = e => {
+    let value = Math.exp(+width.value);
+    width.title = value;
+    wavearea.style.setProperty('--wdth', value)
+  }
 </script>
 </form>
 
