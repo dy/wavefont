@@ -48,21 +48,27 @@
   margin: auto;
   width: 42ch;
   max-width: 80vw;
-  height: 24ch;
+  height: 15rem;
   box-shadow: 0 3px 16px -8px black;
   border-top: .5rem solid rgba(246,246,252,.97);
-  border-left: .5rem solid rgba(255,255,255,1);
-  border-right: .5rem solid rgba(201,200,202,.97);
-  border-bottom: .5rem solid rgba(127,127,130,.95);
+  border-left: .5rem solid rgba(255,254,255,.98);
+  border-right: .5rem solid rgba(221,220,222,.97);
+  border-bottom: .5rem solid rgba(200,200,202,.95);
+  border-radius: .1rem;
   z-index: 1;
+  -webkit-backdrop-filter: blur(.1rem);
+  backdrop-filter: blur(.1rem);
 }
 .panel-content {
   padding: 1.5rem;
   height: 100%;
-  background: linear-gradient(to bottom right, rgba(224,224,224,1), rgba(242,242,242,1)) rgba(236,236,236,1);
+  background: linear-gradient(to bottom right, rgba(234,234,236,1), rgba(252,252,252,1)) rgba(236,236,236,0);
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  justify-content: space-around;
+  text-shadow: .1rem 0 white, 0 .1rem rgba(246,246,252,1);
+  box-shadow: inset 0px 1px 0px rgba(255,255,255,.75), inset 1px 0px 0px rgba(255,255,255,1), inset -1px 0 rgba(255,255,255,.3);
 }
 #panel h1 {
   text-align: center;
@@ -106,7 +112,7 @@ a {
 }
 </style>
 
-<form id="panel">
+<form id="panel" action="https://github.com/audio-lab/wavefont/raw/master/font/wavefont.ttf">
 <div class="panel-content">
 <h1>
 Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/audio-lab/wavefont">1.0</a></small></sup>
@@ -124,7 +130,7 @@ Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/audio-lab
   <label for="size">Size</label> <input id="size" type="range" min="5" value="48" max="200" step="1"/>
   <output id="sizeValue">48px</output>
 </div>
-<div class="panel-cta"><button>Download font ⤓</button></div>
+<div class="panel-cta"><button type="submit">Download font <span style="opacity: .5; font-size: .95em">(11&nbsp;kB)</span> ⤓</button></div>
 </div>
 <script>
   width.oninput = e => {
@@ -154,7 +160,7 @@ Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/audio-lab
 
 <script>
 function populate(N) {
-  return Array(N).fill(0).map((v, i) => Math.floor(Math.sin(i * i / 1e3) * 50 + 50)).map(v => !v ? ' ' : String.fromCharCode(0x0100 + v)).join('')
+  return Array(N).fill(0).map((v, i) => Math.floor((Math.sin(i * i / 1e3) * 50 + 50) * Math.abs(Math.sin(i / 100))) ).map(v => !v ? ' ' : String.fromCharCode(0x0100 + v)).join('')
 }
 
 wavearea.innerHTML = populate(44100)
