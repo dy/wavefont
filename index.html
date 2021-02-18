@@ -12,6 +12,22 @@
   src: url(./font/wavefont.ttf);
   /* src: url(./font/wavefont.otf); */
 }
+
+
+/* flex font size */
+html {font-size: 100%;}
+
+@media screen and (min-width: 320px) {
+  html {
+    font-size: calc(12px + 6 * ((100vw - 320px) / 680));
+  }
+}
+@media screen and (min-width: 1000px) {
+  html {
+    font-size: 16px;
+  }
+}
+
 :root {
   font-size: 100%/1.5;
 }
@@ -49,12 +65,12 @@
   width: 42ch;
   max-width: 80vw;
   height: 15rem;
-  box-shadow: 0 3px 16px -8px black;
-  border-top: .5rem solid rgba(246,246,252,.97);
-  border-left: .5rem solid rgba(255,254,255,.98);
-  border-right: .5rem solid rgba(221,220,222,.97);
+  box-shadow: 0 .2rem 1rem -.5rem black;
+  border-top: .5rem solid rgba(254,254,255,.97);
+  border-left: .5rem solid rgba(248,248,250,.96);
+  border-right: .5rem solid rgba(221,220,222,.96);
   border-bottom: .5rem solid rgba(200,200,202,.95);
-  border-radius: .1rem;
+  border-radius: .2rem;
   z-index: 1;
   -webkit-backdrop-filter: blur(.1rem);
   backdrop-filter: blur(.1rem);
@@ -67,8 +83,8 @@
   flex-direction: column;
   align-items: stretch;
   justify-content: space-around;
-  text-shadow: .1rem 0 white, 0 .1rem rgba(246,246,252,1);
-  box-shadow: inset 0px 1px 0px rgba(255,255,255,.75), inset 1px 0px 0px rgba(255,255,255,1), inset -1px 0 rgba(255,255,255,.3);
+  text-shadow: .05rem .05rem white;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.9), inset 0px 1px 0px rgba(255,255,255,.75), inset 1px 0px 0px rgba(255,255,255,1), inset -1px 0 rgba(255,255,255,.3);
 }
 #panel h1 {
   text-align: center;
