@@ -4,6 +4,7 @@
   "description": "Typeface for visualizing waveform data",
   "main": "index.js",
   "scripts": {
+    "build": "npm run build-values-1-0 && npm run build-values-1-1 && npm run build-values-1-center && npm run build-values-100-0 && npm run build-values-100-1 && npm run build-ttf",
     "build-values-1-0": "build-values.sh 1 0",
     "build-values-1-1": "build-values.sh 1 1",
     "build-values-1-center": "build-values-center.sh 1",
