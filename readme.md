@@ -24,7 +24,8 @@ Font also provides variables: _width_ and _align_ variable features that can be 
 	}
 	.wavefont {
 		font-style: wavefont;
-		font-variation-settings: 'wdth'
+		--wdth: 10;
+		font-variation-settings: 'wdth' var(--wdth), 'algn' 0.5;
 	}
 </style>
 
