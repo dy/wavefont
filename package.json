@@ -10,8 +10,7 @@
     "build-values-1-center": "build-values-center.sh 1",
     "build-values-100-0": "build-values.sh 100 0",
     "build-values-100-1": "build-values.sh 100 1",
-    "build-masterotfs": "buildmasterotfs -d masters/wavefont.designspace",
-    "build-cff":"buildcff2vf -k -d masters/wavefont.designspace -o ./font/wavefont.otf",
+    "build-otf": "buildmasterotfs -d masters/wavefont.designspace && buildcff2vf -k -d masters/wavefont.designspace -o ./font/wavefont.otf",
     "build-ttf": "fontmake -m masters/wavefont.designspace -o variable --output-path ./font/wavefont.ttf"
   },
   "repository": {
