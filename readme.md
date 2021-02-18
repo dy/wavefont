@@ -6,11 +6,11 @@ A typeface for rendering data: waveforms, spectrums, diagrams, bars etc.
 
 Font provides bar glyphs representing values from 0 to 100 (and clipping 28 values) for data.
 
-The data charcodes fall under _Latin Extended-A_ unicode category (U+0100-017F), therefore recognized as word boundary in regexps, can be selected by <kbd>Ctrl</kbd> + <kbd>→</kbd> or _double click_.
+The data charcodes fall under _Latin Extended-A_ unicode category (U+0100-017F), therefore recognized as word boundary in regexps, can be selected by <kbd>Ctrl</kbd> + <kbd>→</kbd> or double click.
 
-Vertical position of a bar can be adjusted via combining accent grave &nbsp;&#x0300; (U+0300) for negative shift or via accent acute &nbsp;&#x0301; (U+0301) for positive shift. One accent character adjusts vertical position by 1. To provide shift by more than 1 - use multiple accents in a row. Note that using accents introduces editing side effect - cutting a fragment with accents shifts baseline outside the fragment. To compensate that, use `oncut`/`onpaste` events.
+Vertical position of a bar can be adjusted via combining accent grave <kbd>&nbsp;&#x0300;</kbd> (U+0300) for negative shift or via accent acute <kbd>&nbsp;&#x0301;</kbd> (U+0301) for positive shift. One accent character adjusts vertical position by _1_. To provide shift by more than 1 - use multiple accents in a row. Note that using accents introduces editing side effect - cutting a fragment with accents shifts baseline outside the fragment. To compensate that, use `oncut`/`onpaste` events.
 
-<!-- Font also provides variables: _width_, _align_. -->
+Font also provides variables: _width_ and _align_ variable features that can be adjusted via `font-variation-settings` as `'wdth'` tag ranging from _1_ to _100_ and `'algn'` taking _0_ for bottom align, _0.5_ for center align and _1_ for top align.
 
 ## Usage
 
@@ -24,6 +24,7 @@ Vertical position of a bar can be adjusted via combining accent grave &nbsp;&#x0
 	}
 	.wavefont {
 		font-style: wavefont;
+		font-variation-settings: 'wdth'
 	}
 </style>
 
@@ -38,5 +39,16 @@ waveform.addEventListener('cut', e => {
 })
 </script>
 ```
+
+## Credits
+
+* [unified font object spec](https://unifiedfontobject.org/versions/ufo3) − unified human-readable format for storing font data.
+* [feature file spec](https://adobe-type-tools.github.io/afdko/OpenTypeFeatureFileSpecification.html#6.h) − defining opentype font features.
+* [afdko](https://adobe-type-tools.github.io/afdko/) − font building tools from Adobe.
+* [fontmake](0)
+* [unicode-table](https://unicode-table.com/) − convenient unicode table.
+* [adobe-variable-font-prototype](https://github.com/adobe-fonts/adobe-variable-font-prototype) − example variable font.
+* [designspace xml spec](https://github.com/LettError/designSpaceDocument#document-xml-structure) − human-readable format for describing variable fonts.
+* [designspace overview](https://robofont.com/documentation/how-tos/creating-designspace-files/) − overview of tools for designspace files.
 
 <p align="center">🕉<p>

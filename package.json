@@ -31,8 +31,6 @@
     "url": "https://github.com/audio-lab/wavefont/issues"
   },
   "homepage": "https://github.com/audio-lab/wavefont#readme",
-  "devDependencies": {
-    "opentype.js": "latest"
-  },
+  "devDependencies": {},
   "dependencies": {}
 }
