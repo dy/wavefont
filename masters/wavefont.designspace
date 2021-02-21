@@ -24,12 +24,15 @@
                 <dimension name="align" xvalue="1" />
             </location>
         </source>
+        <!-- Center is interpolated nicely by OTF -->
+        <!--
         <source familyname="Wavefont" filename="1_center.ufo" name="Master_1_center" stylename="Master 1_center">
             <location>
                 <dimension name="width" xvalue="1" />
                 <dimension name="align" xvalue="0.5" />
             </location>
         </source>
+        -->
         <source familyname="Wavefont" filename="100_0.ufo" name="Master_100_0" stylename="Master 100_0">
             <location>
                 <dimension name="width" xvalue="100" />
