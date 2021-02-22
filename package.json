@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run build-values-1-0 && npm run build-values-1-1 && npm run build-values-1-center && npm run build-values-100-0 && npm run build-values-100-1 && npm run build-ttf",
-    "build-values-1-0": "./build-values.sh 1 0",
-    "build-values-1-1": "./build-values.sh 1 1",
-    "build-values-1-center": "./build-values-center.sh 1",
-    "build-values-100-0": "./build-values.sh 100 0",
-    "build-values-100-1": "./build-values.sh 100 1",
+    "build-values-1-0": "build-values.sh 1 0",
+    "build-values-1-1": "build-values.sh 1 1",
+    "build-values-1-center": "build-values-center.sh 1",
+    "build-values-100-0": "build-values.sh 100 0",
+    "build-values-100-1": "build-values.sh 100 1",
     "build-masterotfs": "buildmasterotfs -d masters/wavefont.designspace",
     "build-otf": "npm run build-masterotfs && buildcff2vf -c -k -d masters/wavefont.designspace -o ./font/wavefont.otf",
     "build-ttf": "fontmake -m masters/wavefont.designspace -o variable --output-path ./font/wavefont.ttf"
