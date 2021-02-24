@@ -4,10 +4,10 @@
   "description": "Typeface for visualizing waveform data",
   "main": "index.js",
   "scripts": {
+    "build": "npm run build-ufo && npm run build-masters & npm run build-otf && npm run build-ttf",
     "build-ufo": "plop build-ufo",
-    "build": "npm run build-ufo && npm run build-masters",
     "build-masters": "buildmasterotfs -d masters/wavefont.designspace",
-    "build-otf": "npm run build-masters && buildcff2vf -c -k -d masters/wavefont.designspace -o ./font/wavefont.otf",
+    "build-otf": "buildcff2vf -c -k -d masters/wavefont.designspace -o ./font/wavefont.otf",
     "build-ttf": "fontmake --no-optimize-gvar -m masters/wavefont.designspace -o variable --output-path ./font/wavefont.ttf"
   },
   "repository": {
