@@ -9,10 +9,7 @@
         </axis>
     </axes>
     <sources>
-        <source familyname="Wavefont" filename="1_0.ufo" name="Master_1_0" stylename="Default">
-            <lib copy="1" />
-            <groups copy="1" />
-            <info copy="1" />
+        <source familyname="Wavefont" filename="1_0.ufo" name="Master_1_0" stylename="Master 1_0">
             <location>
                 <dimension name="width" xvalue="1" />
                 <dimension name="align" xvalue="0" />
@@ -35,8 +32,7 @@
                 <dimension name="width" xvalue="100" />
                 <dimension name="align" xvalue="1" />
             </location>
-        </source>
-    </sources>
+        </source></sources>
     <instances>
         <instance familyname="Wavefont" filename="wavefont.ufo" name="Regular" postscriptfontname="Wavefont-Regular" stylename="Regular">
             <location>
