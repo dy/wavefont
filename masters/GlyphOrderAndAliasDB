@@ -3,6 +3,8 @@
 _ _ uni0020,uni0021,uni0022,uni0023,uni0024,uni0025,uni0026,uni0027
 up up uni0301
 down down uni0300
+
+#values
 _0	_0	uni0100
 _1	_1	uni0101
 _2	_2	uni0102
@@ -132,3 +134,4 @@ _125	_125	uni017D
 _126	_126	uni017E
 _127	_127	uni017F
 _128	_128	uni0180
+#/values

@@ -1,4 +1,7 @@
 module.exports = function (plop) {
+  const values = Array.from({length: 129}).map((v,i)=>i)
+  const offset = 0x0100
+
 	plop.setGenerator('build-ufo', {
     description: 'Build master values',
     prompts: [],
@@ -6,20 +9,23 @@ module.exports = function (plop) {
       // cleanup designspace
       {type: "modify", path:"masters/wavefont.designspace", pattern:/<sources>([^]*?)<\/sources>/i, template: '<sources></sources>'},
 
-      ...master({number: 128, max: 100, align: 0, width: 1, radius: 20}),
-      ...master({number: 128, max: 100, align: 1, width: 1, radius: 20}),
-      ...master({number: 128, max: 100, align: 0, width: 100, radius: 20}),
-      ...master({number: 128, max: 100, align: 1, width: 100, radius: 20})
+      ...master({values, max: 100, align: 0, width: 1, radius: 20, offset}),
+      ...master({values, max: 100, align: 1, width: 1, radius: 20, offset}),
+      ...master({values, max: 100, align: 0, width: 100, radius: 20, offset}),
+      ...master({values, max: 100, align: 1, width: 100, radius: 20, offset}),
+
+      // modify GlyphsOrderAndAlias
+      {type: "modify", path:"masters/GlyphOrderAndAliasDB", pattern:/#values[^]*#\/values/i, template: `#values\n${
+        values.map(v => `_${v}\t_${v}\tuni${hex(v + offset)}`).join('\n')
+      }\n#/values`}
     ]
 	});
 };
 
 // generate actions to build one master file
-function master({number, max=100, align, width, radius}){
-  const offset = 0x0100
-  const values = Array.from({length: number+1}).map((v,i)=>i)
-
+function master({values, max=100, align, width, radius, offset}){
   return [
+    // populate ufo skeleton
     {
       type: 'addMany',
       force: true,
@@ -28,6 +34,7 @@ function master({number, max=100, align, width, radius}){
       templateFiles: 'masters/_template.ufo/**/*',
       data: { width, baseline: max * align, max, values }
     },
+    // append master
     {
       type: "modify",
       path: "masters/wavefont.designspace",
@@ -52,10 +59,10 @@ function master({number, max=100, align, width, radius}){
 }
 
 
-const glyph = ({value, width, align, code, max, radius:R}, baseline=align*max) => console.log(value, R) || `<?xml version="1.0" encoding="UTF-8"?>
+const glyph = ({value, width, align, code, max, radius:R}, baseline=align*max) => `<?xml version="1.0" encoding="UTF-8"?>
 <glyph name="_" format="2">
   <advance width="${width}"/>
-  <unicode hex="${code.toString(16).padStart(4,0)}"/>
+  <unicode hex="${hex(code)}"/>
   <outline>
     <contour>${
       `
@@ -99,3 +106,6 @@ const glyph = ({value, width, align, code, max, radius:R}, baseline=align*max) =
   <anchor name="entry" x="0" y="${baseline}"/>
   <anchor name="exit" x="${width}" y="${baseline}"/>
 </glyph>`
+
+
+const hex = (v) => v.toString(16).toUpperCase().padStart(4,0)
