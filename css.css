@@ -3,8 +3,8 @@
   font-style: normal;
   font-display: block;
   font-weight: 900;
-  /* src: url(./font/wavefont.ttf); */
-  src: url(./font/wavefont.otf);
+  src: url(./font/wavefont.ttf);
+  /* src: url(./font/wavefont.otf); */
 }
 
 
@@ -45,7 +45,7 @@ html {font-size: 100%;}
   word-break: break-all;
   --wdth: 5;
   --algn: 0.5;
-  --size: 48px;
+  --size: 50px;
   font-size: var(--size);
   font-variation-settings: 'wdth' var(--wdth), 'algn' var(--algn);
 }

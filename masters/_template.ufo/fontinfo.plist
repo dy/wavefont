@@ -9,10 +9,10 @@
     <key>postscriptFullName</key>
     <string>Wavefont</string>
     <key>openTypeNameUniqueID</key>
-    <string>1.000;NONE;Wavefont-Regular</string>
+    <string>1.000;NONE;Wavefont-Light</string>
 
     <key>styleName</key>
-    <string>Regular</string>
+    <string>Light</string>
     <key>postscriptWeightName</key>
     <string>Book</string>
 
@@ -27,16 +27,16 @@
     <string>Copyright (c) 2021, Dmitry Iv</string>
 
     <key>unitsPerEm</key>
-    <integer>100</integer>
+    <integer>{{ max }}</integer>
 
     <key>ascender</key>
-    <integer>100</integer>
+    <integer>{{ max }}</integer>
     <key>openTypeHheaAscender</key>
-    <integer>100</integer>
+    <integer>{{ max }}</integer>
     <key>openTypeOS2TypoAscender</key>
-    <integer>100</integer>
+    <integer>{{ max }}</integer>
     <key>openTypeOS2WinAscent</key>
-    <integer>100</integer>
+    <integer>{{ max }}</integer>
 
     <key>descender</key>
     <integer>0</integer>
@@ -48,26 +48,26 @@
     <integer>0</integer>
 
     <key>xHeight</key>
-    <integer>100</integer>
+    <integer>{{ max }}</integer>
 
     <key>openTypeOS2TypoLineGap</key>
     <integer>0</integer>
     <key>openTypeOS2SubscriptXSize</key>
-    <integer>100</integer>
+    <integer>{{ max }}</integer>
     <key>openTypeOS2SubscriptYSize</key>
-    <integer>100</integer>
+    <integer>{{ max }}</integer>
     <key>openTypeOS2SubscriptXOffset</key>
     <integer>0</integer>
     <key>openTypeOS2SubscriptYOffset</key>
     <integer>0</integer>
     <key>openTypeOS2SuperscriptXSize</key>
-    <integer>100</integer>
+    <integer>{{ max }}</integer>
     <key>openTypeOS2SuperscriptYSize</key>
-    <integer>100</integer>
+    <integer>{{ max }}</integer>
     <key>openTypeOS2SuperscriptXOffset</key>
     <integer>0</integer>
     <key>openTypeOS2SuperscriptYOffset</key>
-    <integer>100</integer>
+    <integer>{{ max }}</integer>
 
     <key>openTypeOS2StrikeoutSize</key>
     <integer>5</integer>
@@ -99,8 +99,8 @@
     <!-- <integer>10</integer> -->
     <!-- <key>xAvgCharWidth</key> -->
     <!-- <integer>10</integer> -->
-    <!-- <key>openTypeOS2WidthClass</key> -->
-    <!-- <integer>5</integer> -->
+    <key>openTypeOS2WidthClass</key>
+    <integer>1</integer>
 
     <key>openTypeOS2WeightClass</key>
     <integer>400</integer>

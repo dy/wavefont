@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>.notdef</key><string>_notdef.glif</string>
+    <key>up</key><string>up.glif</string>
+    <key>down</key><string>down.glif</string>
+    <key>_</key><string>_.glif</string>
+    {{#each values}}
+    <key>_{{ this }}</key><string>{{ this }}.glif</string>
+    {{/each}}
+  </dict>
+</plist>
