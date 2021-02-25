@@ -1,6 +1,7 @@
 languagesystem DFLT dflt;
 
-include(./values.fea)
+@value = [{{#each values}}_{{ this }} {{/each}}];
+
 
 anchorDef 0 {{ baseline }} entry;
 anchorDef {{ width }} {{ baseline }} exit;
