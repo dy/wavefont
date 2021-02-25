@@ -11,7 +11,13 @@
             <labelname xml:lang="en">Radius</labelname>
         </axis>
     </axes>
-    <!-- dynamic part - rebuild every build-ufo run -->
+    <rules>
+        <rule name="small">
+            <condition minimum="0" maximum="15" name="width" />
+            <sub name="_10" with="_"/>
+        </rule>
+    </rules>
+    <!-- dynamic part -->
     <sources>
         <source familyname="Wavefont" filename="1_0_0.ufo" name="Master_1_0_0" stylename="Master 1_0_0">
             <location>

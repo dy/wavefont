@@ -77,7 +77,8 @@ function master({values, max=100, align, width, radius, offset}){
 
 const glyph = ({value, width, align, code, max, radius}) => {
   const baseline=align*max,
-        R=Math.max(1,Math.min(width*.5,value*.5)),
+        R=Math.min(width*.5,value*.5),
+        // R=radius,
         // R=5,
         // R=value*.5,
         // R=width*.5,
@@ -90,36 +91,37 @@ const glyph = ({value, width, align, code, max, radius}) => {
 <glyph name="_" format="2">
   <advance width="${width}"/>
   ${code ? `<unicode hex="${hex(code)}"/>` : ``}
-  <outline>
+  ${value && `<outline>
     <contour>${
       `
-      <point x="0" y="${value-R}" type="line" smooth="yes"/>
-      <point x="0" y="${value-cR}"/>
+      <point x="0" y="${trim(value-R)}" type="line" smooth="yes"/>
+      <point x="0" y="${trim(value-cR)}"/>
 
-      <point x="${cR}" y="${value}"/>
-      <point x="${R}" y="${value}" type="curve" smooth="yes"/>
-      <point x="${width-R}" y="${value}" type="line" smooth="yes"/>
-      <point x="${width-cR}" y="${value}"/>
+      <point x="${trim(cR)}" y="${trim(value)}"/>
+      <point x="${R}" y="${trim(value)}" type="curve" smooth="yes"/>
+      <point x="${width-R}" y="${trim(value)}" type="line" smooth="yes"/>
+      <point x="${trim(width-cR)}" y="${trim(value)}"/>
 
-      <point x="${width}" y="${value-cR}"/>
-      <point x="${width}" y="${value-R}" type="curve" smooth="yes"/>
-      <point x="${width}" y="${R}" type="line" smooth="yes"/>
-      <point x="${width}" y="${cR}"/>
+      <point x="${width}" y="${trim(value-cR)}"/>
+      <point x="${width}" y="${trim(value-R)}" type="curve" smooth="yes"/>
+      <point x="${width}" y="${trim(R)}" type="line" smooth="yes"/>
+      <point x="${width}" y="${trim(cR)}"/>
 
-      <point x="${width-cR}" y="0"/>
+      <point x="${trim(width-cR)}" y="0"/>
       <point x="${width-R}" y="0" type="curve" smooth="yes"/>
       <point x="${R}" y="0" type="line" smooth="yes"/>
-      <point x="${cR}" y="0"/>
+      <point x="${trim(cR)}" y="0"/>
 
-      <point x="0" y="${cR}"/>
-      <point x="0" y="${R}" type="curve" smooth="yes"/>
+      <point x="0" y="${trim(cR)}"/>
+      <point x="0" y="${trim(R)}" type="curve" smooth="yes"/>
       `
     }</contour>
-  </outline>
-  <anchor name="entry" x="0" y="${baseline}"/>
-  <anchor name="exit" x="${width}" y="${baseline}"/>
+  </outline>`}
+  <anchor name="entry" x="0" y="${trim(baseline)}"/>
+  <anchor name="exit" x="${width}" y="${trim(baseline)}"/>
 </glyph>`
 }
 
+const trim = (v) => v.toPrecision(4)
 
 const hex = (v) => v.toString(16).toUpperCase().padStart(4,0)
