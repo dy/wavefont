@@ -9,10 +9,15 @@ module.exports = function (plop) {
       // cleanup designspace
       {type: "modify", path:"masters/wavefont.designspace", pattern:/<sources>([^]*?)<\/sources>/i, template: '<sources></sources>'},
 
-      ...master({values, max: 100, align: 0, width: 1, radius: 20, offset}),
-      ...master({values, max: 100, align: 1, width: 1, radius: 20, offset}),
-      ...master({values, max: 100, align: 0, width: 100, radius: 20, offset}),
-      ...master({values, max: 100, align: 1, width: 100, radius: 20, offset}),
+      ...master({values, max: 100, align: 0, width: 1, radius: 0, offset}),
+      // ...master({values, max: 100, align: 1, width: 1, radius: 0, offset}),
+      // ...master({values, max: 100, align: 0, width: 1, radius: 50, offset}),
+      // ...master({values, max: 100, align: 1, width: 1, radius: 50, offset}),
+
+      ...master({values, max: 100, align: 0, width: 25, radius: 0, offset}),
+      // ...master({values, max: 100, align: 1, width: 25, radius: 0, offset}),
+      // ...master({values, max: 100, align: 0, width: 25, radius: 50, offset}),
+      // ...master({values, max: 100, align: 1, width: 25, radius: 50, offset}),
 
       // modify GlyphsOrderAndAlias
       {type: "modify", path:"masters/GlyphOrderAndAliasDB", pattern:/#values[^]*#\/values/i, template: `#values\n${
@@ -29,7 +34,8 @@ function master({values, max=100, align, width, radius, offset}){
     {
       type: 'addMany',
       force: true,
-      destination: `masters/${width}_${align}.ufo/`,
+      verbose: false,
+      destination: `masters/${width}_${align}_${radius}.ufo/`,
       base: 'masters/_template.ufo',
       templateFiles: 'masters/_template.ufo/**/*',
       data: { width, baseline: max * align, max, values }
@@ -40,26 +46,36 @@ function master({values, max=100, align, width, radius, offset}){
       path: "masters/wavefont.designspace",
       pattern: '</sources>',
       template: `
-        <source familyname="Wavefont" filename="${width}_${align}.ufo" name="Master_${width}_${align}" stylename="Master ${width}_${align}">
+        <source familyname="Wavefont" filename="${width}_${align}_${radius}.ufo" name="Master_${width}_${align}_${radius}" stylename="Master ${width}_${align}_${radius}">
             <location>
                 <dimension name="width" xvalue="${width}" />
                 <dimension name="align" xvalue="${align}" />
+                <dimension name="radius" xvalue="${radius}" />
             </location>
         </source></sources>`
     },
     ...values.map((value) => {
       return {
+        verbose: false,
         force: true,
         type: 'add',
-        path: `masters/${width}_${align}.ufo/glyphs/${value}.glif`,
-        template: glyph({value, width, align, code: offset + value, max, radius: Math.min(radius, width*.5, value*.5)})
+        path: `masters/${width}_${align}_${radius}.ufo/glyphs/${value}.glif`,
+        template: glyph({value, width, align, code: offset + value, max, radius})
       }
     })
   ]
 }
 
 
-const glyph = ({value, width, align, code, max, radius:R}, baseline=align*max) => `<?xml version="1.0" encoding="UTF-8"?>
+const glyph = ({value, width, align, code, max, radius}) => {
+  const baseline=align*max,
+        R=Math.min(width*.5,value*.5),
+        // R=5,
+        // R=value*.5,
+        // R=width*.5,
+        shift = max - value
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
 <glyph name="_" format="2">
   <advance width="${width}"/>
   <unicode hex="${hex(code)}"/>
@@ -87,25 +103,12 @@ const glyph = ({value, width, align, code, max, radius:R}, baseline=align*max) =
       <point x="0" y="${R*.45}"/>
       <point x="0" y="${R}" type="curve" smooth="yes"/>
       `
-      // align === 0 ?
-      // `
-      // <point x="0" y="${0}" type="line"/>
-      // <point x="0" y="${value}" type="line"/>
-      // <point x="${width}" y="${value}" type="line"/>
-      // <point x="${width}" y="${0}" type="line"/>
-      // `
-      // :
-      // `
-      // <point x="0" y="${max - value}" type="line"/>
-      // <point x="0" y="${max}" type="line"/>
-      // <point x="${width}" y="${max}" type="line"/>
-      // <point x="${width}" y="${max - value}" type="line"/>
-      // `
     }</contour>
   </outline>
   <anchor name="entry" x="0" y="${baseline}"/>
   <anchor name="exit" x="${width}" y="${baseline}"/>
 </glyph>`
+}
 
 
 const hex = (v) => v.toString(16).toUpperCase().padStart(4,0)

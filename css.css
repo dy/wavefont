@@ -21,24 +21,6 @@ html {font-size: 100%;}
   -webkit-font-smoothing: antialiased; /* Chrome, Safari */
   -moz-osx-font-smoothing: grayscale; /* Firefox */
 }
-#wavearea {
-  padding: 0;
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
-  top: 0;
-  left: 0;
-  resize: none;
-  z-index: -1;
-  /* cleartype fix */
-  letter-spacing: -1px;
-  word-break: break-all;
-  --wdth: 5;
-  --algn: 0.5;
-  --size: 50px;
-  font-size: var(--size);
-  font-variation-settings: 'wdth' var(--wdth), 'algn' var(--algn);
-}
 #panel {
   position: absolute;
   left: 0;
@@ -48,7 +30,7 @@ html {font-size: 100%;}
   margin: auto;
   width: 42ch;
   max-width: 80vw;
-  height: 15rem;
+  height: 18rem;
   box-shadow: 0 .2rem 1rem -.5rem black;
   border-top: .5rem solid rgba(254,254,255,.97);
   border-left: .5rem solid rgba(248,248,250,.96);

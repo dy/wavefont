@@ -2,8 +2,8 @@ languagesystem DFLT dflt;
 
 include(./values.fea)
 
-anchorDef 0 100 entry;
-anchorDef 100 100 exit;
+anchorDef 0 0 entry;
+anchorDef 25 0 exit;
 
 feature mark {
   pos cursive @value <anchor entry> <anchor exit>;
