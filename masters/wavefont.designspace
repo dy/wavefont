@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <designspace format="3">
     <axes>
-        <axis initial="1.0" default="1.0" maximum="100.0" minimum="1.0" name="width" tag="wdth">
+        <axis initial="1.0" default="1.0" maximum="20.0" minimum="1.0" name="width" tag="wdth">
             <labelname xml:lang="en">Width</labelname>
         </axis>
         <axis default="0.0" maximum="1.0" minimum="0.0" name="align" tag="algn">
@@ -12,197 +12,81 @@
         </axis>
     </axes>
     <rules>
-        <rule name="big">
-            <conditionset><condition minimum="1" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="1" maximum="20" name="width" /></conditionset>
             <sub name="_1" with="_1.clip"/>
         </rule>
-        <rule name="big">
-            <conditionset><condition minimum="2" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="2" maximum="20" name="width" /></conditionset>
             <sub name="_2" with="_2.clip"/>
         </rule>
-        <rule name="big">
-            <conditionset><condition minimum="3" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="3" maximum="20" name="width" /></conditionset>
             <sub name="_3" with="_3.clip"/>
         </rule>
-        <rule name="big">
-            <conditionset><condition minimum="4" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="4" maximum="20" name="width" /></conditionset>
             <sub name="_4" with="_4.clip"/>
         </rule>
-        <rule name="big">
-            <conditionset><condition minimum="5" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="5" maximum="20" name="width" /></conditionset>
             <sub name="_5" with="_5.clip"/>
         </rule>
-        <rule name="big">
-            <conditionset><condition minimum="6" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="6" maximum="20" name="width" /></conditionset>
             <sub name="_6" with="_6.clip"/>
         </rule>
-        <rule name="big">
-            <conditionset><condition minimum="7" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="7" maximum="20" name="width" /></conditionset>
             <sub name="_7" with="_7.clip"/>
         </rule>
-        <rule name="big">
-            <conditionset><condition minimum="8" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="8" maximum="20" name="width" /></conditionset>
             <sub name="_8" with="_8.clip"/>
         </rule>
-        <rule name="big">
-            <conditionset><condition minimum="9" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="9" maximum="20" name="width" /></conditionset>
             <sub name="_9" with="_9.clip"/>
         </rule>
-        <rule name="big">
-            <conditionset><condition minimum="10" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="10" maximum="20" name="width" /></conditionset>
             <sub name="_10" with="_10.clip"/>
         </rule>
-        <rule name="big">
-            <conditionset><condition minimum="11" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="11" maximum="20" name="width" /></conditionset>
             <sub name="_11" with="_11.clip"/>
         </rule>
-        <rule name="big">
-            <conditionset><condition minimum="12" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="12" maximum="20" name="width" /></conditionset>
             <sub name="_12" with="_12.clip"/>
         </rule>
-        <rule name="big">
-            <conditionset><condition minimum="13" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="13" maximum="20" name="width" /></conditionset>
             <sub name="_13" with="_13.clip"/>
         </rule>
-        <rule name="big">
-            <conditionset><condition minimum="14" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="14" maximum="20" name="width" /></conditionset>
             <sub name="_14" with="_14.clip"/>
         </rule>
-        <rule name="big">
-            <conditionset><condition minimum="15" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="15" maximum="20" name="width" /></conditionset>
             <sub name="_15" with="_15.clip"/>
         </rule>
-        <rule name="big">
-            <conditionset><condition minimum="16" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="16" maximum="20" name="width" /></conditionset>
             <sub name="_16" with="_16.clip"/>
         </rule>
-        <rule name="big">
-            <conditionset><condition minimum="17" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="17" maximum="20" name="width" /></conditionset>
             <sub name="_17" with="_17.clip"/>
         </rule>
-        <rule name="big">
-            <conditionset><condition minimum="18" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="18" maximum="20" name="width" /></conditionset>
             <sub name="_18" with="_18.clip"/>
         </rule>
-        <rule name="big">
-            <conditionset><condition minimum="19" maximum="25" name="width" /></conditionset>
+        <rule name="clip">
+            <conditionset><condition minimum="19" maximum="20" name="width" /></conditionset>
             <sub name="_19" with="_19.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="20" maximum="25" name="width" /></conditionset>
-            <sub name="_20" with="_20.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="21" maximum="25" name="width" /></conditionset>
-            <sub name="_21" with="_21.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="22" maximum="25" name="width" /></conditionset>
-            <sub name="_22" with="_22.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="23" maximum="25" name="width" /></conditionset>
-            <sub name="_23" with="_23.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="24" maximum="25" name="width" /></conditionset>
-            <sub name="_24" with="_24.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="1" maximum="25" name="width" /></conditionset>
-            <sub name="_1" with="_1.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="2" maximum="25" name="width" /></conditionset>
-            <sub name="_2" with="_2.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="3" maximum="25" name="width" /></conditionset>
-            <sub name="_3" with="_3.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="4" maximum="25" name="width" /></conditionset>
-            <sub name="_4" with="_4.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="5" maximum="25" name="width" /></conditionset>
-            <sub name="_5" with="_5.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="6" maximum="25" name="width" /></conditionset>
-            <sub name="_6" with="_6.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="7" maximum="25" name="width" /></conditionset>
-            <sub name="_7" with="_7.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="8" maximum="25" name="width" /></conditionset>
-            <sub name="_8" with="_8.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="9" maximum="25" name="width" /></conditionset>
-            <sub name="_9" with="_9.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="10" maximum="25" name="width" /></conditionset>
-            <sub name="_10" with="_10.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="11" maximum="25" name="width" /></conditionset>
-            <sub name="_11" with="_11.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="12" maximum="25" name="width" /></conditionset>
-            <sub name="_12" with="_12.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="13" maximum="25" name="width" /></conditionset>
-            <sub name="_13" with="_13.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="14" maximum="25" name="width" /></conditionset>
-            <sub name="_14" with="_14.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="15" maximum="25" name="width" /></conditionset>
-            <sub name="_15" with="_15.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="16" maximum="25" name="width" /></conditionset>
-            <sub name="_16" with="_16.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="17" maximum="25" name="width" /></conditionset>
-            <sub name="_17" with="_17.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="18" maximum="25" name="width" /></conditionset>
-            <sub name="_18" with="_18.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="19" maximum="25" name="width" /></conditionset>
-            <sub name="_19" with="_19.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="20" maximum="25" name="width" /></conditionset>
-            <sub name="_20" with="_20.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="21" maximum="25" name="width" /></conditionset>
-            <sub name="_21" with="_21.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="22" maximum="25" name="width" /></conditionset>
-            <sub name="_22" with="_22.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="23" maximum="25" name="width" /></conditionset>
-            <sub name="_23" with="_23.clip"/>
-        </rule>
-        <rule name="big">
-            <conditionset><condition minimum="24" maximum="25" name="width" /></conditionset>
-            <sub name="_24" with="_24.clip"/>
         </rule></rules>
     <!-- dynamic part -->
     <sources>
@@ -213,11 +97,25 @@
                 <dimension name="radius" xvalue="0" />
             </location>
         </source>
-        <source familyname="Wavefont" filename="25_0_0.ufo" name="Master_25_0_0" stylename="Master 25_0_0">
+        <source familyname="Wavefont" filename="1_0_50.ufo" name="Master_1_0_50" stylename="Master 1_0_50">
             <location>
-                <dimension name="width" xvalue="25" />
+                <dimension name="width" xvalue="1" />
+                <dimension name="align" xvalue="0" />
+                <dimension name="radius" xvalue="50" />
+            </location>
+        </source>
+        <source familyname="Wavefont" filename="20_0_0.ufo" name="Master_20_0_0" stylename="Master 20_0_0">
+            <location>
+                <dimension name="width" xvalue="20" />
                 <dimension name="align" xvalue="0" />
                 <dimension name="radius" xvalue="0" />
+            </location>
+        </source>
+        <source familyname="Wavefont" filename="20_0_50.ufo" name="Master_20_0_50" stylename="Master 20_0_50">
+            <location>
+                <dimension name="width" xvalue="20" />
+                <dimension name="align" xvalue="0" />
+                <dimension name="radius" xvalue="50" />
             </location>
         </source></sources>
     <!-- /dynamic-part -->

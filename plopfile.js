@@ -14,7 +14,7 @@ const values100 = Array.from({length: 129}).map((v,i)=>({value: i, code: i+0x010
 
 
 module.exports = function (plop) {
-  const maxWidth = 25
+  const maxWidth = 20
   const maxValue = 100
   const values = values100.map(({value, code}) => ({value, code, clip: !!value && value < maxWidth}))
 
@@ -33,6 +33,15 @@ module.exports = function (plop) {
       ...master({values, maxValue, maxWidth, align: 0, width: maxWidth, radius: 0}),
       // ...master({values, maxValue, maxWidth, align: 1, width: maxWidth, radius: 0}),
       ...master({values, maxValue, maxWidth, align: 0, width: maxWidth, radius: 50}),
+
+      // write clipping glyphs rules
+      {type: "modify", path:"masters/wavefont.designspace", pattern:/<rules>([^]*?)<\/rules>/i, template: `<rules>${
+        values.filter(({clip})=>clip).map(({value}) => `
+        <rule name="clip">
+            <conditionset><condition minimum="${value}" maximum="${maxWidth}" name="width" /></conditionset>
+            <sub name="_${value}" with="_${value}.clip"/>
+        </rule>`).join('')
+      }</rules>`},
 
       // write GlyphsOrderAndAlias
       {type: "modify", path:"masters/GlyphOrderAndAliasDB", pattern:/#values[^]*#\/values/i, template: `#values
@@ -89,17 +98,7 @@ function master({values, maxValue, maxWidth, align, width, radius}){
       type: 'add',
       path: `masters/${width}_${align}_${radius}.ufo/glyphs/${value}.clip.glif`,
       template: glyph({value, width, align, maxValue, radius: (radius && 1) * value*.5})
-    })),
-    ...values.filter(({clip}) => clip).map(({code, value}) => ({
-      type: "modify",
-      path: "masters/wavefont.designspace",
-      pattern: '</rules>',
-      template: `
-        <rule name="big">
-            <conditionset><condition minimum="${value}" maximum="${maxWidth}" name="width" /></conditionset>
-            <sub name="_${value}" with="_${value}.clip"/>
-        </rule></rules>`
-    })),
+    }))
   ]
 }
 
