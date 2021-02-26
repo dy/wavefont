@@ -27,11 +27,12 @@ module.exports = function (plop) {
       {type: "modify", path:"masters/wavefont.designspace", pattern:/<rules>([^]*?)<\/rules>/i, template: '<rules></rules>'},
 
       ...master({values, maxValue, maxWidth, align: 0, width: 1, radius: 0}),
-      // ...master({values, max: 100, align: 1, width: 1, radius: 0, offset}),
+      ...master({values, maxValue, maxWidth, align: 1, width: 1, radius: 0}),
       // ...master({values, max: 100, align: 0, width: 1, radius: 50, offset}),
       // ...master({values, max: 100, align: 1, width: 1, radius: 50, offset}),
 
       ...master({values, maxValue, maxWidth, align: 0, width: maxWidth, radius: 0}),
+      ...master({values, maxValue, maxWidth, align: 1, width: maxWidth, radius: 0}),
       // ...master({values, max: 100, align: 1, width: 25, radius: 0, offset}),
       // ...master({values, max: 100, align: 0, width: 25, radius: 50, offset}),
       // ...master({values, max: 100, align: 1, width: 25, radius: 50, offset}),
@@ -110,7 +111,9 @@ const glyph = ({value, width, align, code, maxValue, radius}) => {
   const baseline=align * maxValue,
         R=radius,
         // bezier curve shift to approximate border-radius
-        cR = R * (1 - .551)
+        Rc = R * (1 - .551),
+        // alignment constant shift
+        Ca = (maxValue - value) * align
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <glyph name="_" format="2">
@@ -119,26 +122,26 @@ const glyph = ({value, width, align, code, maxValue, radius}) => {
   ${value && `<outline>
     <contour>${
       `
-      <point x="0" y="${trim(value-R)}" type="line" smooth="yes"/>
-      <point x="0" y="${trim(value-cR)}"/>
+      <point x="0" y="${trim(value-R + Ca)}" type="line" smooth="yes"/>
+      <point x="0" y="${trim(value-Rc + Ca)}"/>
 
-      <point x="${trim(cR)}" y="${trim(value)}"/>
-      <point x="${R}" y="${trim(value)}" type="curve" smooth="yes"/>
-      <point x="${width-R}" y="${trim(value)}" type="line" smooth="yes"/>
-      <point x="${trim(width-cR)}" y="${trim(value)}"/>
+      <point x="${trim(Rc)}" y="${trim(value + Ca)}"/>
+      <point x="${R}" y="${trim(value + Ca)}" type="curve" smooth="yes"/>
+      <point x="${width-R}" y="${trim(value + Ca)}" type="line" smooth="yes"/>
+      <point x="${trim(width-Rc)}" y="${trim(value + Ca)}"/>
 
-      <point x="${width}" y="${trim(value-cR)}"/>
-      <point x="${width}" y="${trim(value-R)}" type="curve" smooth="yes"/>
-      <point x="${width}" y="${trim(R)}" type="line" smooth="yes"/>
-      <point x="${width}" y="${trim(cR)}"/>
+      <point x="${width}" y="${trim(value-Rc + Ca)}"/>
+      <point x="${width}" y="${trim(value-R + Ca)}" type="curve" smooth="yes"/>
+      <point x="${width}" y="${trim(R + Ca)}" type="line" smooth="yes"/>
+      <point x="${width}" y="${trim(Rc + Ca)}"/>
 
-      <point x="${trim(width-cR)}" y="0"/>
-      <point x="${width-R}" y="0" type="curve" smooth="yes"/>
-      <point x="${R}" y="0" type="line" smooth="yes"/>
-      <point x="${trim(cR)}" y="0"/>
+      <point x="${trim(width-Rc)}" y="${trim(Ca)}"/>
+      <point x="${width-R}" y="${trim(Ca)}" type="curve" smooth="yes"/>
+      <point x="${R}" y="${trim(Ca)}" type="line" smooth="yes"/>
+      <point x="${trim(Rc)}" y="${trim(Ca)}"/>
 
-      <point x="0" y="${trim(cR)}"/>
-      <point x="0" y="${trim(R)}" type="curve" smooth="yes"/>
+      <point x="0" y="${trim(Rc + Ca)}"/>
+      <point x="0" y="${trim(R + Ca)}" type="curve" smooth="yes"/>
       `
     }</contour>
   </outline>`}
