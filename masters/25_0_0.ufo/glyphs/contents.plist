@@ -7,30 +7,30 @@
     <key>down</key><string>down.glif</string>
     <key>_</key><string>_.glif</string>
     <key>_0</key><string>0.glif</string>
-    <key>_1</key><string>1.glif</string>
-    <key>_2</key><string>2.glif</string>
-    <key>_3</key><string>3.glif</string>
-    <key>_4</key><string>4.glif</string>
-    <key>_5</key><string>5.glif</string>
-    <key>_6</key><string>6.glif</string>
-    <key>_7</key><string>7.glif</string>
-    <key>_8</key><string>8.glif</string>
-    <key>_9</key><string>9.glif</string>
-    <key>_10</key><string>10.glif</string>
-    <key>_11</key><string>11.glif</string>
-    <key>_12</key><string>12.glif</string>
-    <key>_13</key><string>13.glif</string>
-    <key>_14</key><string>14.glif</string>
-    <key>_15</key><string>15.glif</string>
-    <key>_16</key><string>16.glif</string>
-    <key>_17</key><string>17.glif</string>
-    <key>_18</key><string>18.glif</string>
-    <key>_19</key><string>19.glif</string>
-    <key>_20</key><string>20.glif</string>
-    <key>_21</key><string>21.glif</string>
-    <key>_22</key><string>22.glif</string>
-    <key>_23</key><string>23.glif</string>
-    <key>_24</key><string>24.glif</string>
+    <key>_1</key><string>1.glif</string><key>_1.clip</key><string>1.clip.glif</string>
+    <key>_2</key><string>2.glif</string><key>_2.clip</key><string>2.clip.glif</string>
+    <key>_3</key><string>3.glif</string><key>_3.clip</key><string>3.clip.glif</string>
+    <key>_4</key><string>4.glif</string><key>_4.clip</key><string>4.clip.glif</string>
+    <key>_5</key><string>5.glif</string><key>_5.clip</key><string>5.clip.glif</string>
+    <key>_6</key><string>6.glif</string><key>_6.clip</key><string>6.clip.glif</string>
+    <key>_7</key><string>7.glif</string><key>_7.clip</key><string>7.clip.glif</string>
+    <key>_8</key><string>8.glif</string><key>_8.clip</key><string>8.clip.glif</string>
+    <key>_9</key><string>9.glif</string><key>_9.clip</key><string>9.clip.glif</string>
+    <key>_10</key><string>10.glif</string><key>_10.clip</key><string>10.clip.glif</string>
+    <key>_11</key><string>11.glif</string><key>_11.clip</key><string>11.clip.glif</string>
+    <key>_12</key><string>12.glif</string><key>_12.clip</key><string>12.clip.glif</string>
+    <key>_13</key><string>13.glif</string><key>_13.clip</key><string>13.clip.glif</string>
+    <key>_14</key><string>14.glif</string><key>_14.clip</key><string>14.clip.glif</string>
+    <key>_15</key><string>15.glif</string><key>_15.clip</key><string>15.clip.glif</string>
+    <key>_16</key><string>16.glif</string><key>_16.clip</key><string>16.clip.glif</string>
+    <key>_17</key><string>17.glif</string><key>_17.clip</key><string>17.clip.glif</string>
+    <key>_18</key><string>18.glif</string><key>_18.clip</key><string>18.clip.glif</string>
+    <key>_19</key><string>19.glif</string><key>_19.clip</key><string>19.clip.glif</string>
+    <key>_20</key><string>20.glif</string><key>_20.clip</key><string>20.clip.glif</string>
+    <key>_21</key><string>21.glif</string><key>_21.clip</key><string>21.clip.glif</string>
+    <key>_22</key><string>22.glif</string><key>_22.clip</key><string>22.clip.glif</string>
+    <key>_23</key><string>23.glif</string><key>_23.clip</key><string>23.clip.glif</string>
+    <key>_24</key><string>24.glif</string><key>_24.clip</key><string>24.clip.glif</string>
     <key>_25</key><string>25.glif</string>
     <key>_26</key><string>26.glif</string>
     <key>_27</key><string>27.glif</string>
