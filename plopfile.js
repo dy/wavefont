@@ -27,15 +27,12 @@ module.exports = function (plop) {
       {type: "modify", path:"masters/wavefont.designspace", pattern:/<rules>([^]*?)<\/rules>/i, template: '<rules></rules>'},
 
       ...master({values, maxValue, maxWidth, align: 0, width: 1, radius: 0}),
-      ...master({values, maxValue, maxWidth, align: 1, width: 1, radius: 0}),
-      // ...master({values, max: 100, align: 0, width: 1, radius: 50, offset}),
-      // ...master({values, max: 100, align: 1, width: 1, radius: 50, offset}),
+      // ...master({values, maxValue, maxWidth, align: 1, width: 1, radius: 0}),
+      ...master({values, maxValue, maxWidth, align: 0, width: 1, radius: 50}),
 
       ...master({values, maxValue, maxWidth, align: 0, width: maxWidth, radius: 0}),
-      ...master({values, maxValue, maxWidth, align: 1, width: maxWidth, radius: 0}),
-      // ...master({values, max: 100, align: 1, width: 25, radius: 0, offset}),
-      // ...master({values, max: 100, align: 0, width: 25, radius: 50, offset}),
-      // ...master({values, max: 100, align: 1, width: 25, radius: 50, offset}),
+      // ...master({values, maxValue, maxWidth, align: 1, width: maxWidth, radius: 0}),
+      ...master({values, maxValue, maxWidth, align: 0, width: maxWidth, radius: 50}),
 
       // write GlyphsOrderAndAlias
       {type: "modify", path:"masters/GlyphOrderAndAliasDB", pattern:/#values[^]*#\/values/i, template: `#values
@@ -82,7 +79,7 @@ function master({values, maxValue, maxWidth, align, width, radius}){
       force: true,
       type: 'add',
       path: `masters/${width}_${align}_${radius}.ufo/glyphs/${value}.glif`,
-      template: glyph({value, width, align, code, maxValue, radius: width*.5})
+      template: glyph({value, width, align, code, maxValue, radius: (radius && 1) * width*.5})
     })),
     // substitute glyphs lower than max width to compensate wrong interpolation on width clipping
     // the logic: big widths would have big radius, but since it's limited to value, we interpolate between wrong 1 width and max width
@@ -91,7 +88,7 @@ function master({values, maxValue, maxWidth, align, width, radius}){
       force: true,
       type: 'add',
       path: `masters/${width}_${align}_${radius}.ufo/glyphs/${value}.clip.glif`,
-      template: glyph({value, width, align, maxValue, radius: value*.5})
+      template: glyph({value, width, align, maxValue, radius: (radius && 1) * value*.5})
     })),
     ...values.filter(({clip}) => clip).map(({code, value}) => ({
       type: "modify",
@@ -111,7 +108,7 @@ const glyph = ({value, width, align, code, maxValue, radius}) => {
   const baseline=align * maxValue,
         R=radius,
         // bezier curve shift to approximate border-radius
-        Rc = R * (1 - .551),
+        Rc = R * (1 - .55),
         // alignment constant shift
         Ca = (maxValue - value) * align
 
