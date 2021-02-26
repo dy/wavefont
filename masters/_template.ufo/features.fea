@@ -1,6 +1,6 @@
 languagesystem DFLT dflt;
 
-@value = [{{#each values}}_{{ this }} {{/each}}];
+@value = [{{#each values}}_{{ this.value }}{{#if this.clip}} _{{ this.value}}.clip{{/if}} {{/each}}];
 
 
 anchorDef 0 {{ baseline }} entry;

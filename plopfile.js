@@ -1,6 +1,22 @@
+// character offset to start from
+// FIXME: make tree-like aliases?
+// 0-9 for 0, 10, 20,...90                10
+// ⁰-⁹ for absolute offset?
+// A-Z for 5, 10, or absolute offset?
+// a-z for -5, -10, -15, ... ?            26
+// 0x0100-01B0 for 0,1,2,...128          ~176
+const values100 = Array.from({length: 129}).map((v,i)=>({value: i, code: i+0x0100}))
+// cyrillica                              255
+// 0x1400-1680                            ~640
+// 0xA000-A490                            ~1168
+// 0xE000-F900                            ~6400
+// ^_ - relative offset?
+
+
 module.exports = function (plop) {
-  const values = Array.from({length: 129}).map((v,i)=>i)
-  const offset = 0x0100
+  const maxWidth = 25
+  const maxValue = 100
+  const values = values100.map(({value, code}) => ({value, code, clip: !!value && value < maxWidth}))
 
 	plop.setGenerator('build-ufo', {
     description: 'Build master values',
@@ -8,27 +24,33 @@ module.exports = function (plop) {
 		actions: [
       // cleanup designspace
       {type: "modify", path:"masters/wavefont.designspace", pattern:/<sources>([^]*?)<\/sources>/i, template: '<sources></sources>'},
+      {type: "modify", path:"masters/wavefont.designspace", pattern:/<rules>([^]*?)<\/rules>/i, template: '<rules></rules>'},
 
-      ...master({values, max: 100, align: 0, width: 1, radius: 0, offset}),
+      ...master({values, maxValue, maxWidth, align: 0, width: 1, radius: 0}),
       // ...master({values, max: 100, align: 1, width: 1, radius: 0, offset}),
       // ...master({values, max: 100, align: 0, width: 1, radius: 50, offset}),
       // ...master({values, max: 100, align: 1, width: 1, radius: 50, offset}),
 
-      ...master({values, max: 100, align: 0, width: 25, radius: 0, offset}),
+      ...master({values, maxValue, maxWidth, align: 0, width: maxWidth, radius: 0}),
       // ...master({values, max: 100, align: 1, width: 25, radius: 0, offset}),
       // ...master({values, max: 100, align: 0, width: 25, radius: 50, offset}),
       // ...master({values, max: 100, align: 1, width: 25, radius: 50, offset}),
 
-      // modify GlyphsOrderAndAlias
-      {type: "modify", path:"masters/GlyphOrderAndAliasDB", pattern:/#values[^]*#\/values/i, template: `#values\n${
-        values.map(v => `_${v}\t_${v}\tuni${hex(v + offset)}`).join('\n')
-      }\n#/values`}
+      // write GlyphsOrderAndAlias
+      {type: "modify", path:"masters/GlyphOrderAndAliasDB", pattern:/#values[^]*#\/values/i, template: `#values
+      ${
+        values.map(({code, value}) => `_${value}\t_${value}\tuni${hex(code)}`).join('\n')
+      }
+      ${
+        values.filter(({clip}) => clip).map(({value}) => `_${value}.clip\t_${value}.clip`).join('\n')
+      }
+      #/values`}
     ]
 	});
 };
 
-// generate actions to build one master file
-function master({values, max=100, align, width, radius, offset}){
+// create actions to build one master file
+function master({values, maxValue, maxWidth, align, width, radius}){
   return [
     // populate ufo skeleton
     {
@@ -38,7 +60,7 @@ function master({values, max=100, align, width, radius, offset}){
       destination: `masters/${width}_${align}_${radius}.ufo/`,
       base: 'masters/_template.ufo',
       templateFiles: 'masters/_template.ufo/**/*',
-      data: { width, baseline: max * align, max, values }
+      data: { width, baseline: maxValue * align, maxValue, values }
     },
     // append master
     {
@@ -54,36 +76,39 @@ function master({values, max=100, align, width, radius, offset}){
             </location>
         </source></sources>`
     },
-    ...values.map((value) => {
-      return {
-        verbose: false,
-        force: true,
-        type: 'add',
-        path: `masters/${width}_${align}_${radius}.ufo/glyphs/${value}.glif`,
-        template: glyph({value, width, align, code: offset + value, max, radius: width*.5}),
-      }
-    }),
-    // experimental glyph replace
-    // {
-    //   verbose: false,
-    //   force: true,
-    //   type: 'add',
-    //   path: `masters/${width}_${align}_${radius}.ufo/glyphs/${10}.radi.glif`,
-    //   template: glyph({value:10, width, align, max, radius: 10*.5}),
-    // }
+    ...values.map(({code, value}) => ({
+      verbose: false,
+      force: true,
+      type: 'add',
+      path: `masters/${width}_${align}_${radius}.ufo/glyphs/${value}.glif`,
+      template: glyph({value, width, align, code, maxValue, radius: width*.5})
+    })),
+    // substitute glyphs lower than max width to compensate wrong interpolation on width clipping
+    // the logic: big widths would have big radius, but since it's limited to value, we interpolate between wrong 1 width and max width
+    ...values.filter(({clip}) => clip).map(({value}) => ({
+      verbose: false,
+      force: true,
+      type: 'add',
+      path: `masters/${width}_${align}_${radius}.ufo/glyphs/${value}.clip.glif`,
+      template: glyph({value, width, align, maxValue, radius: value*.5})
+    })),
+    ...values.filter(({clip}) => clip).map(({code, value}) => ({
+      type: "modify",
+      path: "masters/wavefont.designspace",
+      pattern: '</rules>',
+      template: `
+        <rule name="big">
+            <conditionset><condition minimum="${value}" maximum="${maxWidth}" name="width" /></conditionset>
+            <sub name="_${value}" with="_${value}.clip"/>
+        </rule></rules>`
+    })),
   ]
 }
 
 
-const glyph = ({value, width, align, code, max, radius}) => {
-  const baseline=align*max,
-        R=Math.min(width*.5,value*.5),
-        // R=radius,
-        // R=5,
-        // R=value*.5,
-        // R=width*.5,
-        shift = max - value,
-
+const glyph = ({value, width, align, code, maxValue, radius}) => {
+  const baseline=align * maxValue,
+        R=radius,
         // bezier curve shift to approximate border-radius
         cR = R * (1 - .551)
 

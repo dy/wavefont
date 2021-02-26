@@ -7,7 +7,8 @@
     <key>down</key><string>down.glif</string>
     <key>_</key><string>_.glif</string>
     {{#each values}}
-    <key>_{{ this }}</key><string>{{ this }}.glif</string>
+    <key>_{{ this.value }}</key><string>{{ this.value }}.glif</string>
+    {{#if this.clip}}<key>_{{ this.value }}.clip</key><string>{{ this.value }}.clip.glif</string>{{/if}}
     {{/each}}
   </dict>
 </plist>

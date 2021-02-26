@@ -5,7 +5,7 @@ up up uni0301
 down down uni0300
 
 #values
-_0	_0	uni0100
+      _0	_0	uni0100
 _1	_1	uni0101
 _2	_2	uni0102
 _3	_3	uni0103
@@ -134,4 +134,28 @@ _125	_125	uni017D
 _126	_126	uni017E
 _127	_127	uni017F
 _128	_128	uni0180
-#/values
+      _1.clip	_1.clip
+_2.clip	_2.clip
+_3.clip	_3.clip
+_4.clip	_4.clip
+_5.clip	_5.clip
+_6.clip	_6.clip
+_7.clip	_7.clip
+_8.clip	_8.clip
+_9.clip	_9.clip
+_10.clip	_10.clip
+_11.clip	_11.clip
+_12.clip	_12.clip
+_13.clip	_13.clip
+_14.clip	_14.clip
+_15.clip	_15.clip
+_16.clip	_16.clip
+_17.clip	_17.clip
+_18.clip	_18.clip
+_19.clip	_19.clip
+_20.clip	_20.clip
+_21.clip	_21.clip
+_22.clip	_22.clip
+_23.clip	_23.clip
+_24.clip	_24.clip
+      #/values
