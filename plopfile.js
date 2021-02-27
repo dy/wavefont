@@ -35,19 +35,19 @@ module.exports = function (plop) {
       ...master({values, maxValue, maxWidth, align: 0, width: maxWidth, radius: 50, mute: true}),
 
       // write clipping glyphs rules
-      // {type: "modify", path:"masters/wavefont.designspace", pattern:/<rules>([^]*?)<\/rules>/i, template: `<rules>${
-      //   values.filter(({clip})=>clip).map(({value}) => `
-      //   <rule name="clip">
-      //       <conditionset><condition minimum="${value}" maximum="${maxWidth}" name="width" /></conditionset>
-      //       <sub name="_${value}" with="_${value}.clip"/>
-      //   </rule>`).join('')
-      // }</rules>`},
+      {type: "modify", path:"masters/wavefont.designspace", pattern:/<rules>([^]*?)<\/rules>/i, template: `<rules>${
+        values.filter(({clip})=>clip).map(({value}) => `
+        <rule name="clip">
+            <conditionset><condition minimum="${value}" maximum="${maxWidth}" name="width" /></conditionset>
+            <sub name="_${value}" with="_${value}.clip"/>
+        </rule>`).join('')
+      }</rules>`},
 
       // write GlyphsOrderAndAlias
       {type: "modify", path:"masters/GlyphOrderAndAliasDB", pattern:/#values[^]*#\/values/i, template: `#values\n${
         values.map(({code, value}) => `_${value}\t_${value}\tuni${hex(code)}`).join('\n')
       }\n${
-        ``// values.filter(({clip}) => clip).map(({value}) => `_${value}.clip\t_${value}.clip`).join('\n')
+        values.filter(({clip}) => clip).map(({value}) => `_${value}.clip\t_${value}.clip`).join('\n')
       }\n#/values`}
     ]
 	});
@@ -126,26 +126,20 @@ function master({values, maxValue, maxWidth, align, width, radius}){
           <point x="0" y="0" type="line"/>
         </contour></outline></glyph>`
     },
-    // left & right caps are fixed by radius for interpolation purposes
-    // {
-    //   verbose: false,
-    //   force: true,
-    //   type: 'add',
-    //   path: `masters/${width}_${align}_${radius}.ufo/glyphs/cap.bottom.glif`,
-    //   template: `<?xml version="1.0" encoding="UTF-8"?>
-    //     <glyph name="cap.left" format="2"><advance width="${width}"/><outline><contour>
-    //       <point x="${width}" y="0" type="line"/>
-    //       <point x="${width}" y="${-capH + R}" type="line"/>
-    //       <point x="${width}" y="${trim(-capH + Rc)}"/>
-    //       <point x="${width - Rc}" y="${-capH}"/>
-    //       <point x="${width - R}" y="${-capH}" type="curve" smooth="yes"/>
-    //       <point x="${R}" y="${-capH}" type="line"/>
-    //       <point x="${Rc}" y="${-capH}"/>
-    //       <point x="${0}" y="${trim(-capH + Rc)}"/>
-    //       <point x="${0}" y="${-capH + R}" type="curve" smooth="yes"/>
-    //       <point x="0" y="0" type="line"/>
-    //     </contour></outline></glyph>`
-    // },
+    // value component
+    {
+      verbose: false,
+      force: true,
+      type: 'add',
+      path: `masters/${width}_${align}_${radius}.ufo/glyphs/value.glif`,
+      template: `<?xml version="1.0" encoding="UTF-8"?>
+        <glyph name="cap.bottom" format="2"><advance width="${upm(width)}"/><outline><contour>
+          <point x="0" y="0" type="line"/>
+          <point x="0" y="${upm(maxValue)}" type="line"/>
+          <point x="${upm(width)}" y="${upm(maxValue)}" type="line"/>
+          <point x="${upm(width)}" y="0" type="line"/>
+        </contour></outline></glyph>`
+    },
     // values
     ...values.map(({code, value}) => ({
       verbose: false,
@@ -156,13 +150,13 @@ function master({values, maxValue, maxWidth, align, width, radius}){
     })),
     // substitute glyphs lower than max width to compensate wrong interpolation on width clipping
     // the logic: big widths would have big radius, but since it's limited to value, we interpolate between wrong 1 width and max width
-    // ...values.filter(({clip}) => clip).map(({value}) => ({
-    //   verbose: false,
-    //   force: true,
-    //   type: 'add',
-    //   path: `masters/${width}_${align}_${radius}.ufo/glyphs/${value}.clip.glif`,
-    //   template: glyph({value, width, align, maxValue})
-    // }))
+    ...values.filter(({clip}) => clip).map(({value}) => ({
+      verbose: false,
+      force: true,
+      type: 'add',
+      path: `masters/${width}_${align}_${radius}.ufo/glyphs/${value}.clip.glif`,
+      template: glyph({value, width, align, maxValue})
+    }))
   ]
 }
 
@@ -179,12 +173,7 @@ const glyph = ({value, width, align, code, maxValue, maxWidth}) => {
   ${value && `<outline>
     <component base="cap.top" xOffset="0" yOffset="${upm(value + Ca - R)}" />
     <component base="cap.bottom" xOffset="0" yOffset="${upm(Ca + R)}" />
-    <contour>
-      <point x="0" y="${upm(Ca + R)}" type="line"/>
-      <point x="0" y="${upm(value + Ca - R)}" type="line"/>
-      <point x="${upm(width)}" y="${upm(value + Ca - R)}" type="line"/>
-      <point x="${upm(width)}" y="${upm(Ca + R)}" type="line"/>
-    </contour>
+    <component base="value" xOffset="0" yOffset="${upm(Ca + R)}" yScale="${(value-2*R)/maxValue}" />
   </outline>`}
   ${``
   // `<anchor name="entry" x="0" y="${upm(baseline)}"/>

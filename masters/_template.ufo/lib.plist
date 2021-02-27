@@ -8,6 +8,9 @@
     <string>up</string>
     <string>down</string>
     <string>_</string>
+    <string>cap.top</string>
+    <string>cap.bottom</string>
+    <string>value</string>
     {{#each values}}
     <string>_{{ this.value }}</string>{{#if this.clip }}<string>_{{ this.value }}.clip</string>{{/if}}
     {{/each}}

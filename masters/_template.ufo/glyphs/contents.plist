@@ -8,6 +8,7 @@
     <key>_</key><string>_.glif</string>
     <key>cap.top</key><string>cap.top.glif</string>
     <key>cap.bottom</key><string>cap.bottom.glif</string>
+    <key>value</key><string>value.glif</string>
     {{#each values}}
     <key>_{{ this.value }}</key><string>{{ this.value }}.glif</string>{{#if this.clip}}<key>_{{ this.value }}.clip</key><string>{{ this.value }}.clip.glif</string>{{/if}}
     {{/each}}
