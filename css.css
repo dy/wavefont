@@ -31,9 +31,9 @@ html {font-size: 100%;}
   width: 42ch;
   max-width: 80vw;
   height: 18rem;
-  box-shadow: 0 .2rem 1rem -.5rem black;
-  border-top: .5rem solid rgba(248,248,250,.97);
-  border-left: .5rem solid rgba(240,240,242,.96);
+  box-shadow: rgba(17, 17, 26, .108) 0px 8px 24px, rgba(17, 17, 26, .108) 0px 16px 56px, rgba(17, 17, 26, .108) 0px 24px 80px;
+  border-top: .5rem solid rgba(246,246,248,.97);
+  border-left: .5rem solid rgba(238,238,240,.96);
   border-right: .5rem solid rgba(227,226,228,.96);
   border-bottom: .5rem solid rgba(210,210,212,.95);
   border-radius: .2rem;
