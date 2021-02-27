@@ -27,11 +27,11 @@ module.exports = function (plop) {
 
       ...master({values, maxValue, maxWidth, align: 0, width: 1, radius: 0}),
       // ...master({values, maxValue, maxWidth, align: 1, width: 1, radius: 0}),
-      ...master({values, maxValue, maxWidth, align: 0, width: 1, radius: 50}),
+      ...master({values, maxValue, maxWidth, align: 0, width: 1, radius: 50, mute: true}),
 
       ...master({values, maxValue, maxWidth, align: 0, width: maxWidth, radius: 0}),
       // ...master({values, maxValue, maxWidth, align: 1, width: maxWidth, radius: 0}),
-      ...master({values, maxValue, maxWidth, align: 0, width: maxWidth, radius: 50}),
+      ...master({values, maxValue, maxWidth, align: 0, width: maxWidth, radius: 50, mute: true}),
 
       // write clipping glyphs rules
       // {type: "modify", path:"masters/wavefont.designspace", pattern:/<rules>([^]*?)<\/rules>/i, template: `<rules>${
@@ -53,11 +53,12 @@ module.exports = function (plop) {
 };
 
 // create actions to build one master file
-function master({values, maxValue, maxWidth, align, width, radius}){
+function master({values, maxValue, maxWidth, align, width, radius, mute}){
   const R = radius * .01 * width,
         // bezier curve shift to approximate border-radius
         Rc = R * (1 - .55),
         capH = width*.5;
+
   return [
     // populate ufo skeleton
     {
@@ -81,6 +82,8 @@ function master({values, maxValue, maxWidth, align, width, radius}){
                 <dimension name="align" xvalue="${align}" />
                 <dimension name="radius" xvalue="${radius}" />
             </location>
+            ${ // mute ? values.map(({value}) => `<glyph mute="1" name="_${value}"/>`).join('') :
+              ``}
         </source></sources>`
     },
     // top/bottom caps

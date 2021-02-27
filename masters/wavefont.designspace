@@ -20,6 +20,7 @@
                 <dimension name="align" xvalue="0" />
                 <dimension name="radius" xvalue="0" />
             </location>
+            
         </source>
         <source familyname="Wavefont" filename="1_0_50.ufo" name="Master_1_0_50" stylename="Master 1_0_50">
             <location>
@@ -27,6 +28,7 @@
                 <dimension name="align" xvalue="0" />
                 <dimension name="radius" xvalue="50" />
             </location>
+            
         </source>
         <source familyname="Wavefont" filename="20_0_0.ufo" name="Master_20_0_0" stylename="Master 20_0_0">
             <location>
@@ -34,6 +36,7 @@
                 <dimension name="align" xvalue="0" />
                 <dimension name="radius" xvalue="0" />
             </location>
+            
         </source>
         <source familyname="Wavefont" filename="20_0_50.ufo" name="Master_20_0_50" stylename="Master 20_0_50">
             <location>
@@ -41,6 +44,7 @@
                 <dimension name="align" xvalue="0" />
                 <dimension name="radius" xvalue="50" />
             </location>
+            
         </source></sources>
     <!-- /dynamic-part -->
     <instances>
