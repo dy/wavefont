@@ -18,24 +18,24 @@ html {font-size: 100%;}
 .wavefont {
   font-family: wavefont, sans-serif;
   line-height: 1;
-  -webkit-font-smoothing: antialiased; /* Chrome, Safari */
-  -moz-osx-font-smoothing: grayscale; /* Firefox */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 #panel {
   position: absolute;
   left: 0;
   right: 0;
   top: auto;
-  bottom: 2rem;
+  bottom: 10.8vh;
   margin: auto;
   width: 42ch;
   max-width: 80vw;
   height: 18rem;
   box-shadow: 0 .2rem 1rem -.5rem black;
-  border-top: .5rem solid rgba(252,252,254,.97);
-  border-left: .5rem solid rgba(248,248,250,.96);
-  border-right: .5rem solid rgba(221,220,222,.96);
-  border-bottom: .5rem solid rgba(200,200,202,.95);
+  border-top: .5rem solid rgba(248,248,250,.97);
+  border-left: .5rem solid rgba(240,240,242,.96);
+  border-right: .5rem solid rgba(227,226,228,.96);
+  border-bottom: .5rem solid rgba(210,210,212,.95);
   border-radius: .2rem;
   z-index: 1;
   -webkit-backdrop-filter: blur(.1rem);
