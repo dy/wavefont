@@ -12,5 +12,6 @@ npm-debug.log
 node_modules
 
 [0-9]*.glif
+masters/[0-9_]*\.ufo
 masters/*.otf
 examples
