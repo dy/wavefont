@@ -112,34 +112,35 @@ const glyph = ({value, width, align, code, maxValue, radius}) => {
 <glyph name="_" format="2">
   <advance width="${upm(width)}"/>
   ${code ? `<unicode hex="${hex(code)}"/>` : ``}
-  ${value && `<outline>
+  ${value ? `<outline>
     <contour>${
       `
-      <point x="0" y="${upm(value-R + Ca)}" type="line" smooth="yes"/>
       <point x="0" y="${upm(value-Rc + Ca)}"/>
 
       <point x="${upm(Rc)}" y="${upm(value + Ca)}"/>
       <point x="${upm(R)}" y="${upm(value + Ca)}" type="curve" smooth="yes"/>
-      <point x="${upm(width-R)}" y="${upm(value + Ca)}" type="line" smooth="yes"/>
+      <point x="${upm(width-R)}" y="${upm(value + Ca)}" type="line"/>
       <point x="${upm(width-Rc)}" y="${upm(value + Ca)}"/>
 
       <point x="${upm(width)}" y="${upm(value-Rc + Ca)}"/>
       <point x="${upm(width)}" y="${upm(value-R + Ca)}" type="curve" smooth="yes"/>
-      <point x="${upm(width)}" y="${upm(R + Ca)}" type="line" smooth="yes"/>
+      <point x="${upm(width)}" y="${upm(R + Ca)}" type="line"/>
       <point x="${upm(width)}" y="${upm(Rc + Ca)}"/>
 
       <point x="${upm(width-Rc)}" y="${upm(Ca)}"/>
       <point x="${upm(width-R)}" y="${upm(Ca)}" type="curve" smooth="yes"/>
-      <point x="${upm(R)}" y="${upm(Ca)}" type="line" smooth="yes"/>
+      <point x="${upm(R)}" y="${upm(Ca)}" type="line"/>
       <point x="${upm(Rc)}" y="${upm(Ca)}"/>
 
       <point x="0" y="${upm(Rc + Ca)}"/>
       <point x="0" y="${upm(R + Ca)}" type="curve" smooth="yes"/>
+      <point x="0" y="${upm(value-R + Ca)}" type="line"/>
       `
     }</contour>
-  </outline>`}
-  <anchor name="entry" x="0" y="${upm(baseline)}"/>
-  <anchor name="exit" x="${upm(width)}" y="${upm(baseline)}"/>
+  </outline>` : ``}
+  ${
+    ``// `<anchor name="entry" x="0" y="${upm(baseline)}"/><anchor name="exit" x="${upm(width)}" y="${upm(baseline)}"/>`
+  }
 </glyph>`
 }
 
