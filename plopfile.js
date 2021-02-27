@@ -86,7 +86,7 @@ function master({values, maxValue, maxWidth, align, width, radius, mute}){
               ``}
         </source></sources>`
     },
-    // top/bottom caps
+    // line caps
     {
       verbose: false,
       force: true,
@@ -113,6 +113,26 @@ function master({values, maxValue, maxWidth, align, width, radius, mute}){
       path: `masters/${width}_${align}_${radius}.ufo/glyphs/cap.bottom.glif`,
       template: `<?xml version="1.0" encoding="UTF-8"?>
         <glyph name="cap.bottom" format="2"><advance width="${width}"/><outline><contour>
+          <point x="${width}" y="0" type="line"/>
+          <point x="${width}" y="${-capH + R}" type="line"/>
+          <point x="${width}" y="${trim(-capH + Rc)}"/>
+          <point x="${width - Rc}" y="${-capH}"/>
+          <point x="${width - R}" y="${-capH}" type="curve" smooth="yes"/>
+          <point x="${R}" y="${-capH}" type="line"/>
+          <point x="${Rc}" y="${-capH}"/>
+          <point x="${0}" y="${trim(-capH + Rc)}"/>
+          <point x="${0}" y="${-capH + R}" type="curve" smooth="yes"/>
+          <point x="0" y="0" type="line"/>
+        </contour></outline></glyph>`
+    },
+    // left & right caps are fixed by radius for interpolation purposes
+    {
+      verbose: false,
+      force: true,
+      type: 'add',
+      path: `masters/${width}_${align}_${radius}.ufo/glyphs/cap.bottom.glif`,
+      template: `<?xml version="1.0" encoding="UTF-8"?>
+        <glyph name="cap.left" format="2"><advance width="${width}"/><outline><contour>
           <point x="${width}" y="0" type="line"/>
           <point x="${width}" y="${-capH + R}" type="line"/>
           <point x="${width}" y="${trim(-capH + Rc)}"/>
