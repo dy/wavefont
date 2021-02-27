@@ -12,6 +12,7 @@ const values100 = Array.from({length: 129}).map((v,i)=>({value: i, code: i+0x010
 // 0xE000-F900                            ~6400
 // ^_ - relative offset?
 
+
 module.exports = function (plop) {
   const maxWidth = 20
   const maxValue = 100
@@ -53,7 +54,7 @@ module.exports = function (plop) {
 };
 
 // create actions to build one master file
-function master({values, maxValue, maxWidth, align, width, radius, mute}){
+function master({values, maxValue, maxWidth, align, width, radius}){
   const R = radius * .01 * width,
         // bezier curve shift to approximate border-radius
         Rc = R * (1 - .55),
@@ -68,7 +69,7 @@ function master({values, maxValue, maxWidth, align, width, radius, mute}){
       destination: `masters/${width}_${align}_${radius}.ufo/`,
       base: 'masters/_template.ufo',
       templateFiles: 'masters/_template.ufo/**/*',
-      data: { width, baseline: maxValue * align, maxValue, values }
+      data: { width: upm(width), baseline: upm(maxValue * align), maxValue: upm(maxValue), values, step: upm(1) }
     },
     // append master
     {
@@ -93,17 +94,17 @@ function master({values, maxValue, maxWidth, align, width, radius, mute}){
       type: 'add',
       path: `masters/${width}_${align}_${radius}.ufo/glyphs/cap.top.glif`,
       template: `<?xml version="1.0" encoding="UTF-8"?>
-        <glyph name="cap.top" format="2"><advance width="${width}"/><outline><contour>
+        <glyph name="cap.top" format="2"><advance width="${upm(width)}"/><outline><contour>
           <point x="0" y="0" type="line"/>
-          <point x="0" y="${(capH - R)}" type="line"/>
-          <point x="0" y="${trim((capH - Rc))}"/>
-          <point x="${Rc}" y="${capH}"/>
-          <point x="${R}" y="${capH}" type="curve" smooth="yes"/>
-          <point x="${width - R}" y="${capH}" type="line"/>
-          <point x="${width - Rc}" y="${capH}"/>
-          <point x="${width}" y="${trim((capH - Rc))}"/>
-          <point x="${width}" y="${(capH - R)}" type="curve" smooth="yes"/>
-          <point x="${width}" y="0" type="line"/>
+          <point x="0" y="${upm(capH - R)}" type="line"/>
+          <point x="0" y="${upm((capH - Rc))}"/>
+          <point x="${upm(Rc)}" y="${upm(capH)}"/>
+          <point x="${upm(R)}" y="${upm(capH)}" type="curve" smooth="yes"/>
+          <point x="${upm(width - R)}" y="${upm(capH)}" type="line"/>
+          <point x="${upm(width - Rc)}" y="${upm(capH)}"/>
+          <point x="${upm(width)}" y="${upm((capH - Rc))}"/>
+          <point x="${upm(width)}" y="${upm(capH - R)}" type="curve" smooth="yes"/>
+          <point x="${upm(width)}" y="0" type="line"/>
         </contour></outline></glyph>`
     },
     {
@@ -112,39 +113,39 @@ function master({values, maxValue, maxWidth, align, width, radius, mute}){
       type: 'add',
       path: `masters/${width}_${align}_${radius}.ufo/glyphs/cap.bottom.glif`,
       template: `<?xml version="1.0" encoding="UTF-8"?>
-        <glyph name="cap.bottom" format="2"><advance width="${width}"/><outline><contour>
-          <point x="${width}" y="0" type="line"/>
-          <point x="${width}" y="${-capH + R}" type="line"/>
-          <point x="${width}" y="${trim(-capH + Rc)}"/>
-          <point x="${width - Rc}" y="${-capH}"/>
-          <point x="${width - R}" y="${-capH}" type="curve" smooth="yes"/>
-          <point x="${R}" y="${-capH}" type="line"/>
-          <point x="${Rc}" y="${-capH}"/>
-          <point x="${0}" y="${trim(-capH + Rc)}"/>
-          <point x="${0}" y="${-capH + R}" type="curve" smooth="yes"/>
+        <glyph name="cap.bottom" format="2"><advance width="${upm(width)}"/><outline><contour>
+          <point x="${upm(width)}" y="0" type="line"/>
+          <point x="${upm(width)}" y="${upm(-capH + R)}" type="line"/>
+          <point x="${upm(width)}" y="${upm(-capH + Rc)}"/>
+          <point x="${upm(width - Rc)}" y="${upm(-capH)}"/>
+          <point x="${upm(width - R)}" y="${upm(-capH)}" type="curve" smooth="yes"/>
+          <point x="${upm(R)}" y="${upm(-capH)}" type="line"/>
+          <point x="${upm(Rc)}" y="${upm(-capH)}"/>
+          <point x="${0}" y="${upm(-capH + Rc)}"/>
+          <point x="${0}" y="${upm(-capH + R)}" type="curve" smooth="yes"/>
           <point x="0" y="0" type="line"/>
         </contour></outline></glyph>`
     },
     // left & right caps are fixed by radius for interpolation purposes
-    {
-      verbose: false,
-      force: true,
-      type: 'add',
-      path: `masters/${width}_${align}_${radius}.ufo/glyphs/cap.bottom.glif`,
-      template: `<?xml version="1.0" encoding="UTF-8"?>
-        <glyph name="cap.left" format="2"><advance width="${width}"/><outline><contour>
-          <point x="${width}" y="0" type="line"/>
-          <point x="${width}" y="${-capH + R}" type="line"/>
-          <point x="${width}" y="${trim(-capH + Rc)}"/>
-          <point x="${width - Rc}" y="${-capH}"/>
-          <point x="${width - R}" y="${-capH}" type="curve" smooth="yes"/>
-          <point x="${R}" y="${-capH}" type="line"/>
-          <point x="${Rc}" y="${-capH}"/>
-          <point x="${0}" y="${trim(-capH + Rc)}"/>
-          <point x="${0}" y="${-capH + R}" type="curve" smooth="yes"/>
-          <point x="0" y="0" type="line"/>
-        </contour></outline></glyph>`
-    },
+    // {
+    //   verbose: false,
+    //   force: true,
+    //   type: 'add',
+    //   path: `masters/${width}_${align}_${radius}.ufo/glyphs/cap.bottom.glif`,
+    //   template: `<?xml version="1.0" encoding="UTF-8"?>
+    //     <glyph name="cap.left" format="2"><advance width="${width}"/><outline><contour>
+    //       <point x="${width}" y="0" type="line"/>
+    //       <point x="${width}" y="${-capH + R}" type="line"/>
+    //       <point x="${width}" y="${trim(-capH + Rc)}"/>
+    //       <point x="${width - Rc}" y="${-capH}"/>
+    //       <point x="${width - R}" y="${-capH}" type="curve" smooth="yes"/>
+    //       <point x="${R}" y="${-capH}" type="line"/>
+    //       <point x="${Rc}" y="${-capH}"/>
+    //       <point x="${0}" y="${trim(-capH + Rc)}"/>
+    //       <point x="${0}" y="${-capH + R}" type="curve" smooth="yes"/>
+    //       <point x="0" y="0" type="line"/>
+    //     </contour></outline></glyph>`
+    // },
     // values
     ...values.map(({code, value}) => ({
       verbose: false,
@@ -173,23 +174,26 @@ const glyph = ({value, width, align, code, maxValue, maxWidth}) => {
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <glyph name="_${value}" format="2">
-  <advance width="${width}"/>
+  <advance width="${upm(width)}"/>
   ${code ? `<unicode hex="${hex(code)}"/>` : ``}
   ${value && `<outline>
-    <component base="cap.top" xOffset="0" yOffset="${value + Ca - R}" />
-    <component base="cap.bottom" xOffset="0" yOffset="${Ca + R}" />
+    <component base="cap.top" xOffset="0" yOffset="${upm(value + Ca - R)}" />
+    <component base="cap.bottom" xOffset="0" yOffset="${upm(Ca + R)}" />
     <contour>
-      <point x="0" y="${Ca + R}" type="line"/>
-      <point x="0" y="${value + Ca - R}" type="line"/>
-      <point x="${width}" y="${value + Ca - R}" type="line"/>
-      <point x="${width}" y="${Ca + R}" type="line"/>
+      <point x="0" y="${upm(Ca + R)}" type="line"/>
+      <point x="0" y="${upm(value + Ca - R)}" type="line"/>
+      <point x="${upm(width)}" y="${upm(value + Ca - R)}" type="line"/>
+      <point x="${upm(width)}" y="${upm(Ca + R)}" type="line"/>
     </contour>
   </outline>`}
-  <anchor name="entry" x="0" y="${trim(baseline)}"/>
-  <anchor name="exit" x="${width}" y="${trim(baseline)}"/>
+  ${``
+  // `<anchor name="entry" x="0" y="${upm(baseline)}"/>
+  // <anchor name="exit" x="${upm(width)}" y="${upm(baseline)}"/>`
+  }
 </glyph>`
 }
 
-const trim = (v) => v.toPrecision(4)
+// convert value to units-per-em (0-100 → 0-2048)
+const upm = (v) => (v * 20.48).toFixed(0)
 
 const hex = (v) => v.toString(16).toUpperCase().padStart(4,0)

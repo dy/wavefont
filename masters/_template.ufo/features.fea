@@ -8,6 +8,6 @@ anchorDef {{ width }} {{ baseline }} exit;
 
 feature mark {
   pos cursive @value <anchor entry> <anchor exit>;
-  pos cursive up <anchor entry> <anchor 0 1>;
-  pos cursive down <anchor entry> <anchor 0 -1>;
+  pos cursive up <anchor entry> <anchor 0 {{step}}>;
+  pos cursive down <anchor entry> <anchor 0 -{{step}}>;
 } mark;
