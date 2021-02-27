@@ -84,16 +84,19 @@ html {font-size: 100%;}
 .panel-cta {
   align-self: center;
   margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .panel-cta button {
-  margin: auto;
+  margin: 0 .25rem;
   line-height: 1.5;
-  display: block;
   padding-bottom: 2px;
+  display: inline-block;
 }
 a {
   color: black;
   text-decoration-color: rgba(0,0,0,.108);
   text-underline-offset: .108em;
   text-decoration-thickness: 2px;
-}y
+}
