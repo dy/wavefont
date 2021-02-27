@@ -11,6 +11,28 @@
   /* src: url(./font/wavefont.ttf); */
   src: url(./font/wavefont.otf);
 }
+#wavearea {
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  resize: none;
+  z-index: -1;
+  word-break: break-all;
+  --wdth: 20;
+  --algn: 0.5;
+  --size: 300px;
+  --track: 1px;
+  --radi: 50;
+  font-size: var(--size);
+  letter-spacing: var(--track);
+  font-variation-settings: 'wdth' var(--wdth), 'algn' var(--algn), 'radi' var(--radi);
+  background-size: 10px calc(var(--size) / 10);
+  background-image:linear-gradient(to bottom, rgb(230, 245, 255) 1px, transparent 1px);
+  background-attachment: local;
+}
 </style>
 <link rel="stylesheet" href="https://unpkg.com/modern-normalize@1.0.0/modern-normalize.css"/>
 <link rel="stylesheet" href="./css.css"/>
@@ -21,22 +43,30 @@
 Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wavefont">2.0</a></small></sup>
 </h1>
 <div class="panel-field">
-  <label for="width">Width</label> <input id="width" type="range" min="0" value="1.6" step="0.01" max="4"/>
-  <output id="widthValue">5.0</output>
+  <label for="width">Width</label> <input id="width" type="range" min="1" value="25" step="1" max="20"/>
+  <output id="widthValue">20</output>
 </div>
 <div class="panel-field">
   <label for="align">Align</label> <input id="align" type="range" min="0" value=".5" max="1" step="0.1"/>
   <output id="alignValue">0.5</output>
 </div>
 <div class="panel-field">
-  <label for="size">Size</label> <input id="size" type="range" min="5" value="48" max="200" step="1"/>
-  <output id="sizeValue">50px</output>
+  <label for="radius">Radius</label> <input id="radius" type="range" min="0" value="50" max="50" step="1"/>
+  <output id="radiusValue">50%</output>
+</div>
+<div class="panel-field">
+  <label for="size">Size</label> <input id="size" type="range" min="5" value="200" max="200" step="1"/>
+  <output id="sizeValue">200px</output>
+</div>
+<div class="panel-field">
+  <label for="track">Tracking</label> <input id="track" type="range" min="-5" value="-1" max="10" step="1"/>
+  <output id="trackValue">1px</output>
 </div>
 <div class="panel-cta"><button type="submit">Download OTF <span style="opacity: .5; font-size: .95em">(11&nbsp;kB)</span> ⤓</button></div>
 </div>
 <script>
   width.oninput = e => {
-    let value = Math.exp(+width.value);
+    let value = +width.value;
     width.title = `'wdth' ${value}`;
     widthValue.textContent = (+value).toPrecision(2);
     wavearea.style.setProperty('--wdth', value)
@@ -53,17 +83,24 @@ Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wav
     sizeValue.textContent = value + 'px';
     wavearea.style.setProperty('--size', value + 'px')
   }
+  track.oninput = e => {
+    let value = +track.value;
+    track.title = value;
+    trackValue.textContent = value + 'px';
+    wavearea.style.setProperty('--track', value + 'px')
+  }
+  radius.oninput = e => {
+    let value = +radius.value;
+    radius.title = value;
+    radiusValue.textContent = value + '%';
+    wavearea.style.setProperty('--radi', value)
+  }
 </script>
 </form>
 
-<textarea id="wavearea" class="wavefont" spellcheck="false">&#x0100;&#x0102;&#x0110;&#x0120;&#x0130;&#x0140;&#x0150;&#x0160;&#x0170;
+<textarea id="wavearea" class="wavefont" spellcheck="false">
+&#0256;&#0257;&#0261;&#0266;&#0276;&#0286;&#0296;&#0306;&#0316;&#0326;&#0336;&#0346;&#0356;
 </textarea>
-<style>
-/* #wavearea {
-  font-size: 200px;
-  font-variation-settings:'wdth' 10, 'algn' .5;
-} */
-</style>
 
 <script>
 function populate(N) {
