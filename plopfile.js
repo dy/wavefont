@@ -44,14 +44,11 @@ module.exports = function (plop) {
       }</rules>`},
 
       // write GlyphsOrderAndAlias
-      {type: "modify", path:"masters/GlyphOrderAndAliasDB", pattern:/#values[^]*#\/values/i, template: `#values
-      ${
+      {type: "modify", path:"masters/GlyphOrderAndAliasDB", pattern:/#values[^]*#\/values/i, template: `#values\n${
         values.map(({code, value}) => `_${value}\t_${value}\tuni${hex(code)}`).join('\n')
-      }
-      ${
+      }\n${
         values.filter(({clip}) => clip).map(({value}) => `_${value}.clip\t_${value}.clip`).join('\n')
-      }
-      #/values`}
+      }\n#/values`}
     ]
 	});
 };
@@ -67,7 +64,7 @@ function master({values, maxValue, maxWidth, align, width, radius}){
       destination: `masters/${width}_${align}_${radius}.ufo/`,
       base: 'masters/_template.ufo',
       templateFiles: 'masters/_template.ufo/**/*',
-      data: { width, baseline: maxValue * align, maxValue, values }
+      data: { width: upm(width), baseline: upm(maxValue * align), maxValue: upm(maxValue), values, step: upm(1) }
     },
     // append master
     {
@@ -113,39 +110,40 @@ const glyph = ({value, width, align, code, maxValue, radius}) => {
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <glyph name="_" format="2">
-  <advance width="${width}"/>
+  <advance width="${upm(width)}"/>
   ${code ? `<unicode hex="${hex(code)}"/>` : ``}
   ${value && `<outline>
     <contour>${
       `
-      <point x="0" y="${trim(value-R + Ca)}" type="line" smooth="yes"/>
-      <point x="0" y="${trim(value-Rc + Ca)}"/>
+      <point x="0" y="${upm(value-R + Ca)}" type="line" smooth="yes"/>
+      <point x="0" y="${upm(value-Rc + Ca)}"/>
 
-      <point x="${trim(Rc)}" y="${trim(value + Ca)}"/>
-      <point x="${R}" y="${trim(value + Ca)}" type="curve" smooth="yes"/>
-      <point x="${width-R}" y="${trim(value + Ca)}" type="line" smooth="yes"/>
-      <point x="${trim(width-Rc)}" y="${trim(value + Ca)}"/>
+      <point x="${upm(Rc)}" y="${upm(value + Ca)}"/>
+      <point x="${upm(R)}" y="${upm(value + Ca)}" type="curve" smooth="yes"/>
+      <point x="${upm(width-R)}" y="${upm(value + Ca)}" type="line" smooth="yes"/>
+      <point x="${upm(width-Rc)}" y="${upm(value + Ca)}"/>
 
-      <point x="${width}" y="${trim(value-Rc + Ca)}"/>
-      <point x="${width}" y="${trim(value-R + Ca)}" type="curve" smooth="yes"/>
-      <point x="${width}" y="${trim(R + Ca)}" type="line" smooth="yes"/>
-      <point x="${width}" y="${trim(Rc + Ca)}"/>
+      <point x="${upm(width)}" y="${upm(value-Rc + Ca)}"/>
+      <point x="${upm(width)}" y="${upm(value-R + Ca)}" type="curve" smooth="yes"/>
+      <point x="${upm(width)}" y="${upm(R + Ca)}" type="line" smooth="yes"/>
+      <point x="${upm(width)}" y="${upm(Rc + Ca)}"/>
 
-      <point x="${trim(width-Rc)}" y="${trim(Ca)}"/>
-      <point x="${width-R}" y="${trim(Ca)}" type="curve" smooth="yes"/>
-      <point x="${R}" y="${trim(Ca)}" type="line" smooth="yes"/>
-      <point x="${trim(Rc)}" y="${trim(Ca)}"/>
+      <point x="${upm(width-Rc)}" y="${upm(Ca)}"/>
+      <point x="${upm(width-R)}" y="${upm(Ca)}" type="curve" smooth="yes"/>
+      <point x="${upm(R)}" y="${upm(Ca)}" type="line" smooth="yes"/>
+      <point x="${upm(Rc)}" y="${upm(Ca)}"/>
 
-      <point x="0" y="${trim(Rc + Ca)}"/>
-      <point x="0" y="${trim(R + Ca)}" type="curve" smooth="yes"/>
+      <point x="0" y="${upm(Rc + Ca)}"/>
+      <point x="0" y="${upm(R + Ca)}" type="curve" smooth="yes"/>
       `
     }</contour>
   </outline>`}
-  <anchor name="entry" x="0" y="${trim(baseline)}"/>
-  <anchor name="exit" x="${width}" y="${trim(baseline)}"/>
+  <anchor name="entry" x="0" y="${upm(baseline)}"/>
+  <anchor name="exit" x="${upm(width)}" y="${upm(baseline)}"/>
 </glyph>`
 }
 
-const trim = (v) => v.toPrecision(4)
+// convert value to units-per-em (0-100 → 0-2048)
+const upm = (v) => (v * 20.48).toFixed(0)
 
 const hex = (v) => v.toString(16).toUpperCase().padStart(4,0)
