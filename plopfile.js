@@ -27,11 +27,11 @@ module.exports = function (plop) {
       {type: "modify", path:"masters/wavefont.designspace", pattern:/<rules>([^]*?)<\/rules>/i, template: '<rules></rules>'},
 
       ...master({values, maxValue, maxWidth, align: 0, width: 1, radius: 0}),
-      // ...master({values, maxValue, maxWidth, align: 1, width: 1, radius: 0}),
+      ...master({values, maxValue, maxWidth, align: 1, width: 1, radius: 0}),
       ...master({values, maxValue, maxWidth, align: 0, width: 1, radius: 50}),
 
       ...master({values, maxValue, maxWidth, align: 0, width: maxWidth, radius: 0}),
-      // ...master({values, maxValue, maxWidth, align: 1, width: maxWidth, radius: 0}),
+      ...master({values, maxValue, maxWidth, align: 1, width: maxWidth, radius: 0}),
       ...master({values, maxValue, maxWidth, align: 0, width: maxWidth, radius: 50}),
 
       // write clipping glyphs rules

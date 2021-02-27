@@ -8,7 +8,7 @@
   font-style: normal;
   font-display: block;
   font-weight: 900;
-  /* src: url(./font/wavefont.ttf); */
+  src: url(./font/wavefont.ttf);
   src: url(./font/wavefont.otf);
 }
 #wavearea {
@@ -21,10 +21,10 @@
   resize: none;
   z-index: -1;
   word-break: break-all;
-  --wdth: 20;
+  --wdth: 5;
   --algn: 0.5;
-  --size: 300px;
-  --track: 1px;
+  --size: 100px;
+  --track: 2px;
   --radi: 50;
   font-size: var(--size);
   letter-spacing: var(--track);
@@ -43,59 +43,27 @@
 Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wavefont">2.0</a></small></sup>
 </h1>
 <div class="panel-field">
-  <label for="width">Width</label> <input id="width" type="range" min="1" value="25" step="1" max="20"/>
-  <output id="widthValue">20</output>
+  <label for="width">Width</label> <input id="width" type="range" min="1" value="5" step="1" max="20"/>
+  <output id="widthValue"></output>
 </div>
 <div class="panel-field">
   <label for="align">Align</label> <input id="align" type="range" min="0" value=".5" max="1" step="0.1"/>
-  <output id="alignValue">0.5</output>
+  <output id="alignValue"></output>
 </div>
 <div class="panel-field">
   <label for="radius">Radius</label> <input id="radius" type="range" min="0" value="50" max="50" step="1"/>
-  <output id="radiusValue">50%</output>
+  <output id="radiusValue"></output>
 </div>
 <div class="panel-field">
-  <label for="size">Size</label> <input id="size" type="range" min="5" value="200" max="200" step="1"/>
-  <output id="sizeValue">200px</output>
+  <label for="size">Size</label> <input id="size" type="range" min="5" value="50" max="200" step="1"/>
+  <output id="sizeValue"></output>
 </div>
 <div class="panel-field">
-  <label for="track">Tracking</label> <input id="track" type="range" min="-5" value="-1" max="10" step="1"/>
-  <output id="trackValue">1px</output>
+  <label for="track">Tracking</label> <input id="track" type="range" min="-5" value="1" max="10" step="1"/>
+  <output id="trackValue"></output>
 </div>
 <div class="panel-cta"><button type="submit">Download OTF <span style="opacity: .5; font-size: .95em">(11&nbsp;kB)</span> ⤓</button></div>
 </div>
-<script>
-  width.oninput = e => {
-    let value = +width.value;
-    width.title = `'wdth' ${value}`;
-    widthValue.textContent = (+value).toPrecision(2);
-    wavearea.style.setProperty('--wdth', value)
-  }
-  align.oninput = e => {
-    let value = +align.value;
-    align.title = `'algn' ${value}`;
-    alignValue.textContent = value;
-    wavearea.style.setProperty('--algn', value)
-  }
-  size.oninput = e => {
-    let value = +size.value;
-    size.title = value;
-    sizeValue.textContent = value + 'px';
-    wavearea.style.setProperty('--size', value + 'px')
-  }
-  track.oninput = e => {
-    let value = +track.value;
-    track.title = value;
-    trackValue.textContent = value + 'px';
-    wavearea.style.setProperty('--track', value + 'px')
-  }
-  radius.oninput = e => {
-    let value = +radius.value;
-    radius.title = value;
-    radiusValue.textContent = value + '%';
-    wavearea.style.setProperty('--radi', value)
-  }
-</script>
 </form>
 
 <textarea id="wavearea" class="wavefont" spellcheck="false">
@@ -103,9 +71,42 @@ Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wav
 </textarea>
 
 <script>
+  (width.oninput = e => {
+    let value = +width.value;
+    width.title = `'wdth' ${value}`;
+    widthValue.textContent = (+value).toPrecision(2);
+    wavearea.style.setProperty('--wdth', value)
+  })();
+  (align.oninput = e => {
+    let value = +align.value;
+    align.title = `'algn' ${value}`;
+    alignValue.textContent = value;
+    wavearea.style.setProperty('--algn', value)
+  })();
+  (size.oninput = e => {
+    let value = +size.value;
+    size.title = value;
+    sizeValue.textContent = value + 'px';
+    wavearea.style.setProperty('--size', value + 'px')
+  })();
+  (track.oninput = e => {
+    let value = +track.value;
+    track.title = value;
+    trackValue.textContent = value + 'px';
+    wavearea.style.setProperty('--track', value + 'px')
+  })();
+  (radius.oninput = e => {
+    let value = +radius.value;
+    radius.title = value;
+    radiusValue.textContent = value + '%';
+    wavearea.style.setProperty('--radi', value)
+  })();
+</script>
+
+<script>
 function populate(N) {
   return Array(N).fill(0).map((v, i) => Math.floor((Math.sin(i * i / 1e3) * 50 + 50) * Math.abs(Math.sin(i / 100))) ).map(v => !v ? ' ' : String.fromCharCode(0x0100 + v)).join('')
 }
 
-wavearea.innerHTML = populate(44100)
+wavearea.innerHTML = populate(4410)
 </script>
