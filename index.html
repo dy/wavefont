@@ -55,7 +55,7 @@ Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wav
   <output id="radiusValue"></output>
 </div>
 <div class="panel-field">
-  <label for="size">Size</label> <input id="size" type="range" min="5" value="50" max="200" step="1"/>
+  <label for="size">Size</label> <input id="size" type="range" min="5" value="100" max="200" step="1"/>
   <output id="sizeValue"></output>
 </div>
 <div class="panel-field">
@@ -107,8 +107,8 @@ Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wav
 
 <script>
 function populate(N) {
-  return Array(N).fill(0).map((v, i) => Math.floor((Math.sin(i * i / 1e3) * 50 + 50) * Math.abs(Math.sin(i / 100))) ).map(v => !v ? ' ' : String.fromCharCode(0x0100 + v)).join('')
+  return Array(N).fill(0).map((v, i) => Math.floor((Math.sin(i * .108) * Math.sin(i * .17 * Math.sin(i * .01) * .5 + 1) * 30 + 30))).map(v => !v ? ' ' : String.fromCharCode(0x0100 + v)).join('')
 }
 
-wavearea.innerHTML = populate(4410)
+wavearea.innerHTML = populate(44100*.2)
 </script>
