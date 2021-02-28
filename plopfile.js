@@ -1,6 +1,7 @@
 // character offset to start from
 // FIXME: make tree-like aliases?
 // 0-9 for 0, 10, 20,...90                10
+const values10 = [{value:0,code:0x30},{value:1,code:0x31},{value:2,code:0x32},{value:3,code:0x33},{value:4,code:0x34},{value:5,code:0x35},{value:6,code:0x36},{value:7,code:0x37},{value:8,code:0x38},{value:9,code:0x39}]
 // ⁰-⁹ for absolute offset?
 // A-Z for 5, 10, or absolute offset?
 // a-z for -5, -10, -15, ... ?            26
