@@ -35,7 +35,6 @@ Tag | Range | Meaning
 	}
 </style>
 
-<!-- direct values -->
 <textarea id="waveform" class="wavefont" cols="100">
 	&#x0100;&#x0101;&#x0102;&#x0103;&#x0301;&#x0104;&#x0105; ... &#x017f;
 </textarea>
