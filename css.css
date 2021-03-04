@@ -30,7 +30,6 @@ html {font-size: 100%;}
   margin: auto;
   width: 42ch;
   max-width: 80vw;
-  height: 18rem;
   box-shadow: rgba(17, 17, 26, .108) 0px .5rem 1.5rem,
     rgba(17, 17, 26, .108) 0px 1rem 3.5rem,
     rgba(17, 17, 26, .108) 0px 1.5rem 6rem;
@@ -59,13 +58,13 @@ html {font-size: 100%;}
 }
 #panel h1 {
   text-align: center;
-  margin: 0 0 .5rem;
+  margin: 0 0 1rem;
   font-size: 1.5rem;
 }
 .panel-field {
   display: flex;
   flex-direction: row;
-  height: 2rem;
+  height: 1.75rem;
   align-items: center;
 }
 .panel-field label {
