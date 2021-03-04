@@ -2,7 +2,7 @@
 
 A typeface for rendering data: waveforms, spectrums, diagrams, bars etc.
 
-[![wavefont](./preview.png "wavefont")](http://a-vis.github.io/wavefont/)
+<img src="./preview.png" width="240px"/>
 
 Font provides bar glyphs representing values from 0 to 100 (and clipping 28 values) for data.
 
