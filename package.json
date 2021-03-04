@@ -8,7 +8,8 @@
     "build-ufo": "plop build-ufo",
     "build-masterotfs": "buildmasterotfs --mkot -r,-omitMacNames -d masters/wavefont.designspace",
     "build-otf": "npm run build-masterotfs && buildcff2vf -c -k -d masters/wavefont.designspace -o ./font/wavefont.otf",
-    "build-ttf": "fontmake --no-optimize-gvar -m masters/wavefont.designspace -o variable --output-path ./font/wavefont.ttf"
+    "build-ttf": "fontmake --no-optimize-gvar -m masters/wavefont.designspace -o variable --output-path ./font/wavefont.ttf",
+    "subroutinize": "cp ./font/wavefont.otf ./font/wavefont.min.otf && tx -cff2 +S +b ./font/wavefont.otf > ./font/table.CFF2 && sfntedit -a CFF2=./font/table.CFF2 ./font/wavefont.min.otf"
   },
   "repository": {
     "type": "git",
