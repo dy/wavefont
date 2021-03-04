@@ -15,7 +15,7 @@ const values100 = Array.from({length: 129}).map((v,i)=>({value: i, code: i+0x010
 
 
 module.exports = function (plop) {
-  const maxWidth = 20
+  const maxWidth = 25
   const maxValue = 100
   const values = values100.map(({value, code}) => ({value, code, clip: !!value && value < maxWidth}))
 
@@ -86,7 +86,7 @@ function master({values, maxValue, maxWidth, align, width, radius}){
       force: true,
       type: 'add',
       path: `masters/${width}_${align}_${radius}.ufo/glyphs/${value}.glif`,
-      template: glyph({value, width, align, code, maxValue, radius: (radius && 1) * width*.5})
+      template: glyph({value, width, align, code, maxValue, maxWidth, radius: (radius && 1) * width*.5})
     })),
     // substitute glyphs lower than max width to compensate wrong interpolation on width clipping
     // the logic: big widths would have big radius, but since it's limited to value, we interpolate between wrong 1 width and max width
@@ -95,27 +95,32 @@ function master({values, maxValue, maxWidth, align, width, radius}){
       force: true,
       type: 'add',
       path: `masters/${width}_${align}_${radius}.ufo/glyphs/${value}.clip.glif`,
-      template: glyph({value, width, align, maxValue, radius: (radius && 1) * value*.5})
+      template: glyph({value, width, align, maxValue, maxWidth, radius: (radius && 1) * value*.5})
     }))
   ]
 }
 
 
-const glyph = ({value, width, align, code, maxValue, radius}) => {
+const glyph = ({value, width, align, code, maxValue, radius, maxWidth}) => {
   const baseline=align * maxValue,
         R=radius,
         // bezier curve shift to approximate border-radius
         Rc = R * (1 - .55),
         // alignment constant shift
-        Ca = (maxValue - value) * align
+        Ca = (maxValue - value) * align,
+        fold = maxWidth * 2
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <glyph name="_" format="2">
   <advance width="${upm(width)}"/>
   ${code ? `<unicode hex="${hex(code)}"/>` : ``}
   ${value ? `<outline>
-    <contour>${
-      `
+    ${
+      // use overlap strategy for glyphs over double-maxWidth
+      // value > fold ?
+      // `<component base="_${fold}" yOffset="${upm(Ca)}"/><component base="_${fold}" yOffset="${upm(value-fold + Ca)}"/>`
+      // :
+      `<contour>
       <point x="0" y="${upm(value-Rc + Ca)}"/>
 
       <point x="${upm(Rc)}" y="${upm(value + Ca)}"/>
@@ -136,12 +141,8 @@ const glyph = ({value, width, align, code, maxValue, radius}) => {
       <point x="0" y="${upm(Rc + Ca)}"/>
       <point x="0" y="${upm(R + Ca)}" type="curve" smooth="yes"/>
       <point x="0" y="${upm(value-R + Ca)}" type="line"/>
-      `
-    }</contour>
+      </contour>`}
   </outline>` : ``}
-  ${
-    ``// `<anchor name="entry" x="0" y="${upm(baseline)}"/><anchor name="exit" x="${upm(width)}" y="${upm(baseline)}"/>`
-  }
 </glyph>`
 }
 
