@@ -1,8 +1,8 @@
 # wavefont
 
-A typeface for rendering data: waveforms, spectrums, diagrams, bars etc.
+A typeface for rendering data: waveforms, spectrums, diagrams, bars etc. [Demo](https://a-vis.github.io/wavefont).
 
-<img src="./preview.png" width="240px"/>
+<a href="https://a-vis.github.io/wavefont"><img src="./preview.png" width="240px"/></a>
 
 Font provides bar glyphs representing values from 0 to 100 (and clipping 28 values) for data.
 
