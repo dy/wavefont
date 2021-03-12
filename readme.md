@@ -20,6 +20,8 @@ Tag | Range | Meaning
 
 ## Usage
 
+Get [otf](./font/wavefont.otf) or [ttf](./font/wavefont.ttf) font.
+
 ```html
 <style>
 	@font-face {
@@ -40,9 +42,8 @@ Tag | Range | Meaning
 </textarea>
 
 <script>
-waveform.addEventListener('cut', e => {
-	// ...compensate shift in removed fragment
-})
+	// transform numbers from 0..100 range to characters 
+	wavefotm.textContent = data.map(value => String.fromCharCode(0x100 + value))
 </script>
 ```
 
