@@ -20,7 +20,7 @@ Tag | Range | Meaning
 
 ## Usage
 
-Get [otf](./font/wavefont.otf) or [ttf](./font/wavefont.ttf) font.
+Get [wavefont.otf](./font/wavefont.otf) or [wavefont.ttf](./font/wavefont.ttf).
 
 ```html
 <style>
