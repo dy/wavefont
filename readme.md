@@ -31,7 +31,7 @@ Get [wavefont.otf](./wavefont.otf) or [wavefont.ttf](./wavefont.ttf).
 		font-display: block;
 	}
 	.wavefont {
-		font-style: wavefont;
+		font-family: wavefont;
 		--wdth: 10;
 		font-variation-settings: 'wdth' var(--wdth), 'algn' 0.5, 'radi' 30;
 	}
