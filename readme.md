@@ -15,13 +15,9 @@ Put [_wavefont.woff2_](./wavefont.woff2) into your project directory and use thi
 		font-family: wavefont;
 		src: url(./wavefont.woff2) format('woff2');
 	}
-	@font-face {
-		font-family: blank;
-		src: url(blobUrl://abcdef) format('woff2');
-	}
 
 	.wavefont {
-		font-family: wavefont, blank;
+		font-family: wavefont;
 		--wdth: 10;
 		font-variation-settings: 'wdth' var(--wdth), 'algn' 0.5, 'radi' 30;
 	}
@@ -34,9 +30,9 @@ Put [_wavefont.woff2_](./wavefont.woff2) into your project directory and use thi
 </script>
 ```
 
-## Faces
+## Font-faces
 
-Font-faces provide various size/range balance, you can include one or all and use _unicode-range_ to select the right one.
+Wavefont provides font-faces with various size/range balance, you can include one or multiple.
 
 Face 									| Size 	| Values 				| Characters		| Value → character
 ---|---|---|---|---
@@ -47,9 +43,9 @@ _wavefont255.woff2_ 	| 50kb	| 0-255					| U+0100-03FF 	| `String.fromCharCode(0x
 _wavefont1000.woff2_ 	| 100kb	| 0-1000 				| U+E000-E8FF 	| `String.fromCharCode(0xe000 + value)`
 _wavefont.woff2_		 	| 100kb	| all of above	| all	of above 	| any of above
 
-Use the following style to automatically select the right face depending on used characters via _unicode-range_ technique:
+To choose automatically the right face depending on used characters, use _unicode-range_:
 
-```
+```css
 /* 0-10 */
 @font-face {
 	font-family: wavefont;
@@ -89,6 +85,8 @@ Tag | Range | Meaning
 `wdth` | _1_-_100_ | Adjusts glyph width.
 `algn` | _0_-_1_ | _0_ for bottom align, _0.5_ for center and _1_ for top align.
 `radi` | _0_-_50_ | Border radius, percentage of glyph width.
+`ampl` | _0_-_1_ | Amplitude (height) or bars
+
 
 ## Hints
 
