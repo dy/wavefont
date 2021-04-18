@@ -34,14 +34,14 @@ Put [_wavefont.woff2_](./wavefont.woff2) into your project directory and use thi
 
 Wavefont provides font-faces with various size/range balance, you can include only needed one or automatically select from multiple.
 
-Face 									| Size 	| Values 				| Characters		| Value → character
+Face 																					| Size 	| Values 				| Characters		| Value → character
 ---|---|---|---|---
-_wavefont10.woff2_ 		| 5kb 	| 0-10 					| 0-10 					| `value`
-_wavefont16.woff2_ 		| 10kb 	| 0x0-0xF			 	| 0-10, a-f 		| `value.toString(16)`
-_wavefont100.woff2_ 	| 30kb 	| 0-100		 			| U+0100-0200 	| `String.fromCharCode(0x100 + value)`
-_wavefont255.woff2_ 	| 50kb	| 0-255					| U+0100-03FF 	| `String.fromCharCode(0x100 + value)`
-_wavefont1000.woff2_ 	| 100kb	| 0-1000 				| U+E000-E8FF 	| `String.fromCharCode(0xe000 + value)`
-_wavefont.woff2_		 	| 100kb	| all ↑					| all ↑				 	| any ↑
+[_wavefont10.woff2_](./wavefont10.woff2) 			| 5kb 	| 0-10 					| 0-10 					| `value`
+[_wavefont16.woff2_](./wavefont16.woff2) 			| 10kb 	| 0x0-0xF			 	| 0-10, a-f 		| `value.toString(16)`
+[_wavefont100.woff2_](./wavefont100.woff2) 		| 30kb 	| 0-100		 			| U+0100-0200 	| `String.fromCharCode(0x100 + value)`
+[_wavefont255.woff2_](./wavefont255.woff2) 		| 50kb	| 0-255					| U+0100-03FF 	| `String.fromCharCode(0x100 + value)`
+[_wavefont1000.woff2_](./wavefont1000.woff2) 	| 100kb	| 0-1000 				| U+E000-E8FF 	| `String.fromCharCode(0xe000 + value)`
+[_wavefont.woff2_](./wavefont.woff2)		 			| 100kb	| all ↑					| all ↑				 	| any ↑
 
 To include multiple font-faces, use _unicode-range_ to scope characters and save bandwidth:
 
