@@ -45,6 +45,8 @@ Face 																					| Size 	| Values 				| Characters		| Value → charact
 [_wavefont1000.woff2_](./wavefont1000.woff2) 	| 100kb	| 0-1000 				| U+E000-E8FF 	| `String.fromCharCode(0xe000 + value)`
 [_wavefont.woff2_](./wavefont.woff2)		 			| 100kb	| all ↑					| all ↑				 	| any ↑
 
+## Autoselect font-face
+
 To include multiple font-faces, use _unicode-range_ to scope characters and save bandwidth:
 
 ```css
@@ -79,6 +81,8 @@ To include multiple font-faces, use _unicode-range_ to scope characters and save
 	unicode-range: U+E000-E8FF;
 }
 ```
+
+## [FOUT](https://css-tricks.com/fout-foit-foft/)
 
 To avoid flash of system font, use [blank](https://github.com/adobe-fonts/adobe-blank-vf) font-face fallback:
 
