@@ -41,9 +41,9 @@ _wavefont16.woff2_ 		| 10kb 	| 0x0-0xF			 	| 0-10, a-f 		| `value.toString(16)`
 _wavefont100.woff2_ 	| 30kb 	| 0-100		 			| U+0100-0200 	| `String.fromCharCode(0x100 + value)`
 _wavefont255.woff2_ 	| 50kb	| 0-255					| U+0100-03FF 	| `String.fromCharCode(0x100 + value)`
 _wavefont1000.woff2_ 	| 100kb	| 0-1000 				| U+E000-E8FF 	| `String.fromCharCode(0xe000 + value)`
-_wavefont.woff2_		 	| 100kb	| all of above	| all	of above 	| any of above
+_wavefont.woff2_		 	| 100kb	| all ↑					| all ↑				 	| any ↑
 
-To choose automatically the right face depending on used characters, use _unicode-range_:
+To include multiple font-faces, use _unicode-range_ to scope characters and save bandwidth:
 
 ```css
 /* 0-10 */
@@ -78,6 +78,19 @@ To choose automatically the right face depending on used characters, use _unicod
 }
 ```
 
+To avoid flash of system font, use [blank](https://github.com/adobe-fonts/adobe-blank-vf) font-face fallback:
+
+```css
+@font-face {
+	font-family: blank;
+	/* src: url(adobe-blank-v2) format('woff2'); */
+	src: url(blobUrl://abcdef) format('woff2');
+}
+.wavefont {
+	font-style: wavefont, blank;
+}
+```
+
 ## Variable features
 
 Tag | Range | Meaning
@@ -98,7 +111,6 @@ Tag | Range | Meaning
 * Dashes, dot, underscore characters alias to _1_ value.
 * Vertical lines like `|` alias to max value.
 * Block characters ▁▂▃▄▅▆▇█ are mapped to corresponding bars.
-* [Adobe Blank](https://github.com/adobe-fonts/adobe-blank-vf) font-face can be used to avoid flash of system font while loading wavefont. It can as well be used as blob.
 
 
 ## Building
