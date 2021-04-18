@@ -82,9 +82,9 @@ To include multiple font-faces, use _unicode-range_ to scope characters and save
 }
 ```
 
-## [FOUT](https://css-tricks.com/fout-foit-foft/)
+## Avoid FOUT
 
-To avoid flash of system font, use [blank](https://github.com/adobe-fonts/adobe-blank-vf) font-face fallback:
+To avoid flash of system font (aka [FOUT](https://css-tricks.com/fout-foit-foft/)), use [blank](https://github.com/adobe-fonts/adobe-blank-vf) font-face fallback:
 
 ```css
 @font-face {
