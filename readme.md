@@ -4,43 +4,38 @@ A typeface for rendering data: waveforms, spectrums, diagrams, bars etc. [Demo](
 
 <a href="https://a-vis.github.io/wavefont"><img src="./preview.png" width="240px"/></a>
 
-Font provides faces for rendering bar values from 0..10, 0..100, or 0..1000 ranges.
+Font-faces provide values for _0..10_, _0..100_, or _0..1000_ ranges.
 
 ## Usage
 
 <!-- Get [wavefont.otf](./wavefont.otf) or [wavefont.ttf](./wavefont.ttf). -->
-Put wavefont files into your project directory and use that code:
+Put _wavefont-*.woff2_ (or _otf_/_ttf_) files into your project directory and use that code:
 
 ```html
 <style>
-	/* 0-10 or 0-16 */
+	/* 0..10 or 0..16 */
 	@font-face {
 		font-family: wavefont;
 		src: url(./wavefont10.woff2) format('woff2');
 		/* src: url(./wavefont16.woff2) format('woff2'); */
 		unicode-range: U+0020-007E;
 	}
-	/* 0-100 or 0-255 */
+	/* 0..100 or 0..255 */
 	@font-face {
 		font-family: wavefont;
 		src: url(./wavefont100.woff2) format('woff2');
 		/* src: url(./wavefont255.woff2) format('woff2'); */
 		unicode-range: U+00F8-02AF;
 	}
-	/* 0-1000 */
+	/* 0..1000 */
 	@font-face {
 		font-family: wavefont;
 		src: url(./wavefont1000.woff2) format('woff2');
 		unicode-range: U+E000-E8FF;
 	}
-	/* blank */
-	@font-face {
-		font-family: blank;
-		src: url(./blank.woff2) format('woff2');
-	}
 
 	.wavefont {
-		font-family: wavefont, blank;
+		font-family: wavefont;
 		--wdth: 10;
 		font-variation-settings: 'wdth' var(--wdth), 'algn' 0.5, 'radi' 30;
 	}
@@ -92,7 +87,7 @@ Tag | Range | Meaning
 * Dashes, dot, underscore characters alias to _1_ value.
 * Vertical lines like `|` alias to max value.
 * Block characters ▁▂▃▄▅▆▇█ are mapped to 0-8 range.
-* Adobe Blank is used by default to avoid flash of system font while wavefont is loading.
+* [Adobe Blank](https://github.com/adobe-fonts/adobe-blank-vf) font-face can be used to avoid flash of system font while loading wavefont. It can as well be used as blob.
 
 
 ## Building
