@@ -30,7 +30,7 @@ Put [_wavefont.woff2_](./wavefont.woff2) into your project directory and use thi
 </script>
 ```
 
-For more elaborate use-case see below.
+For more elaborate use-cases see below.
 
 ## Font-faces
 
