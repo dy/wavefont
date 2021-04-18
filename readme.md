@@ -9,7 +9,7 @@ Font-faces provide values for _0..10_, _0..100_, or _0..1000_ ranges.
 ## Usage
 
 <!-- Get [wavefont.otf](./wavefont.otf) or [wavefont.ttf](./wavefont.ttf). -->
-Put _wavefont-*.woff2_ (or _otf_/_ttf_) files into your project directory and use that code:
+Put _wavefont-*.woff2_/_otf_/_ttf_ files into your project directory and use that code:
 
 ```html
 <style>
