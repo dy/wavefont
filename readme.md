@@ -4,30 +4,30 @@ A typeface for rendering data: waveforms, spectrums, diagrams, bars etc. [Demo](
 
 <a href="https://a-vis.github.io/wavefont"><img src="./preview.png" width="240px"/></a>
 
-Font-faces provide values for _0..10_, _0..100_, or _0..1000_ ranges.
+Font-faces provide values for _0-10_, _0-100_, or _0-1000_ ranges.
 
 ## Usage
 
 <!-- Get [wavefont.otf](./wavefont.otf) or [wavefont.ttf](./wavefont.ttf). -->
-Put _wavefont-*.woff2_/_otf_/_ttf_ files into your project directory and use that code:
+Put _wavefont-*.woff2_ (or _otf_/_ttf_) files into your project directory and use this code:
 
 ```html
 <style>
-	/* 0..10 or 0..16 */
+	/* 0-10 or 0-16 */
 	@font-face {
 		font-family: wavefont;
 		src: url(./wavefont10.woff2) format('woff2');
 		/* src: url(./wavefont16.woff2) format('woff2'); */
 		unicode-range: U+0020-007E;
 	}
-	/* 0..100 or 0..255 */
+	/* 0-100 or 0-255 */
 	@font-face {
 		font-family: wavefont;
 		src: url(./wavefont100.woff2) format('woff2');
 		/* src: url(./wavefont255.woff2) format('woff2'); */
 		unicode-range: U+00F8-02AF;
 	}
-	/* 0..1000 */
+	/* 0-1000 */
 	@font-face {
 		font-family: wavefont;
 		src: url(./wavefont1000.woff2) format('woff2');
@@ -41,33 +41,31 @@ Put _wavefont-*.woff2_/_otf_/_ttf_ files into your project directory and use tha
 	}
 </style>
 
-<textarea id="waveform" class="wavefont" cols="100">
-	&#x0100;&#x0101;&#x0102;&#x0103;&#x0301;&#x0104;&#x0105; ... &#x017f;
-</textarea>
+<textarea id="waveform" class="wavefont" cols="100"></textarea>
 
 <script>
-	// 0..10 values
-	textarea.textContent = [0,1,2,3,4,5,6,7,8,9].join('')
+	// 0-10/16 values
+	waveform.textContent = [0,1,2,3,4,5,6,7,8,9].join('')
 
-	// 0..100 values
-	textarea.textContent = ints.map(v => String.fromCharCode(0x100 + v)).join('')
+	// 0-100/255 values
+	waveform.textContent = ints.map(v => String.fromCharCode(0x100 + v)).join('')
 
-	// 0..1000 values
-	textarea.textContent = floats.map(v => String.fromCharCode(0xe000 + v)).join('')
+	// 0-1000 values
+	waveform.textContent = floats.map(v => String.fromCharCode(0xe000 + v)).join('')
 </script>
 ```
 
 ## Font Faces
 
-Font-faces provide various size/range balance, you can include preferred one. By default it's chosen automatically via _unicode-range_.
+Font-faces provide various size/range balance, you can choose one or it can be chosen automatically via _unicode-range_.
 
-Face 					| Size 	| Range 					| Unicode-range	| Value to Character
+Face 					| Size 	| Values 				| Characters		| Value → character
 ---|---|---|---|---
-wavefont10 		| 5kb 	| 0..10 					| 0-10 					| `value`
-wavefont16 		| 10kb 	| 0x0..0xf (hex) 	| 0-10, a-f 		| `value.toString(16)`
-wavefont100 	| 30kb 	| 0..100 (%) 			| U+0100-0200 	| `String.fromCharCode(0x100 + value)`
-wavefont255 	| 50kb	| 0..255 (uint)		| U+0100-03FF 	| `String.fromCharCode(0x100 + value)`
-wavefont1000 	| 100kb	| 0..1000 				| U+E000-E8FF 	| `String.fromCharCode(0xe000 + value)`
+wavefont10 		| 5kb 	| 0-10 					| 0-10 					| `value`
+wavefont16 		| 10kb 	| 0x0-0xF			 	| 0-10, a-f 		| `value.toString(16)`
+wavefont100 	| 30kb 	| 0-100		 			| U+0100-0200 	| `String.fromCharCode(0x100 + value)`
+wavefont255 	| 50kb	| 0-255					| U+0100-03FF 	| `String.fromCharCode(0x100 + value)`
+wavefont1000 	| 100kb	| 0-1000 				| U+E000-E8FF 	| `String.fromCharCode(0xe000 + value)`
 
 ## Variable features
 
