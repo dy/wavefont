@@ -30,6 +30,8 @@ Put [_wavefont.woff2_](./wavefont.woff2) into your project directory and use thi
 </script>
 ```
 
+For more elaborate use-case see below.
+
 ## Font-faces
 
 Wavefont provides font-faces with various size/range balance, you can include only needed one or automatically select from multiple.
