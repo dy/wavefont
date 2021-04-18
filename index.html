@@ -8,7 +8,8 @@
   font-style: normal;
   font-display: block;
   font-weight: 900;
-  src: url(./wavefont.ttf);
+  /* src: url(./wavefont.ttf); */
+  src: url(./wavefont.otf);
   /* src: url(./wavefont.otf); */
 }
 #wavearea {
@@ -206,9 +207,24 @@ Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wav
 </script>
 
 <script>
-function populate(N) {
+function sines(N) {
   return Array(N).fill(0).map((v, i) => Math.floor((Math.sin(i * .108) * Math.sin(i * .17 * Math.sin(i * .01) * .5 + 1) * 30 + 30))).map(v => !v ? ' ' : String.fromCharCode(0x0100 + v)).join('')
 }
 
-wavearea.innerHTML = populate(44100*.2)
+wavearea.textContent += sines(100) + '\n'
+
+// 0x100 - 0x1ff
+wavearea.textContent += Array(100).fill(0).map((v,i)=> String.fromCharCode(0x100+i)).join('') + '\n'
+
+// 0-9
+
+// clipping (less/more than 100)
+
+// all spaces & space-likes
+
+// shift characters
+
+// ascii range
+
+// _, -, −, — === 1
 </script>

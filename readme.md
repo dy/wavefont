@@ -4,34 +4,43 @@ A typeface for rendering data: waveforms, spectrums, diagrams, bars etc. [Demo](
 
 <a href="https://a-vis.github.io/wavefont"><img src="./preview.png" width="240px"/></a>
 
-Font provides bar glyphs representing values from 0 to 100 (and clipping 28 values) for data.
-
-The data charcodes fall under _Latin Extended-A_ unicode category (U+0100-017F), therefore recognized as word boundary in regexps, can be selected by <kbd>Ctrl</kbd> + <kbd>→</kbd> or double click.
-
-Vertical position of a bar can be adjusted via combining accent grave <kbd>&nbsp;&#x0300;</kbd> (U+0300) for negative shift or via accent acute <kbd>&nbsp;&#x0301;</kbd> (U+0301) for positive shift. One accent character adjusts vertical position by _1_. To provide shift by more than 1 - use multiple accents in a row. Note that using accents introduces editing side effect - cutting a fragment with accents shifts baseline outside the fragment. To compensate that, use `oncut`/`onpaste` events.
-
-Font provides variable features:
-
-Tag | Range | Meaning
----|---|---
-`wdth` | _1_-_100_ | Adjusts glyph width.
-`algn` | _0_-_1_ | _0_ for bottom align, _0.5_ for center and _1_ for top align.
-`radi` | _0_-_50_ | Border radius, percentage of glyph width.
+Font provides faces for rendering bar values from 0..10, 0..100, or 0..1000 ranges.
 
 ## Usage
 
-Get [wavefont.otf](./wavefont.otf) or [wavefont.ttf](./wavefont.ttf).
+<!-- Get [wavefont.otf](./wavefont.otf) or [wavefont.ttf](./wavefont.ttf). -->
+Put wavefont files into your project directory and use that code:
 
 ```html
 <style>
+	/* 0-10 or 0-16 */
 	@font-face {
-		font-family: "wavefont";
-		font-weight: normal;
-		src: url("./wavefont.otf");
-		font-display: block;
-	}
-	.wavefont {
 		font-family: wavefont;
+		src: url(./wavefont10.woff2) format('woff2');
+		/* src: url(./wavefont16.woff2) format('woff2'); */
+		unicode-range: U+0020-007E;
+	}
+	/* 0-100 or 0-255 */
+	@font-face {
+		font-family: wavefont;
+		src: url(./wavefont100.woff2) format('woff2');
+		/* src: url(./wavefont255.woff2) format('woff2'); */
+		unicode-range: U+00F8-02AF;
+	}
+	/* 0-1000 */
+	@font-face {
+		font-family: wavefont;
+		src: url(./wavefont1000.woff2) format('woff2');
+		unicode-range: U+E000-E8FF;
+	}
+	/* blank */
+	@font-face {
+		font-family: blank;
+		src: url(./blank.woff2) format('woff2');
+	}
+
+	.wavefont {
+		font-family: wavefont, blank;
 		--wdth: 10;
 		font-variation-settings: 'wdth' var(--wdth), 'algn' 0.5, 'radi' 30;
 	}
@@ -42,10 +51,49 @@ Get [wavefont.otf](./wavefont.otf) or [wavefont.ttf](./wavefont.ttf).
 </textarea>
 
 <script>
-	// transform numbers from 0..100 range to characters 
-	wavefotm.textContent = data.map(value => String.fromCharCode(0x100 + value))
+	// 0..10 values
+	textarea.textContent = [0,1,2,3,4,5,6,7,8,9].join('')
+
+	// 0..100 values
+	textarea.textContent = ints.map(v => String.fromCharCode(0x100 + v)).join('')
+
+	// 0..1000 values
+	textarea.textContent = floats.map(v => String.fromCharCode(0xe000 + v)).join('')
 </script>
 ```
+
+## Font Faces
+
+Font-faces provide various size/range balance, you can include preferred one. By default it's chosen automatically via _unicode-range_.
+
+Face 					| Size 	| Range 					| Unicode-range	| Value to Character
+---|---|---|---|---
+wavefont10 		| 5kb 	| 0..10 					| 0-10 					| `value`
+wavefont16 		| 10kb 	| 0x0..0xf (hex) 	| 0-10, a-f 		| `value.toString(16)`
+wavefont100 	| 30kb 	| 0..100 (%) 			| U+0100-0200 	| `String.fromCharCode(0x100 + value)`
+wavefont255 	| 50kb	| 0..255 (uint)		| U+0100-03FF 	| `String.fromCharCode(0x100 + value)`
+wavefont1000 	| 100kb	| 0..1000 				| U+E000-E8FF 	| `String.fromCharCode(0xe000 + value)`
+
+## Variable features
+
+Tag | Range | Meaning
+---|---|---
+`wdth` | _1_-_100_ | Adjusts glyph width.
+`algn` | _0_-_1_ | _0_ for bottom align, _0.5_ for center and _1_ for top align.
+`radi` | _0_-_50_ | Border radius, percentage of glyph width.
+
+## Hints
+
+* Charcodes fall under marking characters unicode category, ie. recognized as word by regexp and can be selected with <kbd>Ctrl</kbd> + <kbd>→</kbd> / double click.
+* Vertical position of a bar can be adjusted with accent grave <kbd>&nbsp;&#x0300;</kbd> (U+0300) for negative shift or accent acute <kbd>&nbsp;&#x0301;</kbd> (U+0301) for positive shift. One accent character adjusts vertical position by _1_, use multiple accents to shift for more than 1.
+* Values below range are limited to 0, eg. _0x0ff_ in _wavefont100_ is mapped to 0.
+* Values above range are supported to some extent and then clipped, eg. _0x164_ (dec 101) in _wavefont100_ is supported and value above 108 is clipped.
+* Space, tab and other non-marking characters alias to _0_ value.
+* Dashes, dot, underscore characters alias to _1_ value.
+* Vertical lines like `|` alias to max value.
+* Block characters ▁▂▃▄▅▆▇█ are mapped to 0-8 range.
+* Adobe Blank is used by default to avoid flash of system font while wavefont is loading.
+
 
 ## Building
 
@@ -66,5 +114,6 @@ TTF is built with [fontmake](https://github.com/googlefonts/fontmake). OTF is bu
 * [adobe-variable-font-prototype](https://github.com/adobe-fonts/adobe-variable-font-prototype) − example variable font.
 * [designspace xml spec](https://github.com/fonttools/fonttools/tree/main/Doc/source/designspaceLib#document-xml-structure) − human-readable format for describing variable fonts.
 * [plopfile](https://github.com/plopjs/plop#built-in-actions) − file generator based on templates.
+* [Adobe Blank](https://github.com/adobe-fonts/adobe-blank-vf) − blank characters variable font.
 
 <p align="center">🕉<p>
