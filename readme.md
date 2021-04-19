@@ -7,13 +7,13 @@ A typeface for rendering data: waveforms, spectrums, diagrams, bars etc. [Demo](
 ## Usage
 
 <!-- Get [wavefont.otf](./wavefont.otf) or [wavefont.ttf](./wavefont.ttf). -->
-Put [_wavefont.woff2_](./wavefont.woff2) into your project directory and use this code:
+Put [_wavefont100.woff2_](./wavefont.woff2) into your project directory and use this code:
 
 ```html
 <style>
 	@font-face {
 		font-family: wavefont;
-		src: url(./wavefont.woff2) format('woff2');
+		src: url(./wavefont100.woff2) format('woff2');
 	}
 
 	.wavefont {
