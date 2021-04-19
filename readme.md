@@ -47,7 +47,7 @@ Face 																					| Size 	| Values 				| Characters		| Value → charact
 
 ## Autoselect font-face
 
-To include multiple font-faces, use _unicode-range_ to scope characters and save bandwidth:
+To include multiple font-faces (for various ranges), use _unicode-range_ to scope characters and save bandwidth:
 
 ```css
 /* 0-10 */

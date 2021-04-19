@@ -1,17 +1,17 @@
-// character offset to start from
 // FIXME: make tree-like aliases?
-// 0-9 for 0, 10, 20,...90                10
-const values10 = [{value:0,code:0x30},{value:1,code:0x31},{value:2,code:0x32},{value:3,code:0x33},{value:4,code:0x34},{value:5,code:0x35},{value:6,code:0x36},{value:7,code:0x37},{value:8,code:0x38},{value:9,code:0x39}]
-// ⁰-⁹ for absolute offset?
-// A-Z for 5, 10, or absolute offset?
-// a-z for -5, -10, -15, ... ?            26
-// 0x0100-01B0 for 0,1,2,...127          ~176
-const values100 = Array.from({length: 128}).map((v,i)=>({value: i, code: i+0x0100}))
-// cyrillica                              255
-// 0x1400-1680                            ~640
-// 0xA000-A490                            ~1168
-// 0xE000-F900                            ~6400
-// ^_ - relative offset?
+const FONTFACE = {
+  wavefont10: {
+    min: 0,
+    max: 10,
+    clip: 11,
+    values: Array.from({length:10}, (v,i) => ({value: i, code: 0x30 + i}))
+  },
+
+  wavefont100: {
+    min: 0, max: 100, clip: 108,
+    values: Array.from({length: 108}).map((v,i)=>({value: i, code: 0x0100 + i}))
+  }
+}
 
 const UPM = 2048
 
@@ -21,22 +21,16 @@ const WIDTH = [1,10]
 const WEIGHT = [20,500]
 const ALIGN = [0, 1]
 const RADIUS = [0, 50]
+const AMP = [0, 1]
+
 
 module.exports = function (plop) {
   // FIXME: pass values & real max value
-  const VALUE = [0, 100]
-  const values = values100.map(({value, code}) => ({
-    value, code,
-    upmValue:(value*UPM/MAX_VALUE).toFixed(0),
-    clip: !!value && value < WIDTH[1]
-  }))
-
-  const masters = [
-    {values, width: WIDTH[0], weight: WEIGHT[0], amp: 100},
-    {values, width: WIDTH[1], weight: WEIGHT[0], amp: 100},
-    {values, width: WIDTH[0], weight: WEIGHT[1], amp: 100},
-    {values, width: WIDTH[1], weight: WEIGHT[1], amp: 100},
-  ]
+  // const values = values100.map(({value, code}) => ({
+  //   value, code,
+  //   upmValue:(value*UPM/MAX_VALUE).toFixed(0),
+  //   clip: !!value && value < WIDTH[1]
+  // }))
 
   // 1 → uni0001
   plop.setHelper('uni', (arg) => Array.isArray(arg) ? arg.map(arg => `u${hex(parseInt(arg))}`).join(',') : `u${hex(parseInt(arg))}`);
@@ -49,22 +43,33 @@ module.exports = function (plop) {
 
 	plop.setGenerator('build-ufo', {
     description: 'Build master values',
-    prompts: [{fontface: 10}],
-		actions: [
-      // populate skeleton
-      {
-        type: 'addMany',
-        force: true,
-        verbose: false,
-        destination: `wavefont/`,
-        base: '_template',
-        templateFiles: '_template/*',
-        data: { values, masters }
-      },
-      // populate masters
-      ...masters.map(master)
-    ].flat()
-  })
+    prompts: [{name: 'faceName', message: 'font-face name', type: 'text'}],
+		actions: ({faceName}) => {
+      const fontFace = FONTFACE[faceName]
+
+      const masters = [
+        {width: WIDTH[0], weight: WEIGHT[0]},
+        {width: WIDTH[1], weight: WEIGHT[0]},
+        {width: WIDTH[0], weight: WEIGHT[1]},
+        {width: WIDTH[1], weight: WEIGHT[1]},
+      ]
+
+      return [
+        // populate skeleton
+        {
+          type: 'addMany',
+          force: true,
+          verbose: false,
+          destination: `${faceName}.ufo/`,
+          base: '_wavefontX.ufo',
+          templateFiles: '_wavefontX.ufo/*',
+          data: { }
+        },
+        // populate masters
+        // ...masters.map(master)
+      ].flat()
+    }
+  });
 
   // create actions to build one master file
   function master({values, width, weight, amp}){
@@ -76,8 +81,8 @@ module.exports = function (plop) {
         force: true,
         verbose: false,
         destination: `${destination}/`,
-        base: '_template/master.ufo',
-        templateFiles: '_template/master.ufo/**/*',
+        base: '_wavefontX.ufo/master.ufo',
+        templateFiles: '_wavefontX.ufo/master.ufo/**/*',
         data: { width, weight, values }
       },
       // value data points
