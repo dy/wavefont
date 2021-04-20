@@ -6,8 +6,9 @@
     <key>up</key><string>up.glif</string>
     <key>down</key><string>down.glif</string>
     <key>_</key><string>_.glif</string>
-    {{#each values}}
-    <key>_{{ this.value }}</key><string>{{ this.value }}.glif</string>{{#if this.clip}}<key>_{{ this.value }}.clip</key><string>{{ this.value }}.clip.glif</string>{{/if}}
+
+    {{#each face.values as |code value|}}
+    <key>_{{ value }}</key><string>_{{ value }}.glif</string>{{#if (lookup ../face.alias value)}}{{#each (lookup ../face.alias value) as |aliasCode|}}<key>{{uni aliasCode}}</key><string>_{{ value }}.glif</string>{{/each}}{{/if}}{{#if (clip i)}}<key>_{{ code }}.clip</key><string>{{ code }}.clip.glif</string>{{/if}}
     {{/each}}
   </dict>
 </plist>

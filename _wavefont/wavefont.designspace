@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<designspace format="3">
+    <axes>
+        {{#each axes as |axis i|}}
+        <axis default="{{ axis.default }}" minimum="{{ axis.min }}" maximum="{{ axis.max }}" name="width" tag="wdth"/>
+        {{/each}}
+    </axes>
+    <rules>
+        {{#each rules as |rule i| }}
+        <rule name="clip">
+            <conditionset><condition minimum="{{ rule.value }}" maximum="{{ WIDTH.[1] }}" name="width" /></conditionset>
+            <sub name="_{{ rule.value }}" with="_{{ rule.value }}.clip"/>
+        </rule>
+        {{/each}}
+    </rules>
+    <sources>
+        {{#each masters as |master i| }}
+        <source familyname="{{ face.name }}" filename="{{ master.width }}.ufo" name="Master_{{master.width}}" stylename="Master {{master.width}}">
+            <location>
+                <dimension name="width" xvalue="{{ master.width }}" />
+            </location>
+        </source>
+        {{/each}}
+    </sources>
+</designspace>

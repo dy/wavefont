@@ -27,16 +27,16 @@
     <string>Copyright (c) 2021, Dmitry Iv</string>
 
     <key>unitsPerEm</key>
-    <integer>{{ maxValue }}</integer>
+    <integer>{{ UPM }}</integer>
 
     <key>ascender</key>
-    <integer>{{ maxValue }}</integer>
+    <integer>{{ UPM }}</integer>
     <key>openTypeHheaAscender</key>
-    <integer>{{ maxValue }}</integer>
+    <integer>{{ UPM }}</integer>
     <key>openTypeOS2TypoAscender</key>
-    <integer>{{ maxValue }}</integer>
+    <integer>{{ UPM }}</integer>
     <key>openTypeOS2WinAscent</key>
-    <integer>{{ maxValue }}</integer>
+    <integer>{{ UPM }}</integer>
 
     <key>descender</key>
     <integer>0</integer>
@@ -48,26 +48,26 @@
     <integer>0</integer>
 
     <key>xHeight</key>
-    <integer>{{ maxValue }}</integer>
+    <integer>{{ UPM }}</integer>
 
     <key>openTypeOS2TypoLineGap</key>
     <integer>0</integer>
     <key>openTypeOS2SubscriptXSize</key>
-    <integer>{{ maxValue }}</integer>
+    <integer>{{ UPM }}</integer>
     <key>openTypeOS2SubscriptYSize</key>
-    <integer>{{ maxValue }}</integer>
+    <integer>{{ UPM }}</integer>
     <key>openTypeOS2SubscriptXOffset</key>
     <integer>0</integer>
     <key>openTypeOS2SubscriptYOffset</key>
     <integer>0</integer>
     <key>openTypeOS2SuperscriptXSize</key>
-    <integer>{{ maxValue }}</integer>
+    <integer>{{ UPM }}</integer>
     <key>openTypeOS2SuperscriptYSize</key>
-    <integer>{{ maxValue }}</integer>
+    <integer>{{ UPM }}</integer>
     <key>openTypeOS2SuperscriptXOffset</key>
     <integer>0</integer>
     <key>openTypeOS2SuperscriptYOffset</key>
-    <integer>{{ maxValue }}</integer>
+    <integer>{{ UPM }}</integer>
 
     <key>openTypeOS2StrikeoutSize</key>
     <integer>5</integer>
