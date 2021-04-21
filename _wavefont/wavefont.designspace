@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <designspace format="3">
     <axes>
-        {{#each axes as |axis i|}}
-        <axis default="{{ axis.default }}" minimum="{{ axis.min }}" maximum="{{ axis.max }}" name="width" tag="wdth"/>
+        {{#each axes as |axis name|}}
+        <axis default="{{ axis.default }}" minimum="{{ axis.min }}" maximum="{{ axis.max }}" name="{{ name }}" tag="{{ axis.tag }}"/>
         {{/each}}
     </axes>
     <rules>
@@ -15,7 +15,7 @@
     </rules>
     <sources>
         {{#each masters as |master i| }}
-        <source familyname="{{ face.name }}" filename="{{ master.width }}.ufo" name="Master_{{master.width}}" stylename="Master {{master.width}}">
+        <source familyname="{{ ../face.name }}" filename="{{ master.width }}.ufo" name="Master_{{master.width}}" stylename="Master {{master.width}}">
             <location>
                 <dimension name="width" xvalue="{{ master.width }}" />
             </location>

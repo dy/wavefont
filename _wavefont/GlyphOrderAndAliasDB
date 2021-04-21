@@ -2,9 +2,6 @@
 up up uni0301
 down down uni0300
 
-{{#*inline "alias"}}
-{{> @partial-block}}
-{{/inline}}
 {{#each face.values as |code value|}}
 _{{ value }} _{{ value }} {{uni code}}{{#if (lookup ../face.alias value)}}{{#each (lookup ../face.alias value) as |aliasCode|}},{{uni aliasCode}}{{/each}}{{/if}}
 _{{ value }}.clip  _{{ value }}.clip

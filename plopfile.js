@@ -1,13 +1,5 @@
 const UPM = 2048
 
-// Axes
-// Note: values in terms of UPM, not values
-const WIDTH = [1,10]
-const ALIGN = [0, 1]
-const RADIUS = [0, 50]
-const AMP = [0, 1]
-
-
 const ZERO_CHAR = ` \t`.split('').map(v=>v.charCodeAt(0)) //[0x09,0x0a,0x0b,0x0c,0x0d,0x20,0x85,0xa0,0x1680,0x180e,0x2000,0x2001,0x2002,0x2003,0x2004,0x2005,0x2006,0x2007,0x2008,0x2009,0x200a,0x200b,0x200c,0x200d,0x2028,0x2029,0x202f,0x205f,0x2060,0x2061,0x2062,0x3000,0xfeff].map(String.fromCharCode)
 
 const ONE_CHAR = `.-_`.split('').map(v=>v.charCodeAt(0)) //`.-–—―_¯ˉˍ˗‐‑‒‾⁃⁻₋−⎯⏤─➖⸺⸻𐆑`
@@ -59,36 +51,43 @@ const FONTFACE = {
 }
 
 module.exports = function (plop) {
-  // FIXME: pass values & real max value
-  // const values = values100.map(({value, code}) => ({
-  //   value, code,
-  //   upmValue:(value*UPM/MAX_VALUE).toFixed(0),
-  //   clip: !!value && value < WIDTH[1]
-  // }))
-
-  // uni 1 → uni0001
-  const uni = (arg) => Array.isArray(arg) ? arg.map(arg => `u${hex(parseInt(arg))}`).join(',') : `u${hex(parseInt(arg))}`
-  plop.setHelper('uni', uni);
-
-  // `clip x → true/false`
-  plop.setHelper('clip', x => false)
-
-  // sub 1 2 → -1
-  plop.setHelper('sub', (a,b) => a-b);
-
-  // half 1 → .5
-  plop.setHelper('half', (a) => a*.5);
-
 	plop.setGenerator('build-ufo', {
     description: 'Build font-face UFOs',
     prompts: [{name: 'faceName', message: 'font-face name', type: 'text'}],
 		actions: ({faceName}) => {
       const face = FONTFACE[faceName]
 
+      const axes = {
+        width: {tag: 'wdth', min: 1, max: 10, default: 1}
+      }
+
       const masters = [
-        {width: WIDTH[0]},
-        {width: WIDTH[1]},
+        {width: 1, align: 0 },
+        {width: 10, align: 0 },
       ]
+
+      // convert value to units-per-em (0-100 → 0-2048)
+      const upm = (v) => (v * UPM / face.max).toFixed(0)
+      const hex = (v) => v.toString(16).toUpperCase().padStart(4,0)
+      const uni = (v) => Array.isArray(v) ? v.map(v => `u${hex(parseInt(v))}`).join(',') : `u${hex(parseInt(v))}`
+
+      // uni 1 → uni0001
+      plop.setHelper('uni', uni);
+
+      // upm x →
+      plop.setHelper('upm', upm);
+
+      // hex x →
+      plop.setHelper('hex', hex);
+
+      // `clip x → true/false`
+      plop.setHelper('clip', v => !!v && v < face.max)
+
+      // sub 1 2 → -1
+      plop.setHelper('sub', (a,b) => a-b);
+
+      // half 1 → .5
+      plop.setHelper('half', (a) => a*.5);
 
       return [
         // populate skeleton
@@ -99,16 +98,18 @@ module.exports = function (plop) {
           destination: `${faceName}/`,
           base: '_wavefont',
           templateFiles: '_wavefont/*',
-          data: { WIDTH, ALIGN, RADIUS, AMP, face, masters }
+          data: { UPM, face, masters, axes }
         },
-        ...masters.map(master => masterAction({master, face})).flat()
+        ...masters.map(master => masterAction({master, face, axes})).flat()
       ]
     }
   });
 
   // actions to build one master file
-  function masterAction({master, face}){
+  function masterAction({master, face, axes}){
     const destination = `${face.name}/${master.width}.ufo`
+    const {align, width, radius=0} = master
+    const baseline = face.max * align
     return [
       // ufo skeleton
       {
@@ -118,16 +119,16 @@ module.exports = function (plop) {
         destination: `${destination}/`,
         base: '_wavefont/master.ufo',
         templateFiles: '_wavefont/master.ufo/**/*',
-        data: { master, face, UPM }
+        data: { axes, master, face, UPM, baseline }
       },
       // value data points
-      // ...values.map(({code, value}) => ({
-      //   verbose: false,
-      //   force: true,
-      //   type: 'add',
-      //   path: `${destination}/glyphs/${value}.glif`,
-      //   template: glyph({value, width, align, code, maxValue, maxWidth, radius: (radius && 1) * width*.5})
-      // })),
+      ...face.values.map((code, value) => ({
+        verbose: false,
+        force: true,
+        type: 'add',
+        path: `${destination}/glyphs/${value}.glif`,
+        template: glyph({value, code, face, baseline, align, width, axes, radius: (radius && 1) * width*.5})
+      })),
       // substitute glyphs lower than max width to compensate wrong interpolation on width clipping
       // the logic: big widths would have big radius, but since it's limited to value, we interpolate between wrong 1 width and max width
       // ...values.filter(({clip}) => clip).map(({value}) => ({
@@ -140,54 +141,42 @@ module.exports = function (plop) {
     ]
   }
 
-  function glyph({value, width, align, code, maxValue, radius, maxWidth}) {
-    const baseline=align * maxValue,
-          R=radius,
+  function glyph({value, code, face, baseline, align, width, radius}) {
+    const R=radius,
           // bezier curve shift to approximate border-radius
           Rc = R * (1 - .55),
           // alignment constant shift
-          Ca = (maxValue - value) * align,
-          fold = maxWidth * 2
+          Ca = (face.max - value) * align,
+          fold = width * 2
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <glyph name="_" format="2">
-  <advance width="${upm(width)}"/>
-  ${code ? `<unicode hex="${hex(code)}"/>` : ``}
-  ${value ? `<outline>
-    ${
-      // use overlap strategy for glyphs over double-maxWidth
-      // value > fold ?
-      // `<component base="_${fold}" yOffset="${upm(Ca)}"/><component base="_${fold}" yOffset="${upm(value-fold + Ca)}"/>`
-      // :
-      `<contour>
-      <point x="0" y="${upm(value-Rc + Ca)}"/>
+  <advance width="{{upm ${width} }}"/>
+  ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
+  <outline>
+    <contour>
+      <point x="0" y="{{upm ${value-Rc + Ca} }}"/>
 
-      <point x="${upm(Rc)}" y="${upm(value + Ca)}"/>
-      <point x="${upm(R)}" y="${upm(value + Ca)}" type="curve" smooth="yes"/>
-      <point x="${upm(width-R)}" y="${upm(value + Ca)}" type="line"/>
-      <point x="${upm(width-Rc)}" y="${upm(value + Ca)}"/>
+      <point x="{{upm ${Rc} }}" y="{{upm ${value + Ca} }}"/>
+      <point x="{{upm ${R} }}" y="{{upm ${value + Ca} }}" type="curve" smooth="yes"/>
+      <point x="{{upm ${width-R} }}" y="{{upm ${value + Ca} }}" type="line"/>
+      <point x="{{upm ${width-Rc} }}" y="{{upm ${value + Ca} }}"/>
 
-      <point x="${upm(width)}" y="${upm(value-Rc + Ca)}"/>
-      <point x="${upm(width)}" y="${upm(value-R + Ca)}" type="curve" smooth="yes"/>
-      <point x="${upm(width)}" y="${upm(R + Ca)}" type="line"/>
-      <point x="${upm(width)}" y="${upm(Rc + Ca)}"/>
+      <point x="{{upm ${width} }}" y="{{upm ${value-Rc + Ca} }}"/>
+      <point x="{{upm ${width} }}" y="{{upm ${value-R + Ca} }}" type="curve" smooth="yes"/>
+      <point x="{{upm ${width} }}" y="{{upm ${R + Ca} }}" type="line"/>
+      <point x="{{upm ${width} }}" y="{{upm ${Rc + Ca} }}"/>
 
-      <point x="${upm(width-Rc)}" y="${upm(Ca)}"/>
-      <point x="${upm(width-R)}" y="${upm(Ca)}" type="curve" smooth="yes"/>
-      <point x="${upm(R)}" y="${upm(Ca)}" type="line"/>
-      <point x="${upm(Rc)}" y="${upm(Ca)}"/>
+      <point x="{{upm ${width-Rc} }}" y="{{upm ${Ca} }}"/>
+      <point x="{{upm ${width-R} }}" y="{{upm ${Ca} }}" type="curve" smooth="yes"/>
+      <point x="{{upm ${R} }}" y="{{upm ${Ca} }}" type="line"/>
+      <point x="{{upm ${Rc} }}" y="{{upm ${Ca} }}"/>
 
-      <point x="0" y="${upm(Rc + Ca)}"/>
-      <point x="0" y="${upm(R + Ca)}" type="curve" smooth="yes"/>
-      <point x="0" y="${upm(value-R + Ca)}" type="line"/>
-      </contour>`}
-  </outline>` : ``}
+      <point x="0" y="{{upm ${Rc + Ca} }}"/>
+      <point x="0" y="{{upm ${R + Ca} }}" type="curve" smooth="yes"/>
+      <point x="0" y="{{upm ${value-R + Ca} }}" type="line"/>
+    </contour>
+  </outline>
 </glyph>`
   }
 }
-
-
-// convert value to units-per-em (0-100 → 0-2048)
-const upm = (v) => (v * 20.48).toFixed(0)
-
-const hex = (v) => v.toString(16).toUpperCase().padStart(4,0)

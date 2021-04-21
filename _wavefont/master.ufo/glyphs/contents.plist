@@ -8,7 +8,7 @@
     <key>_</key><string>_.glif</string>
 
     {{#each face.values as |code value|}}
-    <key>_{{ value }}</key><string>_{{ value }}.glif</string>{{#if (lookup ../face.alias value)}}{{#each (lookup ../face.alias value) as |aliasCode|}}<key>{{uni aliasCode}}</key><string>_{{ value }}.glif</string>{{/each}}{{/if}}{{#if (clip i)}}<key>_{{ code }}.clip</key><string>{{ code }}.clip.glif</string>{{/if}}
+    <key>_{{ value }}</key><string>{{ value }}.glif</string>{{#if (lookup ../face.alias value)}}{{#each (lookup ../face.alias value) as |aliasCode|}}<key>{{uni aliasCode}}</key><string>{{ value }}.glif</string>{{/each}}{{/if}}{{#if (clip i)}}<key>_{{ code }}.clip</key><string>{{ code }}.clip.glif</string>{{/if}}
     {{/each}}
   </dict>
 </plist>
