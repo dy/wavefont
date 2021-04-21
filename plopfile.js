@@ -15,37 +15,34 @@ const FONTFACE = {
     name: 'wavefont10',
     min: 0,
     max: 10,
-    total: 11,
     alias: {
-      0: [...ZERO_CHAR, ...ASCII_CHAR],
+      0: [...ZERO_CHAR, ...ASCII_CHAR.filter(code => !`0123456789abcdef`.includes(String.fromCharCode(code)) && !ONE_CHAR.includes(code) && !MAX_CHAR.includes(code))],
       1: ONE_CHAR,
-      10: MAX_CHAR
+      10: [...MAX_CHAR, ...`abcdef`.split('').map(v => v.charCodeAt(0))]
     },
-    values: Array.from({length: 11}).map((v,i)=>0x30+i),
-    clip: []
+    values: `0123456789a`.split(``).map(v => v.charCodeAt(0))
   },
 
   wavefont16: {
     name: 'wavefont16',
-    min: 0, max: 16, total: 20
+    min: 0, max: 16
   },
 
   wavefont100: {
     name: 'wavefont100',
     min: 0, max: 100,
-    total: 108,
     values: Array.from({length: 108}).map((v,i)=>({value: i, code: 0x0100 + i}))
   },
 
   wavefont255: {
     name: 'wavefont255',
-    min: 0, max: 255, total: 280,
+    min: 0, max: 255,
     values: Array.from({length: 255})
   },
 
   wavefont1000: {
     name: 'wavefont1000',
-    min: 0, max: 1000, total: 1024,
+    min: 0, max: 1000,
     values: Array.from({length: 1024})
   }
 }
@@ -58,13 +55,17 @@ module.exports = function (plop) {
       const face = FONTFACE[faceName]
 
       const axes = {
-        width: {tag: 'wdth', min: 1, max: 10, default: 1}
+        width: {tag: 'wdth', min: 1, max: 10, default: 1},
+        align: {tag: 'algn', min: 0, max: 1, default: 0},
+        radius: {tag: 'radi', min: 0, max: 50, default: 0}
       }
 
-      const masters = [
-        {width: 1, align: 0 },
-        {width: 10, align: 0 },
-      ]
+      const masters = {
+        w1a0r0: {width: 1, align: 0, radius: 0},
+        w10a0r0: {width: 10, align: 0, radius: 0 },
+        w1a0r50: {width: 1, align: 0, radius: 50 },
+        w10a0r50: {width: 10, align: 0, radius: 50 },
+      }
 
       // convert value to units-per-em (0-100 → 0-2048)
       const upm = (v) => (v * UPM / face.max).toFixed(0)
@@ -100,15 +101,15 @@ module.exports = function (plop) {
           templateFiles: '_wavefont/*',
           data: { face, masters, axes }
         },
-        ...masters.map(master => masterAction({master, face, axes})).flat()
+        ...Object.keys(masters).map(name => master(name, {master: masters[name], face, axes})).flat()
       ]
     }
   });
 
   // actions to build one master file
-  function masterAction({master, face, axes}){
-    const destination = `${face.name}/${master.width}.ufo`
-    const {align, width, radius=0} = master
+  function master(name, {master, face, axes}){
+    const destination = `${face.name}/${name}.ufo`
+    const {align, width, radius} = master
     const baseline = face.max * align
     return [
       // ufo skeleton
@@ -153,7 +154,7 @@ module.exports = function (plop) {
 <glyph name="_" format="2">
   <advance width="{{upm ${width} }}"/>
   ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
-  ${face.alias[value]?.filter(code => !face.values.includes(code)).map(code => `<unicode hex="{{hex ${code} }}"/>`).join('') || ``}
+  ${face.alias[value]?.map(code => `<unicode hex="{{hex ${code} }}"/>`).join('') || ``}
   <outline>
     <contour>
       <point x="0" y="{{upm ${value-Rc + Ca} }}"/>

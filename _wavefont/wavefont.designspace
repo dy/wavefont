@@ -14,10 +14,12 @@
         {{/each}}
     </rules>
     <sources>
-        {{#each masters as |master i| }}
-        <source familyname="{{ ../face.name }}" filename="{{ master.width }}.ufo" name="Master_{{master.width}}" stylename="Master {{master.width}}">
+        {{#each masters as |master name| }}
+        <source familyname="{{ ../face.name }}" filename="{{ name }}.ufo" name="Master_{{name}}" stylename="Master {{name}}">
             <location>
-                <dimension name="width" xvalue="{{ master.width }}" />
+                {{#each master as |axisValue axisName|}}
+                <dimension name="{{ axisName }}" xvalue="{{ axisValue }}" />
+                {{/each}}
             </location>
         </source>
         {{/each}}
