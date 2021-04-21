@@ -8,7 +8,7 @@ const MAX_CHAR = [`|`].map(v=>v.charCodeAt(0)) //`|｜ǀ∣│।`
 
 const BAR_CHAR = `▁▂▃▄▅▆▇█`.split('').map(v=>v.charCodeAt(0))
 
-const ASCII_CHAR = Array.from({length:0x5F}, (v,i)=>(0x20+i))
+const ASCII_CHAR = `!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\`abcdefghijklmnopqrstuvwxyz{|}~`.split('').map(v=>v.charCodeAt(0))
 
 const FONTFACE = {
   wavefont10: {
@@ -17,7 +17,7 @@ const FONTFACE = {
     max: 10,
     total: 11,
     alias: {
-      0: ASCII_CHAR,//[...ZERO_CHAR, ...ASCII_CHAR],
+      0: [...ZERO_CHAR, ...ASCII_CHAR],
       1: ONE_CHAR,
       10: MAX_CHAR
     },
@@ -98,7 +98,7 @@ module.exports = function (plop) {
           destination: `${faceName}/`,
           base: '_wavefont',
           templateFiles: '_wavefont/*',
-          data: { UPM, face, masters, axes }
+          data: { face, masters, axes }
         },
         ...masters.map(master => masterAction({master, face, axes})).flat()
       ]
@@ -119,7 +119,7 @@ module.exports = function (plop) {
         destination: `${destination}/`,
         base: '_wavefont/master.ufo',
         templateFiles: '_wavefont/master.ufo/**/*',
-        data: { axes, master, face, UPM, baseline }
+        data: { axes, master, face, baseline }
       },
       // value data points
       ...face.values.map((code, value) => ({
@@ -153,6 +153,7 @@ module.exports = function (plop) {
 <glyph name="_" format="2">
   <advance width="{{upm ${width} }}"/>
   ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
+  ${face.alias[value]?.filter(code => !face.values.includes(code)).map(code => `<unicode hex="{{hex ${code} }}"/>`).join('') || ``}
   <outline>
     <contour>
       <point x="0" y="{{upm ${value-Rc + Ca} }}"/>
