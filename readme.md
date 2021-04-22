@@ -101,7 +101,7 @@ To avoid flash of system font (aka [FOUT](https://css-tricks.com/fout-foit-foft/
 
 Tag | Range | Meaning
 ---|---|---
-`wdth` | _1_-_100_ | Adjusts glyph width.
+`wdth` | _1_-_1000_ | Bar width (in upm).
 `algn` | _0_-_1_ | _0_ for bottom align, _0.5_ for center and _1_ for top align.
 `radi` | _0_-_50_ | Border radius, percentage of glyph width.
 `ampl` | _0_-_1_ | Amplitude (height) or bars.

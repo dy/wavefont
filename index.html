@@ -11,6 +11,12 @@
   src: url(./wavefont.ttf);
   /* src: url(./wavefont.otf); */
 }
+@font-face {
+  font-family: blank;
+  font-style: normal;
+  font-display: block;
+  src: url(./AdobeBlank2VF.ttf.woff2);
+}
 #wavearea {
   padding: 0;
   width: 100vw;
@@ -21,7 +27,7 @@
   resize: none;
   z-index: -1;
   word-break: break-all;
-  --wdth: 5;
+  --wdth: 50;
   --algn: 0.5;
   --size: 100px;
   --track: 2px;
@@ -55,7 +61,7 @@ html {font-size: 100%;}
   font-size: 100%/1.5;
 }
 .wavefont {
-  font-family: wavefont, sans-serif;
+  font-family: wavefont, blank;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -146,7 +152,7 @@ a {
 Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wavefont">2.1</a></small></sup>
 </h1>
 <div class="panel-field">
-  <label for="width">Width</label> <input id="width" type="range" min="1" value="5" step="1" max="25"/>
+  <label for="width">Width</label> <input id="width" type="range" min="10" value="50" step="1" max="1000"/>
   <output id="widthValue"></output>
 </div>
 <div class="panel-field">
@@ -170,14 +176,14 @@ Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wav
 
 <!-- &#0256;&#0257;&#0261;&#0266;&#0276;&#0286;&#0296;&#0306;&#0316;&#0326;&#0336;&#0346;&#0356; -->
 <textarea id="wavearea" class="wavefont" spellcheck="false">
-0123456789
+01x2y3z456789
 </textarea>
 
 <script>
   (width.oninput = e => {
     let value = +width.value;
     width.title = `'wdth' ${value}`;
-    widthValue.textContent = (+value).toPrecision(2);
+    widthValue.textContent = (+value).toFixed(0);
     wavearea.style.setProperty('--wdth', value)
   })();
   (align.oninput = e => {
