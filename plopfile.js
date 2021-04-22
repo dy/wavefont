@@ -1,3 +1,5 @@
+const dedent = require('dedent')
+
 // const UPM = 2048
 const UPM = 1000
 
@@ -25,15 +27,14 @@ const FONTFACE = {
     values: `0123456789a`.split(``).map(v => v.charCodeAt(0))
   },
 
-  wavefont16: {
-    name: 'wavefont16',
-    min: 0, max: 16
-  },
-
   wavefont100: {
     name: 'wavefont100',
-    min: 0, max: 100,
-    values: Array.from({length: 108}).map((v,i)=>({value: i, code: 0x0100 + i}))
+    min: 0,
+    max: 100,
+    alias: {
+      1: ONE_CHAR
+    },
+    values: Array.from({length: 108}).map((v,i)=>(0x0100 + i))
   },
 
   wavefont255: {
@@ -64,9 +65,13 @@ module.exports = function (plop) {
 
       const masters = {
         w1a0r0: {width: 1, align: 0, radius: 0},
+        w1a1r0: {width: 1, align: 1, radius: 0},
         w1000a0r0: {width: 1000, align: 0, radius: 0 },
+        w1000a1r0: {width: 1000, align: 1, radius: 0 },
         w1a0r50: {width: 1, align: 0, radius: 50 },
+        w1a1r50: {width: 1, align: 1, radius: 50},
         w1000a0r50: {width: 1000, align: 0, radius: 50 },
+        w1000a1r50: {width: 1000, align: 1, radius: 50},
       }
 
       // convert value to units-per-em (0-100 → 0-2048)
@@ -103,13 +108,12 @@ module.exports = function (plop) {
           templateFiles: '_wavefont/*',
           data: { face, masters, axes }
         },
-        ...Object.keys(masters).map(name => master(name, {master: masters[name], face, axes})).flat()
+        ...Object.keys(masters).map(name => master({name, ...masters[name], axes})).flat()
       ]
 
       // actions to build one master file
-      function master(name, {master, face, axes}){
+      function master({name, align, width, radius, axes}){
         const destination = `${face.name}/${name}.ufo`
-        const {align, width, radius} = master
         const baseline = face.max * align
         return [
           // ufo skeleton
@@ -120,7 +124,7 @@ module.exports = function (plop) {
             destination: `${destination}/`,
             base: '_wavefont/master.ufo',
             templateFiles: '_wavefont/master.ufo/**/*',
-            data: { axes, master, face, baseline }
+            data: { axes, width, face, baseline }
           },
           // value data points
           ...face.values.map((code, value) => ({
@@ -128,7 +132,7 @@ module.exports = function (plop) {
             force: true,
             type: 'add',
             path: `${destination}/glyphs/${value}.glif`,
-            template: glyph({value, code, face, baseline, align, width, axes, radius: (radius*.01 && 1) * width})
+            template: glyph({value, code, baseline, width, align, axes, radius: (radius*.01 && 1) * width})
           })),
           // substitute glyphs lower than max width to compensate wrong interpolation on width clipping
           // the logic: big widths would have big radius, but since it's limited to value, we interpolate between wrong 1 width and max width
@@ -142,50 +146,53 @@ module.exports = function (plop) {
         ]
       }
 
-      function glyph({value, code, face, baseline, align, width, radius}) {
-        const R=250,
+      function glyph({value, code, width, align, radius}) {
+        const R=radius,
               // bezier curve shift to approximate border-radius
               Rc = R * (1 - .55),
               // alignment constant shift
               Ca = (face.max - value) * align
 
-        return `<?xml version="1.0" encoding="UTF-8"?>
-<glyph name="_" format="2">
-  <advance width="${width}"/>
-  ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
-  ${face.alias[value]?.map(code => `<unicode hex="{{hex ${code} }}"/>`).join('') || ``}
-  <outline>
-    <contour>
-      ${
-        `<point x="0" y="0" type="line"/>
-        <point x="0" y="{{upm ${value} }}" type="line"/>
-        <point x="${width}" y="{{upm ${value} }}" type="line"/>
-        <point x="${width}" y="0" type="line"/>
+        return dedent`
+          <?xml version="1.0" encoding="UTF-8"?>
+          <glyph name="_" format="2">
+            <advance width="${width}"/>
+            ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
+            ${face.alias[value]?.map(code => `<unicode hex="{{hex ${code} }}"/>`).join('') || ``}
+            <outline>
+              <contour>
+                ${
+                  dedent`
+                  <point x="0" y="{{upm ${Ca} }}" type="line"/>
+                  <point x="0" y="{{upm ${value + Ca} }}" type="line"/>
+                  <point x="${width}" y="{{upm ${value + Ca} }}" type="line"/>
+                  <point x="${width}" y="{{upm ${Ca}}}" type="line"/>
+                  `
+                  // `<point x="0" y="{{upm ${value-Rc + Ca} }}"/>
+
+                  // <point x="{{upm ${Rc} }}" y="{{upm ${value + Ca} }}"/>
+                  // <point x="{{upm ${R} }}" y="{{upm ${value + Ca} }}" type="curve" smooth="yes"/>
+                  // <point x="{{upm ${width-R} }}" y="{{upm ${value + Ca} }}" type="line"/>
+                  // <point x="{{upm ${width-Rc} }}" y="{{upm ${value + Ca} }}"/>
+
+                  // <point x="{{upm ${width} }}" y="{{upm ${value-Rc + Ca} }}"/>
+                  // <point x="{{upm ${width} }}" y="{{upm ${value-R + Ca} }}" type="curve" smooth="yes"/>
+                  // <point x="{{upm ${width} }}" y="{{upm ${R + Ca} }}" type="line"/>
+                  // <point x="{{upm ${width} }}" y="{{upm ${Rc + Ca} }}"/>
+
+                  // <point x="{{upm ${width-Rc} }}" y="{{upm ${Ca} }}"/>
+                  // <point x="{{upm ${width-R} }}" y="{{upm ${Ca} }}" type="curve" smooth="yes"/>
+                  // <point x="{{upm ${R} }}" y="{{upm ${Ca} }}" type="line"/>
+                  // <point x="{{upm ${Rc} }}" y="{{upm ${Ca} }}"/>
+
+                  // <point x="0" y="{{upm ${Rc + Ca} }}"/>
+                  // <point x="0" y="{{upm ${R + Ca} }}" type="curve" smooth="yes"/>
+                  // <point x="0" y="{{upm ${value-R + Ca} }}" type="line"/>`
+                }
+              </contour>
+            </outline>
+          </glyph>
         `
-        // `<point x="0" y="{{upm ${value-Rc + Ca} }}"/>
-
-        // <point x="{{upm ${Rc} }}" y="{{upm ${value + Ca} }}"/>
-        // <point x="{{upm ${R} }}" y="{{upm ${value + Ca} }}" type="curve" smooth="yes"/>
-        // <point x="{{upm ${width-R} }}" y="{{upm ${value + Ca} }}" type="line"/>
-        // <point x="{{upm ${width-Rc} }}" y="{{upm ${value + Ca} }}"/>
-
-        // <point x="{{upm ${width} }}" y="{{upm ${value-Rc + Ca} }}"/>
-        // <point x="{{upm ${width} }}" y="{{upm ${value-R + Ca} }}" type="curve" smooth="yes"/>
-        // <point x="{{upm ${width} }}" y="{{upm ${R + Ca} }}" type="line"/>
-        // <point x="{{upm ${width} }}" y="{{upm ${Rc + Ca} }}"/>
-
-        // <point x="{{upm ${width-Rc} }}" y="{{upm ${Ca} }}"/>
-        // <point x="{{upm ${width-R} }}" y="{{upm ${Ca} }}" type="curve" smooth="yes"/>
-        // <point x="{{upm ${R} }}" y="{{upm ${Ca} }}" type="line"/>
-        // <point x="{{upm ${Rc} }}" y="{{upm ${Ca} }}"/>
-
-        // <point x="0" y="{{upm ${Rc + Ca} }}"/>
-        // <point x="0" y="{{upm ${R + Ca} }}" type="curve" smooth="yes"/>
-        // <point x="0" y="{{upm ${value-R + Ca} }}" type="line"/>`
-      }
-    </contour>
-  </outline>
-</glyph>`
       }
     }
   });

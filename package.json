@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run build-ufo && npm run build-masterotfs & npm run build-otf && npm run build-ttf",
-    "build-ufo": "plop build-ufo wavefont10",
-    "build-masterotfs": "buildmasterotfs --mkot -r,-omitMacNames -d wavefont10/wavefont.designspace",
-    "build-otf": "npm run build-masterotfs && buildcff2vf -c -k -d wavefont10/wavefont.designspace -o ./wavefont.otf",
-    "build-ttf": "fontmake --no-optimize-gvar -m wavefont10/wavefont.designspace -o variable --output-path ./wavefont.ttf",
+    "build-ufo": "plop build-ufo wavefont100",
+    "build-masterotfs": "buildmasterotfs --mkot -r,-omitMacNames -d wavefont100/wavefont.designspace",
+    "build-otf": "npm run build-masterotfs && buildcff2vf -c -k -d wavefont100/wavefont.designspace -o ./wavefont.otf",
+    "build-ttf": "fontmake --no-optimize-gvar -m wavefont100/wavefont.designspace -o variable --output-path ./wavefont.ttf",
     "subroutinize": "cp ./wavefont.otf ./wavefont.min.otf && tx -cff2 +S +b ./wavefont.otf > ./table.CFF2 && sfntedit -a CFF2=./table.CFF2 ./wavefont.min.otf"
   },
   "repository": {
@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/a-vis/wavefont#readme",
   "devDependencies": {
+    "dedent": "^0.7.0",
     "plop": "^2.7.4"
   },
   "dependencies": {}
