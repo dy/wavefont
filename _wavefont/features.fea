@@ -1,0 +1,10 @@
+@value = [{{#each face.values as |code value|}}_{{ value }}{{#if this.clip}} _{{ value }}.clip{{/if}} {{/each}}];
+
+# anchorDef 0 {{ baseline }} entry;
+# anchorDef {{ width }} {{ baseline }} exit;
+
+# feature mark {
+#   pos cursive @value <anchor entry> <anchor exit>;
+#   pos cursive up <anchor entry> <anchor 0 {{upm 1 }}>;
+#   pos cursive down <anchor entry> <anchor 0 -{{upm 1 }}>;
+# } mark;

@@ -28,10 +28,10 @@
   z-index: -1;
   word-break: break-all;
   --wdth: 50;
-  --algn: 0.5;
+  --algn: 0;
   --size: 100px;
   --track: 2px;
-  --radi: 50;
+  --radi: 0;
   font-size: var(--size);
   letter-spacing: var(--track);
   font-variation-settings: 'wdth' var(--wdth), 'algn' var(--algn), 'radi' var(--radi);
@@ -152,11 +152,11 @@ a {
 Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wavefont">2.1</a></small></sup>
 </h1>
 <div class="panel-field">
-  <label for="width">Width</label> <input id="width" type="range" min="10" value="50" step="1" max="1000"/>
+  <label for="width">Width</label> <input id="width" type="range" min="10" value="400" step="1" max="1000"/>
   <output id="widthValue"></output>
 </div>
 <div class="panel-field">
-  <label for="align">Align</label> <input id="align" type="range" min="0" value="0.5" max="1" step="0.1"/>
+  <label for="align">Align</label> <input id="align" type="range" min="0" value="0" max="1" step="0.1"/>
   <output id="alignValue"></output>
 </div>
 <div class="panel-field">
@@ -164,7 +164,7 @@ Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wav
   <output id="radiusValue"></output>
 </div>
 <div class="panel-field">
-  <label for="size">Size</label> <input id="size" type="range" min="5" value="100" max="200" step="1"/>
+  <label for="size">Size</label> <input id="size" type="range" min="5" value="200" max="200" step="1"/>
   <output id="sizeValue"></output>
 </div>
 <div class="panel-field">
@@ -174,9 +174,9 @@ Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wav
 </div>
 </form>
 
-<!-- 01x2y3z456789 -->
+<!-- 0123456789abcdef -->
 <textarea id="wavearea" class="wavefont" spellcheck="false">
-&#0256;&#0257;&#0261;&#0266;&#0276;&#0286;&#0296;&#0306;&#0316;&#0326;&#0336;&#0346;&#0356;
+&#x0100;&#x0101;&#x0102;&#x0103;&#x0104;&#x0105;&#x0106;&#x0107;&#x0108;&#x0109;&#x010a;&#x010b;&#x010c;&#x010d;&#x010e;&#x010f;
 </textarea>
 
 <script>

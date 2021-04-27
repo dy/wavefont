@@ -6,10 +6,10 @@
         {{/each}}
     </axes>
     <rules>
-        {{#each rules as |rule i| }}
-        <rule name="clip">
-            <conditionset><condition minimum="{{ rule.value }}" maximum="{{ WIDTH.[1] }}" name="width" /></conditionset>
-            <sub name="_{{ rule.value }}" with="_{{ rule.value }}.clip"/>
+        {{#each axes.width.clip as |code value| }}
+        <rule name="_{{ value }}.clip">
+            <conditionset><condition minimum="{{upm value }}" maximum="{{ ../axes.width.max }}" name="width" /></conditionset>
+            <sub name="_{{ value }}" with="_{{ value }}.clip"/>
         </rule>
         {{/each}}
     </rules>

@@ -57,25 +57,8 @@ module.exports = function (plop) {
 		actions: ({faceName}) => {
       const face = FONTFACE[faceName]
 
-      const axes = {
-        width: {tag: 'wdth', min: 1, max: 1000, default: 1},
-        align: {tag: 'algn', min: 0, max: 1, default: 0},
-        radius: {tag: 'radi', min: 0, max: 50, default: 0}
-      }
-
-      const masters = {
-        w1a0r0: {width: 1, align: 0, radius: 0},
-        w1a1r0: {width: 1, align: 1, radius: 0},
-        w1000a0r0: {width: 1000, align: 0, radius: 0 },
-        w1000a1r0: {width: 1000, align: 1, radius: 0 },
-        w1a0r50: {width: 1, align: 0, radius: 50 },
-        w1a1r50: {width: 1, align: 1, radius: 50},
-        w1000a0r50: {width: 1000, align: 0, radius: 50 },
-        w1000a1r50: {width: 1000, align: 1, radius: 50},
-      }
-
       // convert value to units-per-em (0-100 → 0-2048)
-      const upm = (v) => (v * UPM / face.max).toFixed(0)
+      const upm = (v) => (UPM * v / face.max)
       const hex = (v) => v.toString(16).toUpperCase().padStart(4,0)
       const uni = (v) => Array.isArray(v) ? v.map(v => `u${hex(parseInt(v))}`).join(',') : `u${hex(parseInt(v))}`
 
@@ -88,107 +71,137 @@ module.exports = function (plop) {
       // hex x →
       plop.setHelper('hex', hex);
 
-      // `clip x → true/false`
-      plop.setHelper('clip', v => !!v && v < face.max)
-
       // sub 1 2 → -1
       plop.setHelper('sub', (a,b) => a-b);
 
       // half 1 → .5
       plop.setHelper('half', (a) => a*.5);
 
+      // int 12.3 → 12
+      plop.setHelper('int', v => v.toFixed(0))
+
+      const axes = {
+        width: {tag: 'wdth', min: 1, max: 100, default: 1, clip: face.values.filter((c, v) => upm(v) < 100)},
+        align: {tag: 'algn', min: 0, max: 1, default: 0},
+        radius: {tag: 'radi', min: 0, max: 50, default: 0}
+      }
+
+      const masters = {
+        [`w${axes.width.min}a${axes.align.min}r${axes.align.min}`]: {width: axes.width.min, align: axes.align.min, radius: axes.radius.min},
+        [`w${axes.width.min}a${axes.align.max}r${axes.align.min}`]: {width: axes.width.min, align: axes.align.max, radius: axes.radius.min},
+        [`w${axes.width.max}a${axes.align.min}r${axes.align.min}`]: {width: axes.width.max, align: axes.align.min, radius: axes.radius.min },
+        [`w${axes.width.max}a${axes.align.max}r${axes.align.min}`]: {width: axes.width.max, align: axes.align.max, radius: axes.radius.min },
+        [`w${axes.width.min}a${axes.align.min}r${axes.align.max}`]: {width: axes.width.min, align: axes.align.min, radius: axes.radius.max },
+        [`w${axes.width.min}a${axes.align.max}r${axes.align.max}`]: {width: axes.width.min, align: axes.align.max, radius: axes.radius.max},
+        [`w${axes.width.max}a${axes.align.min}r${axes.align.max}`]: {width: axes.width.max, align: axes.align.min, radius: axes.radius.max },
+        [`w${axes.width.max}a${axes.align.max}r${axes.align.max}`]: {width: axes.width.max, align: axes.align.max, radius: axes.radius.max},
+      }
+
       return [
         // populate skeleton
         {
           type: 'addMany',
           force: true,
-          verbose: false,
           destination: `${faceName}/`,
           base: '_wavefont',
           templateFiles: '_wavefont/*',
           data: { face, masters, axes }
         },
-        ...Object.keys(masters).map(name => master({name, ...masters[name], axes})).flat()
+        ...Object.keys(masters).map(name => master({name, ...masters[name]})).flat()
       ]
 
       // actions to build one master file
-      function master({name, align, width, radius, axes}){
+      function master({name, align, width, radius}){
         const destination = `${face.name}/${name}.ufo`
-        const baseline = face.max * align
         return [
           // ufo skeleton
           {
             type: 'addMany',
             force: true,
-            verbose: false,
             destination: `${destination}/`,
             base: '_wavefont/master.ufo',
             templateFiles: '_wavefont/master.ufo/**/*',
-            data: { axes, width, face, baseline }
+            data: { axes, width, face }
           },
-          // value data points
+          // caps
+          {
+            force: true,
+            type: 'add',
+            path: `${destination}/glyphs/cap.glif`,
+            template: cap({height: radius*.01*width*2, radius: radius*.01*width, width, name: 'cap', align: 0 })
+          },
+          // values
           ...face.values.map((code, value) => ({
-            verbose: false,
             force: true,
             type: 'add',
             path: `${destination}/glyphs/${value}.glif`,
-            template: glyph({value, code, baseline, width, align, axes, radius: (radius*.01 && 1) * width})
+            template: bar({value, code, width, name: `_${value}`, capSize: radius*.01*width, align })
           })),
           // substitute glyphs lower than max width to compensate wrong interpolation on width clipping
           // the logic: big widths would have big radius, but since it's limited to value, we interpolate between wrong 1 width and max width
-          // ...values.filter(({clip}) => clip).map(({value}) => ({
-          //   verbose: false,
-          //   force: true,
-          //   type: 'add',
-          //   path: `masters/${width}_${align}_${radius}.ufo/glyphs/${value}.clip.glif`,
-          //   template: glyph({value, width, align, maxValue, maxWidth, radius: (radius && 1) * value*.5})
-          // }))
+          ...axes.width.clip.map((code, value) => ({
+            force: true,
+            type: 'add',
+            path: `${destination}/glyphs/${value}.clip.glif`,
+            template: cap({height: upm(value), width, name: `_${value}.clip`, radius: (radius && 1 ) * upm(value) * .5, align })
+          }))
         ]
       }
 
-      function glyph({value, code, width, align, radius}) {
-        const R=radius,
-              // bezier curve shift to approximate border-radius
-              Rc = R * (1 - .55),
-              // alignment constant shift
-              Ca = (face.max - value) * align
+      function cap({width, height, name, code, radius:R, align}) {
+        // bezier curve shift to approximate border-radius
+        const Rc = R * (1 - .55),
+            yshift = (UPM - height) * align
 
         return dedent`
           <?xml version="1.0" encoding="UTF-8"?>
-          <glyph name="_" format="2">
+          <glyph name="${name}" format="2">
+            <advance width="${width}"/>
+            ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
+            <outline>
+              <contour>
+                  <point x="0" y="{{int ${height-Rc + yshift} }}"/>
+
+                  <point x="{{int ${Rc} }}" y="{{int ${height + yshift} }}"/>
+                  <point x="{{int ${R} }}" y="{{int ${height + yshift} }}" type="curve" smooth="yes"/>
+                  <point x="{{int ${width-R} }}" y="{{int ${height + yshift} }}" type="line"/>
+                  <point x="{{int ${width-Rc} }}" y="{{int ${height + yshift} }}"/>
+
+                  <point x="{{int ${width} }}" y="{{int ${height-Rc + yshift} }}"/>
+                  <point x="{{int ${width} }}" y="{{int ${height-R + yshift} }}" type="curve" smooth="yes"/>
+                  <point x="{{int ${width} }}" y="{{int ${R + yshift} }}" type="line"/>
+                  <point x="{{int ${width} }}" y="{{int ${Rc + yshift} }}"/>
+
+                  <point x="{{int ${width-Rc} }}" y="{{int ${0 + yshift} }}"/>
+                  <point x="{{int ${width-R} }}" y="{{int ${0 + yshift} }}" type="curve" smooth="yes"/>
+                  <point x="{{int ${R} }}" y="{{int ${0 + yshift} }}" type="line"/>
+                  <point x="{{int ${Rc} }}" y="{{int ${0 + yshift} }}"/>
+
+                  <point x="0" y="{{int ${Rc + yshift} }}"/>
+                  <point x="0" y="{{int ${R + yshift} }}" type="curve" smooth="yes"/>
+                  <point x="0" y="{{int ${height-R + yshift} }}" type="line"/>
+              </contour>
+            </outline>
+          </glyph>
+        `
+      }
+
+      function bar({value, code, width, capSize, name, align}) {
+        const yshift = upm((face.max - value) * align)
+        return dedent`
+          <?xml version="1.0" encoding="UTF-8"?>
+          <glyph name="${name}" format="2">
             <advance width="${width}"/>
             ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
             ${face.alias[value]?.map(code => `<unicode hex="{{hex ${code} }}"/>`).join('') || ``}
             <outline>
+              <component base="cap" yOffset="{{int ${yshift}}}" />
+              <component base="cap" yOffset="{{int ${upm(value) - capSize*2 + yshift}}}" />
               <contour>
-                ${
-                  dedent`
-                  <point x="0" y="{{upm ${Ca} }}" type="line"/>
-                  <point x="0" y="{{upm ${value + Ca} }}" type="line"/>
-                  <point x="${width}" y="{{upm ${value + Ca} }}" type="line"/>
-                  <point x="${width}" y="{{upm ${Ca}}}" type="line"/>
-                  `
-                  // `<point x="0" y="{{upm ${value-Rc + Ca} }}"/>
-
-                  // <point x="{{upm ${Rc} }}" y="{{upm ${value + Ca} }}"/>
-                  // <point x="{{upm ${R} }}" y="{{upm ${value + Ca} }}" type="curve" smooth="yes"/>
-                  // <point x="{{upm ${width-R} }}" y="{{upm ${value + Ca} }}" type="line"/>
-                  // <point x="{{upm ${width-Rc} }}" y="{{upm ${value + Ca} }}"/>
-
-                  // <point x="{{upm ${width} }}" y="{{upm ${value-Rc + Ca} }}"/>
-                  // <point x="{{upm ${width} }}" y="{{upm ${value-R + Ca} }}" type="curve" smooth="yes"/>
-                  // <point x="{{upm ${width} }}" y="{{upm ${R + Ca} }}" type="line"/>
-                  // <point x="{{upm ${width} }}" y="{{upm ${Rc + Ca} }}"/>
-
-                  // <point x="{{upm ${width-Rc} }}" y="{{upm ${Ca} }}"/>
-                  // <point x="{{upm ${width-R} }}" y="{{upm ${Ca} }}" type="curve" smooth="yes"/>
-                  // <point x="{{upm ${R} }}" y="{{upm ${Ca} }}" type="line"/>
-                  // <point x="{{upm ${Rc} }}" y="{{upm ${Ca} }}"/>
-
-                  // <point x="0" y="{{upm ${Rc + Ca} }}"/>
-                  // <point x="0" y="{{upm ${R + Ca} }}" type="curve" smooth="yes"/>
-                  // <point x="0" y="{{upm ${value-R + Ca} }}" type="line"/>`
-                }
+                <point x="0" y="{{int ${yshift + capSize}}}" type="line"/>
+                <point x="0" y="{{int ${upm(value) + yshift - capSize}}}" type="line"/>
+                <point x="${width}" y="{{int ${upm(value) + yshift - capSize}}}" type="line"/>
+                <point x="${width}" y="{{int ${yshift + capSize}}}" type="line"/>
               </contour>
             </outline>
           </glyph>
@@ -197,3 +210,5 @@ module.exports = function (plop) {
     }
   });
 }
+
+function i(v) {return v}
