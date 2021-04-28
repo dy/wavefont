@@ -78,10 +78,10 @@ module.exports = function (plop) {
       plop.setHelper('half', (a) => a*.5);
 
       // int 12.3 → 12
-      plop.setHelper('int', v => v.toFixed(0))
+      plop.setHelper('int', v => v.toFixed(1))
 
       const axes = {
-        width: {tag: 'wdth', min: 1, max: 100, default: 1, clip: face.values.filter((c, v) => upm(v) < 100)},
+        width: {tag: 'wdth', min: 1, max: 108, default: 1, clip: face.values.filter((c, v) => upm(v) < 108)},
         align: {tag: 'algn', min: 0, max: 1, default: 0},
         radius: {tag: 'radi', min: 0, max: 50, default: 0}
       }
@@ -139,19 +139,18 @@ module.exports = function (plop) {
           })),
           // substitute glyphs lower than max width to compensate wrong interpolation on width clipping
           // the logic: big widths would have big radius, but since it's limited to value, we interpolate between wrong 1 width and max width
-          ...axes.width.clip.map((code, value) => ({
+          ...axes.width.clip.map((code, value) => value && ({
             force: true,
             type: 'add',
             path: `${destination}/glyphs/${value}.clip.glif`,
             template: cap({height: upm(value), width, name: `_${value}.clip`, radius: (radius && 1 ) * upm(value) * .5, align })
-          }))
+          })).filter(Boolean)
         ]
       }
 
       function cap({width, height, name, code, radius:R, align}) {
         // bezier curve shift to approximate border-radius
-        const Rc = R * (1 - .55),
-            yshift = (UPM - height) * align
+        const Rc = R * (1 - .55), yshift = (UPM - height) * align
 
         return dedent`
           <?xml version="1.0" encoding="UTF-8"?>
@@ -194,7 +193,7 @@ module.exports = function (plop) {
             <advance width="${width}"/>
             ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
             ${face.alias[value]?.map(code => `<unicode hex="{{hex ${code} }}"/>`).join('') || ``}
-            <outline>
+            ${value ? `<outline>
               <component base="cap" yOffset="{{int ${yshift}}}" />
               <component base="cap" yOffset="{{int ${upm(value) - capSize*2 + yshift}}}" />
               <contour>
@@ -203,7 +202,7 @@ module.exports = function (plop) {
                 <point x="${width}" y="{{int ${upm(value) + yshift - capSize}}}" type="line"/>
                 <point x="${width}" y="{{int ${yshift + capSize}}}" type="line"/>
               </contour>
-            </outline>
+            </outline>` : ``}
           </glyph>
         `
       }
