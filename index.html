@@ -250,16 +250,12 @@ wavearea.textContent += Array.from({length: 108}, (_,i) => (String.fromCharCode(
 // noise
 wavearea.textContent += Array.from({length: 108}, (_,i) => (String.fromCharCode(0x100 + Math.floor(Math.random() * 100)))).join('') + '\n'
 
-
-// 0-9
-
-// clipping (less/more than 100)
-
-// all spaces & space-likes
+// clipping
+wavearea.textContent += Array.from({length: 128}, (_,i) => (String.fromCharCode(0x100 + i-10))).join('') + '\n'
 
 // shift characters
+wavearea.textContent += `1̀2̀2̀1̀111\n`
 
-// ascii range
-
-// _, -, −, — === 1
+// aliases: 0-9, _, -, −, —, spaces
+wavearea.textContent += `01234.5678-9_a\t|lorem\n`
 </script>
