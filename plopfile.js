@@ -80,7 +80,7 @@ module.exports = function (plop) {
       plop.setHelper('half', (a) => a*.5);
 
       // int 12.3 → 12
-      plop.setHelper('int', v => v.toFixed(1))
+      plop.setHelper('int', v => v.toFixed(3))
 
       const axes = {
         width: {tag: 'wdth', min: 1, max: 108, default: 1, clip: face.values.filter((c, v) => upm(v) < 108)},

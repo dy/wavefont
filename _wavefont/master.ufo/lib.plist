@@ -9,7 +9,7 @@
     <string>down</string>
     <string>_</string>
     {{#each face.values as |code value|}}
-    <string>_{{ value }}</string>{{#if clip }}<string>_{{ value }}.clip</string>{{/if}}
+    <string>_{{ value }}</string>
     {{/each}}
 	</array>
 </dict>
