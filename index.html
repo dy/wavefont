@@ -9,8 +9,8 @@
   font-display: block;
   font-weight: 900;
   /* src: url(./wavefont.ttf); */
-  /* src: url(./wavefont.otf); */
-  src: url(./wavefont.min.otf);
+  src: url(./wavefont.otf);
+  /* src: url(./wavefont.min.otf); */
 }
 @font-face {
   font-family: blank;
@@ -234,32 +234,32 @@ Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wav
 // wavearea.textContent += Array(100).fill(0).map((v,i)=> String.fromCharCode(0x100+i)).join('')
 
 // sawtooth
-wavearea.textContent += Array.from({length: 108}, (_,i) => String.fromCharCode(0x100 + (i * 2) % 100)).join('') + '\t'
+wavearea.textContent += Array.from({length: 108}, (_,i) => String.fromCharCode(0x100 + (i * 2) % 100)).join('') + '\t\t'
 
 // sine
-wavearea.textContent += Array.from({length: 108}, (_,i) => String.fromCharCode(0x100 + (Math.sin(i/6) * 50 + 50))).join('') + '\t'
+wavearea.textContent += Array.from({length: 108}, (_,i) => String.fromCharCode(0x100 + (Math.sin(i/6) * 50 + 50))).join('') + '\t\t'
 
 // triangle
 wavearea.textContent += Array.from({length: 108}, (_,i) => (
   i = (i/33) % 1, i = i > .5 ? 1-i : i,
   String.fromCharCode(0x100 + (i * 200))
-)).join('') + '\t'
+)).join('') + '\t\t'
 
 // rect
-wavearea.textContent += Array.from({length: 108}, (_,i) => (String.fromCharCode(0x100 + ((i/33) % 1 > .5 ? 100 : 1)))).join('') + '\t'
+wavearea.textContent += Array.from({length: 108}, (_,i) => (String.fromCharCode(0x100 + ((i/33) % 1 > .5 ? 100 : 1)))).join('') + '\t\t'
 
 // noise
-wavearea.textContent += Array.from({length: 108}, (_,i) => (String.fromCharCode(0x100 + Math.floor(Math.random() * 100)))).join('') + '\t'
+wavearea.textContent += Array.from({length: 108}, (_,i) => (String.fromCharCode(0x100 + Math.floor(Math.random() * 100)))).join('') + '\t\t'
 
 // speech
-wavearea.textContent += `ĈĉċĊĉċčīıēģĹĶĲĺķĺĺĳĽĳĶĵĦČģĹĪĞĠĝġđČĐĤĨĳħģĚģĢıĞĢİķīİĳķĴĲĪĬģęĬķĦĒěěėďĒĚĪĢēČċěĩĘđēĞĝĚČčĖħĨĝđđĒīīĚďĕĚġĔċċĖĭİĮğĔĢĤĮĪĘįĹĵĶĳįĸııĳĢĚĭĥĪıĦĦĨĤĪġĤĴĭĵįĐĕĠĤħĦĨĩĪĶĶĲĹĲįĮĪķĺĵĹĶİĲįĪİĨĮĩġĤĜğĘğīĞęīĬĹĶĨįĲİĳĪıİİĸĴĶĮĭĳĵĭīĨĭħĬįĵĳĶįĤĨģĥĝĘĠĦĲĮĦıİįĸįıĵİĭİĩĬĢģħħīěĜġġĠĞĦĩīĹĵĺĶİĮĭİĲīīģĕĒČČďĐđċčďčċċċĉĉċĉĉĈĈċčėįĢĥłĻĲ\t`
+wavearea.textContent += `ĈĉċĊĉċčīıēģĹĶĲĺķĺĺĳĽĳĶĵĦČģĹĪĞĠĝġđČĐĤĨĳħģĚģĢıĞĢİķīİĳķĴĲĪĬģęĬķĦĒěěėďĒĚĪĢēČċěĩĘđēĞĝĚČčĖħĨĝđđĒīīĚďĕĚġĔċċĖĭİĮğĔĢĤĮĪĘįĹĵĶĳįĸııĳĢĚĭĥĪıĦĦĨĤĪġĤĴĭĵįĐĕĠĤħĦĨĩĪĶĶĲĹĲįĮĪķĺĵĹĶİĲįĪİĨĮĩġĤĜğĘğīĞęīĬĹĶĨįĲİĳĪıİİĸĴĶĮĭĳĵĭīĨĭħĬįĵĳĶįĤĨģĥĝĘĠĦĲĮĦıİįĸįıĵİĭİĩĬĢģħħīěĜġġĠĞĦĩīĹĵĺĶİĮĭİĲīīģĕĒČČďĐđċčďčċċċĉĉċĉĉĈĈċčėįĢĥłĻĲ\t\t`
 
 // clipping
-wavearea.textContent += Array.from({length: 128}, (_,i) => (String.fromCharCode(0x100 + i-10))).join('') + '\t'
+wavearea.textContent += Array.from({length: 128}, (_,i) => (String.fromCharCode(0x100 + i-10))).join('') + '\t\t'
 
 // shift characters
-wavearea.textContent += `1̀2̀2̀1̀111\t`
+wavearea.textContent += `1̀2̀2̀1̀111\t\t`
 
 // aliases: 0-9, _, -, −, —, spaces
-wavearea.textContent += `01234.5678-9_a\t|lorem\t`
+wavearea.textContent += `01234.5678-9_a\t|lorem\t\t`
 </script>
