@@ -9,7 +9,9 @@
     "build-masterotfs": "buildmasterotfs --mkot -r,-omitMacNames -d wavefont100/wavefont.designspace",
     "build-otf": "npm run build-masterotfs && buildcff2vf -c -k -d wavefont100/wavefont.designspace -o ./wavefont.otf",
     "build-ttf": "fontmake --no-optimize-gvar -m wavefont100/wavefont.designspace -o variable --output-path ./wavefont.ttf",
-    "subroutinize": "shx cp ./wavefont.otf ./wavefont.min.otf && tx -cff2 +S +b ./wavefont.otf > ./table.CFF2 && sfntedit -a CFF2=./table.CFF2 ./wavefont.min.otf"
+    "subroutinize": "shx cp ./wavefont.otf ./wavefont.min.otf && tx -cff2 +S +b ./wavefont.otf > ./table.CFF2 && sfntedit -a CFF2=./table.CFF2 ./wavefont.min.otf",
+    "build-woff2": "node --eval=\"let fs=require('fs'),t2w=require('ttf2woff2'),i=fs.readFileSync('wavefont.ttf'),r=fs.writeFileSync('wavefont.woff2',t2w(i))\"",
+    "build-woff": "ttf2woff wavefont.ttf wavefont.woff"
   },
   "repository": {
     "type": "git",
@@ -33,7 +35,9 @@
   "devDependencies": {
     "dedent": "^0.7.0",
     "plop": "^2.7.4",
-    "shx": "^0.3.3"
+    "shx": "^0.3.3",
+    "ttf2woff": "^2.0.2",
+    "ttf2woff2": "^4.0.2"
   },
   "dependencies": {}
 }
