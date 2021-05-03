@@ -32,9 +32,10 @@ const FONTFACE = {
     min: 0,
     max: 100,
     alias: {
-      10: [...ONE_CHAR, 49],
-      20: [50], 30: [51], 40: [52], 50: [53], 60: [54], 70: [55], 80: [56], 90: [57],
-      100: [...MAX_CHAR]
+      1: [...ONE_CHAR, BAR_CHAR[0]],
+      14: [BAR_CHAR[1]], 28: [BAR_CHAR[2]], 42: [BAR_CHAR[3]], 56: [BAR_CHAR[4]], 72: [BAR_CHAR[5]], 86: [BAR_CHAR[6]],
+      10: [49], 20: [50], 30: [51], 40: [52], 50: [53], 60: [54], 70: [55], 80: [56], 90: [57],
+      100: [...MAX_CHAR, BAR_CHAR[7]]
     },
     values: Array.from({length: 108}).map((v,i)=>(0x0100 + i))
   },
