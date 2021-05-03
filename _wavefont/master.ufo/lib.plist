@@ -8,8 +8,8 @@
     <string>up</string>
     <string>down</string>
     <string>_</string>
-    {{#each values}}
-    <string>_{{ this.value }}</string>{{#if this.clip }}<string>_{{ this.value }}.clip</string>{{/if}}
+    {{#each face.values as |code value|}}
+    <string>_{{ value }}</string>
     {{/each}}
 	</array>
 </dict>

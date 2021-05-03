@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<designspace format="3">
+    <axes>
+        {{#each axes as |axis name|}}
+        <axis default="{{ axis.default }}" minimum="{{ axis.min }}" maximum="{{ axis.max }}" name="{{ name }}" tag="{{ axis.tag }}"/>
+        {{/each}}
+    </axes>
+    <rules>
+        {{#each axes.width.clip as |code value| }}{{#if value}}
+        <rule name="_{{ value }}.clip">
+            <conditionset><condition minimum="{{upm value }}" maximum="{{ ../axes.width.max }}" name="width" /></conditionset>
+            <sub name="_{{ value }}" with="_{{ value }}.clip"/>
+        </rule>{{/if}}{{/each}}
+    </rules>
+    <sources>
+        {{#each masters as |master name| }}
+        <source familyname="{{ ../face.name }}" filename="{{ name }}.ufo" name="Master_{{name}}" stylename="Master {{name}}">
+            <location>
+                {{#each master as |axisValue axisName|}}
+                <dimension name="{{ axisName }}" xvalue="{{ axisValue }}" />
+                {{/each}}
+            </location>
+        </source>
+        {{/each}}
+    </sources>
+</designspace>

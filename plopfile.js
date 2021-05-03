@@ -1,152 +1,216 @@
-// character offset to start from
-// FIXME: make tree-like aliases?
-// 0-9 for 0, 10, 20,...90                10
-const values10 = [{value:0,code:0x30},{value:1,code:0x31},{value:2,code:0x32},{value:3,code:0x33},{value:4,code:0x34},{value:5,code:0x35},{value:6,code:0x36},{value:7,code:0x37},{value:8,code:0x38},{value:9,code:0x39}]
-// ⁰-⁹ for absolute offset?
-// A-Z for 5, 10, or absolute offset?
-// a-z for -5, -10, -15, ... ?            26
-// 0x0100-01B0 for 0,1,2,...128          ~176
-const values100 = Array.from({length: 129}).map((v,i)=>({value: i, code: i+0x0100}))
-// cyrillica                              255
-// 0x1400-1680                            ~640
-// 0xA000-A490                            ~1168
-// 0xE000-F900                            ~6400
-// ^_ - relative offset?
+const dedent = require('dedent')
 
+// const UPM = 2048
+const UPM = 1000
+
+const ZERO_CHAR = ` \t`.split('').map(v=>v.charCodeAt(0)) //[0x09,0x0a,0x0b,0x0c,0x0d,0x20,0x85,0xa0,0x1680,0x180e,0x2000,0x2001,0x2002,0x2003,0x2004,0x2005,0x2006,0x2007,0x2008,0x2009,0x200a,0x200b,0x200c,0x200d,0x2028,0x2029,0x202f,0x205f,0x2060,0x2061,0x2062,0x3000,0xfeff].map(String.fromCharCode)
+
+const ONE_CHAR = `.-_`.split('').map(v=>v.charCodeAt(0)) //`.-–—―_¯ˉˍ˗‐‑‒‾⁃⁻₋−⎯⏤─➖⸺⸻𐆑`
+
+const MAX_CHAR = [`|`].map(v=>v.charCodeAt(0)) //`|｜ǀ∣│।`
+
+const BAR_CHAR = `▁▂▃▄▅▆▇█`.split('').map(v=>v.charCodeAt(0))
+
+const ASCII_CHAR = `!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\`abcdefghijklmnopqrstuvwxyz{|}~`.split('').map(v=>v.charCodeAt(0))
+
+const FONTFACE = {
+  wavefont10: {
+    name: 'wavefont10',
+    min: 0,
+    max: 10,
+    alias: {
+      // NOTE: no need to stub 0s because they're covered by fallback blank font
+      // 0: [...ZERO_CHAR, ...ASCII_CHAR.filter(code => !`0123456789abcdef`.includes(String.fromCharCode(code)) && !ONE_CHAR.includes(code) && !MAX_CHAR.includes(code))],
+      1: ONE_CHAR,
+      10: [...MAX_CHAR, ...`abcdef`.split('').map(v => v.charCodeAt(0))]
+    },
+    values: `0123456789a`.split(``).map(v => v.charCodeAt(0))
+  },
+
+  wavefont100: {
+    name: 'wavefont100',
+    min: 0,
+    max: 100,
+    alias: {
+      1: [...ONE_CHAR, BAR_CHAR[0]],
+      14: [BAR_CHAR[1]], 28: [BAR_CHAR[2]], 42: [BAR_CHAR[3]], 56: [BAR_CHAR[4]], 72: [BAR_CHAR[5]], 86: [BAR_CHAR[6]],
+      10: [49], 20: [50], 30: [51], 40: [52], 50: [53], 60: [54], 70: [55], 80: [56], 90: [57],
+      100: [...MAX_CHAR, BAR_CHAR[7]]
+    },
+    values: Array.from({length: 108}).map((v,i)=>(0x0100 + i))
+  },
+
+  wavefont255: {
+    name: 'wavefont255',
+    min: 0, max: 255,
+    values: Array.from({length: 255})
+  },
+
+  wavefont1000: {
+    name: 'wavefont1000',
+    min: 0, max: 1000,
+    values: Array.from({length: 1024})
+  }
+}
 
 module.exports = function (plop) {
-  const maxWidth = 25
-  const maxValue = 100
-  const values = values100.map(({value, code}) => ({value, code, clip: !!value && value < maxWidth}))
-
 	plop.setGenerator('build-ufo', {
-    description: 'Build master values',
-    prompts: [],
-		actions: [
-      // cleanup designspace
-      {type: "modify", path:"masters/wavefont.designspace", pattern:/<sources>([^]*?)<\/sources>/i, template: '<sources></sources>'},
-      {type: "modify", path:"masters/wavefont.designspace", pattern:/<rules>([^]*?)<\/rules>/i, template: '<rules></rules>'},
+    description: 'Build font-face UFOs',
+    prompts: [{name: 'faceName', message: 'font-face name', type: 'text'}],
+		actions: ({faceName}) => {
+      const face = FONTFACE[faceName]
 
-      ...master({values, maxValue, maxWidth, align: 0, width: 1, radius: 0}),
-      ...master({values, maxValue, maxWidth, align: 1, width: 1, radius: 0}),
-      ...master({values, maxValue, maxWidth, align: 0, width: 1, radius: 50}),
+      // convert value to units-per-em (0-100 → 0-2048)
+      const upm = (v) => (UPM * v / face.max)
+      const hex = (v) => v.toString(16).toUpperCase().padStart(4,0)
+      const uni = (v) => Array.isArray(v) ? v.map(v => `u${hex(parseInt(v))}`).join(',') : `u${hex(parseInt(v))}`
 
-      ...master({values, maxValue, maxWidth, align: 0, width: maxWidth, radius: 0}),
-      ...master({values, maxValue, maxWidth, align: 1, width: maxWidth, radius: 0}),
-      ...master({values, maxValue, maxWidth, align: 0, width: maxWidth, radius: 50}),
+      // uni 1 → uni0001
+      plop.setHelper('uni', uni);
 
-      // write clipping glyphs rules
-      {type: "modify", path:"masters/wavefont.designspace", pattern:/<rules>([^]*?)<\/rules>/i, template: `<rules>${
-        values.filter(({clip})=>clip).map(({value}) => `
-        <rule name="clip">
-            <conditionset><condition minimum="${value}" maximum="${maxWidth}" name="width" /></conditionset>
-            <sub name="_${value}" with="_${value}.clip"/>
-        </rule>`).join('')
-      }</rules>`},
+      // upm x →
+      plop.setHelper('upm', upm);
 
-      // write GlyphsOrderAndAlias
-      {type: "modify", path:"masters/GlyphOrderAndAliasDB", pattern:/#values[^]*#\/values/i, template: `#values\n${
-        values.map(({code, value}) => `_${value}\t_${value}\tuni${hex(code)}`).join('\n')
-      }\n${
-        values.filter(({clip}) => clip).map(({value}) => `_${value}.clip\t_${value}.clip`).join('\n')
-      }\n#/values`}
-    ]
-	});
-};
+      // hex x →
+      plop.setHelper('hex', hex);
 
-// create actions to build one master file
-function master({values, maxValue, maxWidth, align, width, radius}){
-  return [
-    // populate ufo skeleton
-    {
-      type: 'addMany',
-      force: true,
-      verbose: false,
-      destination: `masters/${width}_${align}_${radius}.ufo/`,
-      base: 'masters/_template.ufo',
-      templateFiles: 'masters/_template.ufo/**/*',
-      data: { width: upm(width), baseline: upm(maxValue * align), maxValue: upm(maxValue), values, step: upm(1) }
-    },
-    // append master
-    {
-      type: "modify",
-      path: "masters/wavefont.designspace",
-      pattern: '</sources>',
-      template: `
-        <source familyname="Wavefont" filename="${width}_${align}_${radius}.ufo" name="Master_${width}_${align}_${radius}" stylename="Master ${width}_${align}_${radius}">
-            <location>
-                <dimension name="width" xvalue="${width}" />
-                <dimension name="align" xvalue="${align}" />
-                <dimension name="radius" xvalue="${radius}" />
-            </location>
-        </source></sources>`
-    },
-    ...values.map(({code, value}) => ({
-      verbose: false,
-      force: true,
-      type: 'add',
-      path: `masters/${width}_${align}_${radius}.ufo/glyphs/${value}.glif`,
-      template: glyph({value, width, align, code, maxValue, maxWidth, radius: (radius && 1) * width*.5})
-    })),
-    // substitute glyphs lower than max width to compensate wrong interpolation on width clipping
-    // the logic: big widths would have big radius, but since it's limited to value, we interpolate between wrong 1 width and max width
-    ...values.filter(({clip}) => clip).map(({value}) => ({
-      verbose: false,
-      force: true,
-      type: 'add',
-      path: `masters/${width}_${align}_${radius}.ufo/glyphs/${value}.clip.glif`,
-      template: glyph({value, width, align, maxValue, maxWidth, radius: (radius && 1) * value*.5})
-    }))
-  ]
-}
+      // sub 1 2 → -1
+      plop.setHelper('sub', (a,b) => a-b);
 
+      // half 1 → .5
+      plop.setHelper('half', (a) => a*.5);
 
-const glyph = ({value, width, align, code, maxValue, radius, maxWidth}) => {
-  const baseline=align * maxValue,
-        R=radius,
+      // int 12.3 → 12
+      plop.setHelper('int', v => v.toFixed(3))
+
+      const axes = {
+        width: {tag: 'wdth', min: 1, max: 108, default: 1, clip: face.values.filter((c, v) => upm(v) < 108)},
+        align: {tag: 'algn', min: 0, max: 1, default: 0},
+        radius: {tag: 'radi', min: 0, max: 50, default: 0}
+      }
+
+      const masters = {
+        [`w${axes.width.min}a${axes.align.min}r${axes.align.min}`]: {width: axes.width.min, align: axes.align.min, radius: axes.radius.min},
+        [`w${axes.width.min}a${axes.align.max}r${axes.align.min}`]: {width: axes.width.min, align: axes.align.max, radius: axes.radius.min},
+        [`w${axes.width.max}a${axes.align.min}r${axes.align.min}`]: {width: axes.width.max, align: axes.align.min, radius: axes.radius.min },
+        [`w${axes.width.max}a${axes.align.max}r${axes.align.min}`]: {width: axes.width.max, align: axes.align.max, radius: axes.radius.min },
+        [`w${axes.width.min}a${axes.align.min}r${axes.align.max}`]: {width: axes.width.min, align: axes.align.min, radius: axes.radius.max },
+        [`w${axes.width.min}a${axes.align.max}r${axes.align.max}`]: {width: axes.width.min, align: axes.align.max, radius: axes.radius.max},
+        [`w${axes.width.max}a${axes.align.min}r${axes.align.max}`]: {width: axes.width.max, align: axes.align.min, radius: axes.radius.max },
+        [`w${axes.width.max}a${axes.align.max}r${axes.align.max}`]: {width: axes.width.max, align: axes.align.max, radius: axes.radius.max},
+      }
+
+      return [
+        // populate skeleton
+        {
+          type: 'addMany',
+          force: true,
+          destination: `${faceName}/`,
+          base: '_wavefont',
+          templateFiles: '_wavefont/*',
+          data: { face, masters, axes }
+        },
+        ...Object.keys(masters).map(name => master({name, ...masters[name]})).flat()
+      ]
+
+      // actions to build one master file
+      function master({name, align, width, radius}){
+        const destination = `${face.name}/${name}.ufo`
+        return [
+          // ufo skeleton
+          {
+            type: 'addMany',
+            force: true,
+            destination: `${destination}/`,
+            base: '_wavefont/master.ufo',
+            templateFiles: '_wavefont/master.ufo/**/*',
+            data: { axes, width, face }
+          },
+          // caps
+          {
+            force: true,
+            type: 'add',
+            path: `${destination}/glyphs/cap.glif`,
+            template: cap({height: radius*.01*width*2, radius: radius*.01*width, width, name: 'cap', align: 0 })
+          },
+          // values
+          ...face.values.map((code, value) => ({
+            force: true,
+            type: 'add',
+            path: `${destination}/glyphs/${value}.glif`,
+            template: bar({value, code, width, name: `_${value}`, capSize: radius*.01*width, align })
+          })),
+          // substitute glyphs lower than max width to compensate wrong interpolation on width clipping
+          // the logic: big widths would have big radius, but since it's limited to value, we interpolate between wrong 1 width and max width
+          ...axes.width.clip.map((code, value) => value && ({
+            force: true,
+            type: 'add',
+            path: `${destination}/glyphs/${value}.clip.glif`,
+            template: cap({height: upm(value), width, name: `_${value}.clip`, radius: (radius && 1 ) * upm(value) * .5, align })
+          })).filter(Boolean)
+        ]
+      }
+
+      function cap({width, height, name, code, radius:R, align}) {
         // bezier curve shift to approximate border-radius
-        Rc = R * (1 - .55),
-        // alignment constant shift
-        Ca = (maxValue - value) * align,
-        fold = maxWidth * 2
+        const Rc = R * (1 - .55), yshift = (UPM - height) * align
 
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<glyph name="_" format="2">
-  <advance width="${upm(width)}"/>
-  ${code ? `<unicode hex="${hex(code)}"/>` : ``}
-  ${value ? `<outline>
-    ${
-      // use overlap strategy for glyphs over double-maxWidth
-      // value > fold ?
-      // `<component base="_${fold}" yOffset="${upm(Ca)}"/><component base="_${fold}" yOffset="${upm(value-fold + Ca)}"/>`
-      // :
-      `<contour>
-      <point x="0" y="${upm(value-Rc + Ca)}"/>
+        return dedent`
+          <?xml version="1.0" encoding="UTF-8"?>
+          <glyph name="${name}" format="2">
+            <advance width="${width}"/>
+            ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
+            <outline>
+              <contour>
+                  <point x="0" y="{{int ${height-Rc + yshift} }}"/>
 
-      <point x="${upm(Rc)}" y="${upm(value + Ca)}"/>
-      <point x="${upm(R)}" y="${upm(value + Ca)}" type="curve" smooth="yes"/>
-      <point x="${upm(width-R)}" y="${upm(value + Ca)}" type="line"/>
-      <point x="${upm(width-Rc)}" y="${upm(value + Ca)}"/>
+                  <point x="{{int ${Rc} }}" y="{{int ${height + yshift} }}"/>
+                  <point x="{{int ${R} }}" y="{{int ${height + yshift} }}" type="curve" smooth="yes"/>
+                  <point x="{{int ${width-R} }}" y="{{int ${height + yshift} }}" type="line"/>
+                  <point x="{{int ${width-Rc} }}" y="{{int ${height + yshift} }}"/>
 
-      <point x="${upm(width)}" y="${upm(value-Rc + Ca)}"/>
-      <point x="${upm(width)}" y="${upm(value-R + Ca)}" type="curve" smooth="yes"/>
-      <point x="${upm(width)}" y="${upm(R + Ca)}" type="line"/>
-      <point x="${upm(width)}" y="${upm(Rc + Ca)}"/>
+                  <point x="{{int ${width} }}" y="{{int ${height-Rc + yshift} }}"/>
+                  <point x="{{int ${width} }}" y="{{int ${height-R + yshift} }}" type="curve" smooth="yes"/>
+                  <point x="{{int ${width} }}" y="{{int ${R + yshift} }}" type="line"/>
+                  <point x="{{int ${width} }}" y="{{int ${Rc + yshift} }}"/>
 
-      <point x="${upm(width-Rc)}" y="${upm(Ca)}"/>
-      <point x="${upm(width-R)}" y="${upm(Ca)}" type="curve" smooth="yes"/>
-      <point x="${upm(R)}" y="${upm(Ca)}" type="line"/>
-      <point x="${upm(Rc)}" y="${upm(Ca)}"/>
+                  <point x="{{int ${width-Rc} }}" y="{{int ${0 + yshift} }}"/>
+                  <point x="{{int ${width-R} }}" y="{{int ${0 + yshift} }}" type="curve" smooth="yes"/>
+                  <point x="{{int ${R} }}" y="{{int ${0 + yshift} }}" type="line"/>
+                  <point x="{{int ${Rc} }}" y="{{int ${0 + yshift} }}"/>
 
-      <point x="0" y="${upm(Rc + Ca)}"/>
-      <point x="0" y="${upm(R + Ca)}" type="curve" smooth="yes"/>
-      <point x="0" y="${upm(value-R + Ca)}" type="line"/>
-      </contour>`}
-  </outline>` : ``}
-</glyph>`
+                  <point x="0" y="{{int ${Rc + yshift} }}"/>
+                  <point x="0" y="{{int ${R + yshift} }}" type="curve" smooth="yes"/>
+                  <point x="0" y="{{int ${height-R + yshift} }}" type="line"/>
+              </contour>
+            </outline>
+          </glyph>
+        `
+      }
+
+      function bar({value, code, width, capSize, name, align}) {
+        const yshift = upm((face.max - value) * align)
+        return dedent`
+          <?xml version="1.0" encoding="UTF-8"?>
+          <glyph name="${name}" format="2">
+            <advance width="${width}"/>
+            ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
+            ${face.alias[value]?.map(code => `<unicode hex="{{hex ${code} }}"/>`).join('') || ``}
+            ${value ? `<outline>
+              <component base="cap" yOffset="{{int ${yshift}}}" />
+              <component base="cap" yOffset="{{int ${upm(value) - capSize*2 + yshift}}}" />
+              <contour>
+                <point x="0" y="{{int ${yshift + capSize}}}" type="line"/>
+                <point x="0" y="{{int ${upm(value) + yshift - capSize}}}" type="line"/>
+                <point x="${width}" y="{{int ${upm(value) + yshift - capSize}}}" type="line"/>
+                <point x="${width}" y="{{int ${yshift + capSize}}}" type="line"/>
+              </contour>
+            </outline>` : ``}
+          </glyph>
+        `
+      }
+    }
+  });
 }
 
-// convert value to units-per-em (0-100 → 0-2048)
-const upm = (v) => (v * 20.48).toFixed(0)
-
-const hex = (v) => v.toString(16).toUpperCase().padStart(4,0)
+function i(v) {return v}

@@ -3,7 +3,6 @@ table STAT {
   ElidedFallbackName { name "Regular"; };
 
   DesignAxis wdth 0 { name "Width"; };
-  DesignAxis algn 1 { name "Align"; };
 
   AxisValue {
      location wdth 10 1 100;
@@ -27,3 +26,4 @@ table STAT {
   };
 
 } STAT;
+
