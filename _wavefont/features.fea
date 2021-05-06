@@ -1,10 +1,15 @@
 @value = [{{#each face.values as |code value|}}_{{ value }} {{/each}}];
 @value.clip = [{{#each axes.width.clip as |code value|}}{{#if value}}_{{ value }}.clip {{/if}}{{/each}}];
 
-anchorDef 0 0 entry;
+# anchorDef 0 0 entry;
 
 feature mark {
-  pos cursive [@value @value.clip] <anchor entry> <anchor NULL>;
-  pos cursive up <anchor entry> <anchor 0 {{upm 1 }}>;
-  pos cursive down <anchor entry> <anchor 0 -{{upm 1 }}>;
+  # pos cursive [@value @value.clip] <anchor entry> <anchor NULL>;
+  # pos cursive up <anchor entry> <anchor 0 10>;
+  # pos cursive down <anchor entry> <anchor 0 -10>;
+  pos [@value @value.clip]' <0 10 0 0> up;
+  pos [@value @value.clip]' <0 20 0 0> up up;
+  pos [@value @value.clip]' <0 30 0 0> up up up;
+  pos [@value @value.clip]' <0 40 0 0> up up up up;
+  pos [@value @value.clip]' <0 50 0 0> up up up up up;
 } mark;
