@@ -120,7 +120,7 @@ Tag | Range | Meaning
 ## Hints
 
 * Charcodes fall under marking characters unicode category, ie. recognized as word by regexp and can be selected with <kbd>Ctrl</kbd> + <kbd>→</kbd> / double click.
-<!-- * Vertical position of a bar can be adjusted with accent grave <kbd>&nbsp;&#x0300;</kbd> (U+0300) for negative shift or accent acute <kbd>&nbsp;&#x0301;</kbd> (U+0301) for positive shift. One accent character adjusts vertical position by _1_, use multiple accents to shift for more than 1. -->
+* Vertical position of a bar can be adjusted via sequence of minus <kbd>-</kbd> (U+002D) or plus <kbd>+</kbd> (U+002B) characters for down/up offset correspondingly. Eg. `---\u0101` shifts bar 3 values down, `+\u105` shifts 1 value up.
 * Values below range are limited to 0, eg. _0x0ff_ in _wavefont100_ is mapped to 0.
 * Values above range are supported to some extent and then clipped, eg. _0x164_ (dec 101) in _wavefont100_ is supported and value above 108 is clipped.
 * Space, tab and other non-marking characters alias to _0_ value.

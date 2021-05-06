@@ -8,11 +8,11 @@
   font-style: normal;
   font-display: block;
   font-weight: 900;
-  /* src: url(./wavefont.ttf); */
+  src: url(./wavefont.ttf);
   /* src: url(./wavefont.otf); */
   /* src: url(./wavefont.min.otf); */
   /* src: url(./wavefont.woff); */
-  src: url(./wavefont.woff2);
+  /* src: url(./wavefont.woff2); */
 }
 @font-face {
   font-family: blank;
@@ -260,7 +260,7 @@ wavearea.textContent += `ĈĉċĊĉċčīıēģĹĶĲĺķĺĺĳĽĳĶĵĦČģĹ�
 wavearea.textContent += Array.from({length: 128}, (_,i) => (String.fromCharCode(0x100 + i-10))).join('') + '\t\t'
 
 // shift characters
-wavearea.textContent += `1̀2̀2̀1̀111\t\t`
+wavearea.textContent += `1+1++1+++1++++1 2+2++2+++2++++2 3+3++3+++3++++3 1-1--1---1----1 2-2--2---2----2 3-3--3---3----3\t\t`
 
 // aliases: 0-9, _, -, −, —, spaces
 wavearea.textContent += `01234.5678-9_a\t|lorem\t\t`

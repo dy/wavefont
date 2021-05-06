@@ -11,8 +11,6 @@ const MAX_CHAR = [`|`].map(v=>v.charCodeAt(0)) //`|｜ǀ∣│।`
 
 const BAR_CHAR = `▁▂▃▄▅▆▇█`.split('').map(v=>v.charCodeAt(0))
 
-const ASCII_CHAR = `!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\`abcdefghijklmnopqrstuvwxyz{|}~`.split('').map(v=>v.charCodeAt(0))
-
 const FONTFACE = {
   wavefont10: {
     name: 'wavefont10',
