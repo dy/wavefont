@@ -11,8 +11,8 @@
     <key>_{{ value }}</key><string>{{ value }}.glif</string>
     {{/each}}
 
-    {{#each axes.width.clip as |code value|}}
-    <key>_{{ value }}.clip</key><string>{{ value }}.clip.glif</string>
+    {{#each clip as |code value|}}
+    {{#if value}}<key>_{{ value }}.clip</key><string>{{ value }}.clip.glif</string>{{/if}}
     {{/each}}
   </dict>
 </plist>

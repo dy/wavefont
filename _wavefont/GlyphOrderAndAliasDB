@@ -3,8 +3,8 @@ up up uni0301
 down down uni0300
 cap cap
 
-{{#each axes.width.clip as |code value|}}
-_{{ value }}.clip _{{ value }}.clip
+{{#each clip as |code value|}}
+{{#if value}}_{{ value }}.clip _{{ value }}.clip{{/if}}
 {{/each}}
 
 {{#each face.values as |code value|}}

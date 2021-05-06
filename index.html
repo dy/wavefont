@@ -27,14 +27,15 @@
   resize: none;
   z-index: -1;
   word-break: break-all;
+  --wght: 10;
   --wdth: 50;
   --algn: 0;
   --size: 100px;
-  --track: 2px;
   --radi: 0;
+  /* --track: 2px; */
   font-size: var(--size);
-  letter-spacing: var(--track);
-  font-variation-settings: 'wdth' var(--wdth), 'algn' var(--algn), 'radi' var(--radi);
+  /* letter-spacing: var(--track); */
+  font-variation-settings: 'wght' var(--wght), 'wdth' var(--wdth), 'algn' var(--algn), 'radi' var(--radi);
   background-size: 100vw calc(var(--size) / 10);
   background-image: linear-gradient(to bottom, rgb(230, 245, 255) 1px, transparent 1px);
   background-attachment: local;
@@ -164,7 +165,11 @@ a {
 Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wavefont">2.1</a></small></sup>
 </h1>
 <div class="panel-field">
-  <label for="width">Width</label> <input id="width" type="range" min="1" value="42" step="1" max="108"/>
+  <label for="weight">Weight</label> <input id="weight" type="range" min="1" value="10" step="1" max="108"/>
+  <output id="weightValue"></output>
+</div>
+<div class="panel-field">
+  <label for="width">Width</label> <input id="width" type="range" min="1" value="50" step="1" max="1000"/>
   <output id="widthValue"></output>
 </div>
 <div class="panel-field">
@@ -179,10 +184,10 @@ Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wav
   <label for="size">Size</label> <input id="size" type="range" min="5" value="108" max="200" step="1"/>
   <output id="sizeValue"></output>
 </div>
-<div class="panel-field">
+<!-- <div class="panel-field">
   <label for="track">Tracking</label> <input id="track" type="range" min="-5" value="2" max="10" step="1"/>
   <output id="trackValue"></output>
-</div>
+</div> -->
 </div>
 </form>
 
@@ -199,6 +204,12 @@ Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wav
     widthValue.textContent = (+value).toFixed(0);
     wavearea.style.setProperty('--wdth', value)
   })();
+  (weight.oninput = e => {
+    let value = +weight.value;
+    weight.title = `'wght' ${value}`;
+    weightValue.textContent = (+value).toFixed(0);
+    wavearea.style.setProperty('--wght', value)
+  })();
   (align.oninput = e => {
     let value = +align.value;
     align.title = `'algn' ${value}`;
@@ -211,12 +222,12 @@ Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wav
     sizeValue.textContent = value + 'px';
     wavearea.style.setProperty('--size', value + 'px')
   })();
-  (track.oninput = e => {
-    let value = +track.value;
-    track.title = value;
-    trackValue.textContent = value + 'px';
-    wavearea.style.setProperty('--track', value + 'px')
-  })();
+  // (track.oninput = e => {
+  //   let value = +track.value;
+  //   track.title = value;
+  //   trackValue.textContent = value + 'px';
+  //   wavearea.style.setProperty('--track', value + 'px')
+  // })();
   (radius.oninput = e => {
     let value = +radius.value;
     radius.title = value;

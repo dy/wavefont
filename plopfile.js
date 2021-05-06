@@ -82,21 +82,33 @@ module.exports = function (plop) {
       plop.setHelper('int', v => v.toFixed(3))
 
       const axes = {
-        width: {tag: 'wdth', min: 1, max: 108, default: 1, clip: face.values.filter((c, v) => upm(v) < 108)},
+        width: {tag: 'wdth', min: 1, max: 1000, default: 100},
+        weight: {tag: 'wght', min: 1, max: 108, default: 1},
         align: {tag: 'algn', min: 0, max: 1, default: 0},
         radius: {tag: 'radi', min: 0, max: 50, default: 0}
       }
+      const {width, weight, align, radius} = axes
 
-      const masters = {
-        [`w${axes.width.min}a${axes.align.min}r${axes.align.min}`]: {width: axes.width.min, align: axes.align.min, radius: axes.radius.min},
-        [`w${axes.width.min}a${axes.align.max}r${axes.align.min}`]: {width: axes.width.min, align: axes.align.max, radius: axes.radius.min},
-        [`w${axes.width.max}a${axes.align.min}r${axes.align.min}`]: {width: axes.width.max, align: axes.align.min, radius: axes.radius.min },
-        [`w${axes.width.max}a${axes.align.max}r${axes.align.min}`]: {width: axes.width.max, align: axes.align.max, radius: axes.radius.min },
-        [`w${axes.width.min}a${axes.align.min}r${axes.align.max}`]: {width: axes.width.min, align: axes.align.min, radius: axes.radius.max },
-        [`w${axes.width.min}a${axes.align.max}r${axes.align.max}`]: {width: axes.width.min, align: axes.align.max, radius: axes.radius.max},
-        [`w${axes.width.max}a${axes.align.min}r${axes.align.max}`]: {width: axes.width.max, align: axes.align.min, radius: axes.radius.max },
-        [`w${axes.width.max}a${axes.align.max}r${axes.align.max}`]: {width: axes.width.max, align: axes.align.max, radius: axes.radius.max},
-      }
+      const clip = face.values.filter((c, v) => upm(v) < 108)
+
+      const masters = {}
+      const k = (w=1,b,a,r) => `w${w}b${b}a${a}r${r}`, v = (w=1,b,a,r) => ({width:w, weight:b, align:a, radius:r})
+      masters[k(width.min, weight.min, align.min, radius.min)] = v(width.min, weight.min, align.min, radius.min)
+      masters[k(width.min, weight.min, align.min, radius.max)] = v(width.min, weight.min, align.min, radius.max)
+      masters[k(width.min, weight.min, align.max, radius.min)] = v(width.min, weight.min, align.max, radius.min)
+      masters[k(width.min, weight.min, align.max, radius.max)] = v(width.min, weight.min, align.max, radius.max)
+      masters[k(width.min, weight.max, align.min, radius.min)] = v(width.min, weight.max, align.min, radius.min)
+      masters[k(width.min, weight.max, align.min, radius.max)] = v(width.min, weight.max, align.min, radius.max)
+      masters[k(width.min, weight.max, align.max, radius.min)] = v(width.min, weight.max, align.max, radius.min)
+      masters[k(width.min, weight.max, align.max, radius.max)] = v(width.min, weight.max, align.max, radius.max)
+      masters[k(width.max, weight.min, align.min, radius.min)] = v(width.max, weight.min, align.min, radius.min)
+      masters[k(width.max, weight.min, align.min, radius.max)] = v(width.max, weight.min, align.min, radius.max)
+      masters[k(width.max, weight.min, align.max, radius.min)] = v(width.max, weight.min, align.max, radius.min)
+      masters[k(width.max, weight.min, align.max, radius.max)] = v(width.max, weight.min, align.max, radius.max)
+      masters[k(width.max, weight.max, align.min, radius.min)] = v(width.max, weight.max, align.min, radius.min)
+      masters[k(width.max, weight.max, align.min, radius.max)] = v(width.max, weight.max, align.min, radius.max)
+      masters[k(width.max, weight.max, align.max, radius.min)] = v(width.max, weight.max, align.max, radius.min)
+      masters[k(width.max, weight.max, align.max, radius.max)] = v(width.max, weight.max, align.max, radius.max)
 
       return [
         // populate skeleton
@@ -106,13 +118,13 @@ module.exports = function (plop) {
           destination: `${faceName}/`,
           base: '_wavefont',
           templateFiles: '_wavefont/*',
-          data: { face, masters, axes }
+          data: { face, masters, axes, clip }
         },
         ...Object.keys(masters).map(name => master({name, ...masters[name]})).flat()
       ]
 
       // actions to build one master file
-      function master({name, align, width, radius}){
+      function master({name, weight, align, width, radius}){
         const destination = `${face.name}/${name}.ufo`
         return [
           // ufo skeleton
@@ -122,41 +134,41 @@ module.exports = function (plop) {
             destination: `${destination}/`,
             base: '_wavefont/master.ufo',
             templateFiles: '_wavefont/master.ufo/**/*',
-            data: { axes, width, face }
+            data: { width, weight, align, radius, axes, face, clip }
           },
           // caps
           {
             force: true,
             type: 'add',
             path: `${destination}/glyphs/cap.glif`,
-            template: cap({height: radius*.01*width*2, radius: radius*.01*width, width, name: 'cap', align: 0 })
+            template: cap({height: radius*.01*weight*2, width, radius: radius*.01*weight, weight, name: 'cap', align: 0 })
           },
           // values
           ...face.values.map((code, value) => ({
             force: true,
             type: 'add',
             path: `${destination}/glyphs/${value}.glif`,
-            template: bar({value, code, width, name: `_${value}`, capSize: radius*.01*width, align })
+            template: bar({value, code, weight, width, name: `_${value}`, capSize: radius*.01*weight, align })
           })),
-          // substitute glyphs lower than max width to compensate wrong interpolation on width clipping
-          // the logic: big widths would have big radius, but since it's limited to value, we interpolate between wrong 1 width and max width
-          ...axes.width.clip.map((code, value) => value && ({
+          // substitute glyphs lower than max weight to compensate wrong interpolation on weight clipping
+          // the logic: big weights would have big radius, but since it's limited to value, we interpolate between wrong 1 weight and max weight
+          ...clip.map((code, value) => value && ({
             force: true,
             type: 'add',
             path: `${destination}/glyphs/${value}.clip.glif`,
-            template: cap({height: upm(value), width, name: `_${value}.clip`, radius: (radius && 1 ) * upm(value) * .5, align })
+            template: cap({height: upm(value), weight, width, name: `_${value}.clip`, radius: (radius && 1 ) * upm(value) * .5, align })
           })).filter(Boolean)
         ]
       }
 
-      function cap({width, height, name, code, radius:R, align}) {
+      function cap({width, weight, height, name, code, radius:R, align}) {
         // bezier curve shift to approximate border-radius
         const Rc = R * (1 - .55), yshift = (UPM - height) * align
 
         return dedent`
           <?xml version="1.0" encoding="UTF-8"?>
           <glyph name="${name}" format="2">
-            <advance width="${width}"/>
+            <advance width="${weight}"/>
             ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
             <outline>
               <contour>
@@ -164,16 +176,16 @@ module.exports = function (plop) {
 
                   <point x="{{int ${Rc} }}" y="{{int ${height + yshift} }}"/>
                   <point x="{{int ${R} }}" y="{{int ${height + yshift} }}" type="curve" smooth="yes"/>
-                  <point x="{{int ${width-R} }}" y="{{int ${height + yshift} }}" type="line"/>
-                  <point x="{{int ${width-Rc} }}" y="{{int ${height + yshift} }}"/>
+                  <point x="{{int ${weight-R} }}" y="{{int ${height + yshift} }}" type="line"/>
+                  <point x="{{int ${weight-Rc} }}" y="{{int ${height + yshift} }}"/>
 
-                  <point x="{{int ${width} }}" y="{{int ${height-Rc + yshift} }}"/>
-                  <point x="{{int ${width} }}" y="{{int ${height-R + yshift} }}" type="curve" smooth="yes"/>
-                  <point x="{{int ${width} }}" y="{{int ${R + yshift} }}" type="line"/>
-                  <point x="{{int ${width} }}" y="{{int ${Rc + yshift} }}"/>
+                  <point x="{{int ${weight} }}" y="{{int ${height-Rc + yshift} }}"/>
+                  <point x="{{int ${weight} }}" y="{{int ${height-R + yshift} }}" type="curve" smooth="yes"/>
+                  <point x="{{int ${weight} }}" y="{{int ${R + yshift} }}" type="line"/>
+                  <point x="{{int ${weight} }}" y="{{int ${Rc + yshift} }}"/>
 
-                  <point x="{{int ${width-Rc} }}" y="{{int ${0 + yshift} }}"/>
-                  <point x="{{int ${width-R} }}" y="{{int ${0 + yshift} }}" type="curve" smooth="yes"/>
+                  <point x="{{int ${weight-Rc} }}" y="{{int ${0 + yshift} }}"/>
+                  <point x="{{int ${weight-R} }}" y="{{int ${0 + yshift} }}" type="curve" smooth="yes"/>
                   <point x="{{int ${R} }}" y="{{int ${0 + yshift} }}" type="line"/>
                   <point x="{{int ${Rc} }}" y="{{int ${0 + yshift} }}"/>
 
@@ -186,12 +198,12 @@ module.exports = function (plop) {
         `
       }
 
-      function bar({value, code, width, capSize, name, align}) {
+      function bar({value, code, width, weight, capSize, name, align}) {
         const yshift = upm((face.max - value) * align)
         return dedent`
           <?xml version="1.0" encoding="UTF-8"?>
           <glyph name="${name}" format="2">
-            <advance width="${width}"/>
+            <advance width="${weight}"/>
             ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
             ${face.alias[value]?.map(code => `<unicode hex="{{hex ${code} }}"/>`).join('') || ``}
             ${value ? `<outline>
@@ -200,8 +212,8 @@ module.exports = function (plop) {
               <contour>
                 <point x="0" y="{{int ${yshift + capSize}}}" type="line"/>
                 <point x="0" y="{{int ${upm(value) + yshift - capSize}}}" type="line"/>
-                <point x="${width}" y="{{int ${upm(value) + yshift - capSize}}}" type="line"/>
-                <point x="${width}" y="{{int ${yshift + capSize}}}" type="line"/>
+                <point x="${weight}" y="{{int ${upm(value) + yshift - capSize}}}" type="line"/>
+                <point x="${weight}" y="{{int ${yshift + capSize}}}" type="line"/>
               </contour>
             </outline>` : ``}
           </glyph>
