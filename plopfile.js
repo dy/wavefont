@@ -5,7 +5,7 @@ const UPM = 1000
 
 const ZERO_CHAR = ` \t`.split('').map(v=>v.charCodeAt(0)) //[0x09,0x0a,0x0b,0x0c,0x0d,0x20,0x85,0xa0,0x1680,0x180e,0x2000,0x2001,0x2002,0x2003,0x2004,0x2005,0x2006,0x2007,0x2008,0x2009,0x200a,0x200b,0x200c,0x200d,0x2028,0x2029,0x202f,0x205f,0x2060,0x2061,0x2062,0x3000,0xfeff].map(String.fromCharCode)
 
-const ONE_CHAR = `.-_`.split('').map(v=>v.charCodeAt(0)) //`.-–—―_¯ˉˍ˗‐‑‒‾⁃⁻₋−⎯⏤─➖⸺⸻𐆑`
+const ONE_CHAR = `._`.split('').map(v=>v.charCodeAt(0)) //`.-–—―_¯ˉˍ˗‐‑‒‾⁃⁻₋−⎯⏤─➖⸺⸻𐆑`
 
 const MAX_CHAR = [`|`].map(v=>v.charCodeAt(0)) //`|｜ǀ∣│।`
 
@@ -82,7 +82,7 @@ module.exports = function (plop) {
       plop.setHelper('int', v => v.toFixed(3))
 
       const axes = {
-        width: {tag: 'wdth', min: 1, max: 1000, default: 100},
+        width: {tag: 'wdth', min: 1, max: 1000, default: 1000},
         weight: {tag: 'wght', min: 1, max: 108, default: 1},
         align: {tag: 'algn', min: 0, max: 1, default: 0},
         radius: {tag: 'radi', min: 0, max: 50, default: 0}
@@ -141,7 +141,7 @@ module.exports = function (plop) {
             force: true,
             type: 'add',
             path: `${destination}/glyphs/cap.glif`,
-            template: cap({height: radius*.01*weight*2, width, radius: radius*.01*weight, weight, name: 'cap', align: 0 })
+            template: cap({height: radius*.01*weight*2, width:0, radius: radius*.01*weight, weight, name: 'cap', align: 0 })
           },
           // values
           ...face.values.map((code, value) => ({
@@ -163,35 +163,36 @@ module.exports = function (plop) {
 
       function cap({width, weight, height, name, code, radius:R, align}) {
         // bezier curve shift to approximate border-radius
-        const Rc = R * (1 - .55), yshift = (UPM - height) * align
+        const Rc = R * (1 - .55), yshift = (UPM - height) * align,
+              mid = width * .5, l = mid - weight*.5, r = mid + weight*.5
 
         return dedent`
           <?xml version="1.0" encoding="UTF-8"?>
           <glyph name="${name}" format="2">
-            <advance width="${weight}"/>
+            <advance width="${width}"/>
             ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
             <outline>
               <contour>
-                  <point x="0" y="{{int ${height-Rc + yshift} }}"/>
+                  <point x="{{int ${l}}}" y="{{int ${height-Rc + yshift} }}"/>
 
-                  <point x="{{int ${Rc} }}" y="{{int ${height + yshift} }}"/>
-                  <point x="{{int ${R} }}" y="{{int ${height + yshift} }}" type="curve" smooth="yes"/>
-                  <point x="{{int ${weight-R} }}" y="{{int ${height + yshift} }}" type="line"/>
-                  <point x="{{int ${weight-Rc} }}" y="{{int ${height + yshift} }}"/>
+                  <point x="{{int ${l+Rc} }}" y="{{int ${height + yshift} }}"/>
+                  <point x="{{int ${l+R} }}" y="{{int ${height + yshift} }}" type="curve" smooth="yes"/>
+                  <point x="{{int ${r-R} }}" y="{{int ${height + yshift} }}" type="line"/>
+                  <point x="{{int ${r-Rc} }}" y="{{int ${height + yshift} }}"/>
 
-                  <point x="{{int ${weight} }}" y="{{int ${height-Rc + yshift} }}"/>
-                  <point x="{{int ${weight} }}" y="{{int ${height-R + yshift} }}" type="curve" smooth="yes"/>
-                  <point x="{{int ${weight} }}" y="{{int ${R + yshift} }}" type="line"/>
-                  <point x="{{int ${weight} }}" y="{{int ${Rc + yshift} }}"/>
+                  <point x="{{int ${r} }}" y="{{int ${height-Rc + yshift} }}"/>
+                  <point x="{{int ${r} }}" y="{{int ${height-R + yshift} }}" type="curve" smooth="yes"/>
+                  <point x="{{int ${r} }}" y="{{int ${R + yshift} }}" type="line"/>
+                  <point x="{{int ${r} }}" y="{{int ${Rc + yshift} }}"/>
 
-                  <point x="{{int ${weight-Rc} }}" y="{{int ${0 + yshift} }}"/>
-                  <point x="{{int ${weight-R} }}" y="{{int ${0 + yshift} }}" type="curve" smooth="yes"/>
-                  <point x="{{int ${R} }}" y="{{int ${0 + yshift} }}" type="line"/>
-                  <point x="{{int ${Rc} }}" y="{{int ${0 + yshift} }}"/>
+                  <point x="{{int ${r-Rc} }}" y="{{int ${0 + yshift} }}"/>
+                  <point x="{{int ${r-R} }}" y="{{int ${0 + yshift} }}" type="curve" smooth="yes"/>
+                  <point x="{{int ${l+R} }}" y="{{int ${0 + yshift} }}" type="line"/>
+                  <point x="{{int ${l+Rc} }}" y="{{int ${0 + yshift} }}"/>
 
-                  <point x="0" y="{{int ${Rc + yshift} }}"/>
-                  <point x="0" y="{{int ${R + yshift} }}" type="curve" smooth="yes"/>
-                  <point x="0" y="{{int ${height-R + yshift} }}" type="line"/>
+                  <point x="{{int ${l} }}" y="{{int ${Rc + yshift} }}"/>
+                  <point x="{{int ${l} }}" y="{{int ${R + yshift} }}" type="curve" smooth="yes"/>
+                  <point x="{{int ${l} }}" y="{{int ${height-R + yshift} }}" type="line"/>
               </contour>
             </outline>
           </glyph>
@@ -199,21 +200,22 @@ module.exports = function (plop) {
       }
 
       function bar({value, code, width, weight, capSize, name, align}) {
-        const yshift = upm((face.max - value) * align)
+        const yshift = upm((face.max - value) * align),
+              mid = width * .5, l = mid - weight*.5, r = mid + weight*.5
         return dedent`
           <?xml version="1.0" encoding="UTF-8"?>
           <glyph name="${name}" format="2">
-            <advance width="${weight}"/>
+            <advance width="${width}"/>
             ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
             ${face.alias[value]?.map(code => `<unicode hex="{{hex ${code} }}"/>`).join('') || ``}
             ${value ? `<outline>
-              <component base="cap" yOffset="{{int ${yshift}}}" />
-              <component base="cap" yOffset="{{int ${upm(value) - capSize*2 + yshift}}}" />
+              <component base="cap" xOffset="{{int ${mid}}}" yOffset="{{int ${yshift}}}" />
+              <component base="cap" xOffset="{{int ${mid}}}" yOffset="{{int ${upm(value) - capSize*2 + yshift}}}" />
               <contour>
-                <point x="0" y="{{int ${yshift + capSize}}}" type="line"/>
-                <point x="0" y="{{int ${upm(value) + yshift - capSize}}}" type="line"/>
-                <point x="${weight}" y="{{int ${upm(value) + yshift - capSize}}}" type="line"/>
-                <point x="${weight}" y="{{int ${yshift + capSize}}}" type="line"/>
+                <point x="{{int ${l}}}" y="{{int ${yshift + capSize}}}" type="line"/>
+                <point x="{{int ${l}}}" y="{{int ${upm(value) + yshift - capSize}}}" type="line"/>
+                <point x="{{int ${r}}}" y="{{int ${upm(value) + yshift - capSize}}}" type="line"/>
+                <point x="{{int ${r}}}" y="{{int ${yshift + capSize}}}" type="line"/>
               </contour>
             </outline>` : ``}
           </glyph>

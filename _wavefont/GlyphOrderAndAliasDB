@@ -1,6 +1,6 @@
 .notdef	.notdef
-up up uni0301
-down down uni0300
+up up uni002B
+down down uni002D
 cap cap
 
 {{#each clip as |code value|}}
