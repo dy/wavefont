@@ -12,7 +12,7 @@
     {{/each}}
 
     {{#each axes.width.clip as |code value|}}
-    <key>_{{ value }}.clip</key><string>{{ value }}.clip.glif</string>
+    {{#if value}}<key>_{{ value }}.clip</key><string>{{ value }}.clip.glif</string>{{/if}}
     {{/each}}
   </dict>
 </plist>

@@ -235,6 +235,10 @@ Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wav
 // // 0x100 - 0x1ff
 // wavearea.textContent += Array(100).fill(0).map((v,i)=> String.fromCharCode(0x100+i)).join('')
 
+
+// clipping
+wavearea.textContent += Array.from({length: 128}, (_,i) => (String.fromCharCode(0x100 + i-10))).join('') + '\t\t'
+
 // sawtooth
 wavearea.textContent += Array.from({length: 108}, (_,i) => String.fromCharCode(0x100 + (i * 2) % 100)).join('') + '\t\t'
 
@@ -255,9 +259,6 @@ wavearea.textContent += Array.from({length: 108}, (_,i) => (String.fromCharCode(
 
 // speech
 wavearea.textContent += `ĈĉċĊĉċčīıēģĹĶĲĺķĺĺĳĽĳĶĵĦČģĹĪĞĠĝġđČĐĤĨĳħģĚģĢıĞĢİķīİĳķĴĲĪĬģęĬķĦĒěěėďĒĚĪĢēČċěĩĘđēĞĝĚČčĖħĨĝđđĒīīĚďĕĚġĔċċĖĭİĮğĔĢĤĮĪĘįĹĵĶĳįĸııĳĢĚĭĥĪıĦĦĨĤĪġĤĴĭĵįĐĕĠĤħĦĨĩĪĶĶĲĹĲįĮĪķĺĵĹĶİĲįĪİĨĮĩġĤĜğĘğīĞęīĬĹĶĨįĲİĳĪıİİĸĴĶĮĭĳĵĭīĨĭħĬįĵĳĶįĤĨģĥĝĘĠĦĲĮĦıİįĸįıĵİĭİĩĬĢģħħīěĜġġĠĞĦĩīĹĵĺĶİĮĭİĲīīģĕĒČČďĐđċčďčċċċĉĉċĉĉĈĈċčėįĢĥłĻĲ\t\t`
-
-// clipping
-wavearea.textContent += Array.from({length: 128}, (_,i) => (String.fromCharCode(0x100 + i-10))).join('') + '\t\t'
 
 // shift characters
 wavearea.textContent += `1+1++1+++1++++1 2+2++2+++2++++2 3+3++3+++3++++3 1-1--1---1----1 2-2--2---2----2 3-3--3---3----3\t\t`
