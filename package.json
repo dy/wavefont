@@ -9,7 +9,7 @@
     "build-masterotfs": "buildmasterotfs --mkot -r,-omitMacNames -d wavefont100/wavefont.designspace",
     "build-otf": "npm run build-masterotfs && buildcff2vf -c -k -d wavefont100/wavefont.designspace -o ./wavefont.otf",
     "build-ttf": "fontmake --no-optimize-gvar -m wavefont100/wavefont.designspace -o variable --output-path ./wavefont.ttf",
-    "subroutinize": "shx cp ./wavefont.otf ./wavefont.min.otf && tx -cff2 +S +b ./wavefont.otf > ./table.CFF2 && sfntedit -a CFF2=./table.CFF2 ./wavefont.min.otf",
+    "subroutinize": "shx cp ./wavefont.otf ./wavefont.min.otf && tx -cff2 +S +b -o ./table.CFF2 -f ./wavefont.otf && sfntedit -a CFF2=./table.CFF2 ./wavefont.min.otf",
     "build-woff2": "fonttools ttLib.woff2 compress wavefont.otf"
   },
   "repository": {
