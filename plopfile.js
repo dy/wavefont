@@ -30,9 +30,20 @@ const FONTFACE = {
     min: 0,
     max: 100,
     alias: {
+      0: [...ZERO_CHAR],
       1: [...ONE_CHAR, BAR_CHAR[0]],
       14: [BAR_CHAR[1]], 28: [BAR_CHAR[2]], 42: [BAR_CHAR[3]], 56: [BAR_CHAR[4]], 72: [BAR_CHAR[5]], 86: [BAR_CHAR[6]],
-      10: [49], 20: [50], 30: [51], 40: [52], 50: [53], 60: [54], 70: [55], 80: [56], 90: [57],
+
+      // 0-9
+      10: [49],
+      20: [50],
+      30: [51],
+      40: [52],
+      50: [53],
+      60: [54],
+      70: [55],
+      80: [56],
+      90: [57],
       100: [...MAX_CHAR, BAR_CHAR[7]]
     },
     values: Array.from({length: 108}).map((v,i)=>(0x0100 + i))
@@ -46,11 +57,15 @@ const FONTFACE = {
 
 }
 
-const AXES = {
+const AXIS = {
   width: {tag: 'wdth', min: 1, max: 1000, default: 1},
-  weight: {tag: 'wght', min: 1, max: 1000, default: 1},
-  align: {tag: 'algn', min: 0, max: 1, default: 0},
-  radius: {tag: 'radi', min: 0, max: 50, default: 0}
+
+  // 400 weight value is required by google fonts https://rosaliewagner.notion.site/Variable-fonts-specifics-aa524f2bfb4e40c7b3e0749039304702#49f2297861a24410bdc8f4a7522dd9a6
+  // too large values don't make much sense here
+  weight: {tag: 'wght', min: 1, max: 400, default: 1},
+
+  align: {tag: 'ALGN', min: 0, max: 1, default: 0},
+  radius: {tag: 'RADI', min: 0, max: 50, default: 0}
 }
 
 module.exports = function (plop) {
@@ -58,7 +73,7 @@ module.exports = function (plop) {
     description: 'Build font-face UFOs',
     prompts: [{name: 'faceName', message: 'font-face name', type: 'text'}],
 		actions: ({faceName}) => {
-      const face = FONTFACE[faceName], axes = AXES
+      const face = FONTFACE[faceName], axes = AXIS
 
       // convert value to units-per-em (0-100 → 0-2048)
       const upm = (v) => (UPM * v / face.max)
@@ -89,7 +104,7 @@ module.exports = function (plop) {
       const {width, weight, align, radius} = axes
 
       // clip values are more horizontal than vertical - need alternative glyph
-      const clips = face.values.filter((c, v) => upm(v) < AXES.width.max)
+      const clips = face.values.filter((c, v) => upm(v) < AXIS.width.max)
 
       // create master cases
       const masters = {}
@@ -116,9 +131,9 @@ module.exports = function (plop) {
         {
           type: 'addMany',
           force: true,
-          destination: `${faceName}/`,
-          base: '_wavefont',
-          templateFiles: '_wavefont/*',
+          destination: `build/${faceName}/`,
+          base: 'sources/wavefont',
+          templateFiles: 'sources/wavefont/*',
           data: { face, masters, axes, clips }
         },
         ...Object.keys(masters).map(name => master({name, ...masters[name]})).flat()
@@ -126,15 +141,15 @@ module.exports = function (plop) {
 
       // actions to build one master file
       function master({name, weight, align, width, radius}){
-        const destination = `${face.name}/${name}.ufo`
+        const destination = `build/${face.name}/${name}.ufo`
         return [
           // ufo skeleton
           {
             type: 'addMany',
             force: true,
             destination: `${destination}/`,
-            base: '_wavefont/master.ufo',
-            templateFiles: '_wavefont/master.ufo/**/*',
+            base: 'sources/wavefont/master.ufo',
+            templateFiles: 'sources/wavefont/master.ufo/**/*',
             data: { width, weight, align, radius, axes, face, clips }
           },
           // caps
@@ -142,6 +157,7 @@ module.exports = function (plop) {
             force: true,
             type: 'add',
             path: `${destination}/glyphs/cap.glif`,
+            // radius converts from percent to upm
             template: cap({height: radius*.01*weight*2, width:0, radius: radius*.01*weight, weight, name: 'cap', align: 0 })
           },
           // values

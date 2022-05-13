@@ -15,6 +15,7 @@ Put [_wavefont.woff2_](./wavefont.woff2) into your project directory and use thi
 		font-family: wavefont;
 		src: url(./wavefont.woff2) format('woff2');
 	}
+	/* Optional: prevent flash of unstyled font */
 	@font-face {
 		font-family: blank;
 		/* src: url(./AdobeBlank2VF.ttf.woff2); */
@@ -28,9 +29,10 @@ Put [_wavefont.woff2_](./wavefont.woff2) into your project directory and use thi
 	}
 </style>
 
-<textarea id="waveform" class="wavefont" cols="100"></textarea>
+<textarea class="wavefont" cols="100"></textarea>
 
 <script>
+	// Display values from 0..100 range simply by adding 0x100 offset
 	waveform.textContent = values.map(v => String.fromCharCode(0x100 + v)).join('')
 </script>
 ```
