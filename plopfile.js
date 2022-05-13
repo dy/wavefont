@@ -44,11 +44,13 @@ const FONTFACE = {
     values: Array.from({length: 255})
   },
 
-  wavefont1000: {
-    name: 'wavefont1000',
-    min: 0, max: 1000,
-    values: Array.from({length: 1024})
-  }
+}
+
+const AXES = {
+  width: {tag: 'wdth', min: 1, max: 1000, default: 1},
+  weight: {tag: 'wght', min: 1, max: 1000, default: 1},
+  align: {tag: 'algn', min: 0, max: 1, default: 0},
+  radius: {tag: 'radi', min: 0, max: 50, default: 0}
 }
 
 module.exports = function (plop) {
@@ -56,11 +58,13 @@ module.exports = function (plop) {
     description: 'Build font-face UFOs',
     prompts: [{name: 'faceName', message: 'font-face name', type: 'text'}],
 		actions: ({faceName}) => {
-      const face = FONTFACE[faceName]
+      const face = FONTFACE[faceName], axes = AXES
 
       // convert value to units-per-em (0-100 → 0-2048)
       const upm = (v) => (UPM * v / face.max)
+      // int to 4-digit hex
       const hex = (v) => v.toString(16).toUpperCase().padStart(4,0)
+      // int to u0000 form
       const uni = (v) => Array.isArray(v) ? v.map(v => `u${hex(parseInt(v))}`).join(',') : `u${hex(parseInt(v))}`
 
       // uni 1 → uni0001
@@ -81,16 +85,13 @@ module.exports = function (plop) {
       // int 12.3 → 12
       plop.setHelper('int', v => v.toFixed(3))
 
-      const axes = {
-        width: {tag: 'wdth', min: 1, max: 1000, default: 1000},
-        weight: {tag: 'wght', min: 1, max: 108, default: 1},
-        align: {tag: 'algn', min: 0, max: 1, default: 0},
-        radius: {tag: 'radi', min: 0, max: 50, default: 0}
-      }
+      // variable font axes
       const {width, weight, align, radius} = axes
 
-      const clip = face.values.filter((c, v) => upm(v) < 108)
+      // clip values are more horizontal than vertical - need alternative glyph
+      const clips = face.values.filter((c, v) => upm(v) < AXES.width.max)
 
+      // create master cases
       const masters = {}
       const k = (w=1,b,a,r) => `w${w}b${b}a${a}r${r}`, v = (w=1,b,a,r) => ({width:w, weight:b, align:a, radius:r})
       masters[k(width.min, weight.min, align.min, radius.min)] = v(width.min, weight.min, align.min, radius.min)
@@ -111,14 +112,14 @@ module.exports = function (plop) {
       masters[k(width.max, weight.max, align.max, radius.max)] = v(width.max, weight.max, align.max, radius.max)
 
       return [
-        // populate skeleton
+        // populate source skeleton
         {
           type: 'addMany',
           force: true,
           destination: `${faceName}/`,
           base: '_wavefont',
           templateFiles: '_wavefont/*',
-          data: { face, masters, axes, clip }
+          data: { face, masters, axes, clips }
         },
         ...Object.keys(masters).map(name => master({name, ...masters[name]})).flat()
       ]
@@ -134,7 +135,7 @@ module.exports = function (plop) {
             destination: `${destination}/`,
             base: '_wavefont/master.ufo',
             templateFiles: '_wavefont/master.ufo/**/*',
-            data: { width, weight, align, radius, axes, face, clip }
+            data: { width, weight, align, radius, axes, face, clips }
           },
           // caps
           {
@@ -152,7 +153,7 @@ module.exports = function (plop) {
           })),
           // substitute glyphs lower than max weight to compensate wrong interpolation on weight clipping
           // the logic: big weights would have big radius, but since it's limited to value, we interpolate between wrong 1 weight and max weight
-          ...clip.map((code, value) => value && ({
+          ...clips.map((code, value) => value && ({
             force: true,
             type: 'add',
             path: `${destination}/glyphs/${value}.clip.glif`,
@@ -161,6 +162,7 @@ module.exports = function (plop) {
         ]
       }
 
+      // cap glyph builder
       function cap({width, weight, height, name, code, radius:R, align}) {
         // bezier curve shift to approximate border-radius
         const Rc = R * (1 - .55), yshift = (UPM - height) * align,
@@ -199,6 +201,7 @@ module.exports = function (plop) {
         `
       }
 
+      // bar glyph builder
       function bar({value, code, width, weight, capSize, name, align}) {
         const yshift = upm((face.max - value) * align),
               mid = width * .5, l = mid - weight*.5, r = mid + weight*.5
@@ -224,5 +227,3 @@ module.exports = function (plop) {
     }
   });
 }
-
-function i(v) {return v}

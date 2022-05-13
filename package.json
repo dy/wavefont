@@ -4,7 +4,7 @@
   "description": "Typeface for visualizing waveform data",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build-ufo && npm run build-masterotfs & npm run build-otf && npm run build-ttf",
+    "build": "npm run build-ufo && npm run build-masterotfs & npm run build-otf && npm run build-ttf && npm run build-woff2",
     "build-ufo": "plop build-ufo wavefont100",
     "build-masterotfs": "buildmasterotfs --mkot -r,-omitMacNames -d wavefont100/wavefont.designspace",
     "build-otf": "npm run build-masterotfs && buildcff2vf -c -k -d wavefont100/wavefont.designspace -o ./wavefont.otf",
@@ -33,8 +33,7 @@
   "homepage": "https://github.com/a-vis/wavefont#readme",
   "devDependencies": {
     "dedent": "^0.7.0",
-    "plop": "^2.7.4",
+    "plop": "^3.1.0",
     "shx": "^0.3.3"
-  },
-  "dependencies": {}
+  }
 }

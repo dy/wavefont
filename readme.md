@@ -143,12 +143,9 @@ WOFF is built with [fonttools](https://fonttools.readthedocs.io/en/latest/).
 
 * [unified font object spec](https://unifiedfontobject.org/versions/ufo3) − unified human-readable format for storing font data.
 * [feature file spec](https://adobe-type-tools.github.io/afdko/OpenTypeFeatureFileSpecification.html#6.h) − defining opentype font features.
-* [afdko](https://adobe-type-tools.github.io/afdko/) − font building tools from Adobe.
-* [fontmake](https://github.com/googlefonts/fontmake) − font building tool from Google.
 * [unicode-table](https://unicode-table.com/) − convenient unicode table.
 * [adobe-variable-font-prototype](https://github.com/adobe-fonts/adobe-variable-font-prototype) − example variable font.
 * [designspace xml spec](https://github.com/fonttools/fonttools/tree/main/Doc/source/designspaceLib#document-xml-structure) − human-readable format for describing variable fonts.
-* [plopfile](https://github.com/plopjs/plop#built-in-actions) − file generator based on templates.
 * [Adobe Blank](https://github.com/adobe-fonts/adobe-blank-vf) − blank characters variable font.
 
-<p align="center">🕉<p>
+<p align="center"><a href="https://github.com/krsnzd/license/">🕉</a><p>
