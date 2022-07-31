@@ -1,4 +1,4 @@
-Copyright 2021 Dmitry Iv (df.creative@gmail.com)
+Copyright 2021 Dmitry Ivanov (df.creative@gmail.com)
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
