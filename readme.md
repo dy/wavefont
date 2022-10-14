@@ -35,6 +35,7 @@ Put [_wavefont.woff2_](./wavefont.woff2) into your project directory and use thi
 <textarea id="waveform" class="wavefont" cols="100"></textarea>
 
 <script>
+	values = [...Array(5).keys()] // create your input values from 0..108 range
 	waveform.textContent = values.map(v => String.fromCharCode(0x100 + v)).join('')
 </script>
 ```
