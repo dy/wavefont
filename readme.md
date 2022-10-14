@@ -1,6 +1,10 @@
 # wavefont
 
-A typeface for rendering data: waveforms, spectrums, diagrams, bars etc. [Demo](https://a-vis.github.io/wavefont), [v-fonts/wavefont](https://v-fonts.com/fonts/wavefont).
+A typeface for rendering data: waveforms, spectrums, diagrams, bars etc.
+Renders 0..100 values from 0x100..0x164 unicode range.
+
+* [Demo](https://a-vis.github.io/wavefont)
+* [v-fonts/wavefont](https://v-fonts.com/fonts/wavefont).
 
 <a href="https://a-vis.github.io/wavefont"><img src="./preview.png" width="240px"/></a>
 
