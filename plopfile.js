@@ -165,8 +165,7 @@ module.exports = function (plop) {
       // cap glyph builder
       function cap({width, weight, height, name, code, radius:R, align}) {
         // bezier curve shift to approximate border-radius
-        const Rc = R * (1 - .55), yshift = (UPM - height) * align,
-              mid = width * .5, l = mid - weight*.5, r = mid + weight*.5
+        const Rc = R * (1 - .55), yshift = (UPM - height) * align, l = 0, r = weight
 
         return dedent`
           <?xml version="1.0" encoding="UTF-8"?>
@@ -203,8 +202,7 @@ module.exports = function (plop) {
 
       // bar glyph builder
       function bar({value, code, width, weight, capSize, name, align}) {
-        const yshift = upm((face.max - value) * align),
-              mid = width * .5, l = mid - weight*.5, r = mid + weight*.5
+        const yshift = upm((face.max - value) * align), l = 0, r = weight
         return dedent`
           <?xml version="1.0" encoding="UTF-8"?>
           <glyph name="${name}" format="2">
@@ -212,8 +210,8 @@ module.exports = function (plop) {
             ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
             ${face.alias[value]?.map(code => `<unicode hex="{{hex ${code} }}"/>`).join('') || ``}
             ${value ? `<outline>
-              <component base="cap" xOffset="{{int ${mid}}}" yOffset="{{int ${yshift}}}" />
-              <component base="cap" xOffset="{{int ${mid}}}" yOffset="{{int ${upm(value) - capSize*2 + yshift}}}" />
+              <component base="cap" xOffset="0" yOffset="{{int ${yshift}}}" />
+              <component base="cap" xOffset="0" yOffset="{{int ${upm(value) - capSize*2 + yshift}}}" />
               <contour>
                 <point x="{{int ${l}}}" y="{{int ${yshift + capSize}}}" type="line"/>
                 <point x="{{int ${l}}}" y="{{int ${upm(value) + yshift - capSize}}}" type="line"/>
