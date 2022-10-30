@@ -48,7 +48,7 @@ const FONTFACE = {
 
 const AXES = {
   width: {tag: 'wdth', min: 1, max: 1000, default: 1},
-  weight: {tag: 'wght', min: 1, max: 1000, default: 1},
+  weight: {tag: 'wght', min: 1, max: 400, default: 1},
   align: {tag: 'algn', min: 0, max: 1, default: 0},
   radius: {tag: 'soft', min: 0, max: 50, default: 0}
 }

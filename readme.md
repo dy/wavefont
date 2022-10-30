@@ -9,7 +9,6 @@ A typeface for rendering data: waveforms, spectrums, diagrams, bars etc.
 
 ## Usage
 
-<!-- Get [wavefont.otf](./wavefont.otf) or [wavefont.ttf](./wavefont.ttf). -->
 Put [_wavefont.woff2_](./wavefont.woff2) into your project directory and use this code:
 
 ```html
@@ -41,13 +40,13 @@ Put [_wavefont.woff2_](./wavefont.woff2) into your project directory and use thi
 
 ## Ranges
 
-Wavefont covers the following ranges.
+Wavefont covers _ASCII_ range for manual input values, _Latin Ext_ range for 0-100 low-aligned values and _Cyrillic_ range for 0-100 center-aligned values.
 
 Align 	| Values 				| Chars		| Value → Character
 ---|---|---|---
 Bottom 	| 0-10 					| 0-10 					| `value`
 Bottom	| 1-26					| a-z						|	`String.fromCharCode(0x60 + value)`
-Bottom	| 27-52					| A-Z						|	`String.fromCharCode(0x60 + value).toUpperCase()`
+Bottom	| 27-52					| A-Z						|	`String.fromCharCode(0x60 + value-26).toUpperCase()`
 Bottom 	| 0-100		 			| U+0100-016f 	| `String.fromCharCode(0x100 + value)`
 Center 	| 0-100					| U+0400-046f 	| `String.fromCharCode(0x400 + value)`
 
