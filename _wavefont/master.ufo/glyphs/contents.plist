@@ -3,6 +3,7 @@
 <plist version="1.0">
   <dict>
     <key>.notdef</key><string>_notdef.glif</string>
+    <key>up10</key><string>up10.glif</string>
     <key>up</key><string>up.glif</string>
     <key>down</key><string>down.glif</string>
     <key>cap</key><string>cap.glif</string>

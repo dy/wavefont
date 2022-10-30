@@ -1,7 +1,6 @@
 # wavefont
 
 A typeface for rendering data: waveforms, spectrums, diagrams, bars etc.
-Renders 0..100 values from 0x100..0x164 unicode range.
 
 * [Demo](https://dy.github.io/wavefont)
 * [v-fonts/wavefont](https://v-fonts.com/fonts/wavefont).
@@ -40,98 +39,46 @@ Put [_wavefont.woff2_](./wavefont.woff2) into your project directory and use thi
 </script>
 ```
 
-<!--
-For more advanced use-cases see below.
+## Ranges
 
-## Font-faces
+Wavefont covers the following ranges.
 
-Wavefont provides font-faces with various size/range balance, you can include only needed one or automatically select from multiple.
-
-Face 																					| Size 	| Values 				| Characters		| Value → character
----|---|---|---|---
-[_wavefont10.woff2_](./wavefont10.woff2) 			| 5kb 	| 0-10 					| 0-10 					| `value`
-[_wavefont16.woff2_](./wavefont16.woff2) 			| 10kb 	| 0x0-0xF			 	| 0-10, a-f 		| `value.toString(16)`
-[_wavefont100.woff2_](./wavefont100.woff2) 		| 30kb 	| 0-100		 			| U+0100-0200 	| `String.fromCharCode(0x100 + value)`
-[_wavefont255.woff2_](./wavefont255.woff2) 		| 50kb	| 0-255					| U+0100-03FF 	| `String.fromCharCode(0x100 + value)`
-[_wavefont1000.woff2_](./wavefont1000.woff2) 	| 100kb	| 0-1000 				| U+E000-E8FF 	| `String.fromCharCode(0xe000 + value)`
-[_wavefont.woff2_](./wavefont.woff2)		 			| 100kb	| all ↑					| all ↑				 	| any ↑
--->
-<!--
-## Autoselect font-face
-
-To include multiple font-faces (for various ranges), use _unicode-range_ to scope characters and save bandwidth:
-
-```css
-/* 0-10 */
-@font-face {
-	font-family: wavefont;
-	src: url(./wavefont10.woff2) format('woff2');
-	unicode-range: U+0020-007E;
-}
-/* 0-16 */
-@font-face {
-	font-family: wavefont;
-	src: url(./wavefont16.woff2) format('woff2');
-	unicode-range: U+0020-007E;
-}
-/* 0-100 */
-@font-face {
-	font-family: wavefont;
-	src: url(./wavefont100.woff2) format('woff2');
-	unicode-range: U+00F8-02AF;
-}
-/* 0-255 */
-@font-face {
-	font-family: wavefont;
-	src: url(./wavefont255.woff2) format('woff2');
-	unicode-range: U+00F8-02AF;
-}
-/* 0-1000 */
-@font-face {
-	font-family: wavefont;
-	src: url(./wavefont1000.woff2) format('woff2');
-	unicode-range: U+E000-E8FF;
-}
-```
--->
+Align 	| Values 				| Chars		| Value → Character
+---|---|---|---
+Bottom 	| 0-10 					| 0-10 					| `value`
+Bottom	| 1-26					| a-z						|	`String.fromCharCode(0x60 + value)`
+Bottom	| 27-52					| A-Z						|	`String.fromCharCode(0x60 + value).toUpperCase()`
+Bottom 	| 0-100		 			| U+0100-016f 	| `String.fromCharCode(0x100 + value)`
+Center 	| 0-100					| U+0400-046f 	| `String.fromCharCode(0x400 + value)`
 
 <!--
-## Avoid FOUT
+## Anti-[FOUT](https://css-tricks.com/fout-foit-foft/)
 
-To avoid flash of system font (aka [FOUT](https://css-tricks.com/fout-foit-foft/)), use [blank](https://github.com/adobe-fonts/adobe-blank-vf) font-face fallback:
+TODO:
 
-```css
-@font-face {
-	font-family: blank;
-	/* src: url(adobe-blank-v2) format('woff2'); */
-	src: url(blobUrl://abcdef) format('woff2');
-}
-.wavefont {
-	font-style: wavefont, blank;
-}
-```
+Wavefont covers all unicode spectrum via [Adobe blank](https://github.com/adobe-fonts/adobe-blank-vf) technique, so all other characters falling out of meaningful ranges are displayed as 0 bars.
 -->
 
 ## Variable features
 
 Tag | Range | Meaning
 ---|---|---
-`wdth` | _1_-_1000_ | Bar width (in upm).
+`wdth` | _1_-_1000_ | Bar advance width (in upm).
+`wght` | _1_-_400_ | Bar weight, or boldness (in upm).
 `algn` | _0_-_1_ | _0_ for bottom align, _0.5_ for center and _1_ for top align.
 `soft` | _0_-_50_ | Border radius, percentage of glyph width.
 
-<!-- `ampl` | _0_-_1_ | Amplitude (height) or bars. -->
-
 ## Hints
 
-* Charcodes fall under marking characters unicode category, ie. recognized as word by regexp and can be selected with <kbd>Ctrl</kbd> + <kbd>→</kbd> / double click.
-* Vertical position of a bar can be adjusted via combining accent grave <kbd>&nbsp;&#x0300;</kbd> (U+0300) or accent acute <kbd>&nbsp;&#x0301;</kbd> (U+0301) for down/up shift correspondingly. Eg. `\u0101\u0300\u0300\u0300` shifts bar 3 values down, etc.
-* Values below range are limited to 0, eg. _0x0ff_ in _wavefont100_ is mapped to 0.
-* Values above range are supported to some extent and then clipped, eg. _0x164_ (dec 101) in _wavefont100_ is supported and value above 108 is clipped.
-* Space, tab and other non-marking characters alias to _0_ value.
-* Dashes, dot, underscore characters alias to _1_ value.
-* Vertical lines like `|` alias to max value.
-* Block characters ▁▂▃▄▅▆▇█ are mapped to corresponding bars.
+* Charcodes fall under _marking characters_ unicode category, ie. recognized as word by regexp and can be selected with <kbd>Ctrl</kbd> + <kbd>→</kbd> / double click. Eg. waveform chunks are selectable, if separated by space.
+* Shifting up can be done via combining accent acute <kbd>&nbsp;&#x0301;</kbd> (U+0301) for 1-step up or circumflex accent <kbd>&nbsp;&#x0302;</kbd> (U+0302) for 10-step up. Eg. `\u0101\u0302\u0302\u0301\u0301\u0301` shifts 23 steps up.
+* Shifting down can be done via combining accent grave <kbd>&nbsp;&#x0300;</kbd> (U+0300) for 1-step down, eg. `\u0101\u0300\u0300\u0300` shifts bar 3 values down.
+* Values below range are limited to 0, eg. _0x0ff_ is mapped to 0.
+* Values above range are supported to some extent and then clipped, eg. _0x164_ (dec 101) is supported and value above 108 is clipped.
+* Space, tab and other non-marking chas map to _0_ value.
+* `-–._*` map to _1_ value.
+* `|` map to max value.
+* `▁▂▃▄▅▆▇█` map to corresponding bars.
 
 
 ## Building

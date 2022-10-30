@@ -4,7 +4,7 @@
   "description": "Typeface for visualizing waveform data",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build-ufo && npm-run-all --parallel build-otf build-ttf build-woff2",
+    "build": "npm run build-ufo && npm-run-all --parallel build-otf build-ttf && npm run build-woff2",
     "build-ufo": "plop build-ufo wavefont100",
     "build-otf": "npm run build-masterotfs && buildcff2vf -c -k -d wavefont100/wavefont.designspace -o ./wavefont.otf",
     "build-masterotfs": "buildmasterotfs --mkot -r,-omitMacNames -d wavefont100/wavefont.designspace",
