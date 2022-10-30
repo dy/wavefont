@@ -1,6 +1,10 @@
 # wavefont
 
-A typeface for rendering data: waveforms, spectrums, diagrams, bars etc. [Demo](https://a-vis.github.io/wavefont).
+A typeface for rendering data: waveforms, spectrums, diagrams, bars etc.
+Renders 0..100 values from 0x100..0x164 unicode range.
+
+* [Demo](https://dy.github.io/wavefont)
+* [v-fonts/wavefont](https://v-fonts.com/fonts/wavefont).
 
 <a href="https://a-vis.github.io/wavefont"><img src="./preview.png" width="240px"/></a>
 
@@ -31,6 +35,7 @@ Put [_wavefont.woff2_](./wavefont.woff2) into your project directory and use thi
 <textarea id="waveform" class="wavefont" cols="100"></textarea>
 
 <script>
+	values = [...Array(5).keys()] // create your input values from 0..108 range
 	waveform.textContent = values.map(v => String.fromCharCode(0x100 + v)).join('')
 </script>
 ```
