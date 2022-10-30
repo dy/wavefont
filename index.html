@@ -55,7 +55,10 @@
 
 <form id="panel" action="https://github.com/a-vis/wavefont"  onclick="event.target === this && togglePanel()">
   <script>
+    let toggle = localStorage.getItem('wf:panel-toggle')
+    if (toggle) panel.classList.add('folded')
     function togglePanel(){
+      localStorage.setItem('wf:panel-toggle', panel.classList.contains('folded') ? '':'1')
       panel.classList.toggle('folded');
     }
   </script>
@@ -143,7 +146,7 @@
       display: inline-block;
     }
   </style>
-  <div class="panel-content"  onclick="event.target === this && togglePanel()" >
+  <div class="panel-content" onclick="event.target === this && togglePanel()" >
     <h1>
     Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wavefont">3.0</a></small></sup>
     </h1>
