@@ -49,11 +49,11 @@
     color: black;
     text-decoration-color: rgba(0,0,0,.108);
     text-underline-offset: .108em;
-    text-decoration-thickness: 2px;
+    text-underline-offset: .25em;
   }
 </style>
 
-<form id="panel" action="https://github.com/a-vis/wavefont">
+<form id="panel" action="https://github.com/a-vis/wavefont"  onclick="event.target === this && togglePanel()">
   <script>
     function togglePanel(){
       panel.classList.toggle('folded');
@@ -62,31 +62,31 @@
   <style>
     #panel {
       position: fixed;
-      right: 0rem;
-      top: auto;
-      bottom: 2rem;
+      right: 1rem;
+      bottom: 1rem;
       margin: auto;
-      width: 42ch;
+      width: 22rem;
       max-width: 80vw;
-      box-shadow: rgba(17, 17, 26, .108) 0px .25rem 1.25rem,
-        rgba(17, 17, 26, .108) 0px 1rem 3.25rem -0.5rem,
-        rgba(17, 17, 26, .108) 0px 1.25rem 6rem -1rem;
-      border-top: .25rem solid rgba(243,243,245,.97);
-      border-left: .25rem solid rgba(239,239,241,.96);
-      border-right: .25rem solid rgba(227,226,228,.96);
-      border-bottom: .25rem solid rgba(210,210,212,.95);
-      border-radius: .2rem;
+      box-shadow: 0 2.8px 2.2px rgba(49, 43, 65, 0.034), 0 6.7px 5.3px rgba(49, 43, 65, 0.048), 0 12.5px 10px rgba(49, 43, 65, 0.06), 0 22.3px 17.9px rgba(49, 43, 65, 0.072), 0 41.8px 33.4px rgba(49, 43, 65, 0.086), 0 100px 80px rgba(49, 43, 65, 0.12);
+      border-top: .5rem solid rgba(252,252,253,.97);
+      border-left: .5rem solid rgba(239,239,241,.96);
+      border-right: .5rem solid rgba(232,232,234,.96);
+      border-bottom: .5rem solid rgba(227,227,228,.95);
       z-index: 1;
       -webkit-backdrop-filter: blur(2px);
       backdrop-filter: blur(2px);
+      cursor: e-resize;
+      transition: right .3s cubic-bezier(.34,.03,.26,1), bottom .3s cubic-bezier(.34,.03,.61,1);
     }
     #panel.folded {
-      right: -39ch;
+      right: -21rem;
+      bottom: -8rem;
+      cursor: w-resize;
     }
     .panel-content {
-      padding: 1.5rem 1.5rem 2rem;
+      padding: 2rem 1.5rem 2rem;
       height: 100%;
-      background: linear-gradient(to bottom right, rgba(254,254,255,.5), rgba(255,255,255,.4)), rgba(250,250,250,1);
+      background: linear-gradient(to bottom right, rgba(232,232,233,.35) 20%, rgba(255,255,255,.9) 160%), rgba(245,245,245,1);
       display: flex;
       flex-direction: column;
       align-items: stretch;
@@ -96,12 +96,18 @@
         0px .082rem 1px rgba(232,232,232,1),
         -.082rem 0px 1px rgba(244,244,244,1),
         .082rem 1px rgba(236,236,236,.9);
-      background: linear-gradient(to bottom, rgba(244,244,244,1), rgba(238,238,238,1));
+      /* background: linear-gradient(to bottom, rgba(252,252,252,1), rgba(238,238,238,1)); */
     }
     #panel h1 {
-      text-align: center;
-      margin: 0 0 1rem;
-      font-size: 1.5rem;
+      cursor: default;
+      margin: -.1rem auto .8rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+    #panel h1 small {
+      font-weight: normal;
+      font-size: .66em;
     }
     .panel-field {
       display: flex;
@@ -110,7 +116,7 @@
       align-items: center;
     }
     .panel-field label {
-      flex: 6ch 0 0;
+      flex: 3rem 0 0;
       text-align: right;
       margin-right: 1rem;
     }
@@ -119,8 +125,9 @@
       flex: 1 0 0;
     }
     .panel-field output {
-      flex: 4ch 0 0;
+      flex: 2rem 0 0;
       margin-left: .5rem;
+      font-size: smaller;
     }
     .panel-cta {
       align-self: center;
@@ -210,25 +217,25 @@
     }
   </style>
 
-  <div id="clipping" title="clipping" class="wavearea" contenteditable spellcheck="false">úûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰű</div>
+  <div id="clipping" title="Clipping" class="wavearea" contenteditable spellcheck="false">úûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰű</div>
   <script>
   // clipping (full range)
   // wavearea.textContent += Array.from({length: 128}, (_,i) => (String.fromCharCode(0x100 + i-10))).join('') + '\t\t'
   </script>
 
-  <div id="sawtooth" title="sawtooth" class="wavearea" contenteditable spellcheck="false">ĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĺļľŀłńņňŊŌŎŐŒŔŖŘŚŜŞŠŢĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĺļľŀłńņňŊŌŎŐŒŔŖŘŚŜŞŠŢĀĂĄĆĈĊČĎ</div>
+  <div id="sawtooth" title="Sawtooth" class="wavearea" contenteditable spellcheck="false">ĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĺļľŀłńņňŊŌŎŐŒŔŖŘŚŜŞŠŢĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĺļľŀłńņňŊŌŎŐŒŔŖŘŚŜŞŠŢĀĂĄĆĈĊČĎ</div>
   <script>
   // sawtooth
   // wavearea.textContent += Array.from({length: 108}, (_,i) => String.fromCharCode(0x100 + (i * 2) % 100)).join('') + '\t\t'
   </script>
 
-  <div id="sine" title="sine" class="wavearea" contenteditable spellcheck="false">ĲĺłŉŐŗŜşŢţţŢşśŖŏňŁĹİĨĠĘĒČćăāĀĀĂąĉĎĕĜĤĬĴļńŌŒŘŝŠţţţšŞřŔōņľĶĮĦĞĖĐĊĆĂĀĀĀĂĆĊĐėĞĦĮķĿŇŎŔŚŞšţţţŠŝŘŒŋńļĴīģěĔĎĉĄāĀĀāăć</div>
+  <div id="sine" title="Sine" class="wavearea" contenteditable spellcheck="false">ĲĺłŉŐŗŜşŢţţŢşśŖŏňŁĹİĨĠĘĒČćăāĀĀĂąĉĎĕĜĤĬĴļńŌŒŘŝŠţţţšŞřŔōņľĶĮĦĞĖĐĊĆĂĀĀĀĂĆĊĐėĞĦĮķĿŇŎŔŚŞšţţţŠŝŘŒŋńļĴīģěĔĎĉĄāĀĀāăć</div>
   <script>
   // sine
   // wavearea.textContent += Array.from({length: 108}, (_,i) => String.fromCharCode(0x100 + (Math.sin(i/6) * 50 + 50))).join('') + '\t\t'
   </script>
 
-  <div id="triangle" title="triangle" contenteditable class="wavearea">ĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİ</div>
+  <div id="triangle" title="Tri" contenteditable class="wavearea">ĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİ</div>
   <script>
     // triangle
     // wavearea.textContent += Array.from({length: 108}, (_,i) => (
@@ -237,31 +244,36 @@
     // )).join('') + '\t\t'
   </script>
 
-  <div id="rect" title="rect" class="wavearea" contenteditable></div>
+  <div id="rect" title="Rect" class="wavearea" contenteditable></div>
   <script>
   rect.textContent += Array.from({length: 108}, (_,i) => (String.fromCharCode(0x100 + ((i/33) % 1 > .5 ? 100 : 1)))).join('') + '\t\t'
   </script>
 
-  <div id="noise" title="noise" class="wavearea" contenteditable></div>
+  <div id="noise" title="Noise" class="wavearea" contenteditable></div>
   <script>
   noise.textContent += Array.from({length: 108}, (_,i) => (String.fromCharCode(0x100 + Math.floor(Math.random() * 100)))).join('') + '\t\t'
   </script>
 
-  <div id="speech" title="speech" class="wavearea" contenteditable></div>
+  <div id="speech" title="Sample" class="wavearea" contenteditable></div>
   <script>
   // speech
   speech.textContent += `ĈĉċĊĉċčīıēģĹĶĲĺķĺĺĳĽĳĶĵĦČģĹĪĞĠĝġđČĐĤĨĳħģĚģĢıĞĢİķīİĳķĴĲĪĬģęĬķĦĒěěėďĒĚĪĢēČċěĩĘđēĞĝĚČčĖħĨĝġ`
   </script>
 
-  <div id="shift" title="shift" class="wavearea" contenteditable>11́1́́1́́́1́́́́1́́́́́1́́́́́́1́́́́́́́1́́́́́́́́1́́́́́́́́́1́́́́́́́́́́1́́́́́́́́́́́1́́́́́́́́́́́́1́́́́́́́́́́́́́1́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́́́ 33́3́́3̂3̂́3̂́́3̂̂3̂̂́3̂̂́́3̂̂̂3̂̂̂́3̂̂̂́́3̂̂̂̂3̂̂̂̂́3̂̂̂̂́́3̂̂̂̂̂3̂̂̂̂̂́3̂̂̂̂̂́́3̂̂̂̂̂̂3̂̂̂̂̂̂́3̂̂̂̂̂̂́́3̂̂̂̂̂̂̂3̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂̂́́ 11̀1̀̀1̀̀̀1̀̀̀̀</div>
+  <div id="shift" title="Shift" class="wavearea" contenteditable>11́1́́1́́́1́́́́1́́́́́1́́́́́́1́́́́́́́1́́́́́́́́1́́́́́́́́́1́́́́́́́́́́1́́́́́́́́́́́1́́́́́́́́́́́́1́́́́́́́́́́́́́1́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́́́ 33́3́́3̂3̂́3̂́́3̂̂3̂̂́3̂̂́́3̂̂̂3̂̂̂́3̂̂̂́́3̂̂̂̂3̂̂̂̂́3̂̂̂̂́́3̂̂̂̂̂3̂̂̂̂̂́3̂̂̂̂̂́́3̂̂̂̂̂̂3̂̂̂̂̂̂́3̂̂̂̂̂̂́́3̂̂̂̂̂̂̂3̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂̂́́ 11̀1̀̀1̀̀̀1̀̀̀̀</div>
 
-  <div id="aliases" title="aliases" class="wavearea" contenteditable>01234.5678-9_a  |lorem</div>
+  <div id="aliases" title="0-9 a-z A-Z _-–.|" class="wavearea" contenteditable>0123456789</div>
 
-  <div id="bars" title="bars" class="wavearea" contenteditable>▁▂▃▄▅▆▇█</div>
+  <div id="bars" title="Bars" class="wavearea" contenteditable>▁▂▃▄▅▆▇█</div>
 
-  <div id="range100" title="range100" class="wavearea" contenteditable></div>
+  <div id="range100" title="Latin Ext" class="wavearea" contenteditable></div>
   <script>
   range100.textContent += Array(100).fill(0).map((v,i)=> String.fromCharCode(0x100+i)).join('')
+  </script>
+
+  <div id="range100" title="Cyrillic" class="wavearea" contenteditable></div>
+  <script>
+  range100.textContent += Array(100).fill(0).map((v,i)=> String.fromCharCode(0x400+i)).join('')
   </script>
 
 </main>
