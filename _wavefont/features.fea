@@ -1,30 +1,16 @@
 @value = [{{#each face.values as |code value|}}_{{ value }} {{/each}}];
 @value.clip = [{{#each clips as |code value|}}{{#if value}}_{{ value }}.clip {{/if}}{{/each}}];
 
+# relative cursive shift (loses offset on copy-paste)
 # anchorDef 0 0 entry;
-
-feature mark {
+# feature mark {
   # pos cursive [@value @value.clip] <anchor entry> <anchor NULL>;
   # pos cursive up <anchor entry> <anchor 0 10>;
   # pos cursive down <anchor entry> <anchor 0 -10>;
-  pos [@value @value.clip]' <0 280 0 0> up up up up up up up up up up up up up up up up up up up up up up up up up up up up;
-  pos [@value @value.clip]' <0 270 0 0> up up up up up up up up up up up up up up up up up up up up up up up up up up up;
-  pos [@value @value.clip]' <0 260 0 0> up up up up up up up up up up up up up up up up up up up up up up up up up up;
-  pos [@value @value.clip]' <0 250 0 0> up up up up up up up up up up up up up up up up up up up up up up up up up;
-  pos [@value @value.clip]' <0 240 0 0> up up up up up up up up up up up up up up up up up up up up up up up up;
-  pos [@value @value.clip]' <0 230 0 0> up up up up up up up up up up up up up up up up up up up up up up up;
-  pos [@value @value.clip]' <0 220 0 0> up up up up up up up up up up up up up up up up up up up up up up;
-  pos [@value @value.clip]' <0 210 0 0> up up up up up up up up up up up up up up up up up up up up up;
-  pos [@value @value.clip]' <0 200 0 0> up up up up up up up up up up up up up up up up up up up up;
-  pos [@value @value.clip]' <0 190 0 0> up up up up up up up up up up up up up up up up up up up;
-  pos [@value @value.clip]' <0 180 0 0> up up up up up up up up up up up up up up up up up up;
-  pos [@value @value.clip]' <0 170 0 0> up up up up up up up up up up up up up up up up up;
-  pos [@value @value.clip]' <0 160 0 0> up up up up up up up up up up up up up up up up;
-  pos [@value @value.clip]' <0 150 0 0> up up up up up up up up up up up up up up up;
-  pos [@value @value.clip]' <0 140 0 0> up up up up up up up up up up up up up up;
-  pos [@value @value.clip]' <0 130 0 0> up up up up up up up up up up up up up;
-  pos [@value @value.clip]' <0 120 0 0> up up up up up up up up up up up up;
-  pos [@value @value.clip]' <0 110 0 0> up up up up up up up up up up up;
+# }
+
+# absolute shift
+feature mark {
   pos [@value @value.clip]' <0 100 0 0> up up up up up up up up up up;
   pos [@value @value.clip]' <0 90 0 0> up up up up up up up up up;
   pos [@value @value.clip]' <0 80 0 0> up up up up up up up up;
@@ -35,24 +21,6 @@ feature mark {
   pos [@value @value.clip]' <0 30 0 0> up up up;
   pos [@value @value.clip]' <0 20 0 0> up up;
   pos [@value @value.clip]' <0 10 0 0> up;
-  pos [@value @value.clip]' <0 -280 0 0> down down down down down down down down down down down down down down down down down down down down down down down down down down down down;
-  pos [@value @value.clip]' <0 -270 0 0> down down down down down down down down down down down down down down down down down down down down down down down down down down down;
-  pos [@value @value.clip]' <0 -260 0 0> down down down down down down down down down down down down down down down down down down down down down down down down down down;
-  pos [@value @value.clip]' <0 -250 0 0> down down down down down down down down down down down down down down down down down down down down down down down down down;
-  pos [@value @value.clip]' <0 -240 0 0> down down down down down down down down down down down down down down down down down down down down down down down down;
-  pos [@value @value.clip]' <0 -230 0 0> down down down down down down down down down down down down down down down down down down down down down down down;
-  pos [@value @value.clip]' <0 -220 0 0> down down down down down down down down down down down down down down down down down down down down down down;
-  pos [@value @value.clip]' <0 -210 0 0> down down down down down down down down down down down down down down down down down down down down down;
-  pos [@value @value.clip]' <0 -200 0 0> down down down down down down down down down down down down down down down down down down down down;
-  pos [@value @value.clip]' <0 -190 0 0> down down down down down down down down down down down down down down down down down down down;
-  pos [@value @value.clip]' <0 -180 0 0> down down down down down down down down down down down down down down down down down down;
-  pos [@value @value.clip]' <0 -170 0 0> down down down down down down down down down down down down down down down down down;
-  pos [@value @value.clip]' <0 -160 0 0> down down down down down down down down down down down down down down down down;
-  pos [@value @value.clip]' <0 -150 0 0> down down down down down down down down down down down down down down down;
-  pos [@value @value.clip]' <0 -140 0 0> down down down down down down down down down down down down down down;
-  pos [@value @value.clip]' <0 -130 0 0> down down down down down down down down down down down down down;
-  pos [@value @value.clip]' <0 -120 0 0> down down down down down down down down down down down down;
-  pos [@value @value.clip]' <0 -110 0 0> down down down down down down down down down down down;
   pos [@value @value.clip]' <0 -100 0 0> down down down down down down down down down down;
   pos [@value @value.clip]' <0 -90 0 0> down down down down down down down down down;
   pos [@value @value.clip]' <0 -80 0 0> down down down down down down down down;
@@ -63,4 +31,5 @@ feature mark {
   pos [@value @value.clip]' <0 -30 0 0> down down down;
   pos [@value @value.clip]' <0 -20 0 0> down down;
   pos [@value @value.clip]' <0 -10 0 0> down;
+
 } mark;
