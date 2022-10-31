@@ -203,7 +203,7 @@
       white-space: pre-wrap;
       position: relative;
       width: 100%;
-      padding-bottom:1px;
+      padding-bottom:5px;
     }
     .wavearea:focus {
       outline: none;
@@ -264,12 +264,12 @@
 
   <div id="range100" title="Latin Ext (+clipping)" class="wavearea" contenteditable></div>
   <script>
-  range100.textContent += Array(120).fill(0).map((v,i)=> String.fromCharCode(0x100+i-10)).join('')
+  range100.textContent += Array(110).fill(0).map((v,i)=> String.fromCharCode(0x100+i-2)).join('')
   </script>
 
   <div id="rangecyr100" title="Cyrillic (centered + clipping)" class="wavearea" contenteditable></div>
   <script>
-  rangecyr100.textContent += Array(120).fill(0).map((v,i)=> String.fromCharCode(0x400+i-10)).join('')
+  rangecyr100.textContent += Array(110).fill(0).map((v,i)=> String.fromCharCode(0x400+i-2)).join('')
   </script>
 
 </main>

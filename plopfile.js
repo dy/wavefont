@@ -35,18 +35,18 @@ FONTFACE.wavefont100.values.center = Array.from({length: 108}).map((v,i)=>(CENTE
 '0123456789'.split('').map((c,i) => alias(i*10, c))
 
 // a-zA-Z
-// alias(1,'a'), alias(2,'b'), alias(4,'c'),
+alias(1,'a'), alias(2,'b'), alias(4,'c'),
 // FIXME: adding this alias breaks OTF in some reason, likely an OTF bug
-// alias(6,'d')
-// alias(8,'e'), alias(10,'f'), alias(12,'g'), alias(14,'h'), alias(16,'i'), alias(18,'j'), alias(20,'k'), alias(22,'l'), alias(24,'m'), alias(26,'n'), alias(28,'o'), alias(30,'p'), alias(32,'q'), alias(34,'r'),
-// alias(36,'s')
-// , alias(38,'t')
+alias(6,'d')
+alias(8,'e'), alias(10,'f'), alias(12,'g'), alias(14,'h'), alias(16,'i'), alias(18,'j'), alias(20,'k'), alias(22,'l'), alias(24,'m'), alias(26,'n'), alias(28,'o'), alias(30,'p'), alias(32,'q'), alias(34,'r'),
+alias(36,'s')
+, alias(38,'t')
 // FIXME: adding this spoils clipping both in OTF and TTF
 // turns out ý = y +  ́, which inserts these two chars as autoligature
-// alias(40,'u')
-// alias(42,'v'), alias(44,'w'), alias(46,'x')
-// alias(48,'y'), alias(50,'z')
-// alias(52,'A'), alias(54,'B'), alias(56,'C'), alias(58,'D'), alias(60,'E'), alias(62,'F'), alias(64,'G'), alias(66,'H'), alias(68,'I'), alias(70,'J'), alias(72,'K'), alias(74,'L'), alias(76,'M'), alias(78,'N'), alias(80,'O'), alias(82,'P'), alias(84,'Q'), alias(86,'R'), alias(88,'S'), alias(90,'T'), alias(92,'U'), alias(94,'V'), alias(96,'W'), alias(98,'X'), alias(99,'Y'), alias(100,'Z')
+alias(40,'u')
+alias(42,'v'), alias(44,'w'), alias(46,'x')
+alias(48,'y'), alias(50,'z')
+alias(52,'A'), alias(54,'B'), alias(56,'C'), alias(58,'D'), alias(60,'E'), alias(62,'F'), alias(64,'G'), alias(66,'H'), alias(68,'I'), alias(70,'J'), alias(72,'K'), alias(74,'L'), alias(76,'M'), alias(78,'N'), alias(80,'O'), alias(82,'P'), alias(84,'Q'), alias(86,'R'), alias(88,'S'), alias(90,'T'), alias(92,'U'), alias(94,'V'), alias(96,'W'), alias(98,'X'), alias(99,'Y'), alias(100,'Z')
 
 // add alias to wavefont100
 function alias(value, char) {
