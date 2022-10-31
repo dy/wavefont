@@ -3,7 +3,7 @@ languagesystem DFLT dflt;
 # these are copy-paste from https://github.com/adobe-fonts/adobe-blank-vf
 # apparently fixes some weird latin-range build alias artifacts
 table hhea {
-  Ascender 1000;
+  Ascender {{upm face.max }};
   Descender 0;
   LineGap 0;
 } hhea;
@@ -17,7 +17,7 @@ table BASE {
 } BASE;
 
 table OS/2 {
-  TypoAscender 1000;
+  TypoAscender {{upm face.max }};
   TypoDescender 0;
   TypoLineGap 0;
   XHeight 0;
@@ -27,7 +27,7 @@ table OS/2 {
   Panose 0 0 0 0 0 0 0 0 0 0;
   FSType 0;
   Vendor "DIIV";
-  winAscent 1000;
+  winAscent {{upm face.max }};
   winDescent 0;
 } OS/2;
 
