@@ -265,18 +265,16 @@
 
   <div id="shift" title="Shift" class="wavearea" contenteditable>11́1́́1́́́1́́́́1́́́́́1́́́́́́1́́́́́́́1́́́́́́́́1́́́́́́́́́1́́́́́́́́́́1́́́́́́́́́́́1́́́́́́́́́́́́1́́́́́́́́́́́́́1́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́́́ 33́3́́3̂3̂́3̂́́3̂̂3̂̂́3̂̂́́3̂̂̂3̂̂̂́3̂̂̂́́3̂̂̂̂3̂̂̂̂́3̂̂̂̂́́3̂̂̂̂̂3̂̂̂̂̂́3̂̂̂̂̂́́3̂̂̂̂̂̂3̂̂̂̂̂̂́3̂̂̂̂̂̂́́3̂̂̂̂̂̂̂3̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂̂́́ 11̀1̀̀1̀̀̀1̀̀̀̀</div>
 
-  <div id="aliases" title="0-9 _-–.|" class="wavearea" contenteditable>0123456789</div>
-
-  <div id="bars" title="Bars" class="wavearea" contenteditable>▁▂▃▄▅▆▇█</div>
+  <div id="aliases" title="0-9 _-–.| ▁▂▃▄▅▆▇█" class="wavearea" contenteditable>0123456789 _-–.| ▁▂▃▄▅▆▇█</div>
 
   <div id="range100" title="Latin Ext" class="wavearea" contenteditable></div>
   <script>
   range100.textContent += Array(100).fill(0).map((v,i)=> String.fromCharCode(0x100+i)).join('')
   </script>
 
-  <div id="range100" title="Cyrillic" class="wavearea" contenteditable></div>
+  <div id="rangecyr100" title="Cyrillic (centered)" class="wavearea" contenteditable></div>
   <script>
-  range100.textContent += Array(100).fill(0).map((v,i)=> String.fromCharCode(0x400+i)).join('')
+  rangecyr100.textContent += Array(110).fill(0).map((v,i)=> String.fromCharCode(0x400+i)).join('')
   </script>
 
 </main>

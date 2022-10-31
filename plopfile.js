@@ -1,8 +1,13 @@
 const dedent = require('dedent')
 
+// unicode range starts for low-align and center-align
+const LOW_SHIFT = 0x100
+const CENTER_SHIFT = 0x400
+
 // const UPM = 2048
 const UPM = 1000
 
+// not used since all chars are going to be blank anyways
 const ZERO_CHAR = ` \t\`@`.split('').map(v=>v.charCodeAt(0)) //[0x09,0x0a,0x0b,0x0c,0x0d,0x20,0x85,0xa0,0x1680,0x180e,0x2000,0x2001,0x2002,0x2003,0x2004,0x2005,0x2006,0x2007,0x2008,0x2009,0x200a,0x200b,0x200c,0x200d,0x2028,0x2029,0x202f,0x205f,0x2060,0x2061,0x2062,0x3000,0xfeff].map(String.fromCharCode)
 
 const ONE_CHAR = `.-–—―*_`.split('').map(v=>v.charCodeAt(0)) //`.-–—―_¯ˉˍ˗‐‑‒‾⁃⁻₋−⎯⏤─➖⸺⸻𐆑`
@@ -21,9 +26,10 @@ const FONTFACE = {
       14: [BAR_CHAR[1]], 28: [BAR_CHAR[2]], 42: [BAR_CHAR[3]], 56: [BAR_CHAR[4]], 72: [BAR_CHAR[5]], 86: [BAR_CHAR[6]],
       100: [...MAX_CHAR, BAR_CHAR[7]]
     },
-    values: Array.from({length: 108}).map((v,i)=>(0x0100 + i))
+    values: Array.from({length: 108}).map((v,i)=>(LOW_SHIFT + i))
   }
 }
+FONTFACE.wavefont100.values.center = Array.from({length: 108}).map((v,i)=>(CENTER_SHIFT + i))
 
 // 0-9
 '0123456789'.split('').map((c,i) => alias(i*10,c))
@@ -106,11 +112,11 @@ module.exports = function (plop) {
           templateFiles: '_wavefont/*',
           data: { face, masters, axes, clips }
         },
-        ...Object.keys(masters).map(name => master({name, align: 0, ...masters[name]})).flat()
+        ...Object.keys(masters).map(name => master({name, ...masters[name]})).flat()
       ]
 
       // actions to build one master file
-      function master({name, weight, align, width, radius}){
+      function master({name, weight, width, radius}){
         const destination = `${face.name}/${name}.ufo`
 
         return [
@@ -121,7 +127,7 @@ module.exports = function (plop) {
             destination: `${destination}/`,
             base: '_wavefont/master.ufo',
             templateFiles: '_wavefont/master.ufo/**/*',
-            data: { width, weight, align, radius, axes, face, clips }
+            data: { width, weight, radius, axes, face, clips }
           },
           // caps
           {
@@ -135,7 +141,7 @@ module.exports = function (plop) {
             force: true,
             type: 'add',
             path: `${destination}/glyphs/${value}.glif`,
-            template: bar({value, code, weight, width, name: `_${value}`, capSize: radius*.01*weight, align })
+            template: bar({value, code, weight, width, name: `_${value}`, capSize: radius*.01*weight, align: 0, alias: face.alias[value] })
           })),
           // substitute glyphs lower than max weight to compensate wrong interpolation on weight clipping
           // the logic: big weights would have big radius, but since it's limited to value, we interpolate between wrong 1 weight and max weight
@@ -143,7 +149,21 @@ module.exports = function (plop) {
             force: true,
             type: 'add',
             path: `${destination}/glyphs/${value}.clip.glif`,
-            template: cap({height: upm(value), weight, width, name: `_${value}.clip`, radius: (radius && 1 ) * upm(value) * .5, align })
+            template: cap({height: upm(value), weight, width, name: `_${value}.clip`, radius: (radius && 1 ) * upm(value) * .5, align: 0 })
+          })).filter(Boolean),
+
+          // centered values in cyrillic range
+          ...face.values.center.map((code, value) => ({
+            force: true,
+            type: 'add',
+            path: `${destination}/glyphs/${value}.center.glif`,
+            template: bar({value, code, weight, width, name: `_${value}.center`, capSize: radius*.01*weight, align: 0.5 })
+          })),
+          ...clips.map((code, value) => value && ({
+            force: true,
+            type: 'add',
+            path: `${destination}/glyphs/${value}.clip.center.glif`,
+            template: cap({height: upm(value), weight, width, name: `_${value}.clip.center`, radius: (radius && 1 ) * upm(value) * .5, align: 0.5 })
           })).filter(Boolean)
         ]
       }
@@ -187,14 +207,14 @@ module.exports = function (plop) {
       }
 
       // bar glyph builder
-      function bar({value, code, width, weight, capSize, name, align}) {
+      function bar({value, code, width, weight, capSize, name, align, alias}) {
         const yshift = upm((face.max - value) * align), l = 0, r = weight
         return dedent`
           <?xml version="1.0" encoding="UTF-8"?>
           <glyph name="${name}" format="2">
             <advance width="${width}"/>
             ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
-            ${face.alias[value]?.map(code => `<unicode hex="{{hex ${code} }}"/>`).join('') || ``}
+            ${alias?.map(code => `<unicode hex="{{hex ${code} }}"/>`).join('') || ``}
             ${value ? `<outline>
               <component base="cap" xOffset="0" yOffset="{{int ${yshift}}}" />
               <component base="cap" xOffset="0" yOffset="{{int ${upm(value) - capSize*2 + yshift}}}" />

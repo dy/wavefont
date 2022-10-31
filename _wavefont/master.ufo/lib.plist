@@ -16,6 +16,12 @@
     {{#each face.values as |code value|}}
     <string>_{{ value }}.clip</string>
     {{/each}}
+    {{#each face.values as |code value|}}
+    <string>_{{ value }}.center</string>
+    {{/each}}
+    {{#each face.values as |code value|}}
+    <string>_{{ value }}.clip.center</string>
+    {{/each}}
 	</array>
 </dict>
 </plist>
