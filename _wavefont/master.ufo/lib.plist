@@ -5,11 +5,16 @@
 	<key>public.glyphOrder</key>
 	<array>
 		<string>.notdef</string>
+    <string>up10</string>
     <string>up</string>
     <string>down</string>
+    <string>cap</string>
     <string>_</string>
     {{#each face.values as |code value|}}
     <string>_{{ value }}</string>
+    {{/each}}
+    {{#each face.values as |code value|}}
+    <string>_{{ value }}.clip</string>
     {{/each}}
 	</array>
 </dict>

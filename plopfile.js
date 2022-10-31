@@ -12,19 +12,6 @@ const MAX_CHAR = [`|`].map(v=>v.charCodeAt(0)) //`|｜ǀ∣│।`
 const BAR_CHAR = `▁▂▃▄▅▆▇█`.split('').map(v=>v.charCodeAt(0))
 
 const FONTFACE = {
-  wavefont10: {
-    name: 'wavefont10',
-    min: 0,
-    max: 10,
-    alias: {
-      // NOTE: no need to stub 0s because they're covered by fallback blank font
-      // 0: [...ZERO_CHAR, ...ASCII_CHAR.filter(code => !`0123456789abcdef`.includes(String.fromCharCode(code)) && !ONE_CHAR.includes(code) && !MAX_CHAR.includes(code))],
-      1: ONE_CHAR,
-      10: [...MAX_CHAR, ...`abcdef`.split('').map(v => v.charCodeAt(0))]
-    },
-    values: `0123456789a`.split(``).map(v => v.charCodeAt(0))
-  },
-
   wavefont100: {
     name: 'wavefont100',
     min: 0,
@@ -32,18 +19,25 @@ const FONTFACE = {
     alias: {
       1: [...ONE_CHAR, BAR_CHAR[0]],
       14: [BAR_CHAR[1]], 28: [BAR_CHAR[2]], 42: [BAR_CHAR[3]], 56: [BAR_CHAR[4]], 72: [BAR_CHAR[5]], 86: [BAR_CHAR[6]],
-      10: [49], 20: [50], 30: [51], 40: [52], 50: [53], 60: [54], 70: [55], 80: [56], 90: [57],
       100: [...MAX_CHAR, BAR_CHAR[7]]
     },
     values: Array.from({length: 108}).map((v,i)=>(0x0100 + i))
-  },
+  }
+}
 
-  wavefont255: {
-    name: 'wavefont255',
-    min: 0, max: 255,
-    values: Array.from({length: 255})
-  },
+// 0-9
+'0123456789'.split('').map((c,i) => alias(i*10,c))
 
+// a-zA-Z
+// alias(1,'a'), alias(2,'b'), alias(4,'c'),
+// FIXME: adding this alias breaks OTF in some reason, likely an OTF bug
+// alias(6,'d')
+//, alias(8,'e'), alias(10,'f'), alias(12,'g'), alias(14,'h'), alias(16,'i'), alias(18,'j'), alias(20,'k'), alias(22,'l'), alias(24,'m'), alias(26,'n'), alias(28,'o'), alias(30,'p'), alias(32,'q'), alias(34,'r'), alias(36,'s'), alias(38,'t'), alias(40,'u'), alias(42,'v'), alias(44,'w'), alias(46,'x'), alias(48,'y'), alias(50,'z')
+// alias(52,'A'), alias(54,'B'), alias(56,'C'), alias(58,'D'), alias(60,'E'), alias(62,'F'), alias(64,'G'), alias(66,'H'), alias(68,'I'), alias(70,'J'), alias(72,'K'), alias(74,'L'), alias(76,'M'), alias(78,'N'), alias(80,'O'), alias(82,'P'), alias(84,'Q'), alias(86,'R'), alias(88,'S'), alias(90,'T'), alias(92,'U'), alias(94,'V'), alias(96,'W'), alias(98,'X'), alias(99,'Y'), alias(100,'Z')
+
+// add alias to wavefont100
+function alias(value, char) {
+  (FONTFACE.wavefont100.alias[value]||=[]).push(char.charCodeAt(0))
 }
 
 const AXES = {

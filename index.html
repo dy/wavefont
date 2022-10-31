@@ -9,10 +9,10 @@
     font-display: block;
     font-weight: 900;
     /* src: url(./wavefont.ttf); */
-    /* src: url(./wavefont.otf); */
+    src: url(./wavefont.otf);
     /* src: url(./wavefont.min.otf); */
     /* src: url(./wavefont.woff); */
-    src: url(./wavefont.woff2);
+    /* src: url(./wavefont.woff2); */
   }
   @font-face {
     font-family: blank;
@@ -70,11 +70,16 @@
       margin: auto;
       width: 22rem;
       max-width: 80vw;
-      box-shadow: 0 2.8px 2.2px rgba(49, 43, 65, 0.034), 0 6.7px 5.3px rgba(49, 43, 65, 0.048), 0 12.5px 10px rgba(49, 43, 65, 0.06), 0 22.3px 17.9px rgba(49, 43, 65, 0.072), 0 41.8px 33.4px rgba(49, 43, 65, 0.086), 0 100px 80px rgba(49, 43, 65, 0.12);
-      border-top: .5rem solid rgba(252,252,253,.97);
-      border-left: .5rem solid rgba(239,239,241,.96);
-      border-right: .5rem solid rgba(232,232,234,.96);
-      border-bottom: .5rem solid rgba(227,227,228,.95);
+      box-shadow: 0 2.8px 2.2px rgba(49, 43, 65, 0.034),
+        0 6.7px 5.3px rgba(49, 43, 65, 0.048),
+        0 12.5px 10px rgba(49, 43, 65, 0.06),
+        0 22.3px 17.9px rgba(49, 43, 65, 0.072),
+        0 41.8px 33.4px rgba(49, 43, 65, 0.086),
+        0 100px 80px rgba(49, 43, 65, 0.12);
+      border-top: .5rem solid rgba(252,252,253,.99);
+      border-left: .5rem solid rgba(238,238,240,.98);
+      border-right: .5rem solid rgba(237,237,238,.98);
+      border-bottom: .5rem solid rgba(231,231,232,.97);
       z-index: 1;
       -webkit-backdrop-filter: blur(2px);
       backdrop-filter: blur(2px);
@@ -89,16 +94,13 @@
     .panel-content {
       padding: 2rem 1.5rem 2rem;
       height: 100%;
-      background: linear-gradient(to bottom right, rgba(232,232,233,.35) 20%, rgba(255,255,255,.9) 160%), rgba(245,245,245,1);
+      background: linear-gradient(to bottom right, rgba(232,232,233,.35) 20%, rgba(255,255,255,.7) 180%), rgba(245,245,245,1);
       display: flex;
       flex-direction: column;
       align-items: stretch;
       justify-content: space-around;
       text-shadow: 1px 1px white;
-      box-shadow: 0px -.082rem 1px rgba(248,246,246,1),
-        0px .082rem 1px rgba(232,232,232,1),
-        -.082rem 0px 1px rgba(244,244,244,1),
-        .082rem 1px rgba(236,236,236,.9);
+      box-shadow: 0 -1px rgba(255,255,255,.75), -1px 0 rgba(255,255,255..5);
       /* background: linear-gradient(to bottom, rgba(252,252,252,1), rgba(238,238,238,1)); */
     }
     #panel h1 {
@@ -220,6 +222,8 @@
     }
   </style>
 
+  <div id="alphabete" title="a-zA-Z" class="wavearea" contenteditable>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</div>
+
   <div id="clipping" title="Clipping" class="wavearea" contenteditable spellcheck="false">úûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰű</div>
   <script>
   // clipping (full range)
@@ -265,9 +269,9 @@
 
   <div id="shift" title="Shift" class="wavearea" contenteditable>11́1́́1́́́1́́́́1́́́́́1́́́́́́1́́́́́́́1́́́́́́́́1́́́́́́́́́1́́́́́́́́́́1́́́́́́́́́́́1́́́́́́́́́́́́1́́́́́́́́́́́́́1́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́́́ 33́3́́3̂3̂́3̂́́3̂̂3̂̂́3̂̂́́3̂̂̂3̂̂̂́3̂̂̂́́3̂̂̂̂3̂̂̂̂́3̂̂̂̂́́3̂̂̂̂̂3̂̂̂̂̂́3̂̂̂̂̂́́3̂̂̂̂̂̂3̂̂̂̂̂̂́3̂̂̂̂̂̂́́3̂̂̂̂̂̂̂3̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂̂́́ 11̀1̀̀1̀̀̀1̀̀̀̀</div>
 
-  <div id="aliases" title="0-9 a-z A-Z _-–.|" class="wavearea" contenteditable>0123456789</div>
+  <div id="aliases" title="0-9 _-–.|" class="wavearea" contenteditable>0123456789</div>
 
-  <div id="bars" title="Bars" class="wavearea" contenteditable>▁▂▃▄▅▆▇█</div>
+  <div id="bars" title="Bars ▁▂▃▄▅▆▇█" class="wavearea" contenteditable>▁▂▃▄▅▆▇█</div>
 
   <div id="range100" title="Latin Ext" class="wavearea" contenteditable></div>
   <script>

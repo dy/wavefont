@@ -1,3 +1,5 @@
+languagesystem DFLT dflt;
+
 @value = [{{#each face.values as |code value|}}_{{ value }} {{/each}}];
 @value.clip = [{{#each clips as |code value|}}{{#if value}}_{{ value }}.clip {{/if}}{{/each}}];
 

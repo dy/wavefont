@@ -42,13 +42,15 @@ Put [_wavefont.woff2_](./wavefont.woff2) into your project directory and use thi
 
 Wavefont covers _ASCII_ range for manual input values, _Latin Ext_ range for 0-100 low-aligned values and _Cyrillic_ range for 0-100 center-aligned values.
 
-Align 	| Values 				| Chars		| Value → Character
+Align 	| Values 						| Chars		| Value → Character
 ---|---|---|---
-Bottom 	| 0-10 					| 0-10 					| `value`
-Bottom	| 1-26					| a-z						|	`String.fromCharCode(0x60 + value)`
-Bottom	| 27-52					| A-Z						|	`String.fromCharCode(0x60 + value-26).toUpperCase()`
-Bottom 	| 0-100		 			| U+0100-016f 	| `String.fromCharCode(0x100 + value)`
-Center 	| 0-100					| U+0400-046f 	| `String.fromCharCode(0x400 + value)`
+Bottom 	| 0-90 							| 0-9 					| `value`
+Bottom	| 1-50<sup>*</sup>	| a-z						|	`String.fromCharCode(0x60 + value/2)`
+Bottom	| 51-100<sup>*</sup>| A-Z						|	`String.fromCharCode(0x60 + value-26).toUpperCase()`
+Bottom 	| 0-100		 					| U+0100-016f 	| `String.fromCharCode(0x100 + value)`
+Center 	| 0-100							| U+0400-046f 	| `String.fromCharCode(0x400 + value)`
+
+* _a-zA-Z_ doesn't map linearly to 0..100 values and softens at the edges - _a_ and _Z_ have step 1
 
 <!--
 ## Anti-[FOUT](https://css-tricks.com/fout-foit-foft/)
@@ -64,7 +66,6 @@ Tag | Range | Meaning
 ---|---|---
 `wdth` | _1_-_1000_ | Bar advance width (in upm).
 `wght` | _1_-_400_ | Bar weight, or boldness (in upm).
-`algn` | _0_-_1_ | _0_ for bottom align, _0.5_ for center and _1_ for top align.
 `soft` | _0_-_50_ | Border radius, percentage of glyph width.
 
 ## Hints
