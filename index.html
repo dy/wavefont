@@ -161,10 +161,6 @@
       <output id="widthValue"></output>
     </div>
     <div class="panel-field">
-      <label for="align"><small>Align</small></label> <input id="align" type="range" min="0" value="0" max="1" step="0.1"/>
-      <output id="alignValue"></output>
-    </div>
-    <div class="panel-field">
       <label for="radius"><small>Radius</small></label> <input id="radius" type="range" min="0" value="50" max="50" step="1"/>
       <output id="radiusValue"></output>
     </div>
@@ -271,7 +267,7 @@
 
   <div id="aliases" title="0-9 _-–.|" class="wavearea" contenteditable>0123456789</div>
 
-  <div id="bars" title="Bars ▁▂▃▄▅▆▇█" class="wavearea" contenteditable>▁▂▃▄▅▆▇█</div>
+  <div id="bars" title="Bars" class="wavearea" contenteditable>▁▂▃▄▅▆▇█</div>
 
   <div id="range100" title="Latin Ext" class="wavearea" contenteditable></div>
   <script>
@@ -297,12 +293,6 @@
     weight.title = `'wght' ${value}`;
     weightValue.textContent = (+value).toFixed(0);
     waveareas.style.setProperty('--wght', value)
-  })();
-  (align.oninput = e => {
-    let value = +align.value;
-    align.title = `'algn' ${value}`;
-    alignValue.textContent = value;
-    waveareas.style.setProperty('--algn', value)
   })();
   (size.oninput = e => {
     let value = +size.value;

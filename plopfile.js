@@ -43,7 +43,6 @@ function alias(value, char) {
 const AXES = {
   width: {tag: 'wdth', min: 1, max: 1000, default: 1},
   weight: {tag: 'wght', min: 1, max: 400, default: 1},
-  align: {tag: 'algn', min: 0, max: 1, default: 0},
   radius: {tag: 'soft', min: 0, max: 50, default: 0}
 }
 
@@ -80,30 +79,22 @@ module.exports = function (plop) {
       plop.setHelper('int', v => v.toFixed(3))
 
       // variable font axes
-      const {width, weight, align, radius} = axes
+      const {width, weight, radius} = axes
 
       // clip values are more horizontal than vertical - need alternative glyph
       const clips = face.values.filter((c, v) => upm(v) < AXES.width.max)
 
       // create master cases
       const masters = {}
-      const k = (w=1,b,a,r) => `w${w}b${b}a${a}r${r}`, v = (w=1,b,a,r) => ({width:w, weight:b, align:a, radius:r})
-      masters[k(width.min, weight.min, align.min, radius.min)] = v(width.min, weight.min, align.min, radius.min)
-      masters[k(width.min, weight.min, align.min, radius.max)] = v(width.min, weight.min, align.min, radius.max)
-      masters[k(width.min, weight.min, align.max, radius.min)] = v(width.min, weight.min, align.max, radius.min)
-      masters[k(width.min, weight.min, align.max, radius.max)] = v(width.min, weight.min, align.max, radius.max)
-      masters[k(width.min, weight.max, align.min, radius.min)] = v(width.min, weight.max, align.min, radius.min)
-      masters[k(width.min, weight.max, align.min, radius.max)] = v(width.min, weight.max, align.min, radius.max)
-      masters[k(width.min, weight.max, align.max, radius.min)] = v(width.min, weight.max, align.max, radius.min)
-      masters[k(width.min, weight.max, align.max, radius.max)] = v(width.min, weight.max, align.max, radius.max)
-      masters[k(width.max, weight.min, align.min, radius.min)] = v(width.max, weight.min, align.min, radius.min)
-      masters[k(width.max, weight.min, align.min, radius.max)] = v(width.max, weight.min, align.min, radius.max)
-      masters[k(width.max, weight.min, align.max, radius.min)] = v(width.max, weight.min, align.max, radius.min)
-      masters[k(width.max, weight.min, align.max, radius.max)] = v(width.max, weight.min, align.max, radius.max)
-      masters[k(width.max, weight.max, align.min, radius.min)] = v(width.max, weight.max, align.min, radius.min)
-      masters[k(width.max, weight.max, align.min, radius.max)] = v(width.max, weight.max, align.min, radius.max)
-      masters[k(width.max, weight.max, align.max, radius.min)] = v(width.max, weight.max, align.max, radius.min)
-      masters[k(width.max, weight.max, align.max, radius.max)] = v(width.max, weight.max, align.max, radius.max)
+      const k = (w=1,b,r) => `w${w}b${b}r${r}`, v = (w=1,b,r) => ({width:w, weight:b, radius:r})
+      masters[k(width.min, weight.min, radius.min)] = v(width.min, weight.min, radius.min)
+      masters[k(width.min, weight.min, radius.max)] = v(width.min, weight.min, radius.max)
+      masters[k(width.min, weight.max, radius.min)] = v(width.min, weight.max, radius.min)
+      masters[k(width.min, weight.max, radius.max)] = v(width.min, weight.max, radius.max)
+      masters[k(width.max, weight.min, radius.min)] = v(width.max, weight.min, radius.min)
+      masters[k(width.max, weight.min, radius.max)] = v(width.max, weight.min, radius.max)
+      masters[k(width.max, weight.max, radius.min)] = v(width.max, weight.max, radius.min)
+      masters[k(width.max, weight.max, radius.max)] = v(width.max, weight.max, radius.max)
 
       return [
         // populate source skeleton
@@ -115,12 +106,13 @@ module.exports = function (plop) {
           templateFiles: '_wavefont/*',
           data: { face, masters, axes, clips }
         },
-        ...Object.keys(masters).map(name => master({name, ...masters[name]})).flat()
+        ...Object.keys(masters).map(name => master({name, align: 0, ...masters[name]})).flat()
       ]
 
       // actions to build one master file
       function master({name, weight, align, width, radius}){
         const destination = `${face.name}/${name}.ufo`
+
         return [
           // ufo skeleton
           {
