@@ -9,7 +9,6 @@
     <string>up</string>
     <string>down</string>
     <string>cap</string>
-    <string>_</string>
     {{#each face.values as |code value|}}
     <string>_{{ value }}</string>
     {{/each}}

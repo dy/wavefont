@@ -5,24 +5,9 @@ table STAT {
   DesignAxis wdth 0 { name "Width"; };
 
   AxisValue {
-     location wdth 10 1 100;
+     location wdth 10 1 400;
      name "Regular";
      flag ElidableAxisValueName;
-  };
-
-  AxisValue {
-     location algn 0;
-     name "Bottom";
-     flag ElidableAxisValueName;
-  };
-
-  AxisValue {
-     location algn 0.5;
-     name "Center";
-  };
-  AxisValue {
-     location algn 1;
-     name "Top";
   };
 
 } STAT;

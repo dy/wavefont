@@ -6,8 +6,10 @@
   "scripts": {
     "build": "npm run build-ufo && npm-run-all --parallel build-otf build-ttf && npm run build-woff2",
     "build-ufo": "plop build-ufo wavefont100",
-    "build-otf": "npm run build-masterotfs && buildcff2vf -c -k -d wavefont100/wavefont.designspace -o ./wavefont.otf",
+    "build-otf": "npm-run-all build-masterotfs build-vf",
     "build-masterotfs": "buildmasterotfs --mkot -r,-omitMacNames -d wavefont100/wavefont.designspace",
+    "build-vf": "buildcff2vf --omit-mac-names -c -k -d wavefont100/wavefont.designspace -o ./wavefont.otf",
+    "patch-tables": "sfntedit -a cmap=cmap-13.bin wavefont.otf",
     "build-ttf": "fontmake --no-optimize-gvar -m wavefont100/wavefont.designspace -o variable --output-path ./wavefont.ttf",
     "subroutinize": "shx cp ./wavefont.otf ./wavefont.min.otf && tx -cff2 +S +b -o ./table.CFF2 -f ./wavefont.otf && sfntedit -a CFF2=./table.CFF2 ./wavefont.min.otf",
     "build-woff2": "shx rm -f ./wavefont.woff2 && fonttools ttLib.woff2 compress wavefont.otf"
