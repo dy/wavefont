@@ -41,12 +41,12 @@ Place [_wavefont.woff2_](./wavefont.woff2) into your project directory and use t
 
 ## Characters
 
-Wavefont covers the following character ranges:
+Wavefont provides bars corresponding to values from 0 to 100, assigned to different characters:
 
-* _0-9_ for simplified manual input values.
-* _a-zA-Z_ for extended manual input. The font softens step at the edges - _a_ and _Z_ have step 1.
-* _U+0100-016F_ for 0..100 values with bottom align, convert as `char = String.fromCharCode(0x100 + value)`.
-* _U+0400-046F_ for 0..100 values with center align, convert as `char = String.fromCharCode(0x400 + value)`.
+* <kbd>0-9</kbd> chars are for simplified manual input with step 10.
+* <kbd>a-zA-Z</kbd> for extended manual input with step 2, softned at edges <kbd>a</kbd> and <kbd>Z</kbd> to step 1.
+* <kbd>U+0100-016F</kbd> for 0..100 bottom aligned values (convert as `char = String.fromCharCode(0x100 + value)`).
+* <kbd>U+0400-046F</kbd> for 0..100 center aligned values (convert as `char = String.fromCharCode(0x400 + value)`).
 
 <!--
 ## Anti-[FOUT](https://css-tricks.com/fout-foit-foft/)
