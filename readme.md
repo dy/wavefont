@@ -48,15 +48,7 @@ Wavefont provides bars corresponding to values from 0 to 100, assigned to differ
 * <kbd>U+0100-016F</kbd> for 0..100 bottom aligned values (convert as `char = String.fromCharCode(0x100 + value)`).
 * <kbd>U+0400-046F</kbd> for 0..100 center aligned values (convert as `char = String.fromCharCode(0x400 + value)`).
 
-<!--
-## Anti-[FOUT](https://css-tricks.com/fout-foit-foft/)
-
-TODO:
-
-Wavefont covers all unicode spectrum via [Adobe blank](https://github.com/adobe-fonts/adobe-blank-vf) technique, so all other characters falling out of meaningful ranges are displayed as 0 bars.
--->
-
-## Variable features
+## Variable axes
 
 Tag | Range | Meaning
 ---|---|---
@@ -64,15 +56,16 @@ Tag | Range | Meaning
 `wght` | _1_-_400_ | Bar weight, or boldness (in upm).
 `soft` | _0_-_50_ | Border radius, percentage of glyph width.
 
-## Hints
+## Features
 
 * Charcodes fall under _marking characters_ unicode category, ie. recognized as word by regexp and can be selected with <kbd>Ctrl</kbd> + <kbd>→</kbd> or double click. Eg. waveform chunks are selectable, if separated by space.
-* Shifting up can be done via combining accent acute <kbd>&nbsp;&#x0301;</kbd> (U+0301) for 1-step or circumflex accent <kbd>&nbsp;&#x0302;</kbd> (U+0302) for 10-steps up. Eg. `\u0101\u0302\u0302\u0301\u0301\u0301` shifts 1 value 23 steps up.
+* Shifting up can be done via combining accent acute <kbd>&nbsp;&#x0301;</kbd> (U+0301) for 1-step up, or circumflex accent <kbd>&nbsp;&#x0302;</kbd> (U+0302) for 10-steps up. Eg. `\u0101\u0302\u0302\u0301\u0301\u0301` shifts 1 value 23 steps up.
 * Shifting down can be done via combining accent grave <kbd>&nbsp;&#x0300;</kbd> (U+0300) for 1-step down, eg. `\u0101\u0300\u0300\u0300` shifts bar 3 values down.
 * Values below chars range are limited to 0, eg. _0x0ff_ is mapped to 0.
 * Values above chars range are supported to some extent and then clipped, eg. _0x164_ (dec 101) is supported and value above 108 is clipped.
 * Space, tab and other non-marking chas map to _0_ value.
 * `-–._*` map to _1_ value, `|` maps to max value, `▁▂▃▄▅▆▇█` map to corresponding bars.
+<!-- * Anti-[FOUT](https://css-tricks.com/fout-foit-foft/): charcodes outside of value ranges are displayed as space, like [Adobe blank](https://github.com/adobe-fonts/adobe-blank-vf). -->
 
 
 ## Building
