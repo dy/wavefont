@@ -39,7 +39,7 @@ Place [_wavefont.woff2_](./wavefont.woff2) into your project directory and use t
 </script>
 ```
 
-## Ranges
+## Characters
 
 Wavefont covers the following character ranges:
 
