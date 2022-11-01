@@ -146,6 +146,13 @@ module.exports = function (plop) {
             path: `${destination}/glyphs/cap.glif`,
             template: cap({height: radius*.01*weight*2, width:0, radius: radius*.01*weight, weight, name: 'cap', align: 0 })
           },
+          // glyph00001 for stubbing unicodes
+          // {
+          //   force: true,
+          //   type: 'add',
+          //   path: `${destination}/glyphs/glyph00001.glif`,
+          //   template: bar({value:0, code:0x0020, weight, width, name: `glyph00001` })
+          // },
           // values
           ...face.values.map((code, value) => ({
             force: true,

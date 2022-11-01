@@ -25,15 +25,15 @@
 	<key>postscriptWeightName</key>
 	<string>Regular</string>
 	<key>postscriptUnderlinePosition</key>
-	<integer>-100</integer>
+	<integer>0</integer>
 	<key>postscriptUnderlineThickness</key>
 	<integer>50</integer>
 	<key>postscriptBlueValues</key>
 	<array>
-		<integer>-250</integer>
-		<integer>-250</integer>
-		<integer>1100</integer>
-		<integer>1100</integer>
+		<integer>0</integer>
+		<integer>0</integer>
+		<integer>1000</integer>
+		<integer>1000</integer>
 	</array>
 	<key>postscriptStemSnapH</key>
 	<array>
