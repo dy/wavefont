@@ -9,7 +9,7 @@ A typeface for rendering data: waveforms, spectrums, diagrams, bars etc.
 
 ## Usage
 
-Put [_wavefont.woff2_](./wavefont.woff2) into your project directory and use this code:
+Place [_wavefont.woff2_](./wavefont.woff2) into your project directory and use this code:
 
 ```html
 <style>
@@ -25,8 +25,9 @@ Put [_wavefont.woff2_](./wavefont.woff2) into your project directory and use thi
 
 	.wavefont {
 		font-family: wavefont, blank;
-		--wdth: 10;
-		font-variation-settings: 'wdth' var(--wdth), 'algn' 0.5, 'radi' 30;
+		--wdth: 20;
+		--wght: 10;
+		font-variation-settings: 'wdth' var(--wdth), 'wght' var(--wght), 'soft' 30;
 	}
 </style>
 
@@ -40,17 +41,12 @@ Put [_wavefont.woff2_](./wavefont.woff2) into your project directory and use thi
 
 ## Ranges
 
-Wavefont covers _ASCII_ range for manual input values, _Latin Ext_ range for 0-100 low-aligned values and _Cyrillic_ range for 0-100 center-aligned values.
+Wavefont covers the following character ranges:
 
-Align 	| Values 						| Chars		| Value → Character
----|---|---|---
-Bottom 	| 0-90 							| 0-9 					| `value`
-Bottom	| 1-50<sup>*</sup>	| a-z						|	`String.fromCharCode(0x60 + value/2)`
-Bottom	| 51-100<sup>*</sup>| A-Z						|	`String.fromCharCode(0x60 + value-26).toUpperCase()`
-Bottom 	| 0-100		 					| U+0100-016f 	| `String.fromCharCode(0x100 + value)`
-Center 	| 0-100							| U+0400-046f 	| `String.fromCharCode(0x400 + value)`
-
-* _a-zA-Z_ doesn't map linearly to 0..100 values and softens at the edges - _a_ and _Z_ have step 1
+* _0-9_ for simplified manual input values.
+* _a-zA-Z_ for extended manual input. The font softens step at the edges - _a_ and _Z_ have step 1.
+* _U+0100-016F_ for 0..100 values with bottom align, convert as `char = String.fromCharCode(0x100 + value)`.
+* _U+0400-046F_ for 0..100 values with center align, convert as `char = String.fromCharCode(0x400 + value)`.
 
 <!--
 ## Anti-[FOUT](https://css-tricks.com/fout-foit-foft/)
@@ -70,15 +66,13 @@ Tag | Range | Meaning
 
 ## Hints
 
-* Charcodes fall under _marking characters_ unicode category, ie. recognized as word by regexp and can be selected with <kbd>Ctrl</kbd> + <kbd>→</kbd> / double click. Eg. waveform chunks are selectable, if separated by space.
-* Shifting up can be done via combining accent acute <kbd>&nbsp;&#x0301;</kbd> (U+0301) for 1-step up or circumflex accent <kbd>&nbsp;&#x0302;</kbd> (U+0302) for 10-step up. Eg. `\u0101\u0302\u0302\u0301\u0301\u0301` shifts 23 steps up.
+* Charcodes fall under _marking characters_ unicode category, ie. recognized as word by regexp and can be selected with <kbd>Ctrl</kbd> + <kbd>→</kbd> or double click. Eg. waveform chunks are selectable, if separated by space.
+* Shifting up can be done via combining accent acute <kbd>&nbsp;&#x0301;</kbd> (U+0301) for 1-step or circumflex accent <kbd>&nbsp;&#x0302;</kbd> (U+0302) for 10-steps up. Eg. `\u0101\u0302\u0302\u0301\u0301\u0301` shifts 1 value 23 steps up.
 * Shifting down can be done via combining accent grave <kbd>&nbsp;&#x0300;</kbd> (U+0300) for 1-step down, eg. `\u0101\u0300\u0300\u0300` shifts bar 3 values down.
-* Values below range are limited to 0, eg. _0x0ff_ is mapped to 0.
-* Values above range are supported to some extent and then clipped, eg. _0x164_ (dec 101) is supported and value above 108 is clipped.
+* Values below chars range are limited to 0, eg. _0x0ff_ is mapped to 0.
+* Values above chars range are supported to some extent and then clipped, eg. _0x164_ (dec 101) is supported and value above 108 is clipped.
 * Space, tab and other non-marking chas map to _0_ value.
-* `-–._*` map to _1_ value.
-* `|` map to max value.
-* `▁▂▃▄▅▆▇█` map to corresponding bars.
+* `-–._*` map to _1_ value, `|` maps to max value, `▁▂▃▄▅▆▇█` map to corresponding bars.
 
 
 ## Building
