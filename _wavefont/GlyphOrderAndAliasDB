@@ -1,13 +1,22 @@
 .notdef	.notdef
+
+up10 up10 uni0302
 up up uni0301
 down down uni0300
 cap cap
-
-{{#each axes.width.clip as |code value|}}
-{{#if value}}_{{ value }}.clip _{{ value }}.clip{{/if}}
-{{/each}}
 
 {{#each face.values as |code value|}}
 _{{ value }} _{{ value }} {{uni code}}{{#if (lookup ../face.alias value)}}{{#each (lookup ../face.alias value) as |aliasCode|}},{{uni aliasCode}}{{/each}}{{/if}}
 {{/each}}
 
+{{#each clips as |code value|}}
+{{#if value}}_{{ value }}.clip _{{ value }}.clip{{/if}}
+{{/each}}
+
+{{#each face.values.center as |code value|}}
+_{{ value }}.center _{{ value }}.center {{uni code}}
+{{/each}}
+
+{{#each clips as |code value|}}
+{{#if value}}_{{ value }}.clip.center _{{ value }}.clip.center{{/if}}
+{{/each}}

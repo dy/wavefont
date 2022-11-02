@@ -6,10 +6,11 @@
         {{/each}}
     </axes>
     <rules>
-        {{#each axes.width.clip as |code value| }}{{#if value}}
+        {{#each clips as |code value| }}{{#if value}}
         <rule name="_{{ value }}.clip">
-            <conditionset><condition minimum="{{upm value }}" maximum="{{ ../axes.width.max }}" name="width" /></conditionset>
+            <conditionset><condition minimum="{{upm value }}" maximum="{{ ../axes.width.max }}" name="weight" /></conditionset>
             <sub name="_{{ value }}" with="_{{ value }}.clip"/>
+            <sub name="_{{ value }}.center" with="_{{ value }}.clip.center"/>
         </rule>{{/if}}{{/each}}
     </rules>
     <sources>

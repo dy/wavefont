@@ -4,13 +4,15 @@
   "description": "Typeface for visualizing waveform data",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build-ufo && npm run build-masterotfs & npm run build-otf && npm run build-ttf",
+    "build": "npm run build-ufo && npm-run-all --parallel build-otf build-ttf && npm run build-woff2",
     "build-ufo": "plop build-ufo wavefont100",
+    "build-otf": "npm-run-all build-masterotfs build-vf",
     "build-masterotfs": "buildmasterotfs --mkot -r,-omitMacNames -d wavefont100/wavefont.designspace",
-    "build-otf": "npm run build-masterotfs && buildcff2vf -c -k -d wavefont100/wavefont.designspace -o ./wavefont.otf",
+    "build-vf": "buildcff2vf --omit-mac-names -c -k -d wavefont100/wavefont.designspace -o ./wavefont.otf",
+    "patch-tables": "sfntedit -a cmap=cmap-13.bin wavefont.otf",
     "build-ttf": "fontmake --no-optimize-gvar -m wavefont100/wavefont.designspace -o variable --output-path ./wavefont.ttf",
     "subroutinize": "shx cp ./wavefont.otf ./wavefont.min.otf && tx -cff2 +S +b -o ./table.CFF2 -f ./wavefont.otf && sfntedit -a CFF2=./table.CFF2 ./wavefont.min.otf",
-    "build-woff2": "fonttools ttLib.woff2 compress wavefont.otf"
+    "build-woff2": "shx rm -f ./wavefont.woff2 && fonttools ttLib.woff2 compress wavefont.otf"
   },
   "repository": {
     "type": "git",
@@ -33,8 +35,8 @@
   "homepage": "https://github.com/a-vis/wavefont#readme",
   "devDependencies": {
     "dedent": "^0.7.0",
-    "plop": "^2.7.4",
+    "npm-run-all": "^4.1.5",
+    "plop": "^3.1.0",
     "shx": "^0.3.3"
-  },
-  "dependencies": {}
+  }
 }
