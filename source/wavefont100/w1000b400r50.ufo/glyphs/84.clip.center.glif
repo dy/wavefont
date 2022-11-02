@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyph name="_84.clip.center" format="2">
+  <advance width="1000"/>
+  
+  <outline>
+    <contour>
+        <point x="0.000" y="731.000"/>
+
+        <point x="189.000" y="920.000"/>
+        <point x="420.000" y="920.000" type="curve" smooth="yes"/>
+        <point x="-20.000" y="920.000" type="line"/>
+        <point x="211.000" y="920.000"/>
+
+        <point x="400.000" y="731.000"/>
+        <point x="400.000" y="500.000" type="curve" smooth="yes"/>
+        <point x="400.000" y="500.000" type="line"/>
+        <point x="400.000" y="269.000"/>
+
+        <point x="211.000" y="80.000"/>
+        <point x="-20.000" y="80.000" type="curve" smooth="yes"/>
+        <point x="420.000" y="80.000" type="line"/>
+        <point x="189.000" y="80.000"/>
+
+        <point x="0.000" y="269.000"/>
+        <point x="0.000" y="500.000" type="curve" smooth="yes"/>
+        <point x="0.000" y="500.000" type="line"/>
+    </contour>
+  </outline>
+</glyph>

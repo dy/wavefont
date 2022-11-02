@@ -1,0 +1,14 @@
+table STAT {
+
+  ElidedFallbackName { name "Regular"; };
+
+  DesignAxis wdth 0 { name "Width"; };
+
+  AxisValue {
+     location wdth 10 1 400;
+     name "Regular";
+     flag ElidableAxisValueName;
+  };
+
+} STAT;
+
