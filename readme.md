@@ -100,7 +100,7 @@ wavefont.center(0, 1, 50, 99, 100, 101, ...)
 
 Wavefont is generated in 2 steps.
 
-1. First, UFOs are generated into `source/wavefont100` folder by `npm run build-ufo` command. It uses [plopfile](./plopfile.js). The step can be skipped since the `source` folder is stored in the repository.
+1. First, UFOs are generated from `_source` template into `source/wavefont100` folder by `npm run build-ufo` command. It uses [plopfile](./plopfile.js) to evaluate the template. The step can be skipped since the `source` folder is stored in the repository.
 
 2. TODO: gftools do the rest of the job, compiling UFOs to ...
 
