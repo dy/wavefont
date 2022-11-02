@@ -1,9 +1,9 @@
 /**
  * @module  wavefont
- *
  */
 
-export default function fromAmplitude (amp) {
-	let offset = 0x0200;
-	return String.fromCharCode(offset + Math.floor(Math.min(Math.max(amp, -1), 1)*127));
-}
+const low = (...values) => String.fromCharCode(...values.map(value => Math.floor(Math.min(Math.max(value, 0), 100)) + 0x100))
+const center = (...values) => String.fromCharCode(...values.map(value => Math.floor(Math.min(Math.max(value, 0), 100)) + 0x400))
+
+
+export { low, center }
