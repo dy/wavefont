@@ -117,9 +117,9 @@ module.exports = function (plop) {
         {
           type: 'addMany',
           force: true,
-          destination: `${faceName}/`,
-          base: '_wavefont',
-          templateFiles: '_wavefont/*',
+          destination: `source/${face.name}/`,
+          base: '_source',
+          templateFiles: '_source/*',
           data: { face, masters, axes, clips }
         },
         ...Object.keys(masters).map(name => master({name, ...masters[name]})).flat()
@@ -127,7 +127,7 @@ module.exports = function (plop) {
 
       // actions to build one master file
       function master({name, weight, width, radius}){
-        const destination = `${face.name}/${name}.ufo`
+        const destination = `source/${face.name}/${name}.ufo`
 
         return [
           // ufo skeleton
@@ -135,8 +135,8 @@ module.exports = function (plop) {
             type: 'addMany',
             force: true,
             destination: `${destination}/`,
-            base: '_wavefont/master.ufo',
-            templateFiles: '_wavefont/master.ufo/**/*',
+            base: '_source/master.ufo',
+            templateFiles: '_source/master.ufo/**/*',
             data: { width, weight, radius, axes, face, clips }
           },
           // caps
