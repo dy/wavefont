@@ -4,13 +4,13 @@
   <unicode hex="0449"/>
   
   <outline>
-    <component base="cap" xOffset="0" yOffset="135.000" />
-    <component base="cap" xOffset="0" yOffset="864.000" />
+    <component base="cap" xOffset="0" yOffset="135" />
+    <component base="cap" xOffset="0" yOffset="864" />
     <contour>
-      <point x="0.000" y="135.500" type="line"/>
-      <point x="0.000" y="864.500" type="line"/>
-      <point x="1.000" y="864.500" type="line"/>
-      <point x="1.000" y="135.500" type="line"/>
+      <point x="0" y="136" type="line"/>
+      <point x="0" y="865" type="line"/>
+      <point x="1" y="865" type="line"/>
+      <point x="1" y="136" type="line"/>
     </contour>
   </outline>
 </glyph>
