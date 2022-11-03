@@ -3,7 +3,7 @@
     <axes>
         <axis default="1" minimum="1" maximum="1000" name="width" tag="wdth"/>
         <axis default="1" minimum="1" maximum="400" name="weight" tag="wght"/>
-        <axis default="0" minimum="0" maximum="50" name="radius" tag="soft"/>
+        <axis default="0" minimum="0" maximum="50" name="radius" tag="rond"/>
     </axes>
     <rules>
         

@@ -59,7 +59,7 @@ function alias(value, char) {
 const AXES = {
   width: {tag: 'wdth', min: 1, max: 1000, default: 1},
   weight: {tag: 'wght', min: 1, max: 400, default: 1},
-  radius: {tag: 'soft', min: 0, max: 50, default: 0}
+  radius: {tag: 'rond', min: 0, max: 50, default: 0}
 }
 
 module.exports = function (plop) {

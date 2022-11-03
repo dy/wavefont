@@ -21,7 +21,7 @@ Place [_wavefont.woff2_](./wavefont.woff2) into your project directory and use t
 		font-family: wavefont;
 		--wdth: 20;
 		--wght: 10;
-		font-variation-settings: 'wdth' var(--wdth), 'wght' var(--wght), 'soft' 30;
+		font-variation-settings: 'wdth' var(--wdth), 'wght' var(--wght), 'rond' 30;
 	}
 </style>
 
@@ -30,7 +30,7 @@ Place [_wavefont.woff2_](./wavefont.woff2) into your project directory and use t
 <script>
 	// either enter values manually (less precise)
 	waveform.textContent = 'abcdefghijklmnopqrstuvwwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-	
+
 	// or set programmatically (more precise)
 	let values = [...Array(100).keys()] // create your input values from 0..100 range
 	waveform.textContent = values.map(v => String.fromCharCode(0x100 + v)).join('')
@@ -52,7 +52,7 @@ Tag | Range | Meaning
 ---|---|---
 `wdth` | _1_-_1000_ | Bar advance width (in upm).
 `wght` | _1_-_400_ | Bar weight, or boldness (in upm).
-`soft` | _0_-_50_ | Border radius, percentage of glyph width.
+`rond` | _0_-_50_ | Border radius (roundness), percentage of glyph width.
 
 ## Features
 
@@ -78,7 +78,7 @@ To avoid flash of system font (aka [FOUT](https://css-tricks.com/fout-foit-foft/
 	font-style: wavefont, blank;
 	--wdth: 20;
 	--wght: 10;
-	font-variation-settings: 'wdth' var(--wdth), 'wght' var(--wght), 'soft' 50;
+	font-variation-settings: 'wdth' var(--wdth), 'wght' var(--wght), 'rond' 50;
 }
 ```
 

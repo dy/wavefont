@@ -194,7 +194,7 @@
       /* --track: 2px; */
       /* letter-spacing: var(--track); */
       font-size: var(--size);
-      font-variation-settings: 'wght' var(--wght, 40), 'wdth' var(--wdth, 50), 'algn' var(--algn, 0), 'soft' var(--radi, 0);
+      font-variation-settings: 'wght' var(--wght, 40), 'wdth' var(--wdth, 50), 'algn' var(--algn, 0), 'rond' var(--rond, 0);
       background-size: 100vw calc(var(--size, 100px) / 10);
       background-image: linear-gradient(to bottom, rgb(230, 245, 255) 1px, transparent 1px);
       background-attachment: local;
@@ -303,7 +303,7 @@
     let value = +radius.value;
     radius.title = value;
     radiusValue.textContent = value + '%';
-    waveareas.style.setProperty('--radi', value)
+    waveareas.style.setProperty('--rond', value)
   })();
 </script>
 
