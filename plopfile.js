@@ -56,10 +56,11 @@ function alias(value, char) {
   (FONTFACE.wavefont100.alias[value]||=[]).push(char.charCodeAt(0))
 }
 
+// axes definition, per https://github.com/dy/wavefont/issues/42
 const AXES = {
+  roundness: {tag: 'ROND', min: 0, max: 100, default: 0},
   width: {tag: 'wdth', min: 1, max: 1000, default: 1},
   weight: {tag: 'wght', min: 1, max: 400, default: 1},
-  roundness: {tag: 'ROND', min: 0, max: 100, default: 0}
 }
 
 // create masters

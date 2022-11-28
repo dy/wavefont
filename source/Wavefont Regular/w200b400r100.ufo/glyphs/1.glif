@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyph name="_1" format="2">
+  <advance width="200"/>
+  <unicode hex="0101"/>
+  <unicode hex="002E"/><unicode hex="002D"/><unicode hex="2013"/><unicode hex="2014"/><unicode hex="2015"/><unicode hex="002A"/><unicode hex="005F"/><unicode hex="2581"/><unicode hex="0061"/>
+  <outline>
+    <component base="cap" xOffset="0" yOffset="0" />
+    <component base="cap" xOffset="0" yOffset="-390" />
+    <contour>
+      <point x="0" y="200" type="line"/>
+      <point x="0" y="-190" type="line"/>
+      <point x="400" y="-190" type="line"/>
+      <point x="400" y="200" type="line"/>
+    </contour>
+  </outline>
+</glyph>
