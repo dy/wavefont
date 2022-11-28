@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <designspace format="3">
     <axes>
+        <axis default="0" minimum="0" maximum="100" name="Roundness" tag="ROND"/>
         <axis default="1" minimum="1" maximum="1000" name="Width" tag="wdth"/>
         <axis default="1" minimum="1" maximum="400" name="Weight" tag="wght"/>
-        <axis default="0" minimum="0" maximum="50" name="Radius" tag="ROND"/>
     </axes>
     <rules>
         <rule name="_1.clip">
@@ -507,56 +507,56 @@
             <location>
                 <dimension name="Width" xvalue="1" />
                 <dimension name="Weight" xvalue="1" />
-                <dimension name="Radius" xvalue="0" />
+                <dimension name="Roundness" xvalue="0" />
             </location>
         </source>
-        <source familyname="Wavefont Regular" filename="w1b1r50.ufo" name="Master_w1b1r50" stylename="Master w1b1r50">
+        <source familyname="Wavefont Regular" filename="w1b1r100.ufo" name="Master_w1b1r100" stylename="Master w1b1r100">
             <location>
                 <dimension name="Width" xvalue="1" />
                 <dimension name="Weight" xvalue="1" />
-                <dimension name="Radius" xvalue="50" />
+                <dimension name="Roundness" xvalue="100" />
             </location>
         </source>
         <source familyname="Wavefont Regular" filename="w1b400r0.ufo" name="Master_w1b400r0" stylename="Master w1b400r0">
             <location>
                 <dimension name="Width" xvalue="1" />
                 <dimension name="Weight" xvalue="400" />
-                <dimension name="Radius" xvalue="0" />
+                <dimension name="Roundness" xvalue="0" />
             </location>
         </source>
-        <source familyname="Wavefont Regular" filename="w1b400r50.ufo" name="Master_w1b400r50" stylename="Master w1b400r50">
+        <source familyname="Wavefont Regular" filename="w1b400r100.ufo" name="Master_w1b400r100" stylename="Master w1b400r100">
             <location>
                 <dimension name="Width" xvalue="1" />
                 <dimension name="Weight" xvalue="400" />
-                <dimension name="Radius" xvalue="50" />
+                <dimension name="Roundness" xvalue="100" />
             </location>
         </source>
         <source familyname="Wavefont Regular" filename="w1000b1r0.ufo" name="Master_w1000b1r0" stylename="Master w1000b1r0">
             <location>
                 <dimension name="Width" xvalue="1000" />
                 <dimension name="Weight" xvalue="1" />
-                <dimension name="Radius" xvalue="0" />
+                <dimension name="Roundness" xvalue="0" />
             </location>
         </source>
-        <source familyname="Wavefont Regular" filename="w1000b1r50.ufo" name="Master_w1000b1r50" stylename="Master w1000b1r50">
+        <source familyname="Wavefont Regular" filename="w1000b1r100.ufo" name="Master_w1000b1r100" stylename="Master w1000b1r100">
             <location>
                 <dimension name="Width" xvalue="1000" />
                 <dimension name="Weight" xvalue="1" />
-                <dimension name="Radius" xvalue="50" />
+                <dimension name="Roundness" xvalue="100" />
             </location>
         </source>
         <source familyname="Wavefont Regular" filename="w1000b400r0.ufo" name="Master_w1000b400r0" stylename="Master w1000b400r0">
             <location>
                 <dimension name="Width" xvalue="1000" />
                 <dimension name="Weight" xvalue="400" />
-                <dimension name="Radius" xvalue="0" />
+                <dimension name="Roundness" xvalue="0" />
             </location>
         </source>
-        <source familyname="Wavefont Regular" filename="w1000b400r50.ufo" name="Master_w1000b400r50" stylename="Master w1000b400r50">
+        <source familyname="Wavefont Regular" filename="w1000b400r100.ufo" name="Master_w1000b400r100" stylename="Master w1000b400r100">
             <location>
                 <dimension name="Width" xvalue="1000" />
                 <dimension name="Weight" xvalue="400" />
-                <dimension name="Radius" xvalue="50" />
+                <dimension name="Roundness" xvalue="100" />
             </location>
         </source>
     </sources>
