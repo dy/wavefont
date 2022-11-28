@@ -3,8 +3,10 @@
 <plist version="1.0">
   <dict>
     <key>creator</key>
-    <string>Dmitry Iv</string>
+    <string>Dmitry Ivanov</string>
     <key>formatVersion</key>
     <integer>3</integer>
+    <key>formatVersionMinor</key>
+    <integer>0</integer>
   </dict>
 </plist>

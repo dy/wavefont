@@ -2,6 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+	<key>familyName</key>
+	<string>Wavefont</string>
+	<key>styleName</key>
+	<string>Regular</string>
+	<key>postscriptFontName</key>
+	<string>Wavefont</string>
+	<key>postscriptFullName</key>
+	<string>Wavefont</string>
+	<key>postscriptWeightName</key>
+	<string>Regular</string>
+	<key>versionMajor</key>
+	<integer>3</integer>
+	<key>versionMinor</key>
+	<integer>0</integer>
+	<key>trademark</key>
+	<string>Copyright (c) 2021, Dmitry Ivanov.</string>
+	<key>unitsPerEm</key>
+	<integer>{{upm face.max }}</integer>
   <key>ascender</key>
 	<integer>{{upm face.max }}</integer>
 	<key>descender</key>
@@ -10,20 +28,6 @@
 	<integer>0</integer>
 	<key>capHeight</key>
 	<integer>0</integer>
-	<key>postscriptFontName</key>
-	<string>Wavefont</string>
-	<key>styleName</key>
-	<string>Regular</string>
-	<key>familyName</key>
-	<string>Wavefont</string>
-	<key>trademark</key>
-	<string>Copyright (c) 2021, Dmitry Ivanov.</string>
-	<key>unitsPerEm</key>
-	<integer>{{upm face.max }}</integer>
-	<key>postscriptFullName</key>
-	<string>AdobeBlank2VF</string>
-	<key>postscriptWeightName</key>
-	<string>Regular</string>
 	<key>postscriptUnderlinePosition</key>
 	<integer>0</integer>
 	<key>postscriptUnderlineThickness</key>
