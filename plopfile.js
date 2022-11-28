@@ -20,7 +20,7 @@ const BAR_CHAR = `▁▂▃▄▅▆▇█`.split('').map(v=>v.charCodeAt(0))
 
 const FONTFACE = {
   wavefont100: {
-    name: 'Wavefont Regular',
+    name: 'Wavefont',
     min: 0,
     max: 100,
     alias: {
@@ -60,7 +60,7 @@ function alias(value, char) {
 const AXES = {
   roundness: {tag: 'ROND', min: 0, max: 100, default: 0},
   width: {tag: 'wdth', min: 1, max: 1000, default: 1},
-  weight: {tag: 'wght', min: 1, max: 400, default: 1},
+  weight: {tag: 'wght', min: 1, max: 400, default: 400},
 }
 
 // create masters
