@@ -20,7 +20,7 @@ const BAR_CHAR = `▁▂▃▄▅▆▇█`.split('').map(v=>v.charCodeAt(0))
 
 const FONTFACE = {
   wavefont100: {
-    name: 'wavefont100',
+    name: 'Wavefont Regular',
     min: 0,
     max: 100,
     alias: {
@@ -59,17 +59,30 @@ function alias(value, char) {
 const AXES = {
   width: {tag: 'wdth', min: 1, max: 1000, default: 1},
   weight: {tag: 'wght', min: 1, max: 400, default: 1},
-  radius: {tag: 'rond', min: 0, max: 50, default: 0}
+  radius: {tag: 'ROND', min: 0, max: 50, default: 0}
 }
+
+// create masters
+const MASTERS = {}
+const addMaster = (w,b,r) => MASTERS[`w${w}b${b}r${r}`] = {width:w, weight:b, radius:r}
+// addMaster(AXES.width.default, AXES.weight.default, AXES.radius.default)
+addMaster(AXES.width.min, AXES.weight.min, AXES.radius.min)
+addMaster(AXES.width.min, AXES.weight.min, AXES.radius.max)
+addMaster(AXES.width.min, AXES.weight.max, AXES.radius.min)
+addMaster(AXES.width.min, AXES.weight.max, AXES.radius.max)
+addMaster(AXES.width.max, AXES.weight.min, AXES.radius.min)
+addMaster(AXES.width.max, AXES.weight.min, AXES.radius.max)
+addMaster(AXES.width.max, AXES.weight.max, AXES.radius.min)
+addMaster(AXES.width.max, AXES.weight.max, AXES.radius.max)
 
 module.exports = function (plop) {
 	plop.setGenerator('build-ufo', {
     description: 'Build font-face UFOs',
     prompts: [{name: 'faceName', message: 'font-face name', type: 'text'}],
 		actions: ({faceName}) => {
-      const face = FONTFACE[faceName], axes = AXES
+      const face = FONTFACE[faceName], axes = AXES, masters = MASTERS
 
-      // convert value to units-per-em (0-100 → 0-2048)
+      // convert value to units-per-em (0-100 → 0-1000)
       const upm = (v) => (UPM * v / face.max)
       // int to 4-digit hex
       const hex = (v) => v.toString(16).toUpperCase().padStart(4,0)
@@ -79,10 +92,10 @@ module.exports = function (plop) {
       // uni 1 → uni0001
       plop.setHelper('uni', uni);
 
-      // upm x →
+      // upm 12 → 120
       plop.setHelper('upm', upm);
 
-      // hex x →
+      // hex 12 → 000C
       plop.setHelper('hex', hex);
 
       // sub 1 2 → -1
@@ -94,25 +107,12 @@ module.exports = function (plop) {
       // int 12.3 → 12
       plop.setHelper('int', v => v.toFixed(0))
 
+      // flt 12.12345 -> 12.123
       plop.setHelper('flt', v => v.toFixed(3))
 
-      // variable font axes
-      const {width, weight, radius} = axes
 
       // clip values are more horizontal than vertical - need alternative glyph
       const clips = face.values.filter((c, v) => upm(v) < AXES.width.max)
-
-      // create master cases
-      const masters = {}
-      const k = (w=1,b,r) => `w${w}b${b}r${r}`, v = (w=1,b,r) => ({width:w, weight:b, radius:r})
-      masters[k(width.min, weight.min, radius.min)] = v(width.min, weight.min, radius.min)
-      masters[k(width.min, weight.min, radius.max)] = v(width.min, weight.min, radius.max)
-      masters[k(width.min, weight.max, radius.min)] = v(width.min, weight.max, radius.min)
-      masters[k(width.min, weight.max, radius.max)] = v(width.min, weight.max, radius.max)
-      masters[k(width.max, weight.min, radius.min)] = v(width.max, weight.min, radius.min)
-      masters[k(width.max, weight.min, radius.max)] = v(width.max, weight.min, radius.max)
-      masters[k(width.max, weight.max, radius.min)] = v(width.max, weight.max, radius.min)
-      masters[k(width.max, weight.max, radius.max)] = v(width.max, weight.max, radius.max)
 
       return [
         // populate source skeleton
@@ -128,7 +128,7 @@ module.exports = function (plop) {
       ]
 
       // actions to build one master file
-      function master({name, weight, width, radius}){
+      function master({name, weight, width, radius: radius}){
         const destination = `source/${face.name}/${name}.ufo`
 
         return [

@@ -2,13 +2,12 @@
 <designspace format="3">
     <axes>
         {{#each axes as |axis name|}}
-        <axis default="{{ axis.default }}" minimum="{{ axis.min }}" maximum="{{ axis.max }}" name="{{ name }}" tag="{{ axis.tag }}"/>
+        <axis default="{{ axis.default }}" minimum="{{ axis.min }}" maximum="{{ axis.max }}" name="{{titleCase name }}" tag="{{ axis.tag }}"/>
         {{/each}}
     </axes>
-    <rules>
-        {{#each clips as |code value| }}{{#if value}}
+    <rules>{{#each clips as |code value| }}{{#if value}}
         <rule name="_{{ value }}.clip">
-            <conditionset><condition minimum="{{upm value }}" maximum="{{ ../axes.width.max }}" name="weight" /></conditionset>
+            <conditionset><condition minimum="{{upm value }}" maximum="{{ ../axes.width.max }}" name="Weight" /></conditionset>
             <sub name="_{{ value }}" with="_{{ value }}.clip"/>
             <sub name="_{{ value }}.center" with="_{{ value }}.clip.center"/>
         </rule>{{/if}}{{/each}}
@@ -18,7 +17,7 @@
         <source familyname="{{ ../face.name }}" filename="{{ name }}.ufo" name="Master_{{name}}" stylename="Master {{name}}">
             <location>
                 {{#each master as |axisValue axisName|}}
-                <dimension name="{{ axisName }}" xvalue="{{ axisValue }}" />
+                <dimension name="{{titleCase axisName }}" xvalue="{{ axisValue }}" />
                 {{/each}}
             </location>
         </source>
