@@ -59,7 +59,7 @@ function alias(value, char) {
 const AXES = {
   width: {tag: 'wdth', min: 1, max: 1000, default: 1},
   weight: {tag: 'wght', min: 1, max: 400, default: 1},
-  roundness: {tag: 'ROND', min: 0, max: 50, default: 0}
+  roundness: {tag: 'ROND', min: 0, max: 100, default: 0}
 }
 
 // create masters
@@ -129,7 +129,7 @@ module.exports = function (plop) {
 
       // actions to build one master file
       function master({name, weight, width, roundness}){
-        const radius = roundness
+        const radius = roundness / 2
         const destination = `source/${face.name}/${name}.ufo`
 
         return [
