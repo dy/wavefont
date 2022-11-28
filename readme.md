@@ -52,7 +52,7 @@ Tag | Range | Meaning
 ---|---|---
 `wdth` | _1_-_1000_ | Bar advance width (in upm).
 `wght` | _1_-_400_ | Bar weight, or boldness (in upm).
-`rond` | _0_-_50_ | Border radius (roundness), percentage of glyph width.
+`ROND` | _0_-_50_ | Border radius (roundness), percentage of glyph width.
 
 ## Features
 

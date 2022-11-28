@@ -161,8 +161,8 @@
       <output id="widthValue"></output>
     </div>
     <div class="panel-field">
-      <label for="radius"><small>Radius</small></label> <input id="radius" type="range" min="0" value="50" max="50" step="1"/>
-      <output id="radiusValue"></output>
+      <label for="roundness"><small>Roundness</small></label> <input id="roundness" type="range" min="0" value="50" max="50" step="1"/>
+      <output id="roundnessValue"></output>
     </div>
     <div class="panel-field">
       <label for="size"><small>Size</small></label> <input id="size" type="range" min="5" value="108" max="200" step="1"/>
@@ -299,10 +299,10 @@
   //   trackValue.textContent = value + 'px';
   //   waveareas.style.setProperty('--track', value + 'px')
   // })();
-  (radius.oninput = e => {
-    let value = +radius.value;
-    radius.title = value;
-    radiusValue.textContent = value + '%';
+  (roundness.oninput = e => {
+    let value = +roundness.value;
+    roundness.title = value;
+    roundnessValue.textContent = value + '%';
     waveareas.style.setProperty('--rond', value)
   })();
 </script>

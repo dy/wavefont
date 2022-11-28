@@ -59,21 +59,21 @@ function alias(value, char) {
 const AXES = {
   width: {tag: 'wdth', min: 1, max: 1000, default: 1},
   weight: {tag: 'wght', min: 1, max: 400, default: 1},
-  radius: {tag: 'ROND', min: 0, max: 50, default: 0}
+  roundness: {tag: 'ROND', min: 0, max: 50, default: 0}
 }
 
 // create masters
 const MASTERS = {}
-const addMaster = (w,b,r) => MASTERS[`w${w}b${b}r${r}`] = {width:w, weight:b, radius:r}
-// addMaster(AXES.width.default, AXES.weight.default, AXES.radius.default)
-addMaster(AXES.width.min, AXES.weight.min, AXES.radius.min)
-addMaster(AXES.width.min, AXES.weight.min, AXES.radius.max)
-addMaster(AXES.width.min, AXES.weight.max, AXES.radius.min)
-addMaster(AXES.width.min, AXES.weight.max, AXES.radius.max)
-addMaster(AXES.width.max, AXES.weight.min, AXES.radius.min)
-addMaster(AXES.width.max, AXES.weight.min, AXES.radius.max)
-addMaster(AXES.width.max, AXES.weight.max, AXES.radius.min)
-addMaster(AXES.width.max, AXES.weight.max, AXES.radius.max)
+const addMaster = (w,b,r) => MASTERS[`w${w}b${b}r${r}`] = {width:w, weight:b, roundness:r}
+// addMaster(AXES.width.default, AXES.weight.default, AXES.roundness.default)
+addMaster(AXES.width.min, AXES.weight.min, AXES.roundness.min)
+addMaster(AXES.width.min, AXES.weight.min, AXES.roundness.max)
+addMaster(AXES.width.min, AXES.weight.max, AXES.roundness.min)
+addMaster(AXES.width.min, AXES.weight.max, AXES.roundness.max)
+addMaster(AXES.width.max, AXES.weight.min, AXES.roundness.min)
+addMaster(AXES.width.max, AXES.weight.min, AXES.roundness.max)
+addMaster(AXES.width.max, AXES.weight.max, AXES.roundness.min)
+addMaster(AXES.width.max, AXES.weight.max, AXES.roundness.max)
 
 module.exports = function (plop) {
 	plop.setGenerator('build-ufo', {
@@ -128,7 +128,8 @@ module.exports = function (plop) {
       ]
 
       // actions to build one master file
-      function master({name, weight, width, radius: radius}){
+      function master({name, weight, width, roundness}){
+        const radius = roundness
         const destination = `source/${face.name}/${name}.ufo`
 
         return [
