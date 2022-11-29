@@ -80,6 +80,7 @@
       border-left: .5rem solid rgba(238,238,240,.98);
       border-right: .5rem solid rgba(238,238,239,.97);
       border-bottom: .5rem solid rgba(231,231,232,.97);
+      background: rgba(238,238,239,1);
       z-index: 1;
       -webkit-backdrop-filter: blur(2px);
       backdrop-filter: blur(2px);
@@ -100,7 +101,7 @@
       align-items: stretch;
       justify-content: space-around;
       text-shadow: 1px 1px white;
-      box-shadow: 0 -1px rgba(255,255,255,.75), -1px 0 rgba(255,255,255..5);
+      /* box-shadow: 0 -5px rgba(255,255,255,.75), 0 5px rgba(255,255,255,.75), -5px 0 rgba(255,255,255,.5), 5px 0 rgba(255,255,255,.5); */
       /* background: linear-gradient(to bottom, rgba(252,252,252,1), rgba(238,238,238,1)); */
     }
     #panel h1 {
@@ -157,11 +158,11 @@
       <output id="weightValue"></output>
     </div>
     <div class="panel-field">
-      <label for="width"><small>Width</small></label> <input id="width" type="range" min="50" value="50" step="1" max="200"/>
-      <output id="widthValue"></output>
+      <label for="spacing"><small>Spacing</small></label> <input id="spacing" type="range" min="0" value="1" step=".25" max="10"/>
+      <output id="spacingValue"></output>
     </div>
     <div class="panel-field">
-      <label for="roundness"><small>Roundness</small></label> <input id="roundness" type="range" min="0" value="100" max="100" step="1"/>
+      <label for="roundness"><small>Round</small></label> <input id="roundness" type="range" min="0" value="100" max="100" step="1"/>
       <output id="roundnessValue"></output>
     </div>
     <div class="panel-field">
@@ -194,7 +195,8 @@
       /* --track: 2px; */
       /* letter-spacing: var(--track); */
       font-size: var(--size);
-      font-variation-settings: 'wght' var(--wght, 40), 'wdth' var(--wdth, 50), 'ROND' var(--rond, 0);
+      letter-spacing: var(--spacing);
+      font-variation-settings: 'wght' var(--wght, 40), 'ROND' var(--rond, 0);
       background-size: 100vw calc(var(--size, 100px) / 10);
       background-image: linear-gradient(to bottom, rgb(230, 245, 255) 1px, transparent 1px);
       background-attachment: local;
@@ -213,6 +215,7 @@
       content: attr(title);
       top: 0;
       left: 0;
+      letter-spacing: .25ch;
       font-family: sans-serif;
       font-size: 12px;
     }
@@ -260,7 +263,7 @@
 
   <div id="shift" title="Shift" class="wavearea" contenteditable>11́1́́1́́́1́́́́1́́́́́1́́́́́́1́́́́́́́1́́́́́́́́1́́́́́́́́́1́́́́́́́́́́1́́́́́́́́́́́1́́́́́́́́́́́́1́́́́́́́́́́́́́1́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́́́ 33́3́́3̂3̂́3̂́́3̂̂3̂̂́3̂̂́́3̂̂̂3̂̂̂́3̂̂̂́́3̂̂̂̂3̂̂̂̂́3̂̂̂̂́́3̂̂̂̂̂3̂̂̂̂̂́3̂̂̂̂̂́́3̂̂̂̂̂̂3̂̂̂̂̂̂́3̂̂̂̂̂̂́́3̂̂̂̂̂̂̂3̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂̂́́ 11̀1̀̀1̀̀̀1̀̀̀̀</div>
 
-  <div id="aliases" title="0-9 _-–.| ▁▂▃▄▅▆▇█" class="wavearea" contenteditable>0123456789 _-–.| ▁▂▃▄▅▆▇█</div>
+  <div id="aliases" title="0-9 _-–.| bars" class="wavearea" contenteditable>0123456789bars</div>
 
   <div id="range100" title="Latin Ext (+clipping)" class="wavearea" contenteditable></div>
   <script>
@@ -275,11 +278,11 @@
 </main>
 
 <script>
-  (width.oninput = e => {
-    let value = +width.value;
-    width.title = `'wdth' ${value}`;
-    widthValue.textContent = (+value).toFixed(0);
-    waveareas.style.setProperty('--wdth', value)
+  (spacing.oninput = e => {
+    let value = +spacing.value;
+    spacing.title = `'spacing' ${value}ch`;
+    spacingValue.textContent = value + 'ch';
+    waveareas.style.setProperty('--spacing', value + 'ch')
   })();
   (weight.oninput = e => {
     let value = +weight.value;
