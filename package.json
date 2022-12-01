@@ -12,13 +12,13 @@
     "normalize-ufo-w400r0": "ufonormalizer -a --float-precision 3 -m source/Wavefont/w400r0.ufo",
     "normalize-ufo-w400r100": "ufonormalizer -a --float-precision 3 -m source/Wavefont/w400r100.ufo",
     "hint-ufo": "psautohint --no-hint-sub --no-flex -d -c -a source/Wavefont/*.ufo",
+    "blank-ufo": "",
     "build-otf": "npm-run-all build-masterotfs build-vf",
     "build-masterotfs": "buildmasterotfs --mkot -r,-omitMacNames,-S,-ga,-adds -d \"source/Wavefont/wavefont.designspace\"",
     "build-vf": "buildcff2vf --omit-mac-names -c -k -d \"source/Wavefont/wavefont.designspace\" -o ./wavefont.otf",
-    "patch-tables": "sfntedit -a cmap=cmap-13.bin wavefont.otf",
     "build-ttf": "fontmake -m \"source/Wavefont/wavefont.designspace\" -o variable --output-path ./wavefont.ttf --validate-ufo --round-instances --expand-features-to-instances --autohint",
-    "subroutinize": "shx cp ./wavefont.otf ./wavefont.min.otf && tx -cff2 +S +b -o ./table.CFF2 -f ./wavefont.otf && sfntedit -a CFF2=./table.CFF2 ./wavefont.min.otf",
-    "build-woff2": "shx rm -f ./wavefont.woff2 && fonttools ttLib.woff2 compress wavefont.otf"
+    "build-woff2": "shx rm -f ./wavefont.woff2 && fonttools ttLib.woff2 compress wavefont.otf",
+    "subroutinize-otf": "shx cp ./wavefont.otf ./wavefont.min.otf && tx -cff2 +S +b -o ./table.CFF2 -f ./wavefont.otf && sfntedit -a CFF2=./table.CFF2 ./wavefont.min.otf"
   },
   "repository": {
     "type": "git",

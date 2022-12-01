@@ -80,9 +80,9 @@ module.exports = function (plop) {
       // convert value to units-per-em (0-100 → 0-1000)
       const upm = (v) => (UPM * v / face.max)
       // int to 4-digit hex
-      const hex = (v) => v.toString(16).toUpperCase().padStart(4,0)
+      const hex = (v) => v.toString(16).toUpperCase()
       // int to u0000 form
-      const uni = (v) => Array.isArray(v) ? v.map(v => `u${hex(parseInt(v))}`).join(',') : `u${hex(parseInt(v))}`
+      const uni = (v) => Array.isArray(v) ? v.map(v => `u${hex(parseInt(v)).padStart(4,0)}`).join(',') : `u${hex(parseInt(v)).padStart(4,0)}`
 
       // uni 1 → uni0001
       plop.setHelper('uni', uni);
@@ -90,7 +90,7 @@ module.exports = function (plop) {
       // upm 12 → 120
       plop.setHelper('upm', upm);
 
-      // hex 12 → 000C
+      // hex 12 -> C
       plop.setHelper('hex', hex);
 
       // sub 1 2 → -1
@@ -100,11 +100,22 @@ module.exports = function (plop) {
       plop.setHelper('half', (a) => a*.5);
 
       // int 12.3 → 12
-      plop.setHelper('int', v => v.toFixed(0))
+      plop.setHelper('int', v => v.toFixed(0));
 
+      // generate number of times
+      plop.setHelper('times', function(n, block) {
+        var accum = '';
+        for(var i = 0; i < n; ++i) {
+            block.data.index = i;
+            block.data.first = i === 0;
+            block.data.last = i === (n - 1);
+            accum += block.fn(this);
+        }
+        return accum;
+      });
 
       // clip values are more horizontal than vertical - need alternative glyph
-      const clips = face.values.filter((c, v) => upm(v) < AXES.weight.max)
+      const clips = face.values.filter((c, v) => upm(v) < AXES.weight.max);
 
       return [
         // populate source skeleton
