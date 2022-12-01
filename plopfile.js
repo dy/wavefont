@@ -156,7 +156,7 @@ module.exports = function (plop) {
           ...face.values.map((code, value) => ({
             force: true,
             type: 'add',
-            path: `${destination}/glyphs/${value}.glif`,
+            path: `${destination}/glyphs/_${value}.glif`,
             template: bar({value, code, weight, width, name: `_${value}`, capSize: radius*.01*weight, align: 0, alias: face.alias[value] })
           })),
           // substitute glyphs lower than max weight to compensate wrong interpolation on weight clipping
@@ -164,7 +164,7 @@ module.exports = function (plop) {
           ...clips.map((code, value) => value && ({
             force: true,
             type: 'add',
-            path: `${destination}/glyphs/${value}.clip.glif`,
+            path: `${destination}/glyphs/_${value}.clip.glif`,
             template: cap({height: upm(value), weight, width, name: `_${value}.clip`, radius: (radius && 1 ) * upm(value) * .5, align: 0 })
           })).filter(Boolean),
 
@@ -172,13 +172,13 @@ module.exports = function (plop) {
           ...face.values.center.map((code, value) => ({
             force: true,
             type: 'add',
-            path: `${destination}/glyphs/${value}.center.glif`,
+            path: `${destination}/glyphs/_${value}.center.glif`,
             template: bar({value, code, weight, width, name: `_${value}.center`, capSize: radius*.01*weight, align: 0.5 })
           })),
           ...clips.map((code, value) => value && ({
             force: true,
             type: 'add',
-            path: `${destination}/glyphs/${value}.clip.center.glif`,
+            path: `${destination}/glyphs/_${value}.clip.center.glif`,
             template: cap({height: upm(value), weight, width, name: `_${value}.clip.center`, radius: (radius && 1 ) * upm(value) * .5, align: 0.5 })
           })).filter(Boolean)
         ]

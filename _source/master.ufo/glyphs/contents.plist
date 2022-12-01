@@ -9,19 +9,19 @@
     <key>cap</key><string>cap.glif</string>
 
     {{#each face.values as |code value|}}
-    <key>_{{ value }}</key><string>{{ value }}.glif</string>
+    <key>_{{ value }}</key><string>_{{ value }}.glif</string>
     {{/each}}
 
     {{#each clips as |code value|}}
-    {{#if value}}<key>_{{ value }}.clip</key><string>{{ value }}.clip.glif</string>{{/if}}
+    {{#if value}}<key>_{{ value }}.clip</key><string>_{{ value }}.clip.glif</string>{{/if}}
     {{/each}}
 
     {{#each face.values.center as |code value|}}
-    <key>_{{ value }}.center</key><string>{{ value }}.center.glif</string>
+    <key>_{{ value }}.center</key><string>_{{ value }}.center.glif</string>
     {{/each}}
 
     {{#each clips as |code value|}}
-    {{#if value}}<key>_{{ value }}.clip.center</key><string>{{ value }}.clip.center.glif</string>{{/if}}
+    {{#if value}}<key>_{{ value }}.clip.center</key><string>_{{ value }}.clip.center.glif</string>{{/if}}
     {{/each}}
   </dict>
 </plist>

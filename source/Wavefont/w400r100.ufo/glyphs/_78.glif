@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyph name="_78" format="2">
+  <advance width="400"/>
+  <unicode hex="014E"/>
+  <unicode hex="004E"/>
+  <outline>
+    <component base="cap" xOffset="0" yOffset="0" />
+    <component base="cap" xOffset="0" yOffset="380" />
+    <contour>
+      <point x="0" y="200" type="line"/>
+      <point x="0" y="580" type="line"/>
+      <point x="400" y="580" type="line"/>
+      <point x="400" y="200" type="line"/>
+    </contour>
+  </outline>
+</glyph>
