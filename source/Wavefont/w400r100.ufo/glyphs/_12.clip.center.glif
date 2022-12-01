@@ -4,26 +4,26 @@
   
   <outline>
     <contour>
-        <point x="0.000" y="533.000"/>
+        <point x="0" y="533"/>
 
-        <point x="27.000" y="560.000"/>
-        <point x="60.000" y="560.000" type="curve" smooth="yes"/>
-        <point x="340.000" y="560.000" type="line"/>
-        <point x="373.000" y="560.000"/>
+        <point x="26.999999999999996" y="560"/>
+        <point x="60" y="560" type="curve" smooth="yes"/>
+        <point x="340" y="560" type="line"/>
+        <point x="373" y="560"/>
 
-        <point x="400.000" y="533.000"/>
-        <point x="400.000" y="500.000" type="curve" smooth="yes"/>
-        <point x="400.000" y="500.000" type="line"/>
-        <point x="400.000" y="467.000"/>
+        <point x="400" y="533"/>
+        <point x="400" y="500" type="curve" smooth="yes"/>
+        <point x="400" y="500" type="line"/>
+        <point x="400" y="467"/>
 
-        <point x="373.000" y="440.000"/>
-        <point x="340.000" y="440.000" type="curve" smooth="yes"/>
-        <point x="60.000" y="440.000" type="line"/>
-        <point x="27.000" y="440.000"/>
+        <point x="373" y="440"/>
+        <point x="340" y="440" type="curve" smooth="yes"/>
+        <point x="60" y="440" type="line"/>
+        <point x="26.999999999999996" y="440"/>
 
-        <point x="0.000" y="467.000"/>
-        <point x="0.000" y="500.000" type="curve" smooth="yes"/>
-        <point x="0.000" y="500.000" type="line"/>
+        <point x="0" y="467"/>
+        <point x="0" y="500" type="curve" smooth="yes"/>
+        <point x="0" y="500" type="line"/>
     </contour>
   </outline>
 </glyph>

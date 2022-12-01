@@ -102,9 +102,6 @@ module.exports = function (plop) {
       // int 12.3 → 12
       plop.setHelper('int', v => v.toFixed(0))
 
-      // flt 12.12345 -> 12.123
-      plop.setHelper('flt', v => v.toFixed(3))
-
 
       // clip values are more horizontal than vertical - need alternative glyph
       const clips = face.values.filter((c, v) => upm(v) < AXES.weight.max)
@@ -196,26 +193,26 @@ module.exports = function (plop) {
             ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
             <outline>
               <contour>
-                  <point x="{{flt ${l}}}" y="{{flt ${height-Rc + yshift} }}"/>
+                  <point x="${l}" y="${height-Rc + yshift}"/>
 
-                  <point x="{{flt ${l+Rc} }}" y="{{flt ${height + yshift} }}"/>
-                  <point x="{{flt ${l+R} }}" y="{{flt ${height + yshift} }}" type="curve" smooth="yes"/>
-                  <point x="{{flt ${r-R} }}" y="{{flt ${height + yshift} }}" type="line"/>
-                  <point x="{{flt ${r-Rc} }}" y="{{flt ${height + yshift} }}"/>
+                  <point x="${l+Rc}" y="${height + yshift}"/>
+                  <point x="${l+R}" y="${height + yshift}" type="curve" smooth="yes"/>
+                  <point x="${r-R}" y="${height + yshift}" type="line"/>
+                  <point x="${r-Rc}" y="${height + yshift}"/>
 
-                  <point x="{{flt ${r} }}" y="{{flt ${height-Rc + yshift} }}"/>
-                  <point x="{{flt ${r} }}" y="{{flt ${height-R + yshift} }}" type="curve" smooth="yes"/>
-                  <point x="{{flt ${r} }}" y="{{flt ${R + yshift} }}" type="line"/>
-                  <point x="{{flt ${r} }}" y="{{flt ${Rc + yshift} }}"/>
+                  <point x="${r}" y="${height-Rc + yshift}"/>
+                  <point x="${r}" y="${height-R + yshift}" type="curve" smooth="yes"/>
+                  <point x="${r}" y="${R + yshift}" type="line"/>
+                  <point x="${r}" y="${Rc + yshift}"/>
 
-                  <point x="{{flt ${r-Rc} }}" y="{{flt ${0 + yshift} }}"/>
-                  <point x="{{flt ${r-R} }}" y="{{flt ${0 + yshift} }}" type="curve" smooth="yes"/>
-                  <point x="{{flt ${l+R} }}" y="{{flt ${0 + yshift} }}" type="line"/>
-                  <point x="{{flt ${l+Rc} }}" y="{{flt ${0 + yshift} }}"/>
+                  <point x="${r-Rc}" y="${0 + yshift}"/>
+                  <point x="${r-R}" y="${0 + yshift}" type="curve" smooth="yes"/>
+                  <point x="${l+R}" y="${0 + yshift}" type="line"/>
+                  <point x="${l+Rc}" y="${0 + yshift}"/>
 
-                  <point x="{{flt ${l} }}" y="{{flt ${Rc + yshift} }}"/>
-                  <point x="{{flt ${l} }}" y="{{flt ${R + yshift} }}" type="curve" smooth="yes"/>
-                  <point x="{{flt ${l} }}" y="{{flt ${height-R + yshift} }}" type="line"/>
+                  <point x="${l}" y="${Rc + yshift}"/>
+                  <point x="${l}" y="${R + yshift}" type="curve" smooth="yes"/>
+                  <point x="${l}" y="${height-R + yshift}" type="line"/>
               </contour>
             </outline>
           </glyph>
