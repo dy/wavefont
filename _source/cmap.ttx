@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To patch blank chars we take over Adobe blank ttx file
+Ref: https://github.com/adobe-type-tools/afdko/issues/1573
+-->
+<ttFont sfntVersion="OTTO" ttLibVersion="4.37">
+
+  <cmap>
+    <tableVersion version="0"/>
+    <cmap_format_13 platformID="3" platEncID="10" format="13" reserved="0" length="244" language="0" nGroups="19">
+      {{#times 1114110}}<map code="0x{{hex @index}}" name="_0"/>{{/times}}
+
+      {{#each face.values as |code value|}}
+      <map code="0x{{hex code}}" name="_{{ value }}"/>{{#if (lookup ../face.alias value)}}{{#each (lookup ../face.alias value) as |aliasCode|}}<map code="0x{{hex aliasCode }}" name="_{{value}}"/>{{/each}}{{/if}}
+      {{/each}}
+
+      {{#each face.values.center as |code value|}}
+      <map code="0x{{hex code}}" name="_{{ value }}.center"/>
+      {{/each}}
+
+      <map code="0x300" name="down"/>
+      <map code="0x301" name="up"/>
+      <map code="0x302" name="up10"/>
+    </cmap_format_13>
+  </cmap>
+
+</ttFont>

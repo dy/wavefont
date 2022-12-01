@@ -184,7 +184,7 @@
       }
     }
     .wavearea {
-      font-family: wavefont, blank;
+      font-family: wavefont;
       line-height: 1;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -267,12 +267,12 @@
 
   <div id="range100" title="Latin Ext (+clipping)" class="wavearea" contenteditable></div>
   <script>
-  range100.textContent += Array(110).fill(0).map((v,i)=> String.fromCharCode(0x100+i-2)).join('')
+  range100.textContent += Array(120).fill(0).map((v,i)=> String.fromCharCode(0x100+i-10)).join('')
   </script>
 
   <div id="rangecyr100" title="Cyrillic (centered + clipping)" class="wavearea" contenteditable></div>
   <script>
-  rangecyr100.textContent += Array(110).fill(0).map((v,i)=> String.fromCharCode(0x400+i-2)).join('')
+  rangecyr100.textContent += Array(120).fill(0).map((v,i)=> String.fromCharCode(0x400+i-10)).join('')
   </script>
 
 </main>

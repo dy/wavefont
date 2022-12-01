@@ -79,10 +79,10 @@ module.exports = function (plop) {
 
       // convert value to units-per-em (0-100 → 0-1000)
       const upm = (v) => (UPM * v / face.max)
-      // int to 4-digit hex
+      // int to hex
       const hex = (v) => v.toString(16).toUpperCase()
       // int to u0000 form
-      const uni = (v) => Array.isArray(v) ? v.map(v => `u${hex(parseInt(v)).padStart(4,0)}`).join(',') : `u${hex(parseInt(v)).padStart(4,0)}`
+      const uni = (v) => (Array.isArray(v) ? v : [v]).map(v => `u${hex(parseInt(v)).padStart(4,0)}`).join(',')
 
       // uni 1 → uni0001
       plop.setHelper('uni', uni);
@@ -102,7 +102,7 @@ module.exports = function (plop) {
       // int 12.3 → 12
       plop.setHelper('int', v => v.toFixed(0));
 
-      // generate number of times
+      // {{#times N}}{{@index}}{{/times}}
       plop.setHelper('times', function(n, block) {
         var accum = '';
         for(var i = 0; i < n; ++i) {
