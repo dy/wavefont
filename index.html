@@ -255,7 +255,8 @@
   <div id="speech" title="Sample" class="wavearea" contenteditable></div>
   <script>
   // speech
-  speech.textContent += `ĈĉċĊĉċčīıēģĹĶĲĺķĺĺĳĽĳĶĵĦČģĹĪĞĠĝġđČĐĤĨĳħģĚģĢıĞĢİķīİĳķĴĲĪĬģęĬķĦĒěěėďĒĚĪĢēČċěĩĘđēĞĝĚČčĖħĨĝġ`
+  let values = `ĈĉċĊĉċčīıēģĹĶĲĺķĺĺĳĽĳĶĵĦČģĹĪĞĠĝġđČĐĤĨĳħģĚģĢıĞĢİķīİĳķĴĲĪĬģęĬķĦĒěěėďĒĚĪĢēČċěĩĘđēĞĝĚČčĖħĨĝġ`.split('').map(c => c.charCodeAt(0)+0x300)
+  speech.textContent += String.fromCharCode(...values)
   </script>
 
   <div id="alphabete" title="a-zA-Z" class="wavearea" contenteditable>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</div>
