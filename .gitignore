@@ -19,3 +19,4 @@ env
 
 source/Wavefont/*.ufo/glyphs.com.adobe.type.processedglyphs/*
 source/Wavefont/*.ufo/data/*
+source/Wavefont/cmap.ttx
