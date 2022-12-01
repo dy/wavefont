@@ -16,3 +16,6 @@ examples
 
 env
 *(Autosaved)*
+
+source/Wavefont/*.ufo/glyphs.com.adobe.type.processedglyphs/*
+source/Wavefont/*.ufo/data/*

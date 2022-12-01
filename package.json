@@ -11,7 +11,7 @@
     "normalize-ufo-w1r100": "ufonormalizer -a --float-precision 3 -m source/Wavefont/w1r100.ufo",
     "normalize-ufo-w400r0": "ufonormalizer -a --float-precision 3 -m source/Wavefont/w400r0.ufo",
     "normalize-ufo-w400r100": "ufonormalizer -a --float-precision 3 -m source/Wavefont/w400r100.ufo",
-    "hint-ufo": "psautohint source/Wavefont/*.ufo",
+    "hint-ufo": "psautohint --no-hint-sub --no-flex -d -c -a source/Wavefont/*.ufo",
     "build-otf": "npm-run-all build-masterotfs build-vf",
     "build-masterotfs": "buildmasterotfs --mkot -r,-omitMacNames,-S,-ga,-adds -d \"source/Wavefont/wavefont.designspace\"",
     "build-vf": "buildcff2vf --omit-mac-names -c -k -d \"source/Wavefont/wavefont.designspace\" -o ./wavefont.otf",
