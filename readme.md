@@ -31,8 +31,8 @@ abcdefghijklmnopqrstuvwwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
 </textarea>
 
 <script>
-	// Set values programmatically (more precise)
-	waveform.textContent = Array.from({length: 100}, (_,i) => String.fromCharCode(0x100 + i)).join('')
+// Set values programmatically (more precise)
+waveform.textContent = Array.from({length: 100}, (_,i) => String.fromCharCode(0x100 + i)).join('')
 </script>
 ```
 
@@ -52,7 +52,7 @@ Tag | Range | Meaning
 `wght` | _1_-_400_ | Bar weight, or boldness (in upm).
 `ROND` | _0_-_50_ | Border radius (roundness), percentage of glyph width.
 
-NB: `letter-spacing` CSS property can adjust distance between bars with `ch` units, where 1ch === 1 bar width.
+Note: `letter-spacing` CSS property can adjust distance between bars with `ch` units, where 1ch === 1 bar width.
 
 ## Features
 
@@ -94,11 +94,12 @@ Wavefont is generated in 2 steps.
 
 ## References
 
-* [unified font object spec](https://unifiedfontobject.org/versions/ufo3) − unified human-readable format for storing font data.
-* [feature file spec](https://adobe-type-tools.github.io/afdko/OpenTypeFeatureFileSpecification.html#6.h) − defining opentype font features.
-* [unicode-table](https://unicode-table.com/) − convenient unicode table.
-* [adobe-variable-font-prototype](https://github.com/adobe-fonts/adobe-variable-font-prototype) − example variable font.
-* [designspace xml spec](https://github.com/fonttools/fonttools/tree/main/Doc/source/designspaceLib#document-xml-structure) − human-readable format for describing variable fonts.
+* [Google Fonts guide](https://googlefonts.github.io/gf-guide/variable.html#most-common-axes).
+* [Unified font object spec](https://unifiedfontobject.org/versions/ufo3) − unified human-readable format for storing font data.
+* [Feature file spec](https://adobe-type-tools.github.io/afdko/OpenTypeFeatureFileSpecification.html#6.h) − defining opentype font features.
+* [Unicode-table](https://unicode-table.com/) − convenient unicode table.
+* [Adobe-variable-font-prototype](https://github.com/adobe-fonts/adobe-variable-font-prototype) − example variable font.
+* [Designspace XML spec](https://github.com/fonttools/fonttools/tree/main/Doc/source/designspaceLib#document-xml-structure) − human-readable format for describing variable fonts.
 * [Adobe Blank](https://github.com/adobe-fonts/adobe-blank-vf) − blank characters variable font.
 
 <p align="center"><a href="https://github.com/krsnzd/license/">🕉</a><p>
