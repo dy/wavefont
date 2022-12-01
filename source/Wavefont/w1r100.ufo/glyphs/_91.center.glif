@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <glyph name="_91.center" format="2">
-  <advance width="1"/>
-  <unicode hex="045B"/>
-  
-  <outline>
-    <component base="cap" xOffset="0" yOffset="45" />
-    <component base="cap" xOffset="0" yOffset="954" />
-    <contour>
-      <point x="0" y="46" type="line"/>
-      <point x="0" y="955" type="line"/>
-      <point x="1" y="955" type="line"/>
-      <point x="1" y="46" type="line"/>
-    </contour>
-  </outline>
+	<unicode hex="045B"/>
+	<advance width="1"/>
+	<outline>
+		<component base="cap" yOffset="45"/>
+		<component base="cap" yOffset="954"/>
+		<contour>
+			<point x="0" y="46" type="line"/>
+			<point x="0" y="955" type="line"/>
+			<point x="1" y="955" type="line"/>
+			<point x="1" y="46" type="line"/>
+		</contour>
+	</outline>
 </glyph>
