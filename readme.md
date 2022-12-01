@@ -12,36 +12,35 @@ Place [_wavefont.woff2_](./wavefont.woff2) into your project directory and use t
 
 ```html
 <style>
-	@font-face {
-		font-family: wavefont;
-    font-display: block;
-		src: url(./wavefont.woff2) format('woff2');
-	}
-	.wavefont {
-		--wght: 10;
-		font-family: wavefont;
-		font-variation-settings: 'wght' var(--wght), 'ROND' 30;
-	}
+@font-face {
+	font-family: wavefont;
+	font-display: block;
+	src: url(./wavefont.woff2) format('woff2');
+}
+.wavefont {
+	--wght: 10;
+	font-family: wavefont;
+	font-variation-settings: 'wght' var(--wght), 'ROND' 30;
+}
 </style>
 
-<textarea id="waveform" class="wavefont" cols="100"></textarea>
+<!-- Set values manually -->
+<textarea id="waveform" class="wavefont" cols="100">
+abcdefghijklmnopqrstuvwwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+</textarea>
 
 <script>
-	// either enter values manually (less precise)
-	waveform.textContent = 'abcdefghijklmnopqrstuvwwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-
-	// or set programmatically (more precise)
-	let values = [...Array(100).keys()] // create your input values from 0..100 range
-	waveform.textContent = values.map(v => String.fromCharCode(0x100 + v)).join('')
+	// Set values programmatically (more precise)
+	waveform.textContent = Array.from({length: 100}, (_,i) => String.fromCharCode(0x100 + i)).join('')
 </script>
 ```
 
 ## Ranges
 
-Wavefont provides bars corresponding to values from 0 to 100, assigned to different characters:
+Wavefont bars correspond to values from 0 to 100, assigned to different characters:
 
 * <kbd>0-9</kbd> chars are for simplified manual input with step 10.
-* <kbd>a-zA-Z</kbd> for extended manual input with step 2, softned at edges <kbd>a</kbd> and <kbd>Z</kbd> to step 1.
+* <kbd>a-zA-Z</kbd> for extended manual input with step 2, softned at edges <kbd>a</kbd> and <kbd>Z</kbd>.
 * <kbd>U+0100-016F</kbd> for 0..100 bottom aligned values (convert as `char = String.fromCharCode(0x100 + value)`).
 * <kbd>U+0400-046F</kbd> for 0..100 center aligned values (convert as `char = String.fromCharCode(0x400 + value)`).
 
