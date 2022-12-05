@@ -202,29 +202,55 @@
         </rule>
     </rules>
     <sources>
-        <source familyname="Wavefont" filename="w1r0.ufo" name="Master_w1r0" stylename="Master w1r0">
+        <source familyname="Wavefont" filename="Wavefont-Hairline.ufo" name="Master_Hairline" stylename="Hairline">
             <location>
                 <dimension name="Weight" xvalue="1" />
                 <dimension name="Roundness" xvalue="0" />
             </location>
         </source>
-        <source familyname="Wavefont" filename="w1r100.ufo" name="Master_w1r100" stylename="Master w1r100">
+        <source familyname="Wavefont" filename="Wavefont-HairlineRound.ufo" name="Master_Hairline Round" stylename="Hairline Round">
             <location>
                 <dimension name="Weight" xvalue="1" />
                 <dimension name="Roundness" xvalue="100" />
             </location>
         </source>
-        <source familyname="Wavefont" filename="w400r0.ufo" name="Master_w400r0" stylename="Master w400r0">
+        <source familyname="Wavefont" filename="Wavefont-Regular.ufo" name="Master_Regular" stylename="Regular">
             <location>
                 <dimension name="Weight" xvalue="400" />
                 <dimension name="Roundness" xvalue="0" />
             </location>
         </source>
-        <source familyname="Wavefont" filename="w400r100.ufo" name="Master_w400r100" stylename="Master w400r100">
+        <source familyname="Wavefont" filename="Wavefont-Round.ufo" name="Master_Round" stylename="Round">
             <location>
                 <dimension name="Weight" xvalue="400" />
                 <dimension name="Roundness" xvalue="100" />
             </location>
         </source>
     </sources>
+    <instances>
+        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-Hairline.ufo" name="Hairline" stylename="Hairline">
+            <location>
+                <dimension name="Weight" xvalue="1" />
+                <dimension name="Roundness" xvalue="0" />
+            </location>
+        </instance>
+        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-HairlineRound.ufo" name="HairlineRound" stylename="Hairline Round">
+            <location>
+                <dimension name="Weight" xvalue="1" />
+                <dimension name="Roundness" xvalue="100" />
+            </location>
+        </instance>
+        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-Regular.ufo" name="Regular" stylename="Regular">
+            <location>
+                <dimension name="Weight" xvalue="400" />
+                <dimension name="Roundness" xvalue="0" />
+            </location>
+        </instance>
+        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-Round.ufo" name="Round" stylename="Round">
+            <location>
+                <dimension name="Weight" xvalue="400" />
+                <dimension name="Roundness" xvalue="100" />
+            </location>
+        </instance>
+    </instances>
 </designspace>

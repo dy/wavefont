@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyph name="_10.clip" format="2">
+  <advance width="400"/>
+  
+  <outline>
+    <contour>
+        <point x="0" y="77.5"/>
+
+        <point x="22.499999999999996" y="100"/>
+        <point x="50" y="100" type="curve" smooth="yes"/>
+        <point x="350" y="100" type="line"/>
+        <point x="377.5" y="100"/>
+
+        <point x="400" y="77.5"/>
+        <point x="400" y="50" type="curve" smooth="yes"/>
+        <point x="400" y="50" type="line"/>
+        <point x="400" y="22.499999999999996"/>
+
+        <point x="377.5" y="0"/>
+        <point x="350" y="0" type="curve" smooth="yes"/>
+        <point x="50" y="0" type="line"/>
+        <point x="22.499999999999996" y="0"/>
+
+        <point x="0" y="22.499999999999996"/>
+        <point x="0" y="50" type="curve" smooth="yes"/>
+        <point x="0" y="50" type="line"/>
+    </contour>
+  </outline>
+</glyph>
