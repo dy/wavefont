@@ -442,5 +442,10 @@
     <string>_106.clip.center</string>
     <string>_107.clip.center</string>
 	</array>
+  <key>public.postscriptNames</key>
+  <dict>
+      <key>_0</key>
+      <string>space</string>
+  </dict>
 </dict>
 </plist>
