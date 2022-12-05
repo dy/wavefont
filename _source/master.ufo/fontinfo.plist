@@ -23,11 +23,19 @@
   <key>ascender</key>
 	<integer>{{upm face.max }}</integer>
 	<key>descender</key>
-	<integer>0</integer>
+	<integer>{{upm 20 }}</integer>
 	<key>xHeight</key>
 	<integer>0</integer>
 	<key>capHeight</key>
 	<integer>0</integer>
+	<key>openTypeHheaLineGap</key>
+	<integer>0</integer>
+	<key>openTypeOS2TypoLineGap</key>
+	<integer>0</integer>
+	<key>openTypeOS2WinAscent</key>
+	<integer>1070</integer>
+	<key>openTypeOS2WinDescent</key>
+	<integer>390</integer>
 	<key>postscriptUnderlinePosition</key>
 	<integer>0</integer>
 	<key>postscriptUnderlineThickness</key>
@@ -57,9 +65,16 @@
   <string>This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL</string>
   <key>openTypeNameLicenseURL</key>
   <string>https://scripts.sil.org/OFL</string>
+  <key>openTypeOS2VendorID</key>
+  <string>DIIV</string>
   <key>openTypeOS2Selection</key>
   <array>
     <integer>7</integer>
   </array>
+  <key>openTypeOS2Type</key>
+  <array>
+  </array>
+  <key>postscriptIsFixedPitch</key>
+  <true/>
   </dict>
 </plist>
