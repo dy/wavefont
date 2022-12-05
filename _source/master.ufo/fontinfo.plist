@@ -17,7 +17,7 @@
 	<key>versionMinor</key>
 	<integer>0</integer>
 	<key>trademark</key>
-	<string>Copyright (c) 2021, Dmitry Ivanov.</string>
+	<string>Copyright 2022 The Familyname Project Authors (https://github.com/dy/wavefont)</string>
 	<key>unitsPerEm</key>
 	<integer>{{upm face.max }}</integer>
   <key>ascender</key>
