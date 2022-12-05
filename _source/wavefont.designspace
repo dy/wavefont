@@ -14,7 +14,7 @@
     </rules>
     <sources>
         {{#each masters as |master name| }}
-        <source familyname="{{ ../face.name }}" filename="{{ name }}.ufo" name="Master_{{name}}" stylename="Master {{name}}">
+        <source familyname="{{ ../face.name }}" filename="{{ name }}.ufo" name="Master_{{name}}" stylename="{{name}}">
             <location>
                 {{#each master as |axisValue axisName|}}
                 <dimension name="{{titleCase axisName }}" xvalue="{{ axisValue }}" />
@@ -25,7 +25,7 @@
     </sources>
     <instances>
         {{#each masters as |master name| }}
-        <instance familyname="{{ ../face.name }}" filename="instance_ufo/{{ ../face.name }}-{{unspace name }}.ufo" name="Master_{{unspace name}}" stylename="Master {{name}}">
+        <instance familyname="{{ ../face.name }}" filename="instance_ufo/{{ ../face.name }}-{{unspace name }}.ufo" name="{{unspace name}}" stylename="{{name}}">
             <location>
                 {{#each master as |axisValue axisName|}}
                 <dimension name="{{titleCase axisName }}" xvalue="{{ axisValue }}" />
