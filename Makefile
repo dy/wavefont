@@ -3,7 +3,7 @@ build: node_modules build_font
 node_modules: package.json
 	npm install
 
-sources/template.stamp: _source/master.ufo _source/wavefont.designspace node_modules
+sources/template.stamp: _source/master.ufo _source/wavefont.designspace node_modules plopfile.js
 	npm run build-ufo
 	touch sources/template.stamp
 
