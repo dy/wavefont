@@ -23,4 +23,15 @@
         </source>
         {{/each}}
     </sources>
+    <instances>
+        {{#each masters as |master name| }}
+        <instance familyname="{{ ../face.name }}" filename="instance_ufo/{{ ../face.name }}-{{ name }}.ufo" name="Master_{{name}}" stylename="Master {{name}}">
+            <location>
+                {{#each master as |axisValue axisName|}}
+                <dimension name="{{titleCase axisName }}" xvalue="{{ axisValue }}" />
+                {{/each}}
+            </location>
+        </instance>
+        {{/each}}
+    </instances>
 </designspace>
