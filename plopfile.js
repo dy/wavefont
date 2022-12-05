@@ -122,7 +122,7 @@ module.exports = function (plop) {
         {
           type: 'addMany',
           force: true,
-          destination: `source/${face.name}/`,
+          destination: `sources/`,
           base: '_source',
           templateFiles: '_source/*',
           data: { face, masters, axes, clips }
@@ -134,7 +134,7 @@ module.exports = function (plop) {
       function master({name, weight, roundness}){
         const radius = roundness / 2
         const width = weight
-        const destination = `source/${face.name}/${name}.ufo`
+        const destination = `sources/${name}.ufo`
 
         return [
           // ufo skeleton
