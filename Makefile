@@ -13,11 +13,11 @@ build: node_modules build.stamp
 node_modules: package.json
 	npm install
 
-template.stamp: _sources/master.ufo _sources/wavefont.designspace node_modules plopfile.js
+template.stamp: _sources/master.ufo _sources/wavefont.designspace node_modules plopfile.js _sources/config.yaml
 	npm run build-ufo
 	touch template.stamp
 
-build.stamp: template.stamp sources/wavefont.designspace sources/config.yaml venv
+build.stamp: template.stamp sources/wavefont.designspace venv
 	. venv/bin/activate ; gftools builder sources/config.yaml
 	touch build.stamp
 

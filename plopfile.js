@@ -141,8 +141,8 @@ module.exports = function (plop) {
           type: 'addMany',
           force: true,
           destination: `sources/`,
-          base: '_source',
-          templateFiles: '_source/*',
+          base: '_sources',
+          templateFiles: '_sources/*',
           data: { face, masters, axes, clips }
         },
         ...Object.keys(masters).map(name => master({name, ...masters[name]})).flat()
@@ -160,8 +160,8 @@ module.exports = function (plop) {
             type: 'addMany',
             force: true,
             destination: `${destination}/`,
-            base: '_source/master.ufo',
-            templateFiles: '_source/master.ufo/**/*',
+            base: '_sources/master.ufo',
+            templateFiles: '_sources/master.ufo/**/*',
             data: { width, weight, radius, axes, face, clips }
           },
           // caps
