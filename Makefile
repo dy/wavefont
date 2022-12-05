@@ -35,4 +35,4 @@ proof: venv build.stamp
 	. venv/bin/activate; mkdir -p out/ out/proof; gftools gen-html proof $(shell find fonts/ttf -type f) -o out/proof
 
 clean:
-	rm -rf sources/Wave* sources/template.stamp
+	rm -rf sources/Wave* sources/template.stamp build.stamp
