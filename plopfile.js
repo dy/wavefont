@@ -7,7 +7,7 @@ const CENTER_SHIFT = 0x400
 // const UPM = 2048
 const UPM = 1000
 
-const ZERO_CHAR = ` \t\`@`.split('').map(v=>v.charCodeAt(0))
+const ZERO_CHAR = ` \t\xa0\`@`.split('').map(v=>v.charCodeAt(0))
 
 // FIXME: all other chars are going to be blank via last-resort font method https://github.com/adobe-fonts/adobe-blank-vf
 //[0x09,0x0a,0x0b,0x0c,0x0d,0x20,0x85,0xa0,0x1680,0x180e,0x2000,0x2001,0x2002,0x2003,0x2004,0x2005,0x2006,0x2007,0x2008,0x2009,0x200a,0x200b,0x200c,0x200d,0x2028,0x2029,0x202f,0x205f,0x2060,0x2061,0x2062,0x3000,0xfeff].map(String.fromCharCode)
@@ -62,9 +62,24 @@ const AXES = {
   weight: {tag: 'wght', min: 1, max: 400, default: 400}
 }
 
+function mastername(weight, roundness) {
+  if (weight == AXES.weight.default && roundness == AXES.roundness.default) {
+    return "Regular"
+  }
+  if (weight == AXES.weight.default && roundness == AXES.roundness.max) {
+    return "Round"
+  }
+  if (weight == AXES.weight.min && roundness == AXES.roundness.default) {
+    return "Hairline"
+  }
+  if (weight == AXES.weight.min && roundness == AXES.roundness.max) {
+    return "Hairline Round"
+  }
+  return `w${weight}r${roundness}`
+}
 // create masters
 const MASTERS = {}
-const addMaster = (w,r) => MASTERS[`w${w}r${r}`] = {weight:w, roundness:r}
+const addMaster = (w,r) => MASTERS[mastername(w, r)] = {weight:w, roundness:r}
 addMaster(AXES.weight.min, AXES.roundness.min)
 addMaster(AXES.weight.min, AXES.roundness.max)
 addMaster(AXES.weight.max, AXES.roundness.min)
@@ -102,6 +117,9 @@ module.exports = function (plop) {
       // int 12.3 → 12
       plop.setHelper('int', v => v.toFixed(0));
 
+      // Round Condensed -> RoundCondensed
+      plop.setHelper('unspace', s => s.replace(" ", ""));
+
       // {{#times N}}{{@index}}{{/times}}
       plop.setHelper('times', function(n, block) {
         var accum = '';
@@ -122,7 +140,7 @@ module.exports = function (plop) {
         {
           type: 'addMany',
           force: true,
-          destination: `source/${face.name}/`,
+          destination: `sources/`,
           base: '_source',
           templateFiles: '_source/*',
           data: { face, masters, axes, clips }
@@ -134,7 +152,7 @@ module.exports = function (plop) {
       function master({name, weight, roundness}){
         const radius = roundness / 2
         const width = weight
-        const destination = `source/${face.name}/${name}.ufo`
+        const destination = `sources/${face.name}-${name.replace(" ","")}.ufo`
 
         return [
           // ufo skeleton

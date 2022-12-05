@@ -1,0 +1,6 @@
+buildVariable: false
+buildStatic: true
+familyName: Wavefont
+googleFonts: true
+sources:
+- wavefont.designspace

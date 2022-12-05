@@ -22,5 +22,10 @@
     <string>_{{ value }}.clip.center</string>
     {{/each}}
 	</array>
+  <key>public.postscriptNames</key>
+  <dict>
+      <key>_0</key>
+      <string>space</string>
+  </dict>
 </dict>
 </plist>

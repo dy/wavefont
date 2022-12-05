@@ -17,6 +17,6 @@ examples
 env
 *(Autosaved)*
 
-source/Wavefont/*.ufo/glyphs.com.adobe.type.processedglyphs/*
-source/Wavefont/*.ufo/data/*
-source/Wavefont/cmap.ttx
+sources/*.ufo/glyphs.com.adobe.type.processedglyphs/*
+sources/*.ufo/data/*
+sources/cmap.ttx

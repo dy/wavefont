@@ -1,13 +1,5 @@
 languagesystem DFLT dflt;
 
-# these are copy-paste from https://github.com/adobe-fonts/adobe-blank-vf
-# apparently fixes some weird latin-range build alias artifacts
-table hhea {
-  Ascender {{upm face.max }};
-  Descender 0;
-  LineGap 0;
-} hhea;
-
 table BASE {
   HorizAxis.BaseTagList                 ideo;
   HorizAxis.BaseScriptList  DFLT  ideo  0;
@@ -15,22 +7,6 @@ table BASE {
   VertAxis.BaseTagList                  ideo;
   VertAxis.BaseScriptList   DFLT  ideo     0;
 } BASE;
-
-table OS/2 {
-  TypoAscender {{upm face.max }};
-  TypoDescender 0;
-  TypoLineGap 0;
-  XHeight 0;
-  CapHeight 0;
-  WeightClass 400;
-  WidthClass 5;
-  Panose 0 0 0 0 0 0 0 0 0 0;
-  FSType 0;
-  Vendor "DIIV";
-  winAscent {{upm face.max }};
-  winDescent 0;
-} OS/2;
-
 
 @value = [{{#each face.values as |code value|}}_{{ value }} {{/each}}];
 @value.clip = [{{#each clips as |code value|}}{{#if value}}_{{ value }}.clip {{/if}}{{/each}}];

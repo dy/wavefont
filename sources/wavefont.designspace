@@ -1,0 +1,256 @@
+<?xml version='1.0' encoding='utf-8'?>
+<designspace format="3">
+    <axes>
+        <axis default="0" minimum="0" maximum="100" name="Roundness" tag="ROND"/>
+        <axis default="400" minimum="1" maximum="400" name="Weight" tag="wght"/>
+    </axes>
+    <rules>
+        <rule name="_1.clip">
+            <conditionset><condition minimum="10" maximum="400" name="Weight" /></conditionset>
+            <sub name="_1" with="_1.clip"/>
+            <sub name="_1.center" with="_1.clip.center"/>
+        </rule>
+        <rule name="_2.clip">
+            <conditionset><condition minimum="20" maximum="400" name="Weight" /></conditionset>
+            <sub name="_2" with="_2.clip"/>
+            <sub name="_2.center" with="_2.clip.center"/>
+        </rule>
+        <rule name="_3.clip">
+            <conditionset><condition minimum="30" maximum="400" name="Weight" /></conditionset>
+            <sub name="_3" with="_3.clip"/>
+            <sub name="_3.center" with="_3.clip.center"/>
+        </rule>
+        <rule name="_4.clip">
+            <conditionset><condition minimum="40" maximum="400" name="Weight" /></conditionset>
+            <sub name="_4" with="_4.clip"/>
+            <sub name="_4.center" with="_4.clip.center"/>
+        </rule>
+        <rule name="_5.clip">
+            <conditionset><condition minimum="50" maximum="400" name="Weight" /></conditionset>
+            <sub name="_5" with="_5.clip"/>
+            <sub name="_5.center" with="_5.clip.center"/>
+        </rule>
+        <rule name="_6.clip">
+            <conditionset><condition minimum="60" maximum="400" name="Weight" /></conditionset>
+            <sub name="_6" with="_6.clip"/>
+            <sub name="_6.center" with="_6.clip.center"/>
+        </rule>
+        <rule name="_7.clip">
+            <conditionset><condition minimum="70" maximum="400" name="Weight" /></conditionset>
+            <sub name="_7" with="_7.clip"/>
+            <sub name="_7.center" with="_7.clip.center"/>
+        </rule>
+        <rule name="_8.clip">
+            <conditionset><condition minimum="80" maximum="400" name="Weight" /></conditionset>
+            <sub name="_8" with="_8.clip"/>
+            <sub name="_8.center" with="_8.clip.center"/>
+        </rule>
+        <rule name="_9.clip">
+            <conditionset><condition minimum="90" maximum="400" name="Weight" /></conditionset>
+            <sub name="_9" with="_9.clip"/>
+            <sub name="_9.center" with="_9.clip.center"/>
+        </rule>
+        <rule name="_10.clip">
+            <conditionset><condition minimum="100" maximum="400" name="Weight" /></conditionset>
+            <sub name="_10" with="_10.clip"/>
+            <sub name="_10.center" with="_10.clip.center"/>
+        </rule>
+        <rule name="_11.clip">
+            <conditionset><condition minimum="110" maximum="400" name="Weight" /></conditionset>
+            <sub name="_11" with="_11.clip"/>
+            <sub name="_11.center" with="_11.clip.center"/>
+        </rule>
+        <rule name="_12.clip">
+            <conditionset><condition minimum="120" maximum="400" name="Weight" /></conditionset>
+            <sub name="_12" with="_12.clip"/>
+            <sub name="_12.center" with="_12.clip.center"/>
+        </rule>
+        <rule name="_13.clip">
+            <conditionset><condition minimum="130" maximum="400" name="Weight" /></conditionset>
+            <sub name="_13" with="_13.clip"/>
+            <sub name="_13.center" with="_13.clip.center"/>
+        </rule>
+        <rule name="_14.clip">
+            <conditionset><condition minimum="140" maximum="400" name="Weight" /></conditionset>
+            <sub name="_14" with="_14.clip"/>
+            <sub name="_14.center" with="_14.clip.center"/>
+        </rule>
+        <rule name="_15.clip">
+            <conditionset><condition minimum="150" maximum="400" name="Weight" /></conditionset>
+            <sub name="_15" with="_15.clip"/>
+            <sub name="_15.center" with="_15.clip.center"/>
+        </rule>
+        <rule name="_16.clip">
+            <conditionset><condition minimum="160" maximum="400" name="Weight" /></conditionset>
+            <sub name="_16" with="_16.clip"/>
+            <sub name="_16.center" with="_16.clip.center"/>
+        </rule>
+        <rule name="_17.clip">
+            <conditionset><condition minimum="170" maximum="400" name="Weight" /></conditionset>
+            <sub name="_17" with="_17.clip"/>
+            <sub name="_17.center" with="_17.clip.center"/>
+        </rule>
+        <rule name="_18.clip">
+            <conditionset><condition minimum="180" maximum="400" name="Weight" /></conditionset>
+            <sub name="_18" with="_18.clip"/>
+            <sub name="_18.center" with="_18.clip.center"/>
+        </rule>
+        <rule name="_19.clip">
+            <conditionset><condition minimum="190" maximum="400" name="Weight" /></conditionset>
+            <sub name="_19" with="_19.clip"/>
+            <sub name="_19.center" with="_19.clip.center"/>
+        </rule>
+        <rule name="_20.clip">
+            <conditionset><condition minimum="200" maximum="400" name="Weight" /></conditionset>
+            <sub name="_20" with="_20.clip"/>
+            <sub name="_20.center" with="_20.clip.center"/>
+        </rule>
+        <rule name="_21.clip">
+            <conditionset><condition minimum="210" maximum="400" name="Weight" /></conditionset>
+            <sub name="_21" with="_21.clip"/>
+            <sub name="_21.center" with="_21.clip.center"/>
+        </rule>
+        <rule name="_22.clip">
+            <conditionset><condition minimum="220" maximum="400" name="Weight" /></conditionset>
+            <sub name="_22" with="_22.clip"/>
+            <sub name="_22.center" with="_22.clip.center"/>
+        </rule>
+        <rule name="_23.clip">
+            <conditionset><condition minimum="230" maximum="400" name="Weight" /></conditionset>
+            <sub name="_23" with="_23.clip"/>
+            <sub name="_23.center" with="_23.clip.center"/>
+        </rule>
+        <rule name="_24.clip">
+            <conditionset><condition minimum="240" maximum="400" name="Weight" /></conditionset>
+            <sub name="_24" with="_24.clip"/>
+            <sub name="_24.center" with="_24.clip.center"/>
+        </rule>
+        <rule name="_25.clip">
+            <conditionset><condition minimum="250" maximum="400" name="Weight" /></conditionset>
+            <sub name="_25" with="_25.clip"/>
+            <sub name="_25.center" with="_25.clip.center"/>
+        </rule>
+        <rule name="_26.clip">
+            <conditionset><condition minimum="260" maximum="400" name="Weight" /></conditionset>
+            <sub name="_26" with="_26.clip"/>
+            <sub name="_26.center" with="_26.clip.center"/>
+        </rule>
+        <rule name="_27.clip">
+            <conditionset><condition minimum="270" maximum="400" name="Weight" /></conditionset>
+            <sub name="_27" with="_27.clip"/>
+            <sub name="_27.center" with="_27.clip.center"/>
+        </rule>
+        <rule name="_28.clip">
+            <conditionset><condition minimum="280" maximum="400" name="Weight" /></conditionset>
+            <sub name="_28" with="_28.clip"/>
+            <sub name="_28.center" with="_28.clip.center"/>
+        </rule>
+        <rule name="_29.clip">
+            <conditionset><condition minimum="290" maximum="400" name="Weight" /></conditionset>
+            <sub name="_29" with="_29.clip"/>
+            <sub name="_29.center" with="_29.clip.center"/>
+        </rule>
+        <rule name="_30.clip">
+            <conditionset><condition minimum="300" maximum="400" name="Weight" /></conditionset>
+            <sub name="_30" with="_30.clip"/>
+            <sub name="_30.center" with="_30.clip.center"/>
+        </rule>
+        <rule name="_31.clip">
+            <conditionset><condition minimum="310" maximum="400" name="Weight" /></conditionset>
+            <sub name="_31" with="_31.clip"/>
+            <sub name="_31.center" with="_31.clip.center"/>
+        </rule>
+        <rule name="_32.clip">
+            <conditionset><condition minimum="320" maximum="400" name="Weight" /></conditionset>
+            <sub name="_32" with="_32.clip"/>
+            <sub name="_32.center" with="_32.clip.center"/>
+        </rule>
+        <rule name="_33.clip">
+            <conditionset><condition minimum="330" maximum="400" name="Weight" /></conditionset>
+            <sub name="_33" with="_33.clip"/>
+            <sub name="_33.center" with="_33.clip.center"/>
+        </rule>
+        <rule name="_34.clip">
+            <conditionset><condition minimum="340" maximum="400" name="Weight" /></conditionset>
+            <sub name="_34" with="_34.clip"/>
+            <sub name="_34.center" with="_34.clip.center"/>
+        </rule>
+        <rule name="_35.clip">
+            <conditionset><condition minimum="350" maximum="400" name="Weight" /></conditionset>
+            <sub name="_35" with="_35.clip"/>
+            <sub name="_35.center" with="_35.clip.center"/>
+        </rule>
+        <rule name="_36.clip">
+            <conditionset><condition minimum="360" maximum="400" name="Weight" /></conditionset>
+            <sub name="_36" with="_36.clip"/>
+            <sub name="_36.center" with="_36.clip.center"/>
+        </rule>
+        <rule name="_37.clip">
+            <conditionset><condition minimum="370" maximum="400" name="Weight" /></conditionset>
+            <sub name="_37" with="_37.clip"/>
+            <sub name="_37.center" with="_37.clip.center"/>
+        </rule>
+        <rule name="_38.clip">
+            <conditionset><condition minimum="380" maximum="400" name="Weight" /></conditionset>
+            <sub name="_38" with="_38.clip"/>
+            <sub name="_38.center" with="_38.clip.center"/>
+        </rule>
+        <rule name="_39.clip">
+            <conditionset><condition minimum="390" maximum="400" name="Weight" /></conditionset>
+            <sub name="_39" with="_39.clip"/>
+            <sub name="_39.center" with="_39.clip.center"/>
+        </rule>
+    </rules>
+    <sources>
+        <source familyname="Wavefont" filename="Wavefont-Hairline.ufo" name="Master_Hairline" stylename="Hairline">
+            <location>
+                <dimension name="Weight" xvalue="1" />
+                <dimension name="Roundness" xvalue="0" />
+            </location>
+        </source>
+        <source familyname="Wavefont" filename="Wavefont-HairlineRound.ufo" name="Master_Hairline Round" stylename="Hairline Round">
+            <location>
+                <dimension name="Weight" xvalue="1" />
+                <dimension name="Roundness" xvalue="100" />
+            </location>
+        </source>
+        <source familyname="Wavefont" filename="Wavefont-Regular.ufo" name="Master_Regular" stylename="Regular">
+            <location>
+                <dimension name="Weight" xvalue="400" />
+                <dimension name="Roundness" xvalue="0" />
+            </location>
+        </source>
+        <source familyname="Wavefont" filename="Wavefont-Round.ufo" name="Master_Round" stylename="Round">
+            <location>
+                <dimension name="Weight" xvalue="400" />
+                <dimension name="Roundness" xvalue="100" />
+            </location>
+        </source>
+    </sources>
+    <instances>
+        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-Hairline.ufo" name="Hairline" stylename="Hairline">
+            <location>
+                <dimension name="Weight" xvalue="1" />
+                <dimension name="Roundness" xvalue="0" />
+            </location>
+        </instance>
+        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-HairlineRound.ufo" name="HairlineRound" stylename="Hairline Round">
+            <location>
+                <dimension name="Weight" xvalue="1" />
+                <dimension name="Roundness" xvalue="100" />
+            </location>
+        </instance>
+        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-Regular.ufo" name="Regular" stylename="Regular">
+            <location>
+                <dimension name="Weight" xvalue="400" />
+                <dimension name="Roundness" xvalue="0" />
+            </location>
+        </instance>
+        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-Round.ufo" name="Round" stylename="Round">
+            <location>
+                <dimension name="Weight" xvalue="400" />
+                <dimension name="Roundness" xvalue="100" />
+            </location>
+        </instance>
+    </instances>
+</designspace>

@@ -1,1 +1,2 @@
 gftools
+fontbakery>=0.8
