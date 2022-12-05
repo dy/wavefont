@@ -1,5 +1,5 @@
 buildVariable: true
-buildStatic: false
+buildStatic: true
 familyName: Wavefont
 googleFonts: true
 sources:

@@ -66,28 +66,17 @@
   <key>openTypeNameLicenseURL</key>
   <string>https://scripts.sil.org/OFL</string>
   <key>openTypeOS2VendorID</key>
-  <string>DIIV</string>
+  <string>DY</string>
   <key>openTypeOS2Selection</key>
   <array>
     <integer>7</integer>
   </array>
+	<key>openTypeOS2WeightClass</key>
+	<integer>{{ weight }}</integer>
   <key>openTypeOS2Type</key>
   <array>
   </array>
   <key>postscriptIsFixedPitch</key>
   <true/>
-  <key>openTypeOS2Panose</key>
-  <array>
-  	<integer>5</integer>
-  	<integer>0</integer>
-  	<integer>0</integer>
-  	<integer>9</integer>
-  	<integer>0</integer>
-  	<integer>0</integer>
-  	<integer>0</integer>
-  	<integer>0</integer>
-  	<integer>0</integer>
-  	<integer>0</integer>
-  </array>
   </dict>
 </plist>
