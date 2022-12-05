@@ -76,5 +76,18 @@
   </array>
   <key>postscriptIsFixedPitch</key>
   <true/>
+  <key>openTypeOS2Panose</key>
+  <array>
+  	<integer>5</integer>
+  	<integer>0</integer>
+  	<integer>0</integer>
+  	<integer>9</integer>
+  	<integer>0</integer>
+  	<integer>0</integer>
+  	<integer>0</integer>
+  	<integer>0</integer>
+  	<integer>0</integer>
+  	<integer>0</integer>
+  </array>
   </dict>
 </plist>
