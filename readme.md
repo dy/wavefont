@@ -52,7 +52,7 @@ Tag | Range | Meaning
 `wght` | _1_-_400_ | Bar width, or boldness (in upm).
 `ROND` | _0_-_100_ | Border radius, or roundness (percent).
 
-Note: To adjust distance between bars, `letter-spacing` property with `ch` units is particularly useful, since 1ch === 1 bar width.
+`letter-spacing` CSS property with `ch` units is useful to adjust distance between bars, 1ch === 1 bar width.
 
 ## Features
 
