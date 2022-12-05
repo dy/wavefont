@@ -20,3 +20,5 @@ env
 sources/*.ufo/glyphs.com.adobe.type.processedglyphs/*
 sources/*.ufo/data/*
 sources/cmap.ttx
+venv
+*.stamp
