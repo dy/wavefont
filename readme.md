@@ -50,9 +50,9 @@ Wavefont bars correspond to values from 0 to 100, assigned to different characte
 Tag | Range | Meaning
 ---|---|---
 `wght` | _1_-_400_ | Bar width, or boldness (in upm).
-`ROND` | _0_-_100_ | Border radius (roundness).
+`ROND` | _0_-_100_ | Border radius, or roundness (percent).
 
-Note: `letter-spacing` CSS property can adjust distance between bars with `ch` units, where 1ch === 1 bar width.
+Note: `letter-spacing` CSS property can adjust distance between bars without limits. `ch` units are particularly useful since 1ch === 1 bar width.
 
 ## Features
 
