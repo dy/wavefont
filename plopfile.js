@@ -102,7 +102,7 @@ module.exports = function (plop) {
       // uni 1 → uni0001
       plop.setHelper('uni', uni);
 
-      // upm 12 → 120
+      // upm 12 → 120 (value to upm)
       plop.setHelper('upm', upm);
 
       // hex 12 -> C
