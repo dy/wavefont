@@ -62,9 +62,24 @@ const AXES = {
   weight: {tag: 'wght', min: 1, max: 400, default: 400}
 }
 
+function mastername(weight, roundness) {
+  if (weight == AXES.weight.default && roundness == AXES.roundness.default) {
+    return "Regular"
+  }
+  if (weight == AXES.weight.default && roundness == AXES.roundness.max) {
+    return "Round"
+  }
+  if (weight == AXES.weight.min && roundness == AXES.roundness.default) {
+    return "Hairline"
+  }
+  if (weight == AXES.weight.min && roundness == AXES.roundness.max) {
+    return "Hairline Round"
+  }
+  return `w${weight}r${roundness}`
+}
 // create masters
 const MASTERS = {}
-const addMaster = (w,r) => MASTERS[`w${w}r${r}`] = {weight:w, roundness:r}
+const addMaster = (w,r) => MASTERS[mastername(w, r)] = {weight:w, roundness:r}
 addMaster(AXES.weight.min, AXES.roundness.min)
 addMaster(AXES.weight.min, AXES.roundness.max)
 addMaster(AXES.weight.max, AXES.roundness.min)
@@ -101,6 +116,9 @@ module.exports = function (plop) {
 
       // int 12.3 → 12
       plop.setHelper('int', v => v.toFixed(0));
+
+      // Round Condensed -> RoundCondensed
+      plop.setHelper('unspace', s => s.replace(" ", ""));
 
       // {{#times N}}{{@index}}{{/times}}
       plop.setHelper('times', function(n, block) {
