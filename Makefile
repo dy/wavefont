@@ -13,11 +13,11 @@ build: node_modules build.stamp
 node_modules: package.json
 	npm install
 
-sources/template.stamp: _source/master.ufo _source/wavefont.designspace node_modules plopfile.js
+template.stamp: _sources/master.ufo _sources/wavefont.designspace node_modules plopfile.js
 	npm run build-ufo
-	touch sources/template.stamp
+	touch template.stamp
 
-build.stamp: sources/template.stamp sources/wavefont.designspace sources/config.yaml venv
+build.stamp: template.stamp sources/wavefont.designspace sources/config.yaml venv
 	. venv/bin/activate ; gftools builder sources/config.yaml
 	touch build.stamp
 
@@ -35,4 +35,4 @@ proof: venv build.stamp
 	. venv/bin/activate; mkdir -p out/ out/proof; gftools gen-html proof $(shell find fonts/ttf -type f) -o out/proof
 
 clean:
-	rm -rf sources/Wave* sources/template.stamp build.stamp
+	rm -rf sources/Wave* template.stamp build.stamp
