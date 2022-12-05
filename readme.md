@@ -41,7 +41,7 @@ waveform.textContent = Array.from({length: 100}, (_,i) => String.fromCharCode(0x
 Wavefont bars correspond to values from 0 to 100, assigned to different characters:
 
 * <kbd>0-9</kbd> chars are for simplified manual input with step 10.
-* <kbd>a-zA-Z</kbd> for extended manual input with step 2, softned at edges <kbd>a</kbd> and <kbd>Z</kbd>.
+* <kbd>a-zA-Z</kbd> for extended manual input with step 2, softened at edges <kbd>a</kbd> and <kbd>Z</kbd>.
 * <kbd>U+0100-016F</kbd> for 0..100 bottom aligned values (convert as `char = String.fromCharCode(0x100 + value)`).
 * <kbd>U+0400-046F</kbd> for 0..100 center aligned values (convert as `char = String.fromCharCode(0x400 + value)`).
 
@@ -49,8 +49,8 @@ Wavefont bars correspond to values from 0 to 100, assigned to different characte
 
 Tag | Range | Meaning
 ---|---|---
-`wght` | _1_-_400_ | Bar weight, or boldness (in upm).
-`ROND` | _0_-_50_ | Border radius (roundness), percentage of glyph width.
+`wght` | _1_-_400_ | Bar width, or boldness (in upm).
+`ROND` | _0_-_100_ | Border radius (roundness).
 
 Note: `letter-spacing` CSS property can adjust distance between bars with `ch` units, where 1ch === 1 bar width.
 
