@@ -1,29 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <glyph name="_12.clip.center" format="2">
-  <advance width="1"/>
-  
-  <outline>
-    <contour>
-        <point x="0" y="533"/>
-
-        <point x="26.999999999999996" y="560"/>
-        <point x="60" y="560" type="curve" smooth="yes"/>
-        <point x="-59" y="560" type="line"/>
-        <point x="-25.999999999999996" y="560"/>
-
-        <point x="1" y="533"/>
-        <point x="1" y="500" type="curve" smooth="yes"/>
-        <point x="1" y="500" type="line"/>
-        <point x="1" y="467"/>
-
-        <point x="-25.999999999999996" y="440"/>
-        <point x="-59" y="440" type="curve" smooth="yes"/>
-        <point x="60" y="440" type="line"/>
-        <point x="26.999999999999996" y="440"/>
-
-        <point x="0" y="467"/>
-        <point x="0" y="500" type="curve" smooth="yes"/>
-        <point x="0" y="500" type="line"/>
-    </contour>
-  </outline>
+	<advance width="1"/>
+	<outline>
+		<contour>
+			<point x="0" y="533"/>
+			<point x="26" y="560"/>
+			<point x="60" y="560" type="curve" smooth="yes"/>
+			<point x="-59" y="560" type="line"/>
+			<point x="-25" y="560"/>
+			<point x="1" y="533"/>
+			<point x="1" y="500" type="curve" smooth="yes"/>
+			<point x="1" y="500" type="line"/>
+			<point x="1" y="467"/>
+			<point x="-25" y="440"/>
+			<point x="-59" y="440" type="curve" smooth="yes"/>
+			<point x="60" y="440" type="line"/>
+			<point x="26" y="440"/>
+			<point x="0" y="467"/>
+			<point x="0" y="500" type="curve" smooth="yes"/>
+			<point x="0" y="500" type="line"/>
+		</contour>
+	</outline>
 </glyph>

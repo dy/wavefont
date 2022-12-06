@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyph name="_63.center" format="2">
+	<unicode hex="043F"/>
+	<advance width="400"/>
+	<outline>
+		<component base="cap" yOffset="185"/>
+		<component base="cap" yOffset="415"/>
+		<contour>
+			<point x="0" y="385" type="line"/>
+			<point x="0" y="615" type="line"/>
+			<point x="400" y="615" type="line"/>
+			<point x="400" y="385" type="line"/>
+		</contour>
+	</outline>
+</glyph>

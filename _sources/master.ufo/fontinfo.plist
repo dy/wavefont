@@ -28,14 +28,6 @@
 	<integer>0</integer>
 	<key>capHeight</key>
 	<integer>0</integer>
-	<key>openTypeHheaLineGap</key>
-	<integer>0</integer>
-	<key>openTypeOS2TypoLineGap</key>
-	<integer>0</integer>
-	<key>openTypeOS2WinAscent</key>
-	<integer>1070</integer>
-	<key>openTypeOS2WinDescent</key>
-	<integer>390</integer>
 	<key>postscriptUnderlinePosition</key>
 	<integer>0</integer>
 	<key>postscriptUnderlineThickness</key>
@@ -61,12 +53,15 @@
 	<integer>7</integer>
 	<key>postscriptBlueFuzz</key>
 	<integer>1</integer>
+  <key>postscriptIsFixedPitch</key>
+  <true/>
+
   <key>openTypeNameLicense</key>
   <string>This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL</string>
   <key>openTypeNameLicenseURL</key>
   <string>https://scripts.sil.org/OFL</string>
   <key>openTypeOS2VendorID</key>
-  <string>DY</string>
+  <string>DY  </string>
   <key>openTypeOS2Selection</key>
   <array>
     <integer>7</integer>
@@ -76,7 +71,28 @@
   <key>openTypeOS2Type</key>
   <array>
   </array>
-  <key>postscriptIsFixedPitch</key>
-  <true/>
+
+	<key>openTypeHheaAscender</key>
+	<integer>1000</integer>
+	<key>openTypeHheaDescender</key>
+	<integer>0</integer>
+	<key>openTypeHheaCaretOffset</key>
+	<integer>0</integer>
+	<key>openTypeHheaLineGap</key>
+	<integer>0</integer>
+
+  <key>openTypeOS2TypoAscender</key>
+	<integer>1000</integer>
+  <key>openTypeOS2TypoDescender</key>
+	<integer>0</integer>
+  <key>openTypeOS2TypoLineGap</key>
+	<integer>0</integer>
+
+	<key>openTypeOS2TypoLineGap</key>
+	<integer>0</integer>
+	<key>openTypeOS2WinAscent</key>
+	<integer>1000</integer>
+	<key>openTypeOS2WinDescent</key>
+	<integer>0</integer>
   </dict>
 </plist>

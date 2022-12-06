@@ -19,6 +19,14 @@ table BASE {
   # pos cursive down <anchor entry> <anchor 0 -10>;
 # }
 
+# these are copy-paste from https://github.com/adobe-fonts/adobe-blank-vf
+# somehow ignored by fontinfo, so we duplicate
+table OS/2 {
+  TypoAscender 1000;
+  TypoDescender 0;
+  TypoLineGap 0;
+} OS/2;
+
 # absolute shift
 feature mark {
   pos [@value @value.clip]' <0 1000 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up10 up10;

@@ -14,7 +14,7 @@
     </rules>
     <sources>
         {{#each masters as |master name| }}
-        <source familyname="{{ ../face.name }}" filename="{{ ../face.name }}-{{ unspace name }}.ufo" name="Master_{{name}}" stylename="{{name}}">
+        <source familyname="{{ ../face.name }}" filename="{{ ../face.name }}-{{ name }}.ufo" name="Master_{{name}}" stylename="{{name}}">
             <location>
                 {{#each master as |axisValue axisName|}}
                 <dimension name="{{titleCase axisName }}" xvalue="{{ axisValue }}" />
@@ -24,14 +24,53 @@
         {{/each}}
     </sources>
     <instances>
-        {{#each masters as |master name| }}
-        <instance familyname="{{ ../face.name }}" filename="instance_ufo/{{ ../face.name }}-{{unspace name }}.ufo" name="{{unspace name}}" stylename="{{name}}">
+        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-Thin.ufo" name="Thin" stylename="Thin">
             <location>
-                {{#each master as |axisValue axisName|}}
-                <dimension name="{{titleCase axisName }}" xvalue="{{ axisValue }}" />
-                {{/each}}
+                <dimension name="Weight" xvalue="100" />
+                <dimension name="Roundness" xvalue="0" />
             </location>
         </instance>
-        {{/each}}
+        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-ThinRound.ufo" name="ThinRound" stylename="ThinRound">
+            <location>
+                <dimension name="Weight" xvalue="100" />
+                <dimension name="Roundness" xvalue="100" />
+            </location>
+        </instance>
+        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-UltraLight.ufo" name="UltraLight" stylename="UltraLight">
+            <location>
+                <dimension name="Weight" xvalue="200" />
+                <dimension name="Roundness" xvalue="0" />
+            </location>
+        </instance>
+        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-UltraLightRound.ufo" name="UltraLightRound" stylename="UltraLightRound">
+            <location>
+                <dimension name="Weight" xvalue="200" />
+                <dimension name="Roundness" xvalue="100" />
+            </location>
+        </instance>
+        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-Light.ufo" name="Light" stylename="Light">
+            <location>
+                <dimension name="Weight" xvalue="300" />
+                <dimension name="Roundness" xvalue="0" />
+            </location>
+        </instance>
+        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-LightRound.ufo" name="LightRound" stylename="LightRound">
+            <location>
+                <dimension name="Weight" xvalue="300" />
+                <dimension name="Roundness" xvalue="100" />
+            </location>
+        </instance>
+        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-Regular.ufo" name="Regular" stylename="Regular">
+            <location>
+                <dimension name="Weight" xvalue="400" />
+                <dimension name="Roundness" xvalue="0" />
+            </location>
+        </instance>
+        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-RegularRound.ufo" name="RegularRound" stylename="RegularRound">
+            <location>
+                <dimension name="Weight" xvalue="400" />
+                <dimension name="Roundness" xvalue="100" />
+            </location>
+        </instance>
     </instances>
 </designspace>

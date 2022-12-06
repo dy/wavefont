@@ -78,15 +78,13 @@ wavefont.lower(0, 1, 50, 99, 100, 101, ...)
 wavefont.center(0, 1, 50, 99, 100, 101, ...)
 ```
 
-<!--
 ## Building
 
-Wavefont is generated in 2 steps.
+Wavefont can be built in 2 ways: via google fonts tools or afdko.
 
-1. First, UFOs are generated from `_source` template into `source/Wavefont` folder by `npm run build-ufo` command. It uses [plopfile](./plopfile.js) to evaluate the template. The step can be skipped since the `source` folder is stored in the repository.
+1. For google fonts generation run `make build`.
 
-[2. Coming: gftools do the rest of the job, compiling UFOs to ...]
--->
+2. For afdko generation run `npm run build`.
 
 ## See also
 
