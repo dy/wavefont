@@ -1,2 +1,3 @@
 gftools
 fontbakery>=0.8
+ufonormalizer>=0.6.1
