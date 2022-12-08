@@ -4,8 +4,8 @@
   "description": "Typeface for visualizing waveform data",
   "main": "index.js",
   "scripts": {
-    "build": "npm-run-all build-ufo && npm-run-all --parallel build-otf build-ttf && npm run build-woff2",
-    "build-ufo": "plop build-ufo wavefont100 && npm run normalize-ufo",
+    "build": "npm-run-all build-ufo normalize-ufo && npm-run-all --parallel build-otf build-ttf && npm run build-woff2",
+    "build-ufo": "plop build-ufo wavefont100",
     "normalize-ufo": "npm-run-all --parallel normalize-ufo-w1r0 normalize-ufo-w1r100 normalize-ufo-w400r0 normalize-ufo-w400r100",
     "normalize-ufo-w1r0": "ufonormalizer -a --float-precision 3 -m sources/Wavefont-w1r0.ufo",
     "normalize-ufo-w1r100": "ufonormalizer -a --float-precision 3 -m sources/Wavefont-w1r100.ufo",

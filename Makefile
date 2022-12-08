@@ -18,7 +18,9 @@ template.stamp: _sources/master.ufo _sources/features.fea _sources/master.ufo/fo
 	touch template.stamp
 
 build.stamp: template.stamp venv
-	. venv/bin/activate ; gftools builder sources/config.yaml
+	. venv/bin/activate
+	npm run normalize-ufo
+	gftools builder sources/config.yaml
 	touch build.stamp
 
 venv: venv/touchfile
