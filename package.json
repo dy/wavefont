@@ -4,26 +4,26 @@
   "description": "Typeface for visualizing waveform data",
   "main": "index.js",
   "scripts": {
-    "build": "npm-run-all build-ufo normalize-ufo && npm-run-all --parallel build-otf build-ttf && npm run build-woff2",
-    "build-ufo": "plop build-ufo wavefont100",
+    "build": "npm-run-all build-ufo && npm-run-all --parallel build-otf build-ttf && npm run build-woff2",
+    "build-ufo": "plop build-ufo wavefont100 && npm run normalize-ufo",
     "normalize-ufo": "npm-run-all --parallel normalize-ufo-w1r0 normalize-ufo-w1r100 normalize-ufo-w400r0 normalize-ufo-w400r100",
-    "normalize-ufo-w1r0": "ufonormalizer -a --float-precision 3 -m sources/Wavefont-Hairline.ufo",
-    "normalize-ufo-w1r100": "ufonormalizer -a --float-precision 3 -m sources/Wavefont-HairlineRound.ufo",
-    "normalize-ufo-w400r0": "ufonormalizer -a --float-precision 3 -m sources/Wavefont-Regular.ufo",
-    "normalize-ufo-w400r100": "ufonormalizer -a --float-precision 3 -m sources/Wavefont-RegularRound.ufo",
+    "normalize-ufo-w1r0": "ufonormalizer -a --float-precision 3 -m sources/Wavefont-w1r0.ufo",
+    "normalize-ufo-w1r100": "ufonormalizer -a --float-precision 3 -m sources/Wavefont-w1r100.ufo",
+    "normalize-ufo-w400r0": "ufonormalizer -a --float-precision 3 -m sources/Wavefont-w400r0.ufo",
+    "normalize-ufo-w400r100": "ufonormalizer -a --float-precision 3 -m sources/Wavefont-w400r100.ufo",
     "hint-ufo": "psautohint --no-hint-sub --no-flex -d -c -a sources/*.ufo",
     "build-otf": "npm-run-all build-masterotfs build-vf add-blanks-otf",
     "build-masterotfs": "buildmasterotfs --mkot -r,-omitMacNames,-S,-ga,-adds -d \"sources/wavefont.designspace\"",
-    "build-vf": "buildcff2vf --omit-mac-names -c -k -d \"sources/wavefont.designspace\" -o ./fonts/variable/wavefont[ROND,wght].otf",
-    "add-blanks-otf": "ttx -o ./fonts/variable/wavefont[ROND,wght].otf -m ./fonts/variable/wavefont[ROND,wght].otf sources/cmap.ttx",
-    "add-blanks-ttf": "ttx -o ./fonts/variable/wavefont[ROND,wght].ttf -m ./fonts/variable/wavefont[ROND,wght].ttf sources/cmap.ttx",
-    "build-ttf": "fontmake -m \"sources/wavefont.designspace\" -o variable --output-path ./fonts/variable/wavefont[ROND,wght].ttf --validate-ufo --round-instances --expand-features-to-instances --autohint && npm run add-blanks-ttf",
-    "build-woff2": "shx rm -f ./fonts/variable/wavefont[ROND,wght].woff2 && fonttools ttLib.woff2 compress ./fonts/variable/wavefont[ROND,wght].otf",
-    "subroutinize-otf": "shx cp ./fonts/variable/wavefont[ROND,wght].otf ./fonts/variable/wavefont[ROND,wght].min.otf && tx -cff2 +S +b -o ./table.CFF2 -f ./fonts/variable/wavefont[ROND,wght].otf && sfntedit -a CFF2=./table.CFF2 ./fonts/variable/wavefont[ROND,wght].min.otf"
+    "build-vf": "buildcff2vf --omit-mac-names -c -k -d \"sources/wavefont.designspace\" -o ./fonts/variable/Wavefont[ROND,wght].otf",
+    "add-blanks-otf": "ttx -o ./fonts/variable/Wavefont[ROND,wght].otf -m ./fonts/variable/Wavefont[ROND,wght].otf sources/cmap.ttx",
+    "add-blanks-ttf": "ttx -o ./fonts/variable/Wavefont[ROND,wght].ttf -m ./fonts/variable/Wavefont[ROND,wght].ttf sources/cmap.ttx",
+    "build-ttf": "fontmake -m \"sources/wavefont.designspace\" -o variable --output-path ./fonts/variable/Wavefont[ROND,wght].ttf --validate-ufo --round-instances --expand-features-to-instances --autohint && npm run add-blanks-ttf",
+    "build-woff2": "shx rm -f ./fonts/variable/Wavefont[ROND,wght].woff2 && fonttools ttLib.woff2 compress ./fonts/variable/Wavefont[ROND,wght].otf",
+    "subroutinize-otf": "shx cp ./fonts/variable/Wavefont[ROND,wght].otf ./fonts/variable/Wavefont[ROND,wght].min.otf && tx -cff2 +S +b -o ./table.CFF2 -f ./fonts/variable/Wavefont[ROND,wght].otf && sfntedit -a CFF2=./table.CFF2 ./fonts/variable/Wavefont[ROND,wght].min.otf"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/a-vis/wavefont.git"
+    "url": "git+https://github.com/dy/wavefont.git"
   },
   "keywords": [
     "sound",
@@ -37,9 +37,9 @@
   "author": "Dmitry Iv <dfcreative@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/a-vis/wavefont/issues"
+    "url": "https://github.com/dy/wavefont/issues"
   },
-  "homepage": "https://github.com/a-vis/wavefont#readme",
+  "homepage": "https://github.com/dy/wavefont#readme",
   "devDependencies": {
     "dedent": "^0.7.0",
     "npm-run-all": "^4.1.5",

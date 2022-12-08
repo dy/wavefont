@@ -3,4 +3,4 @@ buildStatic: true
 familyName: Wavefont
 googleFonts: true
 sources:
-- wavefont.designspace
+- Wavefont.designspace

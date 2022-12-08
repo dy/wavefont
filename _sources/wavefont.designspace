@@ -24,52 +24,53 @@
         {{/each}}
     </sources>
     <instances>
-        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-Thin.ufo" name="Thin" stylename="Thin">
+        <instance filename="instance_ufo/Wavefont-Thin.ufo" name="Wavefont Thin" familyname="Wavefont" stylename="Thin">
             <location>
                 <dimension name="Weight" xvalue="100" />
                 <dimension name="Roundness" xvalue="0" />
             </location>
         </instance>
-        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-ThinRound.ufo" name="ThinRound" stylename="ThinRound">
+        <instance filename="instance_ufo/Wavefont-ExtraLight.ufo" name="Wavefont ExtraLight" familyname="Wavefont" stylename="ExtraLight">
+            <location>
+                <dimension name="Weight" xvalue="200" />
+                <dimension name="Roundness" xvalue="0" />
+            </location>
+        </instance>
+        <instance filename="instance_ufo/Wavefont-Light.ufo" name="Wavefont Light" familyname="Wavefont" stylename="Light">
+            <location>
+                <dimension name="Weight" xvalue="300" />
+                <dimension name="Roundness" xvalue="0" />
+            </location>
+        </instance>
+        <instance filename="instance_ufo/Wavefont-Regular.ufo" name="Wavefont Regular" familyname="Wavefont" stylename="Regular">
+            <location>
+                <dimension name="Weight" xvalue="400" />
+                <dimension name="Roundness" xvalue="0" />
+            </location>
+        </instance>
+
+        <instance filename="instance_ufo/WavefontRound-Thin.ufo" name="WavefontRound Thin" familyname="WavefontRound" stylename="Thin">
             <location>
                 <dimension name="Weight" xvalue="100" />
-                <dimension name="Roundness" xvalue="100" />
+                <dimension name="Roundness" xvalue="0" />
             </location>
         </instance>
-        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-UltraLight.ufo" name="UltraLight" stylename="UltraLight">
+        <instance filename="instance_ufo/WavefontRound-ExtraLight.ufo" name="WavefontRound ExtraLight" familyname="WavefontRound" stylename="ExtraLight">
             <location>
                 <dimension name="Weight" xvalue="200" />
                 <dimension name="Roundness" xvalue="0" />
             </location>
         </instance>
-        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-UltraLightRound.ufo" name="UltraLightRound" stylename="UltraLightRound">
-            <location>
-                <dimension name="Weight" xvalue="200" />
-                <dimension name="Roundness" xvalue="100" />
-            </location>
-        </instance>
-        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-Light.ufo" name="Light" stylename="Light">
+        <instance filename="instance_ufo/WavefontRound-Light.ufo" name="WavefontRound Light" familyname="WavefontRound" stylename="Light">
             <location>
                 <dimension name="Weight" xvalue="300" />
                 <dimension name="Roundness" xvalue="0" />
             </location>
         </instance>
-        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-LightRound.ufo" name="LightRound" stylename="LightRound">
-            <location>
-                <dimension name="Weight" xvalue="300" />
-                <dimension name="Roundness" xvalue="100" />
-            </location>
-        </instance>
-        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-Regular.ufo" name="Regular" stylename="Regular">
+        <instance filename="instance_ufo/WavefontRound-Regular.ufo" name="WavefontRound Regular" familyname="WavefontRound" stylename="Regular">
             <location>
                 <dimension name="Weight" xvalue="400" />
                 <dimension name="Roundness" xvalue="0" />
-            </location>
-        </instance>
-        <instance familyname="Wavefont" filename="instance_ufo/Wavefont-RegularRound.ufo" name="RegularRound" stylename="RegularRound">
-            <location>
-                <dimension name="Weight" xvalue="400" />
-                <dimension name="Roundness" xvalue="100" />
             </location>
         </instance>
     </instances>

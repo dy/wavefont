@@ -63,10 +63,10 @@ const AXES = {
 
 // create masters
 const MASTERS = {
-  'Hairline': {weight: AXES.weight.min, roundness: AXES.roundness.min},
-  'HairlineRound': {weight: AXES.weight.min, roundness: AXES.roundness.max},
-  'Regular': {weight: AXES.weight.max, roundness: AXES.roundness.min},
-  'RegularRound': {weight: AXES.weight.max, roundness: AXES.roundness.max}
+  'w1r0': {weight: AXES.weight.min, roundness: AXES.roundness.min},
+  'w1r100': {weight: AXES.weight.min, roundness: AXES.roundness.max},
+  'w400r0': {weight: AXES.weight.max, roundness: AXES.roundness.min},
+  'w400r100': {weight: AXES.weight.max, roundness: AXES.roundness.max}
 }
 
 module.exports = function (plop) {

@@ -94,5 +94,19 @@
 	<integer>1000</integer>
 	<key>openTypeOS2WinDescent</key>
 	<integer>0</integer>
+
+	<key>openTypeOS2Panose</key>
+	<array>
+		<integer>2</integer>
+		<integer>0</integer>
+		<integer>8</integer>
+		<integer>9</integer>
+		<integer>3</integer>
+		<integer>0</integer>
+		<integer>0</integer>
+		<integer>2</integer>
+		<integer>0</integer>
+		<integer>4</integer>
+	</array>
   </dict>
 </plist>
