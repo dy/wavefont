@@ -1,6 +1,27 @@
 buildVariable: true
 buildStatic: true
 familyName: Wavefont
-googleFonts: true
 sources:
-- Wavefont.designspace
+  - Wavefont.designspace
+familyName: Wavefont
+axirOrder:
+  - ROND
+  - wght
+stat:
+  - name: Round
+    tag: ROND
+    values:
+    - name: Default
+      value: 0
+      flags: 2
+  - name: Weight
+    tag: wght
+    - name: Thin
+      value: 100
+    - name: ExtraLight
+      value: 200
+    - name: Light
+      value: 300
+    - name: Regular
+      value: 400
+      flags: 2
