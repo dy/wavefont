@@ -1,1 +1,153 @@
-include(./features.fea);
+languagesystem DFLT dflt;
+
+table BASE {
+  HorizAxis.BaseTagList                 ideo;
+  HorizAxis.BaseScriptList  DFLT  ideo  0;
+
+  VertAxis.BaseTagList                  ideo;
+  VertAxis.BaseScriptList   DFLT  ideo     0;
+} BASE;
+
+@value = [{{#each face.values as |code value|}}_{{ value }} {{/each}}];
+@value.clip = [{{#each clips as |code value|}}{{#if value}}_{{ value }}.clip {{/if}}{{/each}}];
+
+# relative cursive shift (loses offset on copy-paste)
+# anchorDef 0 0 entry;
+# feature mark {
+  # pos cursive [@value @value.clip] <anchor entry> <anchor NULL>;
+  # pos cursive up <anchor entry> <anchor 0 10>;
+  # pos cursive down <anchor entry> <anchor 0 -10>;
+# }
+
+# these are copy-paste from https://github.com/adobe-fonts/adobe-blank-vf
+# somehow ignored by fontinfo, so we duplicate
+table OS/2 {
+  TypoAscender {{upm face.max }};
+  TypoDescender 0;
+  TypoLineGap 0;
+} OS/2;
+
+# absolute shift
+feature mark {
+  pos [@value @value.clip]' <0 1000 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up10 up10;
+  pos [@value @value.clip]' <0 1000 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up10 up up up up up up up up up up;
+  pos [@value @value.clip]' <0 990 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up10 up up up up up up up up up;
+  pos [@value @value.clip]' <0 980 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up10 up up up up up up up up;
+  pos [@value @value.clip]' <0 970 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up10 up up up up up up up;
+  pos [@value @value.clip]' <0 960 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up10 up up up up up up;
+  pos [@value @value.clip]' <0 950 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up10 up up up up up;
+  pos [@value @value.clip]' <0 940 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up10 up up up up;
+  pos [@value @value.clip]' <0 930 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up10 up up up;
+  pos [@value @value.clip]' <0 920 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up10 up up;
+  pos [@value @value.clip]' <0 910 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up10 up;
+  pos [@value @value.clip]' <0 900 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up10;
+  pos [@value @value.clip]' <0 900 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up up up up up up up up up up;
+  pos [@value @value.clip]' <0 890 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up up up up up up up up up;
+  pos [@value @value.clip]' <0 880 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up up up up up up up up;
+  pos [@value @value.clip]' <0 870 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up up up up up up up;
+  pos [@value @value.clip]' <0 860 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up up up up up up;
+  pos [@value @value.clip]' <0 850 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up up up up up;
+  pos [@value @value.clip]' <0 840 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up up up up;
+  pos [@value @value.clip]' <0 830 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up up up;
+  pos [@value @value.clip]' <0 820 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up up;
+  pos [@value @value.clip]' <0 810 0 0> up10 up10 up10 up10 up10 up10 up10 up10 up;
+  pos [@value @value.clip]' <0 800 0 0> up10 up10 up10 up10 up10 up10 up10 up10;
+  pos [@value @value.clip]' <0 800 0 0> up10 up10 up10 up10 up10 up10 up10 up up up up up up up up up up;
+  pos [@value @value.clip]' <0 790 0 0> up10 up10 up10 up10 up10 up10 up10 up up up up up up up up up;
+  pos [@value @value.clip]' <0 780 0 0> up10 up10 up10 up10 up10 up10 up10 up up up up up up up up;
+  pos [@value @value.clip]' <0 770 0 0> up10 up10 up10 up10 up10 up10 up10 up up up up up up up;
+  pos [@value @value.clip]' <0 760 0 0> up10 up10 up10 up10 up10 up10 up10 up up up up up up;
+  pos [@value @value.clip]' <0 750 0 0> up10 up10 up10 up10 up10 up10 up10 up up up up up;
+  pos [@value @value.clip]' <0 740 0 0> up10 up10 up10 up10 up10 up10 up10 up up up up;
+  pos [@value @value.clip]' <0 730 0 0> up10 up10 up10 up10 up10 up10 up10 up up up;
+  pos [@value @value.clip]' <0 720 0 0> up10 up10 up10 up10 up10 up10 up10 up up;
+  pos [@value @value.clip]' <0 710 0 0> up10 up10 up10 up10 up10 up10 up10 up;
+  pos [@value @value.clip]' <0 700 0 0> up10 up10 up10 up10 up10 up10 up10;
+  pos [@value @value.clip]' <0 700 0 0> up10 up10 up10 up10 up10 up10 up up up up up up up up up up;
+  pos [@value @value.clip]' <0 690 0 0> up10 up10 up10 up10 up10 up10 up up up up up up up up up;
+  pos [@value @value.clip]' <0 680 0 0> up10 up10 up10 up10 up10 up10 up up up up up up up up;
+  pos [@value @value.clip]' <0 670 0 0> up10 up10 up10 up10 up10 up10 up up up up up up up;
+  pos [@value @value.clip]' <0 660 0 0> up10 up10 up10 up10 up10 up10 up up up up up up;
+  pos [@value @value.clip]' <0 650 0 0> up10 up10 up10 up10 up10 up10 up up up up up;
+  pos [@value @value.clip]' <0 640 0 0> up10 up10 up10 up10 up10 up10 up up up up;
+  pos [@value @value.clip]' <0 630 0 0> up10 up10 up10 up10 up10 up10 up up up;
+  pos [@value @value.clip]' <0 620 0 0> up10 up10 up10 up10 up10 up10 up up;
+  pos [@value @value.clip]' <0 610 0 0> up10 up10 up10 up10 up10 up10 up;
+  pos [@value @value.clip]' <0 600 0 0> up10 up10 up10 up10 up10 up10;
+  pos [@value @value.clip]' <0 600 0 0> up10 up10 up10 up10 up10 up up up up up up up up up up;
+  pos [@value @value.clip]' <0 590 0 0> up10 up10 up10 up10 up10 up up up up up up up up up;
+  pos [@value @value.clip]' <0 580 0 0> up10 up10 up10 up10 up10 up up up up up up up up;
+  pos [@value @value.clip]' <0 570 0 0> up10 up10 up10 up10 up10 up up up up up up up;
+  pos [@value @value.clip]' <0 560 0 0> up10 up10 up10 up10 up10 up up up up up up;
+  pos [@value @value.clip]' <0 550 0 0> up10 up10 up10 up10 up10 up up up up up;
+  pos [@value @value.clip]' <0 540 0 0> up10 up10 up10 up10 up10 up up up up;
+  pos [@value @value.clip]' <0 530 0 0> up10 up10 up10 up10 up10 up up up;
+  pos [@value @value.clip]' <0 520 0 0> up10 up10 up10 up10 up10 up up;
+  pos [@value @value.clip]' <0 510 0 0> up10 up10 up10 up10 up10 up;
+  pos [@value @value.clip]' <0 500 0 0> up10 up10 up10 up10 up10;
+  pos [@value @value.clip]' <0 500 0 0> up10 up10 up10 up10 up up up up up up up up up up;
+  pos [@value @value.clip]' <0 490 0 0> up10 up10 up10 up10 up up up up up up up up up;
+  pos [@value @value.clip]' <0 480 0 0> up10 up10 up10 up10 up up up up up up up up;
+  pos [@value @value.clip]' <0 470 0 0> up10 up10 up10 up10 up up up up up up up;
+  pos [@value @value.clip]' <0 460 0 0> up10 up10 up10 up10 up up up up up up;
+  pos [@value @value.clip]' <0 450 0 0> up10 up10 up10 up10 up up up up up;
+  pos [@value @value.clip]' <0 440 0 0> up10 up10 up10 up10 up up up up;
+  pos [@value @value.clip]' <0 430 0 0> up10 up10 up10 up10 up up up;
+  pos [@value @value.clip]' <0 420 0 0> up10 up10 up10 up10 up up;
+  pos [@value @value.clip]' <0 410 0 0> up10 up10 up10 up10 up;
+  pos [@value @value.clip]' <0 400 0 0> up10 up10 up10 up10;
+  pos [@value @value.clip]' <0 400 0 0> up10 up10 up10 up up up up up up up up up up;
+  pos [@value @value.clip]' <0 390 0 0> up10 up10 up10 up up up up up up up up up;
+  pos [@value @value.clip]' <0 380 0 0> up10 up10 up10 up up up up up up up up;
+  pos [@value @value.clip]' <0 370 0 0> up10 up10 up10 up up up up up up up;
+  pos [@value @value.clip]' <0 360 0 0> up10 up10 up10 up up up up up up;
+  pos [@value @value.clip]' <0 350 0 0> up10 up10 up10 up up up up up;
+  pos [@value @value.clip]' <0 340 0 0> up10 up10 up10 up up up up;
+  pos [@value @value.clip]' <0 330 0 0> up10 up10 up10 up up up;
+  pos [@value @value.clip]' <0 320 0 0> up10 up10 up10 up up;
+  pos [@value @value.clip]' <0 310 0 0> up10 up10 up10 up;
+  pos [@value @value.clip]' <0 300 0 0> up10 up10 up10;
+  pos [@value @value.clip]' <0 300 0 0> up10 up10 up up up up up up up up up up;
+  pos [@value @value.clip]' <0 290 0 0> up10 up10 up up up up up up up up up;
+  pos [@value @value.clip]' <0 280 0 0> up10 up10 up up up up up up up up;
+  pos [@value @value.clip]' <0 270 0 0> up10 up10 up up up up up up up;
+  pos [@value @value.clip]' <0 260 0 0> up10 up10 up up up up up up;
+  pos [@value @value.clip]' <0 250 0 0> up10 up10 up up up up up;
+  pos [@value @value.clip]' <0 240 0 0> up10 up10 up up up up;
+  pos [@value @value.clip]' <0 230 0 0> up10 up10 up up up;
+  pos [@value @value.clip]' <0 220 0 0> up10 up10 up up;
+  pos [@value @value.clip]' <0 210 0 0> up10 up10 up;
+  pos [@value @value.clip]' <0 200 0 0> up10 up10;
+  pos [@value @value.clip]' <0 200 0 0> up10 up up up up up up up up up up;
+  pos [@value @value.clip]' <0 190 0 0> up10 up up up up up up up up up;
+  pos [@value @value.clip]' <0 180 0 0> up10 up up up up up up up up;
+  pos [@value @value.clip]' <0 170 0 0> up10 up up up up up up up;
+  pos [@value @value.clip]' <0 160 0 0> up10 up up up up up up;
+  pos [@value @value.clip]' <0 150 0 0> up10 up up up up up;
+  pos [@value @value.clip]' <0 140 0 0> up10 up up up up;
+  pos [@value @value.clip]' <0 130 0 0> up10 up up up;
+  pos [@value @value.clip]' <0 120 0 0> up10 up up;
+  pos [@value @value.clip]' <0 110 0 0> up10 up;
+  pos [@value @value.clip]' <0 100 0 0> up10;
+  pos [@value @value.clip]' <0 100 0 0> up up up up up up up up up up;
+  pos [@value @value.clip]' <0 90 0 0> up up up up up up up up up;
+  pos [@value @value.clip]' <0 80 0 0> up up up up up up up up;
+  pos [@value @value.clip]' <0 70 0 0> up up up up up up up;
+  pos [@value @value.clip]' <0 60 0 0> up up up up up up;
+  pos [@value @value.clip]' <0 50 0 0> up up up up up;
+  pos [@value @value.clip]' <0 40 0 0> up up up up;
+  pos [@value @value.clip]' <0 30 0 0> up up up;
+  pos [@value @value.clip]' <0 20 0 0> up up;
+  pos [@value @value.clip]' <0 10 0 0> up;
+  pos [@value @value.clip]' <0 -100 0 0> down down down down down down down down down down;
+  pos [@value @value.clip]' <0 -90 0 0> down down down down down down down down down;
+  pos [@value @value.clip]' <0 -80 0 0> down down down down down down down down;
+  pos [@value @value.clip]' <0 -70 0 0> down down down down down down down;
+  pos [@value @value.clip]' <0 -60 0 0> down down down down down down;
+  pos [@value @value.clip]' <0 -50 0 0> down down down down down;
+  pos [@value @value.clip]' <0 -40 0 0> down down down down;
+  pos [@value @value.clip]' <0 -30 0 0> down down down;
+  pos [@value @value.clip]' <0 -20 0 0> down down;
+  pos [@value @value.clip]' <0 -10 0 0> down;
+
+} mark;
