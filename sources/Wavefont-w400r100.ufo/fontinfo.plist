@@ -47,7 +47,7 @@
 		<key>openTypeOS2TypoDescender</key>
 		<integer>0</integer>
 		<key>openTypeOS2TypoLineGap</key>
-		<integer>0</integer>
+		<integer>35</integer>
 		<key>openTypeOS2VendorID</key>
 		<string>DY  </string>
 		<key>openTypeOS2WeightClass</key>
@@ -72,7 +72,7 @@
 		<key>postscriptFontName</key>
 		<string>Wavefont</string>
 		<key>postscriptFullName</key>
-		<string>Wavefont</string>
+		<string>Wavefont-Regular</string>
 		<key>postscriptIsFixedPitch</key>
 		<true/>
 		<key>postscriptStemSnapH</key>
@@ -92,7 +92,7 @@
 		<key>styleName</key>
 		<string>Regular</string>
 		<key>trademark</key>
-		<string>Copyright 2022 The Familyname Project Authors (https://github.com/dy/wavefont)</string>
+		<string>Copyright 2022 The Wavefont Project Authors (https://github.com/dy/wavefont)</string>
 		<key>unitsPerEm</key>
 		<integer>1000</integer>
 		<key>versionMajor</key>

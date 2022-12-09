@@ -1,10 +1,9 @@
 buildVariable: true
 buildStatic: true
-familyName: Wavefont
 sources:
   - Wavefont.designspace
 familyName: Wavefont
-axirOrder:
+axisOrder:
   - ROND
   - wght
 stat:
@@ -16,6 +15,7 @@ stat:
       flags: 2
   - name: Weight
     tag: wght
+    values:
     - name: Thin
       value: 100
     - name: ExtraLight
