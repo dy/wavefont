@@ -7,9 +7,9 @@
 	<key>styleName</key>
 	<string>Regular</string>
 	<key>postscriptFontName</key>
-	<string>Wavefont</string>
-	<key>postscriptFullName</key>
 	<string>Wavefont-Regular</string>
+	<key>postscriptFullName</key>
+	<string>Wavefont Regular</string>
 	<key>postscriptWeightName</key>
 	<string>Regular</string>
 	<key>versionMajor</key>
