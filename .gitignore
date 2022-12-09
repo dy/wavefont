@@ -22,3 +22,5 @@ sources/*.ufo/data/*
 sources/cmap.ttx
 venv
 *.stamp
+
+.DS_Store
