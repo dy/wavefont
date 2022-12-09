@@ -27,47 +27,22 @@
         <instance filename="instance_ufo/Wavefont-Thin.ufo" name="Wavefont Thin" familyname="Wavefont" stylename="Thin">
             <location>
                 <dimension name="Weight" xvalue="100" />
-                <dimension name="Roundness" xvalue="0" />
+                <dimension name="Roundness" xvalue="100" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-ExtraLight.ufo" name="Wavefont ExtraLight" familyname="Wavefont" stylename="ExtraLight">
             <location>
                 <dimension name="Weight" xvalue="200" />
-                <dimension name="Roundness" xvalue="0" />
+                <dimension name="Roundness" xvalue="100" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-Light.ufo" name="Wavefont Light" familyname="Wavefont" stylename="Light">
             <location>
                 <dimension name="Weight" xvalue="300" />
-                <dimension name="Roundness" xvalue="0" />
+                <dimension name="Roundness" xvalue="100" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-Regular.ufo" name="Wavefont Regular" familyname="Wavefont" stylename="Regular">
-            <location>
-                <dimension name="Weight" xvalue="400" />
-                <dimension name="Roundness" xvalue="0" />
-            </location>
-        </instance>
-
-        <instance filename="instance_ufo/WavefontRound-Thin.ufo" name="WavefontRound Thin" familyname="WavefontRound" stylename="Thin">
-            <location>
-                <dimension name="Weight" xvalue="100" />
-                <dimension name="Roundness" xvalue="100" />
-            </location>
-        </instance>
-        <instance filename="instance_ufo/WavefontRound-ExtraLight.ufo" name="WavefontRound ExtraLight" familyname="WavefontRound" stylename="ExtraLight">
-            <location>
-                <dimension name="Weight" xvalue="200" />
-                <dimension name="Roundness" xvalue="100" />
-            </location>
-        </instance>
-        <instance filename="instance_ufo/WavefontRound-Light.ufo" name="WavefontRound Light" familyname="WavefontRound" stylename="Light">
-            <location>
-                <dimension name="Weight" xvalue="300" />
-                <dimension name="Roundness" xvalue="100" />
-            </location>
-        </instance>
-        <instance filename="instance_ufo/WavefontRound-Regular.ufo" name="WavefontRound Regular" familyname="WavefontRound" stylename="Regular">
             <location>
                 <dimension name="Weight" xvalue="400" />
                 <dimension name="Roundness" xvalue="100" />

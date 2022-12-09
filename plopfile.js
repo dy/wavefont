@@ -57,7 +57,7 @@ function alias(value, char) {
 
 // axes definition, per https://github.com/dy/wavefont/issues/42
 const AXES = {
-  roundness: {tag: 'ROND', min: 0, max: 100, default: 0},
+  roundness: {tag: 'ROND', min: 0, max: 100, default: 100},
   weight: {tag: 'wght', min: 1, max: 400, default: 400}
 }
 
