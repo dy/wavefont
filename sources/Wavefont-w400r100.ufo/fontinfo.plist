@@ -70,9 +70,9 @@
 			<integer>1000</integer>
 		</array>
 		<key>postscriptFontName</key>
-		<string>Wavefont</string>
-		<key>postscriptFullName</key>
 		<string>Wavefont-Regular</string>
+		<key>postscriptFullName</key>
+		<string>Wavefont Regular</string>
 		<key>postscriptIsFixedPitch</key>
 		<true/>
 		<key>postscriptStemSnapH</key>
