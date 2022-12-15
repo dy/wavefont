@@ -24,16 +24,16 @@
 		<string>https://scripts.sil.org/OFL</string>
 		<key>openTypeOS2Panose</key>
 		<array>
-			<integer>2</integer>
-			<integer>15</integer>
 			<integer>0</integer>
 			<integer>0</integer>
-			<integer>2</integer>
-			<integer>2</integer>
-			<integer>8</integer>
-			<integer>2</integer>
-			<integer>9</integer>
-			<integer>4</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>0</integer>
+			<integer>0</integer>
 		</array>
 		<key>openTypeOS2Selection</key>
 		<array>
@@ -55,7 +55,7 @@
 		<key>openTypeOS2WinAscent</key>
 		<integer>1100</integer>
 		<key>openTypeOS2WinDescent</key>
-		<integer>50</integer>
+		<integer>0</integer>
 		<key>postscriptFontName</key>
 		<string>Wavefont-Regular</string>
 		<key>postscriptFullName</key>

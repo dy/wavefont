@@ -369,8 +369,6 @@ The following glyphs do not have the recommended number of contours:
 
 	- Glyph name: _0.center	Contours detected: 0	Expected: 2
 
-	- Glyph name: _1.center	Contours detected: 1	Expected: 3
-
 	- Glyph name: _3.center	Contours detected: 1	Expected: 2
 
 	- Glyph name: _7.center	Contours detected: 1	Expected: 3
@@ -459,21 +457,9 @@ The following glyphs do not have the recommended number of contours:
 
 	- Glyph name: _94.center	Contours detected: 1	Expected: 2
 
-	- Glyph name: _98.center	Contours detected: 1	Expected: 2
+	- Glyph name: _98.center	Contours detected: 1	Expected: 2 
 
-	- Glyph name: _99.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _102.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _103.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _104.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _105.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _106.center	Contours detected: 1	Expected: 2 
-
-	- And Glyph name: _107.center	Contours detected: 1	Expected: 2
+	- And Glyph name: _99.center	Contours detected: 1	Expected: 2
  [code: contour-count]
 </div></details><br></div></details><details><summary><b>[7] Wavefont-Thin.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
 
@@ -842,8 +828,6 @@ The following glyphs do not have the recommended number of contours:
 
 	- Glyph name: _0.center	Contours detected: 0	Expected: 2
 
-	- Glyph name: _1.center	Contours detected: 1	Expected: 3
-
 	- Glyph name: _3.center	Contours detected: 1	Expected: 2
 
 	- Glyph name: _7.center	Contours detected: 1	Expected: 3
@@ -932,21 +916,9 @@ The following glyphs do not have the recommended number of contours:
 
 	- Glyph name: _94.center	Contours detected: 1	Expected: 2
 
-	- Glyph name: _98.center	Contours detected: 1	Expected: 2
+	- Glyph name: _98.center	Contours detected: 1	Expected: 2 
 
-	- Glyph name: _99.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _102.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _103.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _104.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _105.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _106.center	Contours detected: 1	Expected: 2 
-
-	- And Glyph name: _107.center	Contours detected: 1	Expected: 2
+	- And Glyph name: _99.center	Contours detected: 1	Expected: 2
  [code: contour-count]
 </div></details><br></div></details><details><summary><b>[7] Wavefont-Regular.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
 
@@ -1315,8 +1287,6 @@ The following glyphs do not have the recommended number of contours:
 
 	- Glyph name: _0.center	Contours detected: 0	Expected: 2
 
-	- Glyph name: _1.center	Contours detected: 1	Expected: 3
-
 	- Glyph name: _3.center	Contours detected: 1	Expected: 2
 
 	- Glyph name: _7.center	Contours detected: 1	Expected: 3
@@ -1405,21 +1375,9 @@ The following glyphs do not have the recommended number of contours:
 
 	- Glyph name: _94.center	Contours detected: 1	Expected: 2
 
-	- Glyph name: _98.center	Contours detected: 1	Expected: 2
+	- Glyph name: _98.center	Contours detected: 1	Expected: 2 
 
-	- Glyph name: _99.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _102.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _103.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _104.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _105.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _106.center	Contours detected: 1	Expected: 2 
-
-	- And Glyph name: _107.center	Contours detected: 1	Expected: 2
+	- And Glyph name: _99.center	Contours detected: 1	Expected: 2
  [code: contour-count]
 </div></details><br></div></details><details><summary><b>[7] Wavefont-ExtraLight.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
 
@@ -1788,8 +1746,6 @@ The following glyphs do not have the recommended number of contours:
 
 	- Glyph name: _0.center	Contours detected: 0	Expected: 2
 
-	- Glyph name: _1.center	Contours detected: 1	Expected: 3
-
 	- Glyph name: _3.center	Contours detected: 1	Expected: 2
 
 	- Glyph name: _7.center	Contours detected: 1	Expected: 3
@@ -1878,21 +1834,9 @@ The following glyphs do not have the recommended number of contours:
 
 	- Glyph name: _94.center	Contours detected: 1	Expected: 2
 
-	- Glyph name: _98.center	Contours detected: 1	Expected: 2
+	- Glyph name: _98.center	Contours detected: 1	Expected: 2 
 
-	- Glyph name: _99.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _102.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _103.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _104.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _105.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _106.center	Contours detected: 1	Expected: 2 
-
-	- And Glyph name: _107.center	Contours detected: 1	Expected: 2
+	- And Glyph name: _99.center	Contours detected: 1	Expected: 2
  [code: contour-count]
 </div></details><br></div></details>
 ### Summary
