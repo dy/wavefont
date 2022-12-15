@@ -72,21 +72,20 @@
   <key>openTypeOS2WinAscent</key>
   <integer>{{upm face.ascender }}</integer>
   <key>openTypeOS2WinDescent</key>
-  <!-- NOTE: this is ad-hoc, the value must be face.descender, but it doesn't pass test -->
-	<integer>50</integer>
+	<integer>0</integer>
 
   <key>openTypeOS2Panose</key>
   <array>
-		<integer>2</integer>
-		<integer>15</integer>
 		<integer>0</integer>
 		<integer>0</integer>
-		<integer>2</integer>
-		<integer>2</integer>
-		<integer>8</integer>
-		<integer>2</integer>
-		<integer>9</integer>
-		<integer>4</integer>
+		<integer>0</integer>
+		<integer>0</integer>
+		<integer>0</integer>
+		<integer>0</integer>
+		<integer>0</integer>
+		<integer>0</integer>
+		<integer>0</integer>
+		<integer>0</integer>
   </array>
   </dict>
 </plist>
