@@ -24,10 +24,10 @@
 		<string>https://scripts.sil.org/OFL</string>
 		<key>openTypeOS2Panose</key>
 		<array>
+			<integer>2</integer>
 			<integer>0</integer>
 			<integer>0</integer>
-			<integer>0</integer>
-			<integer>0</integer>
+			<integer>9</integer>
 			<integer>0</integer>
 			<integer>0</integer>
 			<integer>0</integer>

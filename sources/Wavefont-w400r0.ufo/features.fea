@@ -26,6 +26,7 @@ table OS/2 {
   TypoAscender 1100;
   TypoDescender -100;
   TypoLineGap 0;
+  Panose 2 0 0 9 0 0 0 0 0 0;
 } OS/2;
 
 # absolute shift
