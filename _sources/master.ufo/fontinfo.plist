@@ -16,7 +16,7 @@
   <integer>3</integer>
   <key>versionMinor</key>
   <integer>0</integer>
-  <key>trademark</key>
+  <key>copyright</key>
   <string>Copyright 2022 The Wavefont Project Authors (https://github.com/dy/wavefont)</string>
   <key>unitsPerEm</key>
   <integer>{{upm face.max }}</integer>
