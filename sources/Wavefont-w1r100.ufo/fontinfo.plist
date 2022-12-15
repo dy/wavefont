@@ -6,6 +6,8 @@
 		<integer>1100</integer>
 		<key>capHeight</key>
 		<integer>0</integer>
+		<key>copyright</key>
+		<string>Copyright 2022 The Wavefont Project Authors (https://github.com/dy/wavefont)</string>
 		<key>descender</key>
 		<integer>-100</integer>
 		<key>familyName</key>
@@ -70,8 +72,6 @@
 		<string>Regular</string>
 		<key>styleName</key>
 		<string>Regular</string>
-		<key>trademark</key>
-		<string>Copyright 2022 The Wavefont Project Authors (https://github.com/dy/wavefont)</string>
 		<key>unitsPerEm</key>
 		<integer>1000</integer>
 		<key>versionMajor</key>
