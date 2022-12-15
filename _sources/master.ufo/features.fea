@@ -20,10 +20,11 @@ table BASE {
 # }
 
 # these are copy-paste from https://github.com/adobe-fonts/adobe-blank-vf
-# somehow ignored by fontinfo, so we duplicate
+# somehow ignored by fontinfo.plist, so we duplicate
+# indicate selection range
 table OS/2 {
-  TypoAscender {{upm face.max }};
-  TypoDescender 0;
+  TypoAscender {{upm face.ascender }};
+  TypoDescender -{{upm face.descender }};
   TypoLineGap 0;
 } OS/2;
 

@@ -18,7 +18,7 @@
     "add-blanks-otf": "ttx -o ./fonts/variable/Wavefont[ROND,wght].otf -m ./fonts/variable/Wavefont[ROND,wght].otf sources/cmap.ttx",
     "add-blanks-ttf": "ttx -o ./fonts/variable/Wavefont[ROND,wght].ttf -m ./fonts/variable/Wavefont[ROND,wght].ttf sources/cmap.ttx",
     "build-ttf": "fontmake -m \"sources/Wavefont.designspace\" -o variable --output-path ./fonts/variable/Wavefont[ROND,wght].ttf --validate-ufo --round-instances --expand-features-to-instances --autohint && npm run add-blanks-ttf",
-    "build-woff2": "shx rm -f ./fonts/variable/Wavefont[ROND,wght].woff2 && fonttools ttLib.woff2 compress ./fonts/variable/Wavefont[ROND,wght].ttf",
+    "build-woff2": "fonttools ttLib.woff2 compress ./fonts/variable/Wavefont[ROND,wght].ttf -o ./fonts/variable/Wavefont[ROND,wght].woff2",
     "subroutinize-otf": "shx cp ./fonts/variable/Wavefont[ROND,wght].otf ./fonts/variable/Wavefont[ROND,wght].min.otf && tx -cff2 +S +b -o ./table.CFF2 -f ./fonts/variable/Wavefont[ROND,wght].otf && sfntedit -a CFF2=./table.CFF2 ./fonts/variable/Wavefont[ROND,wght].min.otf"
   },
   "repository": {

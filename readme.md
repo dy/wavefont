@@ -63,6 +63,7 @@ Tag | Range | Meaning
 * Shifting down can be done via combining accent grave <kbd>&nbsp;&#x0300;</kbd> (U+0300) for 1-step down, eg. `\u0101\u0300\u0300\u0300` shifts bar 3 values down.
 * Space, tab and other non-marking chas map to _0_ value.
 * `-–._*` map to _1_ value, `|` maps to max value, `▁▂▃▄▅▆▇█` map to corresponding bars.
+* Caret span is -10..110, so line-height = 1.2 is minimum value for non-overlapping selection.
 
 ## JS package
 

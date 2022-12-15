@@ -21,6 +21,7 @@ build.stamp: template.stamp venv
 	. venv/bin/activate
 	npm run normalize-ufo
 	gftools builder sources/config.yaml
+	npm run build-woff2
 	touch build.stamp
 
 venv: venv/touchfile

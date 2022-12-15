@@ -23,13 +23,15 @@ const FONTFACE = {
     name: 'Wavefont',
     min: 0,
     max: 100,
+    ascender: 110,
+    descender: 10,
     alias: {
       0: [...ZERO_CHAR, ...BLANK],
       1: [...ONE_CHAR, BAR_CHAR[0]],
       14: [BAR_CHAR[1]], 28: [BAR_CHAR[2]], 42: [BAR_CHAR[3]], 56: [BAR_CHAR[4]], 72: [BAR_CHAR[5]], 86: [BAR_CHAR[6]],
       100: [...MAX_CHAR, BAR_CHAR[7]]
     },
-    values: Array.from({length: 108}).map((v,i)=>(LOW_SHIFT + i))
+    values: Array.from({length: 108}).map((v,i)=>(LOW_SHIFT + i)),
   }
 }
 FONTFACE.wavefont100.values.center = Array.from({length: 108}).map((v,i)=>(CENTER_SHIFT + i))
@@ -76,7 +78,7 @@ module.exports = function (plop) {
 		actions: ({faceName}) => {
       const face = FONTFACE[faceName], axes = AXES, masters = MASTERS
 
-      // convert value to units-per-em (0-100 → 0-1000)
+      // convert value to units-per-em (0-100 → 0-upm)
       const upm = (v) => (UPM * v / face.max)
       // int to hex
       const hex = (v) => v.toString(16).toUpperCase()
