@@ -1,6 +1,6 @@
 {
   "name": "wavefont",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Typeface for visualizing waveform data",
   "main": "index.js",
   "scripts": {
@@ -34,7 +34,10 @@
     "spectrum",
     "fft"
   ],
-  "files": ["fonts", "index.js"],
+  "files": [
+    "fonts",
+    "index.js"
+  ],
   "author": "Dmitry Iv <dfcreative@gmail.com>",
   "license": "MIT",
   "bugs": {
