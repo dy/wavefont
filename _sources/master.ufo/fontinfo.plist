@@ -13,9 +13,9 @@
   <key>postscriptWeightName</key>
   <string>Regular</string>
   <key>versionMajor</key>
-  <integer>3</integer>
+  <integer>{{ face.version.major }}</integer>
   <key>versionMinor</key>
-  <integer>0</integer>
+  <integer>{{ face.version.minor }}</integer>
   <key>copyright</key>
   <string>Copyright 2022 The Wavefont Project Authors (https://github.com/dy/wavefont)</string>
   <key>unitsPerEm</key>

@@ -1,4 +1,5 @@
 const dedent = require('dedent')
+const package = require('./package.json')
 
 // unicode range starts for low-align and center-align
 const LOW_SHIFT = 0x100
@@ -20,6 +21,7 @@ const BAR_CHAR = `▁▂▃▄▅▆▇█`.split('').map(v=>v.charCodeAt(0))
 
 const FONTFACE = {
   wavefont100: {
+    version: (([major, minor]) => ({major, minor}))(package.version.split('.')),
     name: 'Wavefont',
     min: 0,
     max: 100,
