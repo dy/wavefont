@@ -9,7 +9,7 @@ A typeface for rendering data: waveforms, spectrums, diagrams, bars etc.
 
 ## Usage
 
-Place [_wavefont.woff2_](./wavefont.woff2) into your project directory and use this code:
+Place [_wavefont.woff2_](./fonts/variable/Wavefont[ROND,wght].woff2) into your project directory and use this code:
 
 ```html
 <style>
