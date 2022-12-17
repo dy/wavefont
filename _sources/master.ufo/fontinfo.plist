@@ -40,7 +40,7 @@
   <key>openTypeNameLicenseURL</key>
   <string>https://scripts.sil.org/OFL</string>
   <key>openTypeOS2VendorID</key>
-  <string>DY  </string>
+  <string>DY</string>
   <key>openTypeOS2Selection</key>
   <array>
     <integer>7</integer>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="150" font-size="24">
+    <style>
+        @font-face {
+          font-family: 'Wavefont';
+          src: url(./fonts/variable/Wavefont[ROND,wght].woff2) format('woff2');
+        }
+        .wavefont {
+          letter-spacing: 1ch;
+          font-size: 100px;
+          font-variation-settings: 'wght' 50, 'ROND' 100;
+        }
+    </style>
+    <text class="wavefont" font-family="Wavefont" x="10" y="100">
+        ЁЂЃЄЅІЇЈЈЉЋУйЪОРНСБЍЌЌЋЊЉЇІЅЄЃЂЁ
+    </text>
+</svg>
