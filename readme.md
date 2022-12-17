@@ -2,7 +2,7 @@
 
 A typeface for rendering data: waveforms, spectrums, diagrams, bars etc.
 
-<a href="https://dy.github.io/wavefont"><img src="./preview.svg" width="240px"/></a>
+<a href="https://dy.github.io/wavefont"><img src="./preview.png" width="240px"/></a>
 
 [**Demo**](https://dy.github.io/wavefont/out)&nbsp;&nbsp;•&nbsp;&nbsp;[**v-fonts/wavefont**](https://v-fonts.com/fonts/wavefont)
 
