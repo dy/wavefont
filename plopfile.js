@@ -1,9 +1,6 @@
 const dedent = require('dedent')
 const package = require('./package.json')
 
-// unicode range starts for low-align and center-align
-const LOW_SHIFT = 0x100
-
 const UPM = 1000
 
 // Core latin chars are 0
@@ -16,21 +13,19 @@ const MAX_CHAR = [`|`].map(v=>v.charCodeAt(0)) //`|｜ǀ∣│।`
 const BAR_CHAR = `▁▂▃▄▅▆▇█`.split('').map(v=>v.charCodeAt(0))
 
 const FONTFACE = {
-  wavefont100: {
-    version: (([major, minor]) => ({major, minor}))(package.version.split('.')),
-    name: 'Wavefont',
-    min: 0,
-    max: 100,
-    ascender: 110,
-    descender: 10,
-    alias: {
-      0: BLANK,
-      1: [...ONE_CHAR, BAR_CHAR[0]],
-      14: [BAR_CHAR[1]], 28: [BAR_CHAR[2]], 42: [BAR_CHAR[3]], 56: [BAR_CHAR[4]], 72: [BAR_CHAR[5]], 86: [BAR_CHAR[6]],
-      100: [...MAX_CHAR, BAR_CHAR[7]]
-    },
-    values: Array.from({length: 108}).map((v,i)=>(LOW_SHIFT + i)),
-  }
+  version: (([major, minor]) => ({major, minor}))(package.version.split('.')),
+  name: 'Wavefont',
+  min: 0,
+  max: 100,
+  ascender: 110,
+  descender: 10,
+  alias: {
+    0: BLANK,
+    1: [...ONE_CHAR, BAR_CHAR[0]],
+    14: [BAR_CHAR[1]], 28: [BAR_CHAR[2]], 42: [BAR_CHAR[3]], 56: [BAR_CHAR[4]], 72: [BAR_CHAR[5]], 86: [BAR_CHAR[6]],
+    100: [...MAX_CHAR, BAR_CHAR[7]]
+  },
+  values: Array.from({length: 108}).map((v,i)=>(0x100 + i))
 }
 
 // 0-9
@@ -51,7 +46,7 @@ alias(52,'A'), alias(54,'B'), alias(56,'C'), alias(58,'D'), alias(60,'E'), alias
 
 // add alias to wavefont100
 function alias(value, char) {
-  (FONTFACE.wavefont100.alias[value]||=[]).push(char.charCodeAt(0))
+  (FONTFACE.alias[value]||=[]).push(char.charCodeAt(0))
 }
 
 // axes definition, per https://github.com/dy/wavefont/issues/42
@@ -77,12 +72,12 @@ const MASTERS = {
 module.exports = function (plop) {
 	plop.setGenerator('build-ufo', {
     description: 'Build font-face UFOs',
-    prompts: [{name: 'faceName', message: 'font-face name', type: 'text'}],
-		actions: ({faceName}) => {
-      const face = FONTFACE[faceName], axes = AXES, masters = MASTERS
+    prompts: [],
+		actions: ({}) => {
+      const font = FONTFACE, axes = AXES, masters = MASTERS
 
       // convert value to units-per-em (0-100 → 0-upm)
-      const upm = (v) => (UPM * v / face.max)
+      const upm = (v) => (UPM * v / font.max)
       // int to hex
       const hex = (v) => v.toString(16).toUpperCase()
       // int to u0000 form
@@ -119,7 +114,7 @@ module.exports = function (plop) {
       });
 
       // clip values are more horizontal than vertical - need alternative glyph
-      const clips = face.values.filter((c, v) => upm(v) < AXES.weight.max);
+      const clips = font.values.filter((c, v) => upm(v) < AXES.weight.max);
 
       return [
         // populate source skeleton
@@ -129,7 +124,7 @@ module.exports = function (plop) {
           destination: `sources/`,
           base: '_sources',
           templateFiles: '_sources/*',
-          data: { face, masters, axes, clips }
+          data: { font, masters, axes, clips }
         },
         ...Object.keys(masters).map(name => master({name, ...masters[name]})).flat()
       ]
@@ -138,7 +133,7 @@ module.exports = function (plop) {
       function master({name, weight, roundness, align}){
         const radius = roundness / 2
         const width = weight
-        const destination = `sources/${face.name}-${name.replace(" ","")}.ufo`
+        const destination = `sources/${font.name}-${name.replace(" ","")}.ufo`
 
         return [
           // ufo skeleton
@@ -148,7 +143,7 @@ module.exports = function (plop) {
             destination: `${destination}/`,
             base: '_sources/master.ufo',
             templateFiles: '_sources/master.ufo/**/*',
-            data: { width, weight, radius, axes, face, clips }
+            data: { width, weight, radius, axes, font, clips }
           },
           // caps
           {
@@ -158,11 +153,11 @@ module.exports = function (plop) {
             template: cap({height: radius*.01*weight*2, width:0, radius: radius*.01*weight, weight, name: 'cap', align:0 })
           },
           // values
-          ...face.values.map((code, value) => ({
+          ...font.values.map((code, value) => ({
             force: true,
             type: 'add',
             path: `${destination}/glyphs/_${value}.glif`,
-            template: bar({value, code, weight, width, name: `_${value}`, capSize: radius*.01*weight, align, alias: face.alias[value] })
+            template: bar({value, code, weight, width, name: `_${value}`, capSize: radius*.01*weight, align, alias: font.alias[value] })
           })),
           // substitute glyphs lower than max weight to compensate wrong interpolation on weight clipping
           // the logic: big weights would have big radius, but since it's limited to value, we interpolate between wrong 1 weight and max weight
@@ -215,7 +210,7 @@ module.exports = function (plop) {
 
       // bar glyph builder
       function bar({value, code, width, weight, capSize, name, align, alias}) {
-        const yshift = upm((face.max - value) * align), l = 0, r = weight
+        const yshift = upm((font.max - value) * align), l = 0, r = weight
         return dedent`
           <?xml version="1.0" encoding="UTF-8"?>
           <glyph name="${name}" format="2">

@@ -9,7 +9,7 @@
     <key>down10</key><string>down10.glif</string>
     <key>cap</key><string>cap.glif</string>
 
-    {{#each face.values as |code value|}}
+    {{#each font.values as |code value|}}
     <key>_{{ value }}</key><string>_{{ value }}.glif</string>
     {{/each}}
 

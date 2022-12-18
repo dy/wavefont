@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npm-run-all build-ufo normalize-ufo && npm-run-all --parallel build-otf build-ttf && npm run build-woff2",
-    "build-ufo": "plop build-ufo wavefont100",
+    "build-ufo": "plop build-ufo",
     "normalize-ufo": "for file in sources/*.ufo; do ufonormalizer -a --float-precision 3 -m $file; done",
     "hint-ufo": "psautohint --no-hint-sub --no-flex -d -c -a sources/*.ufo",
     "build-otf": "npm-run-all build-masterotfs build-vf add-blanks-otf",

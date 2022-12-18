@@ -6,8 +6,8 @@ down down uni0300
 down10 down10 uni030C
 cap cap
 
-{{#each face.values as |code value|}}
-_{{ value }} _{{ value }} {{uni code}}{{#if (lookup ../face.alias value)}}{{#each (lookup ../face.alias value) as |aliasCode|}},{{uni aliasCode}}{{/each}}{{/if}}
+{{#each font.values as |code value|}}
+_{{ value }} _{{ value }} {{uni code}}{{#if (lookup ../font.alias value)}}{{#each (lookup ../font.alias value) as |aliasCode|}},{{uni aliasCode}}{{/each}}{{/if}}
 {{/each}}
 
 {{#each clips as |code value|}}

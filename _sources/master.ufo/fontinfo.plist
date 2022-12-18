@@ -13,17 +13,17 @@
   <key>postscriptWeightName</key>
   <string>Regular</string>
   <key>versionMajor</key>
-  <integer>{{ face.version.major }}</integer>
+  <integer>{{ font.version.major }}</integer>
   <key>versionMinor</key>
-  <integer>{{ face.version.minor }}</integer>
+  <integer>{{ font.version.minor }}</integer>
   <key>copyright</key>
   <string>Copyright 2022 The Wavefont Project Authors (https://github.com/dy/wavefont)</string>
   <key>unitsPerEm</key>
-  <integer>{{upm face.max }}</integer>
+  <integer>{{upm font.max }}</integer>
   <key>ascender</key>
-  <integer>{{upm face.ascender }}</integer>
+  <integer>{{upm font.ascender }}</integer>
   <key>descender</key>
-  <integer>-{{upm face.descender }}</integer>
+  <integer>-{{upm font.descender }}</integer>
   <key>xHeight</key>
   <integer>0</integer>
   <key>capHeight</key>
@@ -52,25 +52,25 @@
   </array>
 
   <key>openTypeHheaAscender</key>
-  <integer>{{upm face.ascender }}</integer>
+  <integer>{{upm font.ascender }}</integer>
   <key>openTypeHheaDescender</key>
-  <integer>-{{upm face.descender }}</integer>
+  <integer>-{{upm font.descender }}</integer>
   <key>openTypeHheaCaretOffset</key>
   <integer>0</integer>
   <key>openTypeHheaLineGap</key>
   <integer>0</integer>
 
   <key>openTypeOS2TypoAscender</key>
-  <integer>{{upm face.ascender }}</integer>
+  <integer>{{upm font.ascender }}</integer>
   <key>openTypeOS2TypoDescender</key>
-  <integer>-{{upm face.descender }}</integer>
+  <integer>-{{upm font.descender }}</integer>
   <key>openTypeOS2TypoLineGap</key>
   <integer>0</integer>
 
   <key>openTypeOS2TypoLineGap</key>
   <integer>0</integer>
   <key>openTypeOS2WinAscent</key>
-  <integer>{{upm face.ascender }}</integer>
+  <integer>{{upm font.ascender }}</integer>
   <key>openTypeOS2WinDescent</key>
 	<integer>0</integer>
 

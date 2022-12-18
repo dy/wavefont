@@ -10,10 +10,10 @@
     <string>down</string>
     <string>down10</string>
     <string>cap</string>
-    {{#each face.values as |code value|}}
+    {{#each font.values as |code value|}}
     <string>_{{ value }}</string>
     {{/each}}
-    {{#each face.values as |code value|}}
+    {{#each font.values as |code value|}}
     <string>_{{ value }}.clip</string>
     {{/each}}
 	</array>
