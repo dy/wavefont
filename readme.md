@@ -73,7 +73,7 @@ To facilitate calculation, wavefont exposes a function that calculates string fr
 import wf from 'wavefont'
 
 // get characters for values from 0..100 range
-wf(0, 1, 50, 99, 100, ...)
+wf(0, 1, 50, 99, 100, ...) // ĀāĲţŤ...
 ```
 
 ## Building
