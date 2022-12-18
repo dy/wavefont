@@ -12,11 +12,3 @@ _{{ value }} _{{ value }} {{uni code}}{{#if (lookup ../face.alias value)}}{{#eac
 {{#each clips as |code value|}}
 {{#if value}}_{{ value }}.clip _{{ value }}.clip{{/if}}
 {{/each}}
-
-{{#each face.values.center as |code value|}}
-_{{ value }}.center _{{ value }}.center {{uni code}}
-{{/each}}
-
-{{#each clips as |code value|}}
-{{#if value}}_{{ value }}.clip.center _{{ value }}.clip.center{{/if}}
-{{/each}}

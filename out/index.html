@@ -8,9 +8,7 @@
     font-style: normal;
     font-display: block;
     font-weight: 900;
-    src: url(../fonts/variable/Wavefont[ROND\,wght].woff2);
-    /* src: url(../fonts/variable/Wavefont[ROND\,wght].ttf); */
-    /* src: url(../fonts/variable/Wavefont[ROND\,wght].otf); */
+    src: url(../fonts/variable/Wavefont[ALGN\,ROND\,wght].woff2);
   }
   @font-face {
     font-family: blank;
@@ -91,7 +89,7 @@
       cursor: w-resize;
     }
     .panel-content {
-      padding: 2rem 1.5rem 2rem;
+      padding: 1.5rem 1.5rem 1.5rem;
       height: 100%;
       background: linear-gradient(to bottom right, rgba(232,232,233,.35) 20%, rgba(255,255,255,.7) 180%), rgba(245,245,245,1);
       display: flex;
@@ -149,7 +147,7 @@
   </style>
   <div class="panel-content" onclick="event.target === this && togglePanel()" >
     <h1>
-    Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wavefont">3.0</a></small></sup>
+    Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wavefont">3.2</a></small></sup>
     </h1>
     <div class="panel-field">
       <label for="weight"><small>Weight</small></label> <input id="weight" type="range" min="1" value="40" step="1" max="400"/>
@@ -164,6 +162,10 @@
       <output id="roundnessValue"></output>
     </div>
     <div class="panel-field">
+      <label for="align"><small>Align</small></label> <input id="align" type="range" min="0" value="0.5" max="1" step="0.1"/>
+      <output id="alignValue"></output>
+    </div>
+    <div class="panel-field">
       <label for="size"><small>Size</small></label> <input id="size" type="range" min="5" value="108" max="200" step="1"/>
       <output id="sizeValue"></output>
     </div>
@@ -174,14 +176,20 @@
 <main id="waveareas">
   <style>
     #waveareas {
-      display: grid; grid-template-columns: 1fr; margin-bottom: 20rem; gap:2rem; margin: 2rem;
+      display: grid; grid-template-columns: 1fr; margin-bottom: 20rem; gap: 3rem;
+      margin: 4rem auto;
+      max-width: 1080px;
     }
-    @media screen and (min-width: 1280px) {
+    @media screen and (min-width: 2160px) {
       #waveareas {
         grid-template-columns: 1fr 1fr;
+        max-width: 2160px;
+      padding-left: 4rem;
+      padding-right: 4rem;
       }
     }
     .wavearea {
+      text-align: center;
       font-family: wavefont;
       line-height: 1;
       -webkit-font-smoothing: antialiased;
@@ -193,7 +201,7 @@
       /* letter-spacing: var(--track); */
       font-size: var(--size);
       letter-spacing: var(--spacing);
-      font-variation-settings: 'wght' var(--wght, 40), 'ROND' var(--rond, 0);
+      font-variation-settings: 'wght' var(--wght, 40), 'ROND' var(--rond, 0), 'ALGN' var(--align, 0.5);
       background-size: 100vw calc(var(--size, 100px) / 10);
       background-image: linear-gradient(to bottom, rgb(230, 245, 255) 1px, transparent 1px);
       background-attachment: local;
@@ -210,7 +218,7 @@
     .wavearea::before {
       position: absolute;
       content: attr(title);
-      top: 0;
+      top: -2em;
       left: 0;
       letter-spacing: .25ch;
       font-family: sans-serif;
@@ -241,37 +249,36 @@
 
   <div id="rect" title="Rect" class="wavearea" contenteditable></div>
   <script>
-  rect.textContent += Array.from({length: 108}, (_,i) => (String.fromCharCode(0x100 + ((i/33) % 1 > .5 ? 100 : 1)))).join('') + '\t\t'
+  rect.textContent += Array.from({length: 108}, (_,i) => (String.fromCharCode(0x100 + ((i/33) % 1 > .5 ? 100 : 1)))).join('')
   </script>
 
   <div id="noise" title="Noise" class="wavearea" contenteditable></div>
   <script>
-  noise.textContent += Array.from({length: 108}, (_,i) => (String.fromCharCode(0x100 + Math.floor(Math.random() * 100)))).join('') + '\t\t'
+  noise.textContent += Array.from({length: 108}, (_,i) => (String.fromCharCode(0x100 + Math.floor(Math.random() * 100)))).join('')
   </script>
 
   <div id="speech" title="Sample" class="wavearea" contenteditable></div>
   <script>
   // speech
-  let values = `ĈĉċĊĉċčīıēģĹĶĲĺķĺĺĳĽĳĶĵĦČģĹĪĞĠĝġđČĐĤĨĳħģĚģĢıĞĢİķīİĳķĴĲĪĬģęĬķĦĒěěėďĒĚĪĢēČċěĩĘđēĞĝĚČčĖħĨĝġ`.split('').map(c => c.charCodeAt(0)+0x300)
+  let values = `āĂăĄąĆćĈċĊĉċčīıēģĹĶĲĺķĺĺĳĽĳĶĵĦČģĹĪĞĠĝġđČĐĤĨĳħģĚģĢıĞĢİķīİĳķĴĲĪĬģęĬķĦĒěěėďĒĚĪĢēČċěĩĘđēĞĝĚČčĖħĨĝġĈĉċĊĉċčąĄăĂāāā`.split('').map(c => c.charCodeAt(0))
   speech.textContent += String.fromCharCode(...values)
   </script>
 
   <div id="alphabete" title="a-zA-Z" class="wavearea" spellcheck="false" contenteditable>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</div>
-
-
-  <div id="shift" title="Shift" class="wavearea" contenteditable>11́1́́1́́́1́́́́1́́́́́1́́́́́́1́́́́́́́1́́́́́́́́1́́́́́́́́́1́́́́́́́́́́1́́́́́́́́́́́1́́́́́́́́́́́́1́́́́́́́́́́́́́1́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́́́ 33́3́́3̂3̂́3̂́́3̂̂3̂̂́3̂̂́́3̂̂̂3̂̂̂́3̂̂̂́́3̂̂̂̂3̂̂̂̂́3̂̂̂̂́́3̂̂̂̂̂3̂̂̂̂̂́3̂̂̂̂̂́́3̂̂̂̂̂̂3̂̂̂̂̂̂́3̂̂̂̂̂̂́́3̂̂̂̂̂̂̂3̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂̂́́ 11̀1̀̀1̀̀̀1̀̀̀̀</div>
-
-  <div id="aliases" title="0-9 _-–.| bars" class="wavearea" contenteditable>0123456789bars</div>
 
   <div id="range100" title="Latin Ext (+clipping)" class="wavearea" contenteditable></div>
   <script>
   range100.textContent += Array(120).fill(0).map((v,i)=> String.fromCharCode(0x100+i-10)).join('')
   </script>
 
-  <div id="rangecyr100" title="Cyrillic (centered + clipping)" class="wavearea" contenteditable></div>
+
+
+  <div id="shift" title="Shift, 0-9 _-–.| bars" class="wavearea" contenteditable>11́1́́1́́́1́́́́1́́́́́1́́́́́́1́́́́́́́1́́́́́́́́1́́́́́́́́́1́́́́́́́́́́1́́́́́́́́́́́1́́́́́́́́́́́́1́́́́́́́́́́́́́1́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́́1́́́́́́́́́́́́́́́́́́́́́́́́́́́́́́ 33́3́́3̂3̂́3̂́́3̂̂3̂̂́3̂̂́́3̂̂̂3̂̂̂́3̂̂̂́́3̂̂̂̂3̂̂̂̂́3̂̂̂̂́́3̂̂̂̂̂3̂̂̂̂̂́3̂̂̂̂̂́́3̂̂̂̂̂̂3̂̂̂̂̂̂́3̂̂̂̂̂̂́́3̂̂̂̂̂̂̂3̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂̂́́ 11̀1̀̀1̀̀̀1̀̀̀̀ 0123456789 ▁▂▃▄▅▆▇█</div>
+
+  <!-- <div id="rangecyr100" title="Cyrillic (centered + clipping)" class="wavearea" contenteditable></div>
   <script>
   rangecyr100.textContent += Array(120).fill(0).map((v,i)=> String.fromCharCode(0x400+i-10)).join('') + '---'
-  </script>
+  </script> -->
 
 </main>
 
@@ -305,6 +312,12 @@
     roundness.title = value;
     roundnessValue.textContent = value + '%';
     waveareas.style.setProperty('--rond', value)
+  })();
+  (align.oninput = e => {
+    let value = +align.value;
+    align.title = value;
+    alignValue.textContent = value;
+    waveareas.style.setProperty('--align', value)
   })();
 </script>
 

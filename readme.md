@@ -9,7 +9,7 @@ A typeface for rendering data: waveforms, spectrums, diagrams, bars etc.
 
 ## Usage
 
-Place [_wavefont.woff2_](./fonts/variable/Wavefont[ROND,wght].woff2) into your project directory and use this code:
+Place [_wavefont.woff2_](./fonts/variable/Wavefont[ALGN,ROND,wght].woff2) into your project directory and use this code:
 
 ```html
 <style>
@@ -21,7 +21,7 @@ Place [_wavefont.woff2_](./fonts/variable/Wavefont[ROND,wght].woff2) into your p
 .wavefont {
 	--wght: 10;
 	font-family: wavefont;
-	font-variation-settings: 'wght' var(--wght), 'ROND' 30;
+	font-variation-settings: 'wght' var(--wght), 'ROND' 30, 'ALGN' 0;
 }
 </style>
 
@@ -51,6 +51,7 @@ Tag | Range | Meaning
 ---|---|---
 `wght` | _1_-_400_ | Bar width, or boldness (in upm).
 `ROND` | _0_-_100_ | Border radius, or roundness (percent).
+`ALGN` | _0_-_1_ | Alignment: bottom, center or top.
 
 `letter-spacing` CSS property with `ch` units is useful to adjust distance between bars, 1ch === 1 bar width.
 

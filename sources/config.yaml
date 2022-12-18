@@ -4,11 +4,18 @@ sources:
   - Wavefont.designspace
 familyName: Wavefont
 axisOrder:
+  - ALGN
   - ROND
   - wght
 stat:
   - name: Round
     tag: ROND
+    values:
+    - name: Default
+      value: 0
+      flags: 2
+  - name: Align
+    tag: ALGN
     values:
     - name: Default
       value: 0

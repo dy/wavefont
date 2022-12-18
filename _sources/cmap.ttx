@@ -14,10 +14,6 @@ Ref: https://github.com/adobe-type-tools/afdko/issues/1573
       <map code="0x{{hex code}}" name="_{{ value }}"/>{{#if (lookup ../face.alias value)}}{{#each (lookup ../face.alias value) as |aliasCode|}}<map code="0x{{hex aliasCode }}" name="_{{value}}"/>{{/each}}{{/if}}
       {{/each}}
 
-      {{#each face.values.center as |code value|}}
-      <map code="0x{{hex code}}" name="_{{ value }}.center"/>
-      {{/each}}
-
       <map code="0x300" name="down"/>
       <map code="0x301" name="up"/>
       <map code="0x302" name="up10"/>

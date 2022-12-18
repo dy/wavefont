@@ -9,7 +9,6 @@
         <rule name="_{{ value }}.clip">
             <conditionset><condition minimum="{{upm value }}" maximum="{{ ../axes.weight.max }}" name="Weight" /></conditionset>
             <sub name="_{{ value }}" with="_{{ value }}.clip"/>
-            <sub name="_{{ value }}.center" with="_{{ value }}.clip.center"/>
         </rule>{{/if}}{{/each}}
     </rules>
     <sources>
@@ -27,25 +26,29 @@
         <instance filename="instance_ufo/Wavefont-Thin.ufo" name="Wavefont Thin" familyname="Wavefont" stylename="Thin">
             <location>
                 <dimension name="Weight" xvalue="100" />
-                <dimension name="Roundness" xvalue="0" />
+                <dimension name="Roundness" xvalue="100" />
+                <dimension name="Align" xvalue="0.5" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-ExtraLight.ufo" name="Wavefont ExtraLight" familyname="Wavefont" stylename="ExtraLight">
             <location>
                 <dimension name="Weight" xvalue="200" />
-                <dimension name="Roundness" xvalue="0" />
+                <dimension name="Roundness" xvalue="100" />
+                <dimension name="Align" xvalue="0.5" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-Light.ufo" name="Wavefont Light" familyname="Wavefont" stylename="Light">
             <location>
                 <dimension name="Weight" xvalue="300" />
-                <dimension name="Roundness" xvalue="0" />
+                <dimension name="Roundness" xvalue="100" />
+                <dimension name="Align" xvalue="0.5" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-Regular.ufo" name="Wavefont Regular" familyname="Wavefont" stylename="Regular">
             <location>
                 <dimension name="Weight" xvalue="400" />
-                <dimension name="Roundness" xvalue="0" />
+                <dimension name="Roundness" xvalue="100" />
+                <dimension name="Align" xvalue="0.5" />
             </location>
         </instance>
     </instances>
