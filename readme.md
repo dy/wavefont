@@ -21,7 +21,7 @@ Place [_wavefont.woff2_](./fonts/variable/Wavefont[ALGN,ROND,wght].woff2) into y
 .wavefont {
 	--wght: 10;
 	font-family: wavefont;
-	font-variation-settings: 'wght' var(--wght), 'ROND' 30, 'ALGN' 0;
+	font-variation-settings: 'wght' var(--wght), 'ROND' 30, 'ALGN' 0.5;
 }
 </style>
 
@@ -42,8 +42,7 @@ Wavefont bars correspond to values from 0 to 100, assigned to different characte
 
 * <kbd>0-9</kbd> chars are for simplified manual input with step 10.
 * <kbd>a-zA-Z</kbd> for extended manual input with step 2, softened at edges <kbd>a</kbd> and <kbd>Z</kbd>.
-* <kbd>U+0100-016F</kbd> for 0..100 bottom aligned values (convert as `char = String.fromCharCode(0x100 + value)`).
-* <kbd>U+0400-046F</kbd> for 0..100 center aligned values (convert as `char = String.fromCharCode(0x400 + value)`).
+* <kbd>U+0100-016F</kbd> for 0..100 precise values (convert as `char = String.fromCharCode(0x100 + value)`).
 
 ## Variable axes
 
@@ -64,29 +63,22 @@ Tag | Range | Meaning
 * Shifting down can be done via combining accent grave <kbd>&nbsp;&#x0300;</kbd> (U+0300) for 1-step down, eg. `\u0101\u0300\u0300\u0300` shifts bar 3 values down.
 * Space, tab and other non-marking chas map to _0_ value.
 * `-–._*` map to _1_ value, `|` maps to max value, `▁▂▃▄▅▆▇█` map to corresponding bars.
-* Caret span is -10..110, so line-height = 1.2 is minimum value for non-overlapping selection.
+* Caret span is -10..110, so line-height = 1.2 makes non-overlapping selection.
 
 ## JS package
 
-To facilitate calculation, wavefont exposes a JS package with bar calculators for bottom-aligned or center-aligned faces.
+To facilitate calculation, wavefont exposes a JS package that calculates string from values.
 
 ```js
 import * as wavefont from 'wavefont'
 
-// get bottom aligned characters for values from 0..100 range
-wavefont.lower(0, 1, 50, 99, 100, 101, ...)
-
-// get center aligned characters for values from 0..100 range
-wavefont.center(0, 1, 50, 99, 100, 101, ...)
+// get characters for values from 0..100 range
+wavefont(0, 1, 50, 99, 100, ...)
 ```
 
 ## Building
 
-Wavefont can be built in 2 ways: via google fonts tools or afdko.
-
-1. For google fonts generation run `make build`.
-
-2. For afdko generation run `npm run build`.
+`make build`
 
 ## See also
 
