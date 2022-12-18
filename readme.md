@@ -79,6 +79,13 @@ wf(0, 1, 50, 99, 100, ...) // ĀāĲţŤ...
 
 `make build`
 
+## Tests
+
+* [Fontbakery report](./out/fontbakery/fontbakery-report)
+* [Glyphs](./out/proof/glyphs)
+* [Text](./out/proof/text)
+* [Waterfall](./out/proof/waterfall)
+
 ## See also
 
 * [linefont](https://github.com/dy/linefont) − font-face for rendering linear data.

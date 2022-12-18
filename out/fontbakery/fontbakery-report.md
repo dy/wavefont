@@ -2,7 +2,11 @@
 
 Fontbakery version: 0.8.10
 
-<details><summary><b>[6] Wavefont-Light.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
+<details><summary><b>[7] Wavefont-Light.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Checking OS/2 usWinAscent & usWinDescent. (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.google.fonts/check/family/win_ascent_and_descent">com.google.fonts/check/family/win_ascent_and_descent</a>)</summary><div>
+
+
+* 🔥 **FAIL** OS/2.usWinDescent value 100 is too large. It should be less than double the yMin. Current absolute yMin value is 35 [code: descent]
+</div></details><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
 
 
 * 🔥 **FAIL** FreeType is not available; to install it, invoke the 'freetype' extra when installing Font Bakery. [code: freetype-not-installed]
@@ -26,159 +30,81 @@ Fontbakery version: 0.8.10
 
 	- _1.clip
 
-	- _1.clip.center
-
 	- _10.clip
-
-	- _10.clip.center
 
 	- _11.clip
 
-	- _11.clip.center
-
 	- _12.clip
-
-	- _12.clip.center
 
 	- _13.clip
 
-	- _13.clip.center
-
 	- _14.clip
-
-	- _14.clip.center
 
 	- _15.clip
 
-	- _15.clip.center
-
 	- _16.clip
-
-	- _16.clip.center
 
 	- _17.clip
 
-	- _17.clip.center
-
 	- _18.clip
-
-	- _18.clip.center
 
 	- _19.clip
 
-	- _19.clip.center
-
 	- _2.clip
-
-	- _2.clip.center
 
 	- _20.clip
 
-	- _20.clip.center
-
 	- _21.clip
-
-	- _21.clip.center
 
 	- _22.clip
 
-	- _22.clip.center
-
 	- _23.clip
-
-	- _23.clip.center
 
 	- _24.clip
 
-	- _24.clip.center
-
 	- _25.clip
-
-	- _25.clip.center
 
 	- _26.clip
 
-	- _26.clip.center
-
 	- _27.clip
-
-	- _27.clip.center
 
 	- _28.clip
 
-	- _28.clip.center
-
 	- _29.clip
-
-	- _29.clip.center
 
 	- _3.clip
 
-	- _3.clip.center
-
 	- _30.clip
-
-	- _30.clip.center
 
 	- _31.clip
 
-	- _31.clip.center
-
 	- _32.clip
-
-	- _32.clip.center
 
 	- _33.clip
 
-	- _33.clip.center
-
 	- _34.clip
-
-	- _34.clip.center
 
 	- _35.clip
 
-	- _35.clip.center
-
 	- _36.clip
-
-	- _36.clip.center
 
 	- _37.clip
 
-	- _37.clip.center
-
 	- _38.clip
-
-	- _38.clip.center
 
 	- _39.clip
 
-	- _39.clip.center
-
 	- _4.clip
-
-	- _4.clip.center
 
 	- _5.clip
 
-	- _5.clip.center
-
 	- _6.clip
-
-	- _6.clip.center
 
 	- _7.clip
 
-	- _7.clip.center
-
 	- _8.clip
 
-	- _8.clip.center
-
-	- _9.clip
-
-	- _9.clip.center 
+	- _9.clip 
 
 	- And cap
  [code: unreachable-glyphs]
@@ -361,103 +287,15 @@ The following glyphs do not have the recommended number of contours:
 
 	- Glyph name: up	Contours detected: 0	Expected: 1
 
-	- Glyph name: up10	Contours detected: 0	Expected: 1
+	- Glyph name: up10	Contours detected: 0	Expected: 1 
 
-	- Glyph name: _0.center	Contours detected: 0	Expected: 2
-
-	- Glyph name: _3.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _7.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _9.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _10.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _12.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _13.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _14.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _16.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _17.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _18.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _20.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _25.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _30.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _36.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _42.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _43.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _44.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _46.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _47.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _48.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _49.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _50.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _52.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _53.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _57.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _62.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _64.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _68.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _74.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _75.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _76.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _78.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _79.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _80.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _81.center	Contours detected: 1	Expected: 4
-
-	- Glyph name: _83.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _86.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _87.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _88.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _89.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _90.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _92.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _93.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _94.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _98.center	Contours detected: 1	Expected: 2 
-
-	- And Glyph name: _99.center	Contours detected: 1	Expected: 2
+	- And Glyph name: down10	Contours detected: 0	Expected: 1
  [code: contour-count]
-</div></details><br></div></details><details><summary><b>[6] Wavefont-Thin.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
+</div></details><br></div></details><details><summary><b>[8] Wavefont-Thin.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Checking OS/2 usWinAscent & usWinDescent. (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.google.fonts/check/family/win_ascent_and_descent">com.google.fonts/check/family/win_ascent_and_descent</a>)</summary><div>
+
+
+* 🔥 **FAIL** OS/2.usWinDescent value 100 is too large. It should be less than double the yMin. Current absolute yMin value is 35 [code: descent]
+</div></details><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
 
 
 * 🔥 **FAIL** FreeType is not available; to install it, invoke the 'freetype' extra when installing Font Bakery. [code: freetype-not-installed]
@@ -481,159 +319,81 @@ The following glyphs do not have the recommended number of contours:
 
 	- _1.clip
 
-	- _1.clip.center
-
 	- _10.clip
-
-	- _10.clip.center
 
 	- _11.clip
 
-	- _11.clip.center
-
 	- _12.clip
-
-	- _12.clip.center
 
 	- _13.clip
 
-	- _13.clip.center
-
 	- _14.clip
-
-	- _14.clip.center
 
 	- _15.clip
 
-	- _15.clip.center
-
 	- _16.clip
-
-	- _16.clip.center
 
 	- _17.clip
 
-	- _17.clip.center
-
 	- _18.clip
-
-	- _18.clip.center
 
 	- _19.clip
 
-	- _19.clip.center
-
 	- _2.clip
-
-	- _2.clip.center
 
 	- _20.clip
 
-	- _20.clip.center
-
 	- _21.clip
-
-	- _21.clip.center
 
 	- _22.clip
 
-	- _22.clip.center
-
 	- _23.clip
-
-	- _23.clip.center
 
 	- _24.clip
 
-	- _24.clip.center
-
 	- _25.clip
-
-	- _25.clip.center
 
 	- _26.clip
 
-	- _26.clip.center
-
 	- _27.clip
-
-	- _27.clip.center
 
 	- _28.clip
 
-	- _28.clip.center
-
 	- _29.clip
-
-	- _29.clip.center
 
 	- _3.clip
 
-	- _3.clip.center
-
 	- _30.clip
-
-	- _30.clip.center
 
 	- _31.clip
 
-	- _31.clip.center
-
 	- _32.clip
-
-	- _32.clip.center
 
 	- _33.clip
 
-	- _33.clip.center
-
 	- _34.clip
-
-	- _34.clip.center
 
 	- _35.clip
 
-	- _35.clip.center
-
 	- _36.clip
-
-	- _36.clip.center
 
 	- _37.clip
 
-	- _37.clip.center
-
 	- _38.clip
-
-	- _38.clip.center
 
 	- _39.clip
 
-	- _39.clip.center
-
 	- _4.clip
-
-	- _4.clip.center
 
 	- _5.clip
 
-	- _5.clip.center
-
 	- _6.clip
-
-	- _6.clip.center
 
 	- _7.clip
 
-	- _7.clip.center
-
 	- _8.clip
 
-	- _8.clip.center
-
-	- _9.clip
-
-	- _9.clip.center 
+	- _9.clip 
 
 	- And cap
  [code: unreachable-glyphs]
@@ -816,103 +576,27 @@ The following glyphs do not have the recommended number of contours:
 
 	- Glyph name: up	Contours detected: 0	Expected: 1
 
-	- Glyph name: up10	Contours detected: 0	Expected: 1
+	- Glyph name: up10	Contours detected: 0	Expected: 1 
 
-	- Glyph name: _0.center	Contours detected: 0	Expected: 2
-
-	- Glyph name: _3.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _7.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _9.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _10.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _12.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _13.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _14.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _16.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _17.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _18.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _20.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _25.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _30.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _36.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _42.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _43.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _44.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _46.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _47.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _48.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _49.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _50.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _52.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _53.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _57.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _62.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _64.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _68.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _74.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _75.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _76.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _78.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _79.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _80.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _81.center	Contours detected: 1	Expected: 4
-
-	- Glyph name: _83.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _86.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _87.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _88.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _89.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _90.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _92.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _93.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _94.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _98.center	Contours detected: 1	Expected: 2 
-
-	- And Glyph name: _99.center	Contours detected: 1	Expected: 2
+	- And Glyph name: down10	Contours detected: 0	Expected: 1
  [code: contour-count]
-</div></details><br></div></details><details><summary><b>[6] Wavefont-Regular.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
+</div></details><details><summary>⚠ <b>WARN:</b> Are there any misaligned on-curve points? (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/<Section: Outline Correctness Checks>.html#com.google.fonts/check/outline_alignment_miss">com.google.fonts/check/outline_alignment_miss</a>)</summary><div>
+
+
+* ⚠ **WARN** The following glyphs have on-curve points which have potentially incorrect y coordinates:
+
+	* _103 (U+0167): X=85.5,Y=-0.5 (should be at baseline 0?)
+
+	* _103 (U+0167): X=85.5,Y=-0.5 (should be at cap-height 0?)
+
+	* _103 (U+0167): X=14.5,Y=-0.5 (should be at baseline 0?) 
+
+	* And _103 (U+0167): X=14.5,Y=-0.5 (should be at cap-height 0?) [code: found-misalignments]
+</div></details><br></div></details><details><summary><b>[8] Wavefont-Regular.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Checking OS/2 usWinAscent & usWinDescent. (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.google.fonts/check/family/win_ascent_and_descent">com.google.fonts/check/family/win_ascent_and_descent</a>)</summary><div>
+
+
+* 🔥 **FAIL** OS/2.usWinDescent value 100 is too large. It should be less than double the yMin. Current absolute yMin value is 35 [code: descent]
+</div></details><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
 
 
 * 🔥 **FAIL** FreeType is not available; to install it, invoke the 'freetype' extra when installing Font Bakery. [code: freetype-not-installed]
@@ -936,159 +620,81 @@ The following glyphs do not have the recommended number of contours:
 
 	- _1.clip
 
-	- _1.clip.center
-
 	- _10.clip
-
-	- _10.clip.center
 
 	- _11.clip
 
-	- _11.clip.center
-
 	- _12.clip
-
-	- _12.clip.center
 
 	- _13.clip
 
-	- _13.clip.center
-
 	- _14.clip
-
-	- _14.clip.center
 
 	- _15.clip
 
-	- _15.clip.center
-
 	- _16.clip
-
-	- _16.clip.center
 
 	- _17.clip
 
-	- _17.clip.center
-
 	- _18.clip
-
-	- _18.clip.center
 
 	- _19.clip
 
-	- _19.clip.center
-
 	- _2.clip
-
-	- _2.clip.center
 
 	- _20.clip
 
-	- _20.clip.center
-
 	- _21.clip
-
-	- _21.clip.center
 
 	- _22.clip
 
-	- _22.clip.center
-
 	- _23.clip
-
-	- _23.clip.center
 
 	- _24.clip
 
-	- _24.clip.center
-
 	- _25.clip
-
-	- _25.clip.center
 
 	- _26.clip
 
-	- _26.clip.center
-
 	- _27.clip
-
-	- _27.clip.center
 
 	- _28.clip
 
-	- _28.clip.center
-
 	- _29.clip
-
-	- _29.clip.center
 
 	- _3.clip
 
-	- _3.clip.center
-
 	- _30.clip
-
-	- _30.clip.center
 
 	- _31.clip
 
-	- _31.clip.center
-
 	- _32.clip
-
-	- _32.clip.center
 
 	- _33.clip
 
-	- _33.clip.center
-
 	- _34.clip
-
-	- _34.clip.center
 
 	- _35.clip
 
-	- _35.clip.center
-
 	- _36.clip
-
-	- _36.clip.center
 
 	- _37.clip
 
-	- _37.clip.center
-
 	- _38.clip
-
-	- _38.clip.center
 
 	- _39.clip
 
-	- _39.clip.center
-
 	- _4.clip
-
-	- _4.clip.center
 
 	- _5.clip
 
-	- _5.clip.center
-
 	- _6.clip
-
-	- _6.clip.center
 
 	- _7.clip
 
-	- _7.clip.center
-
 	- _8.clip
 
-	- _8.clip.center
-
-	- _9.clip
-
-	- _9.clip.center 
+	- _9.clip 
 
 	- And cap
  [code: unreachable-glyphs]
@@ -1271,103 +877,27 @@ The following glyphs do not have the recommended number of contours:
 
 	- Glyph name: up	Contours detected: 0	Expected: 1
 
-	- Glyph name: up10	Contours detected: 0	Expected: 1
+	- Glyph name: up10	Contours detected: 0	Expected: 1 
 
-	- Glyph name: _0.center	Contours detected: 0	Expected: 2
-
-	- Glyph name: _3.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _7.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _9.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _10.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _12.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _13.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _14.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _16.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _17.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _18.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _20.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _25.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _30.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _36.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _42.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _43.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _44.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _46.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _47.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _48.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _49.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _50.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _52.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _53.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _57.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _62.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _64.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _68.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _74.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _75.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _76.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _78.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _79.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _80.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _81.center	Contours detected: 1	Expected: 4
-
-	- Glyph name: _83.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _86.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _87.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _88.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _89.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _90.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _92.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _93.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _94.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _98.center	Contours detected: 1	Expected: 2 
-
-	- And Glyph name: _99.center	Contours detected: 1	Expected: 2
+	- And Glyph name: down10	Contours detected: 0	Expected: 1
  [code: contour-count]
-</div></details><br></div></details><details><summary><b>[6] Wavefont-ExtraLight.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
+</div></details><details><summary>⚠ <b>WARN:</b> Are there any misaligned on-curve points? (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/<Section: Outline Correctness Checks>.html#com.google.fonts/check/outline_alignment_miss">com.google.fonts/check/outline_alignment_miss</a>)</summary><div>
+
+
+* ⚠ **WARN** The following glyphs have on-curve points which have potentially incorrect y coordinates:
+
+	* _105 (U+0169): X=99.5,Y=2.0 (should be at baseline 0?)
+
+	* _105 (U+0169): X=99.5,Y=2.0 (should be at cap-height 0?)
+
+	* _105 (U+0169): X=300.5,Y=2.0 (should be at baseline 0?) 
+
+	* And _105 (U+0169): X=300.5,Y=2.0 (should be at cap-height 0?) [code: found-misalignments]
+</div></details><br></div></details><details><summary><b>[8] Wavefont-ExtraLight.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Checking OS/2 usWinAscent & usWinDescent. (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.google.fonts/check/family/win_ascent_and_descent">com.google.fonts/check/family/win_ascent_and_descent</a>)</summary><div>
+
+
+* 🔥 **FAIL** OS/2.usWinDescent value 100 is too large. It should be less than double the yMin. Current absolute yMin value is 35 [code: descent]
+</div></details><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
 
 
 * 🔥 **FAIL** FreeType is not available; to install it, invoke the 'freetype' extra when installing Font Bakery. [code: freetype-not-installed]
@@ -1391,159 +921,81 @@ The following glyphs do not have the recommended number of contours:
 
 	- _1.clip
 
-	- _1.clip.center
-
 	- _10.clip
-
-	- _10.clip.center
 
 	- _11.clip
 
-	- _11.clip.center
-
 	- _12.clip
-
-	- _12.clip.center
 
 	- _13.clip
 
-	- _13.clip.center
-
 	- _14.clip
-
-	- _14.clip.center
 
 	- _15.clip
 
-	- _15.clip.center
-
 	- _16.clip
-
-	- _16.clip.center
 
 	- _17.clip
 
-	- _17.clip.center
-
 	- _18.clip
-
-	- _18.clip.center
 
 	- _19.clip
 
-	- _19.clip.center
-
 	- _2.clip
-
-	- _2.clip.center
 
 	- _20.clip
 
-	- _20.clip.center
-
 	- _21.clip
-
-	- _21.clip.center
 
 	- _22.clip
 
-	- _22.clip.center
-
 	- _23.clip
-
-	- _23.clip.center
 
 	- _24.clip
 
-	- _24.clip.center
-
 	- _25.clip
-
-	- _25.clip.center
 
 	- _26.clip
 
-	- _26.clip.center
-
 	- _27.clip
-
-	- _27.clip.center
 
 	- _28.clip
 
-	- _28.clip.center
-
 	- _29.clip
-
-	- _29.clip.center
 
 	- _3.clip
 
-	- _3.clip.center
-
 	- _30.clip
-
-	- _30.clip.center
 
 	- _31.clip
 
-	- _31.clip.center
-
 	- _32.clip
-
-	- _32.clip.center
 
 	- _33.clip
 
-	- _33.clip.center
-
 	- _34.clip
-
-	- _34.clip.center
 
 	- _35.clip
 
-	- _35.clip.center
-
 	- _36.clip
-
-	- _36.clip.center
 
 	- _37.clip
 
-	- _37.clip.center
-
 	- _38.clip
-
-	- _38.clip.center
 
 	- _39.clip
 
-	- _39.clip.center
-
 	- _4.clip
-
-	- _4.clip.center
 
 	- _5.clip
 
-	- _5.clip.center
-
 	- _6.clip
-
-	- _6.clip.center
 
 	- _7.clip
 
-	- _7.clip.center
-
 	- _8.clip
 
-	- _8.clip.center
-
-	- _9.clip
-
-	- _9.clip.center 
+	- _9.clip 
 
 	- And cap
  [code: unreachable-glyphs]
@@ -1726,109 +1178,29 @@ The following glyphs do not have the recommended number of contours:
 
 	- Glyph name: up	Contours detected: 0	Expected: 1
 
-	- Glyph name: up10	Contours detected: 0	Expected: 1
+	- Glyph name: up10	Contours detected: 0	Expected: 1 
 
-	- Glyph name: _0.center	Contours detected: 0	Expected: 2
-
-	- Glyph name: _3.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _7.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _9.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _10.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _12.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _13.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _14.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _16.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _17.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _18.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _20.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _25.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _30.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _36.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _42.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _43.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _44.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _46.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _47.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _48.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _49.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _50.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _52.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _53.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _57.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _62.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _64.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _68.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _74.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _75.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _76.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _78.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _79.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _80.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _81.center	Contours detected: 1	Expected: 4
-
-	- Glyph name: _83.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _86.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _87.center	Contours detected: 1	Expected: 3
-
-	- Glyph name: _88.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _89.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _90.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _92.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _93.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _94.center	Contours detected: 1	Expected: 2
-
-	- Glyph name: _98.center	Contours detected: 1	Expected: 2 
-
-	- And Glyph name: _99.center	Contours detected: 1	Expected: 2
+	- And Glyph name: down10	Contours detected: 0	Expected: 1
  [code: contour-count]
+</div></details><details><summary>⚠ <b>WARN:</b> Are there any misaligned on-curve points? (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/<Section: Outline Correctness Checks>.html#com.google.fonts/check/outline_alignment_miss">com.google.fonts/check/outline_alignment_miss</a>)</summary><div>
+
+
+* ⚠ **WARN** The following glyphs have on-curve points which have potentially incorrect y coordinates:
+
+	* _106 (U+016A): X=170.5,Y=-1.0 (should be at baseline 0?)
+
+	* _106 (U+016A): X=170.5,Y=-1.0 (should be at cap-height 0?)
+
+	* _106 (U+016A): X=29.0,Y=-1.0 (should be at baseline 0?) 
+
+	* And _106 (U+016A): X=29.0,Y=-1.0 (should be at cap-height 0?) [code: found-misalignments]
 </div></details><br></div></details>
 ### Summary
 
 | 💔 ERROR | 🔥 FAIL | ⚠ WARN | 💤 SKIP | ℹ INFO | 🍞 PASS | 🔎 DEBUG |
 |:-----:|:----:|:----:|:----:|:----:|:----:|:----:|
-| 0 | 4 | 20 | 462 | 25 | 352 | 0 |
-| 0% | 0% | 2% | 54% | 3% | 41% | 0% |
+| 0 | 8 | 23 | 462 | 25 | 345 | 0 |
+| 0% | 1% | 3% | 54% | 3% | 40% | 0% |
 
 **Note:** The following loglevels were omitted in this report:
 * **SKIP**

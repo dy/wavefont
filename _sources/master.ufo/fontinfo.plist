@@ -40,7 +40,7 @@
   <key>openTypeNameLicenseURL</key>
   <string>https://scripts.sil.org/OFL</string>
   <key>openTypeOS2VendorID</key>
-  <string>DY</string>
+  <string>DY  </string>
   <key>openTypeOS2Selection</key>
   <array>
     <integer>7</integer>
@@ -72,7 +72,7 @@
   <key>openTypeOS2WinAscent</key>
   <integer>{{upm font.ascender }}</integer>
   <key>openTypeOS2WinDescent</key>
-	<integer>0</integer>
+	<integer>{{upm font.descender }}</integer>
 
   <key>openTypeOS2Panose</key>
   <array>
