@@ -8,6 +8,7 @@
     <string>up10</string>
     <string>up</string>
     <string>down</string>
+    <string>down10</string>
     <string>cap</string>
     {{#each face.values as |code value|}}
     <string>_{{ value }}</string>

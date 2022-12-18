@@ -40,9 +40,9 @@ waveform.textContent = Array.from({length: 100}, (_,i) => String.fromCharCode(0x
 
 Wavefont bars correspond to values from 0 to 100, assigned to different characters:
 
-* <kbd>0-9</kbd> chars are for simplified manual input with step 10.
-* <kbd>a-zA-Z</kbd> for extended manual input with step 2, softened at edges <kbd>a</kbd> and <kbd>Z</kbd>.
-* <kbd>U+0100-016F</kbd> for 0..100 precise values (convert as `char = String.fromCharCode(0x100 + value)`).
+* <kbd>0-9</kbd> chars are for simplified manual input with step 10 (bar height = number).
+* <kbd>a-zA-Z</kbd> for manual input with step 2, softened at edges <kbd>a</kbd> and <kbd>Z</kbd> (bar height = number of letter).
+* <kbd>U+0100-017F</kbd> for 0..100 values with step 1 (`char = String.fromCharCode(0x100 + value)`).
 
 ## Variable axes
 
@@ -56,14 +56,13 @@ Tag | Range | Meaning
 
 ## Features
 
-<!-- * Anti-[FOUT](https://css-tricks.com/fout-foit-foft/): any character out of visible range is mapped to blank (similar to [Adobe Blank](https://github.com/adobe-fonts/adobe-blank-vf)). -->
-* Visible charcodes fall under _marking characters_ unicode category, ie. recognized as word by regexp and can be selected with <kbd>Ctrl</kbd> + <kbd>→</kbd> or double click. Eg. waveform chunks are selectable, if separated by space.
-* Characters outside of visible ranges are supported to some extent, eg. _0x164_ (dec 101) and then clipped to 0 value.
-* Shifting up can be done via combining accent acute <kbd>&nbsp;&#x0301;</kbd> (U+0301) for 1-step up, or circumflex accent <kbd>&nbsp;&#x0302;</kbd> (U+0302) for 10-steps up. Eg. `\u0101\u0302\u0302\u0301\u0301\u0301` shifts 1 value 23 steps up.
-* Shifting down can be done via combining accent grave <kbd>&nbsp;&#x0300;</kbd> (U+0300) for 1-step down, eg. `\u0101\u0300\u0300\u0300` shifts bar 3 values down.
-* Space, tab and other non-marking chas map to _0_ value.
+* Visible charcodes fall under _marking characters_ unicode category, ie. recognized as word by regexp and can be selected with <kbd>Ctrl</kbd> + <kbd>→</kbd> or double click. Eg. waveform segments separated by ` ` or `-` are selectable by double click.
+* Characters outside of visible ranges are clipped to _0_, eg. ` `, `\t` etc.
 * `-–._*` map to _1_ value, `|` maps to max value, `▁▂▃▄▅▆▇█` map to corresponding bars.
-* Caret span is -10..110, so line-height = 1.2 makes non-overlapping selection.
+* Accent acute <kbd>&nbsp;&#x0301;</kbd> (U+0301) shifts bar 1-step up, circumflex accent <kbd>&nbsp;&#x0302;</kbd> (U+0302) 10-steps up. Eg. `\u0101\u0302\u0302\u0301\u0301\u0301` shifts 23 steps up.
+* Accent grave <kbd>&nbsp;&#x0300;</kbd> (U+0300) shifts bar 1-step down, caron <kbd>&nbsp;&#x030c;</kbd> shifts 10 steps down, eg. `\u0101\u030c\u0300\u0300\u0300` shifts 13 steps down.
+* Caret span is -10..110, so line-height = 1.2 gives non-overlapping selection.
+<!-- * Anti-[FOUT](https://css-tricks.com/fout-foit-foft/): any character out of visible range is mapped to blank (similar to [Adobe Blank](https://github.com/adobe-fonts/adobe-blank-vf)). -->
 
 ## JS package
 

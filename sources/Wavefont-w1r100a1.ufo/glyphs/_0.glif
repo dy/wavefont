@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <glyph name="_0" format="2">
 	<unicode hex="0100"/>
-	<unicode hex="0020"/>
 	<unicode hex="0009"/>
-	<unicode hex="00A0"/>
-	<unicode hex="0060"/>
-	<unicode hex="0040"/>
 	<unicode hex="000A"/>
 	<unicode hex="000B"/>
 	<unicode hex="000C"/>
 	<unicode hex="000D"/>
+	<unicode hex="0020"/>
 	<unicode hex="0021"/>
 	<unicode hex="0022"/>
 	<unicode hex="0023"/>
@@ -28,14 +25,17 @@
 	<unicode hex="003D"/>
 	<unicode hex="003E"/>
 	<unicode hex="003F"/>
+	<unicode hex="0040"/>
 	<unicode hex="005B"/>
 	<unicode hex="005C"/>
 	<unicode hex="005D"/>
 	<unicode hex="005E"/>
+	<unicode hex="0060"/>
 	<unicode hex="007B"/>
 	<unicode hex="007D"/>
 	<unicode hex="007E"/>
 	<unicode hex="0085"/>
+	<unicode hex="00A0"/>
 	<unicode hex="00A1"/>
 	<unicode hex="00A2"/>
 	<unicode hex="00A3"/>
@@ -210,6 +210,5 @@
 	<unicode hex="2212"/>
 	<unicode hex="3000"/>
 	<unicode hex="FEFF"/>
-	<unicode hex="0030"/>
 	<advance width="1"/>
 </glyph>

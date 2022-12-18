@@ -3,6 +3,7 @@
 up10 up10 uni0302
 up up uni0301
 down down uni0300
+down10 down10 uni030C
 cap cap
 
 {{#each face.values as |code value|}}

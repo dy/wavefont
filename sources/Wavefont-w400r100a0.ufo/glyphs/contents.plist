@@ -302,6 +302,8 @@
 		<string>cap.glif</string>
 		<key>down</key>
 		<string>down.glif</string>
+		<key>down10</key>
+		<string>down10.glif</string>
 		<key>up</key>
 		<string>up.glif</string>
 		<key>up10</key>
