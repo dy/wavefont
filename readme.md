@@ -67,13 +67,13 @@ Tag | Range | Meaning
 
 ## JS package
 
-To facilitate calculation, wavefont exposes a JS package that calculates string from values.
+To facilitate calculation, wavefont exposes a function that calculates string from values.
 
 ```js
-import * as wavefont from 'wavefont'
+import wf from 'wavefont'
 
 // get characters for values from 0..100 range
-wavefont(0, 1, 50, 99, 100, ...)
+wf(0, 1, 50, 99, 100, ...)
 ```
 
 ## Building
