@@ -81,10 +81,10 @@ wf(0, 1, 50, 99, 100, ...) // ĀāĲţŤ...
 
 ## Tests
 
-* [Fontbakery report](./out/fontbakery/fontbakery-report)
-* [Glyphs](./out/proof/glyphs)
-* [Text](./out/proof/text)
-* [Waterfall](./out/proof/waterfall)
+* [Fontbakery report](https://dy.github.io/wavefont/out/fontbakery/fontbakery-report)
+* [Glyphs](https://dy.github.io/wavefont/out/proof/glyphs)
+* [Text](https://dy.github.io/wavefont/out/proof/text)
+* [Waterfall](https://dy.github.io/wavefont/out/proof/waterfall)
 
 ## See also
 
