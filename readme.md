@@ -42,7 +42,7 @@ Wavefont bars correspond to values from 0 to 100, assigned to different characte
 
 * <kbd>0-9</kbd> chars are for simplified manual input with step 10 (bar height = number).
 * <kbd>a-zA-Z</kbd> for manual input with step 2, softened at edges <kbd>a</kbd> and <kbd>Z</kbd> (bar height = number of letter).
-* <kbd>U+0100-017F</kbd> for 0..128 values with step 1 (`char = String.fromCharCode(0x100 + value)`).
+* <kbd>U+0100-017F</kbd> for 0..127 values with step 1 (`char = String.fromCharCode(0x100 + value)`).
 
 ## Variable axes
 
@@ -71,8 +71,8 @@ To facilitate calculation, wavefont exposes a function that calculates string fr
 ```js
 import wf from 'wavefont'
 
-// get characters for values from 0..100 range
-wf(0, 1, 50, 99, 100, ...) // ĀāĲţŤ...
+// get characters for values from 0..127 range
+wf(0, 1, 50, 99, 127, ...) // ĀāĲţŤ...
 ```
 
 ## Building
