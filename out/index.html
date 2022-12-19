@@ -166,7 +166,7 @@
       <output id="alignValue"></output>
     </div>
     <div class="panel-field">
-      <label for="size"><small>Size</small></label> <input id="size" type="range" min="5" value="108" max="200" step="1"/>
+      <label for="size"><small>Size</small></label> <input id="size" type="range" min="5" value="100" max="200" step="1"/>
       <output id="sizeValue"></output>
     </div>
   </div>
@@ -184,14 +184,14 @@
       #waveareas {
         grid-template-columns: 1fr 1fr;
         max-width: 2160px;
-      padding-left: 4rem;
-      padding-right: 4rem;
+        padding-left: 4rem;
+        padding-right: 4rem;
       }
     }
     .wavearea {
       text-align: center;
       font-family: wavefont;
-      line-height: 1;
+      line-height: 1.4;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       padding: 0;
@@ -205,12 +205,12 @@
       background-size: 100vw calc(var(--size, 100px) / 10);
       background-image: linear-gradient(to bottom, rgb(230, 245, 255) 1px, transparent 1px);
       background-attachment: local;
+      background-position: 0 -0.5px;
       -webkit-overflow-scrolling: auto;
       border: none;
       white-space: pre-wrap;
       position: relative;
       width: 100%;
-      padding-bottom:5px;
     }
     .wavearea:focus {
       outline: none;
@@ -266,9 +266,9 @@
 
   <div id="keyboard" title="0-9 a-Z ▁▂▃▄▅▆▇█" class="wavearea" spellcheck="false" contenteditable>0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ▁▂▃▄▅▆▇█</div>
 
-  <div id="range100" title="Latin Ext (+clipping)" class="wavearea" contenteditable></div>
+  <div id="range128" title="Latin Ext (+clipping)" class="wavearea" contenteditable></div>
   <script>
-  range100.textContent += Array(120).fill(0).map((v,i)=> String.fromCharCode(0x100+i-10)).join('')
+  range128.textContent += Array(130).fill(0).map((v,i)=> String.fromCharCode(0x100+i)).join('')
   </script>
 
 

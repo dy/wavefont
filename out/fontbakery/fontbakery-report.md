@@ -2,11 +2,7 @@
 
 Fontbakery version: 0.8.10
 
-<details><summary><b>[7] Wavefont-Light.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Checking OS/2 usWinAscent & usWinDescent. (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.google.fonts/check/family/win_ascent_and_descent">com.google.fonts/check/family/win_ascent_and_descent</a>)</summary><div>
-
-
-* 🔥 **FAIL** OS/2.usWinDescent value 100 is too large. It should be less than double the yMin. Current absolute yMin value is 35 [code: descent]
-</div></details><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
+<details><summary><b>[7] Wavefont-Light.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
 
 
 * 🔥 **FAIL** FreeType is not available; to install it, invoke the 'freetype' extra when installing Font Bakery. [code: freetype-not-installed]
@@ -282,6 +278,40 @@ The following glyphs do not have the recommended number of contours:
 	- Glyph name: _106	Contours detected: 1	Expected: 2
 
 	- Glyph name: _107	Contours detected: 1	Expected: 2
+
+	- Glyph name: _108	Contours detected: 1	Expected: 2
+
+	- Glyph name: _109	Contours detected: 1	Expected: 2
+
+	- Glyph name: _110	Contours detected: 1	Expected: 3
+
+	- Glyph name: _111	Contours detected: 1	Expected: 3
+
+	- Glyph name: _112	Contours detected: 1	Expected: 3
+
+	- Glyph name: _113	Contours detected: 1	Expected: 3
+
+	- Glyph name: _116	Contours detected: 1	Expected: 2
+
+	- Glyph name: _117	Contours detected: 1	Expected: 2
+
+	- Glyph name: _118	Contours detected: 1	Expected: 2
+
+	- Glyph name: _119	Contours detected: 1	Expected: 2
+
+	- Glyph name: _120	Contours detected: 1	Expected: 3
+
+	- Glyph name: _121	Contours detected: 1	Expected: 2
+
+	- Glyph name: _122	Contours detected: 1	Expected: 2
+
+	- Glyph name: _123	Contours detected: 1	Expected: 2
+
+	- Glyph name: _124	Contours detected: 1	Expected: 2
+
+	- Glyph name: _125	Contours detected: 1	Expected: 2
+
+	- Glyph name: _126	Contours detected: 1	Expected: 2
 
 	- Glyph name: down	Contours detected: 0	Expected: 1
 
@@ -291,11 +321,19 @@ The following glyphs do not have the recommended number of contours:
 
 	- And Glyph name: down10	Contours detected: 0	Expected: 1
  [code: contour-count]
-</div></details><br></div></details><details><summary><b>[8] Wavefont-Thin.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Checking OS/2 usWinAscent & usWinDescent. (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.google.fonts/check/family/win_ascent_and_descent">com.google.fonts/check/family/win_ascent_and_descent</a>)</summary><div>
+</div></details><details><summary>⚠ <b>WARN:</b> Are there any misaligned on-curve points? (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/<Section: Outline Correctness Checks>.html#com.google.fonts/check/outline_alignment_miss">com.google.fonts/check/outline_alignment_miss</a>)</summary><div>
 
 
-* 🔥 **FAIL** OS/2.usWinDescent value 100 is too large. It should be less than double the yMin. Current absolute yMin value is 35 [code: descent]
-</div></details><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
+* ⚠ **WARN** The following glyphs have on-curve points which have potentially incorrect y coordinates:
+
+	* _115 (U+0173): X=279.5,Y=-1.0 (should be at baseline 0?)
+
+	* _115 (U+0173): X=279.5,Y=-1.0 (should be at cap-height 0?)
+
+	* _115 (U+0173): X=20.0,Y=-1.0 (should be at baseline 0?) 
+
+	* And _115 (U+0173): X=20.0,Y=-1.0 (should be at cap-height 0?) [code: found-misalignments]
+</div></details><br></div></details><details><summary><b>[7] Wavefont-Thin.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
 
 
 * 🔥 **FAIL** FreeType is not available; to install it, invoke the 'freetype' extra when installing Font Bakery. [code: freetype-not-installed]
@@ -571,6 +609,40 @@ The following glyphs do not have the recommended number of contours:
 	- Glyph name: _106	Contours detected: 1	Expected: 2
 
 	- Glyph name: _107	Contours detected: 1	Expected: 2
+
+	- Glyph name: _108	Contours detected: 1	Expected: 2
+
+	- Glyph name: _109	Contours detected: 1	Expected: 2
+
+	- Glyph name: _110	Contours detected: 1	Expected: 3
+
+	- Glyph name: _111	Contours detected: 1	Expected: 3
+
+	- Glyph name: _112	Contours detected: 1	Expected: 3
+
+	- Glyph name: _113	Contours detected: 1	Expected: 3
+
+	- Glyph name: _116	Contours detected: 1	Expected: 2
+
+	- Glyph name: _117	Contours detected: 1	Expected: 2
+
+	- Glyph name: _118	Contours detected: 1	Expected: 2
+
+	- Glyph name: _119	Contours detected: 1	Expected: 2
+
+	- Glyph name: _120	Contours detected: 1	Expected: 3
+
+	- Glyph name: _121	Contours detected: 1	Expected: 2
+
+	- Glyph name: _122	Contours detected: 1	Expected: 2
+
+	- Glyph name: _123	Contours detected: 1	Expected: 2
+
+	- Glyph name: _124	Contours detected: 1	Expected: 2
+
+	- Glyph name: _125	Contours detected: 1	Expected: 2
+
+	- Glyph name: _126	Contours detected: 1	Expected: 2
 
 	- Glyph name: down	Contours detected: 0	Expected: 1
 
@@ -592,11 +664,7 @@ The following glyphs do not have the recommended number of contours:
 	* _103 (U+0167): X=14.5,Y=-0.5 (should be at baseline 0?) 
 
 	* And _103 (U+0167): X=14.5,Y=-0.5 (should be at cap-height 0?) [code: found-misalignments]
-</div></details><br></div></details><details><summary><b>[8] Wavefont-Regular.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Checking OS/2 usWinAscent & usWinDescent. (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.google.fonts/check/family/win_ascent_and_descent">com.google.fonts/check/family/win_ascent_and_descent</a>)</summary><div>
-
-
-* 🔥 **FAIL** OS/2.usWinDescent value 100 is too large. It should be less than double the yMin. Current absolute yMin value is 35 [code: descent]
-</div></details><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
+</div></details><br></div></details><details><summary><b>[7] Wavefont-Regular.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
 
 
 * 🔥 **FAIL** FreeType is not available; to install it, invoke the 'freetype' extra when installing Font Bakery. [code: freetype-not-installed]
@@ -872,6 +940,40 @@ The following glyphs do not have the recommended number of contours:
 	- Glyph name: _106	Contours detected: 1	Expected: 2
 
 	- Glyph name: _107	Contours detected: 1	Expected: 2
+
+	- Glyph name: _108	Contours detected: 1	Expected: 2
+
+	- Glyph name: _109	Contours detected: 1	Expected: 2
+
+	- Glyph name: _110	Contours detected: 1	Expected: 3
+
+	- Glyph name: _111	Contours detected: 1	Expected: 3
+
+	- Glyph name: _112	Contours detected: 1	Expected: 3
+
+	- Glyph name: _113	Contours detected: 1	Expected: 3
+
+	- Glyph name: _116	Contours detected: 1	Expected: 2
+
+	- Glyph name: _117	Contours detected: 1	Expected: 2
+
+	- Glyph name: _118	Contours detected: 1	Expected: 2
+
+	- Glyph name: _119	Contours detected: 1	Expected: 2
+
+	- Glyph name: _120	Contours detected: 1	Expected: 3
+
+	- Glyph name: _121	Contours detected: 1	Expected: 2
+
+	- Glyph name: _122	Contours detected: 1	Expected: 2
+
+	- Glyph name: _123	Contours detected: 1	Expected: 2
+
+	- Glyph name: _124	Contours detected: 1	Expected: 2
+
+	- Glyph name: _125	Contours detected: 1	Expected: 2
+
+	- Glyph name: _126	Contours detected: 1	Expected: 2
 
 	- Glyph name: down	Contours detected: 0	Expected: 1
 
@@ -890,14 +992,18 @@ The following glyphs do not have the recommended number of contours:
 
 	* _105 (U+0169): X=99.5,Y=2.0 (should be at cap-height 0?)
 
-	* _105 (U+0169): X=300.5,Y=2.0 (should be at baseline 0?) 
+	* _105 (U+0169): X=300.5,Y=2.0 (should be at baseline 0?)
 
-	* And _105 (U+0169): X=300.5,Y=2.0 (should be at cap-height 0?) [code: found-misalignments]
-</div></details><br></div></details><details><summary><b>[8] Wavefont-ExtraLight.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Checking OS/2 usWinAscent & usWinDescent. (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.google.fonts/check/family/win_ascent_and_descent">com.google.fonts/check/family/win_ascent_and_descent</a>)</summary><div>
+	* _105 (U+0169): X=300.5,Y=2.0 (should be at cap-height 0?)
 
+	* _120 (U+0178): X=27.0,Y=-0.5 (should be at baseline 0?)
 
-* 🔥 **FAIL** OS/2.usWinDescent value 100 is too large. It should be less than double the yMin. Current absolute yMin value is 35 [code: descent]
-</div></details><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
+	* _120 (U+0178): X=27.0,Y=-0.5 (should be at cap-height 0?)
+
+	* _120 (U+0178): X=373.0,Y=-0.5 (should be at baseline 0?) 
+
+	* And _120 (U+0178): X=373.0,Y=-0.5 (should be at cap-height 0?) [code: found-misalignments]
+</div></details><br></div></details><details><summary><b>[7] Wavefont-ExtraLight.ttf</b></summary><div><details><summary>🔥 <b>FAIL:</b> Ensure that the font can be rasterized by FreeType. (derived from com.adobe.fonts/check/freetype_rasterizer) (<a href="https://font-bakery.readthedocs.io/en/stable/fontbakery/profiles/universal.html#com.adobe.fonts/check/freetype_rasterizer">com.adobe.fonts/check/freetype_rasterizer</a>)</summary><div>
 
 
 * 🔥 **FAIL** FreeType is not available; to install it, invoke the 'freetype' extra when installing Font Bakery. [code: freetype-not-installed]
@@ -1173,6 +1279,40 @@ The following glyphs do not have the recommended number of contours:
 	- Glyph name: _106	Contours detected: 1	Expected: 2
 
 	- Glyph name: _107	Contours detected: 1	Expected: 2
+
+	- Glyph name: _108	Contours detected: 1	Expected: 2
+
+	- Glyph name: _109	Contours detected: 1	Expected: 2
+
+	- Glyph name: _110	Contours detected: 1	Expected: 3
+
+	- Glyph name: _111	Contours detected: 1	Expected: 3
+
+	- Glyph name: _112	Contours detected: 1	Expected: 3
+
+	- Glyph name: _113	Contours detected: 1	Expected: 3
+
+	- Glyph name: _116	Contours detected: 1	Expected: 2
+
+	- Glyph name: _117	Contours detected: 1	Expected: 2
+
+	- Glyph name: _118	Contours detected: 1	Expected: 2
+
+	- Glyph name: _119	Contours detected: 1	Expected: 2
+
+	- Glyph name: _120	Contours detected: 1	Expected: 3
+
+	- Glyph name: _121	Contours detected: 1	Expected: 2
+
+	- Glyph name: _122	Contours detected: 1	Expected: 2
+
+	- Glyph name: _123	Contours detected: 1	Expected: 2
+
+	- Glyph name: _124	Contours detected: 1	Expected: 2
+
+	- Glyph name: _125	Contours detected: 1	Expected: 2
+
+	- Glyph name: _126	Contours detected: 1	Expected: 2
 
 	- Glyph name: down	Contours detected: 0	Expected: 1
 
@@ -1199,8 +1339,8 @@ The following glyphs do not have the recommended number of contours:
 
 | 💔 ERROR | 🔥 FAIL | ⚠ WARN | 💤 SKIP | ℹ INFO | 🍞 PASS | 🔎 DEBUG |
 |:-----:|:----:|:----:|:----:|:----:|:----:|:----:|
-| 0 | 8 | 23 | 462 | 25 | 345 | 0 |
-| 0% | 1% | 3% | 54% | 3% | 40% | 0% |
+| 0 | 4 | 24 | 462 | 25 | 348 | 0 |
+| 0% | 0% | 3% | 54% | 3% | 40% | 0% |
 
 **Note:** The following loglevels were omitted in this report:
 * **SKIP**

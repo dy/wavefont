@@ -42,7 +42,7 @@ Wavefont bars correspond to values from 0 to 100, assigned to different characte
 
 * <kbd>0-9</kbd> chars are for simplified manual input with step 10 (bar height = number).
 * <kbd>a-zA-Z</kbd> for manual input with step 2, softened at edges <kbd>a</kbd> and <kbd>Z</kbd> (bar height = number of letter).
-* <kbd>U+0100-017F</kbd> for 0..100 values with step 1 (`char = String.fromCharCode(0x100 + value)`).
+* <kbd>U+0100-017F</kbd> for 0..128 values with step 1 (`char = String.fromCharCode(0x100 + value)`).
 
 ## Variable axes
 
@@ -61,7 +61,7 @@ Tag | Range | Meaning
 * `-–._*` map to _1_ value, `|` maps to max value, `▁▂▃▄▅▆▇█` map to corresponding bars.
 * Accent acute <kbd>&nbsp;&#x0301;</kbd> (U+0301) shifts bar 1-step up, circumflex accent <kbd>&nbsp;&#x0302;</kbd> (U+0302) 10-steps up. Eg. `\u0101\u0302\u0302\u0301\u0301\u0301` shifts 23 steps up.
 * Accent grave <kbd>&nbsp;&#x0300;</kbd> (U+0300) shifts bar 1-step down, caron <kbd>&nbsp;&#x030c;</kbd> shifts 10 steps down, eg. `\u0101\u030c\u0300\u0300\u0300` shifts 13 steps down.
-* Caret span is -10..110, so line-height = 1.2 gives non-overlapping selection.
+* Caret span is -20..120, so line-height = 1.4 is minimal non-overlapping selection.
 <!-- * Anti-[FOUT](https://css-tricks.com/fout-foit-foft/): any character out of visible range is mapped to blank (similar to [Adobe Blank](https://github.com/adobe-fonts/adobe-blank-vf)). -->
 
 ## JS package
@@ -79,9 +79,7 @@ wf(0, 1, 50, 99, 100, ...) // ĀāĲţŤ...
 
 `make build`
 
-## Tests
-
-* [Fontbakery report](https://dy.github.io/wavefont/out/fontbakery/fontbakery-report)
+* [Tests](https://dy.github.io/wavefont/out/fontbakery/fontbakery-report)
 * [Glyphs](https://dy.github.io/wavefont/out/proof/glyphs)
 * [Text](https://dy.github.io/wavefont/out/proof/text)
 * [Waterfall](https://dy.github.io/wavefont/out/proof/waterfall)
