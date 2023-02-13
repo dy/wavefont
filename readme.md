@@ -4,7 +4,7 @@ A typeface for rendering data: waveforms, spectrums, diagrams, bars etc.
 
 <a href="https://dy.github.io/wavefont"><img src="./preview.png" width="240px"/></a>
 
-[**Wavearea**](https://dy.github.io/wavearea)&nbsp;&nbsp;•&nbsp;&nbsp;[**Tests**](https://dy.github.io/wavefont/out)&nbsp;&nbsp;•&nbsp;&nbsp;[**V-fonts**](https://v-fonts.com/fonts/wavefont)
+[**Wavearea**](http://dy.github.io/wavearea?src=https://upload.wikimedia.org/wikipedia/commons/c/cf/Caja_de_m%C3%BAsica_(PianoConcerto5_Beethoven).ogg)&nbsp;&nbsp;•&nbsp;&nbsp;[**Tests**](https://dy.github.io/wavefont/out)&nbsp;&nbsp;•&nbsp;&nbsp;[**V-fonts**](https://v-fonts.com/fonts/wavefont)
 
 
 ## Usage
