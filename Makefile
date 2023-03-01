@@ -18,6 +18,7 @@ template.stamp: _sources/master.ufo _sources/master.ufo/features.fea _sources/ma
 	touch template.stamp
 
 build.stamp: venv template.stamp
+	. venv/bin/activate; pip3 install -Ur requirements.txt
 	npm run normalize-ufo
 	gftools builder sources/config.yaml
 	npm run build-woff2
