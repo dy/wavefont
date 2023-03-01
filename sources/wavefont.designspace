@@ -3,7 +3,10 @@
     <axes>
         <axis default="0" minimum="0" maximum="100" name="Roundness" tag="ROND"/>
         <axis default="400" minimum="1" maximum="400" name="Weight" tag="wght"/>
-        <axis default="0" minimum="0" maximum="1" name="Align" tag="YALN"/>
+        <axis default="-100" minimum="-100" maximum="100" name="Align" tag="YALN">
+            <map input="-100" output="0"/>
+            <map input="100" output="1"/>
+        </axis>
     </axes>
     <rules>
         <rule name="_1.clip">

@@ -4,8 +4,8 @@ sources:
   - Wavefont.designspace
 familyName: Wavefont
 axisOrder:
-  - YALN
   - ROND
+  - YALN
   - wght
 stat:
   - name: Round

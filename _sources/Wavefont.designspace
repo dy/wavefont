@@ -1,9 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
 <designspace format="3">
     <axes>
-        {{#each axes as |axis name|}}
-        <axis default="{{ axis.default }}" minimum="{{ axis.min }}" maximum="{{ axis.max }}" name="{{titleCase name }}" tag="{{ axis.tag }}"/>
-        {{/each}}
+        <axis default="0" minimum="0" maximum="100" name="Roundness" tag="ROND"/>
+        <axis default="400" minimum="1" maximum="400" name="Weight" tag="wght"/>
+        <axis default="-100" minimum="-100" maximum="100" name="Align" tag="YALN">
+            <map input="-100" output="0"/>
+            <map input="100" output="1"/>
+        </axis>
     </axes>
     <rules>{{#each clips as |code value| }}{{#if value}}
         <rule name="_{{ value }}.clip">
