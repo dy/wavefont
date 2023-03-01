@@ -53,7 +53,7 @@ function alias(value, char) {
 const AXES = {
   roundness: {tag: 'ROND', min: 0, max: 100, default: 0},
   weight: {tag: 'wght', min: 1, max: 400, default: 400},
-  align: {tag: 'ALGN', min: 0, max: 1, default: 0}
+  align: {tag: 'YALN', min: 0, max: 1, default: 0}
 }
 
 // create masters

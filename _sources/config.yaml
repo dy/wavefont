@@ -4,7 +4,7 @@ sources:
   - Wavefont.designspace
 familyName: Wavefont
 axisOrder:
-  - ALGN
+  - YALN
   - ROND
   - wght
 stat:
@@ -15,7 +15,7 @@ stat:
       value: 0
       flags: 2
   - name: Align
-    tag: ALGN
+    tag: YALN
     values:
     - name: Default
       value: 0
