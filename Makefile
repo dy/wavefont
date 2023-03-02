@@ -18,17 +18,15 @@ template.stamp: _sources/master.ufo _sources/master.ufo/features.fea _sources/ma
 	touch template.stamp
 
 build.stamp: venv template.stamp
-	. venv/bin/activate; pip3 install -Ur requirements.txt
-	npm run normalize-ufo
-	gftools builder sources/config.yaml
-	npm run build-woff2
+	. venv/bin/activate; npm run normalize-ufo; gftools builder sources/config.yaml; npm run build-woff2
 	touch build.stamp
 
 venv: venv/touchfile
 
 venv/touchfile: requirements.txt
 	test -d venv || python3 -m venv venv
-	. venv/bin/activate; pip3 install -Ur requirements.txt
+	. venv/bin/activate
+	pip3 install -Ur requirements.txt
 	touch venv/touchfile
 
 test: venv build.stamp
@@ -38,4 +36,4 @@ proof: venv build.stamp
 	. venv/bin/activate; mkdir -p out/ out/proof; gftools gen-html proof $(shell find fonts/ttf -type f) -o out/proof
 
 clean:
-	rm -rf sources/Wave* template.stamp build.stamp
+	rm -rf sources/Wave* template.stamp build.stamp venv
