@@ -157,7 +157,11 @@ module.exports = function (plop) {
             force: true,
             type: 'add',
             path: `${destination}/glyphs/_${value}.glif`,
-            template: bar({value:value, code: value ? code : null, weight, width, name: `_${value}`, capSize: radius*.01*weight, align, alias: font.alias[value] })
+            template: bar({
+              value,
+              code: value ? code : null, // we skip 0 char and alias it to 1, to make it marking
+              weight, width,
+              name: `_${value}`, capSize: radius*.01*weight, align, alias: font.alias[value] })
           })),
           // substitute glyphs lower than max weight to compensate wrong interpolation on weight clipping
           // the logic: big weights would have big radius, but since it's limited to value, we interpolate between wrong 1 weight and max weight
