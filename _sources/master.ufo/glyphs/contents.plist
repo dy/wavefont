@@ -14,7 +14,7 @@
     {{/each}}
 
     {{#each clips as |code value|}}
-    {{#if value}}<key>_{{ value }}.clip</key><string>_{{ value }}.clip.glif</string>{{/if}}
+    <key>_{{ value }}.clip</key><string>_{{ value }}.clip.glif</string>
     {{/each}}
   </dict>
 </plist>

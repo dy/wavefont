@@ -8,11 +8,11 @@
             <map input="100" output="1"/>
         </axis>
     </axes>
-    <rules>{{#each clips as |code value| }}{{#if value}}
+    <rules>{{#each clips as |code value| }}
         <rule name="_{{ value }}.clip">
             <conditionset><condition minimum="{{upm value }}" maximum="{{ ../axes.weight.max }}" name="Weight" /></conditionset>
             <sub name="_{{ value }}" with="_{{ value }}.clip"/>
-        </rule>{{/if}}{{/each}}
+        </rule>{{/each}}
     </rules>
     <sources>
         {{#each masters as |master name| }}

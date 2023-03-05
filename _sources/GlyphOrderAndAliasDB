@@ -11,5 +11,5 @@ _{{ value }} _{{ value }} {{uni code}}{{#if (lookup ../font.alias value)}}{{#eac
 {{/each}}
 
 {{#each clips as |code value|}}
-{{#if value}}_{{ value }}.clip _{{ value }}.clip{{/if}}
+_{{ value }}.clip _{{ value }}.clip
 {{/each}}

@@ -21,7 +21,7 @@ const FONTFACE = {
   descender: 20,
   alias: {
     0: BLANK,
-    1: [...ONE_CHAR, BAR_CHAR[0]],
+    1: [...ONE_CHAR, BAR_CHAR[0], 0x100],
     14: [BAR_CHAR[1]], 28: [BAR_CHAR[2]], 42: [BAR_CHAR[3]], 56: [BAR_CHAR[4]], 72: [BAR_CHAR[5]], 86: [BAR_CHAR[6]],
     100: [...MAX_CHAR, BAR_CHAR[7]]
   },
@@ -157,11 +157,11 @@ module.exports = function (plop) {
             force: true,
             type: 'add',
             path: `${destination}/glyphs/_${value}.glif`,
-            template: bar({value, code, weight, width, name: `_${value}`, capSize: radius*.01*weight, align, alias: font.alias[value] })
+            template: bar({value:value, code: value ? code : null, weight, width, name: `_${value}`, capSize: radius*.01*weight, align, alias: font.alias[value] })
           })),
           // substitute glyphs lower than max weight to compensate wrong interpolation on weight clipping
           // the logic: big weights would have big radius, but since it's limited to value, we interpolate between wrong 1 weight and max weight
-          ...clips.map((code, value) => value && ({
+          ...clips.map((code, value) => ({
             force: true,
             type: 'add',
             path: `${destination}/glyphs/_${value}.clip.glif`,

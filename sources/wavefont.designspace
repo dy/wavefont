@@ -9,6 +9,10 @@
         </axis>
     </axes>
     <rules>
+        <rule name="_0.clip">
+            <conditionset><condition minimum="0" maximum="400" name="Weight" /></conditionset>
+            <sub name="_0" with="_0.clip"/>
+        </rule>
         <rule name="_1.clip">
             <conditionset><condition minimum="10" maximum="400" name="Weight" /></conditionset>
             <sub name="_1" with="_1.clip"/>
