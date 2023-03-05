@@ -159,7 +159,7 @@ module.exports = function (plop) {
             path: `${destination}/glyphs/_${value}.glif`,
             template: bar({
               value,
-              code: value ? code : null, // we skip 0 char and alias it to 1, to make it marking
+              code: value ? code : null, // we make 0 value marking, aliasing it to 1, but keep 0 aliases
               weight, width,
               name: `_${value}`, capSize: radius*.01*weight, align, alias: font.alias[value] })
           })),
