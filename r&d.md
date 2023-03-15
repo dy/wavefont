@@ -13,3 +13,4 @@
 * Any possible kind of audio generators / synthesizers
 * Audio player with waveform
 * Waveform rendering gallery
+* Marquee
