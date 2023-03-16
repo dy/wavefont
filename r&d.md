@@ -14,3 +14,4 @@
 * Audio player with waveform
 * Waveform rendering gallery
 * Marquee
+* https://www.assemblyai.com/blog/conformer-1/
