@@ -2,11 +2,11 @@
 <designspace format="3">
     <axes>
         <axis default="0" minimum="0" maximum="100" name="Roundness" tag="ROND"/>
-        <axis default="400" minimum="1" maximum="400" name="Weight" tag="wght"/>
-        <axis default="-100" minimum="-100" maximum="100" name="Align" tag="YALN">
+        <axis default="-100" minimum="-100" maximum="100" name="Y Alignment" tag="YALN">
             <map input="-100" output="0"/>
             <map input="100" output="1"/>
         </axis>
+        <axis default="400" minimum="1" maximum="400" name="Weight" tag="wght"/>
     </axes>
     <rules>{{#each clips as |code value| }}
         <rule name="_{{ value }}.clip">
@@ -30,28 +30,28 @@
             <location>
                 <dimension name="Weight" xvalue="100" />
                 <dimension name="Roundness" xvalue="100" />
-                <dimension name="Align" xvalue="0.5" />
+                <dimension name="Y Alignment" xvalue="0.5" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-ExtraLight.ufo" name="Wavefont ExtraLight" familyname="Wavefont" stylename="ExtraLight">
             <location>
                 <dimension name="Weight" xvalue="200" />
                 <dimension name="Roundness" xvalue="100" />
-                <dimension name="Align" xvalue="0.5" />
+                <dimension name="Y Alignment" xvalue="0.5" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-Light.ufo" name="Wavefont Light" familyname="Wavefont" stylename="Light">
             <location>
                 <dimension name="Weight" xvalue="300" />
                 <dimension name="Roundness" xvalue="100" />
-                <dimension name="Align" xvalue="0.5" />
+                <dimension name="Y Alignment" xvalue="0.5" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-Regular.ufo" name="Wavefont Regular" familyname="Wavefont" stylename="Regular">
             <location>
                 <dimension name="Weight" xvalue="400" />
                 <dimension name="Roundness" xvalue="100" />
-                <dimension name="Align" xvalue="0.5" />
+                <dimension name="Y Alignment" xvalue="0.5" />
             </location>
         </instance>
     </instances>
