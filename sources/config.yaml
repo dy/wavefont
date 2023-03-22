@@ -12,9 +12,9 @@ stat:
     tag: ROND
     values:
     - name: Default
-      value: 0
+      value: 100
       flags: 2
-  - name: Align
+  - name: Y Alignment
     tag: YALN
     values:
     - name: Default

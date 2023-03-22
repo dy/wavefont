@@ -2,11 +2,11 @@
 <designspace format="3">
     <axes>
         <axis default="0" minimum="0" maximum="100" name="Roundness" tag="ROND"/>
-        <axis default="400" minimum="1" maximum="400" name="Weight" tag="wght"/>
-        <axis default="-100" minimum="-100" maximum="100" name="Align" tag="YALN">
+        <axis default="-100" minimum="-100" maximum="100" name="Y Alignment" tag="YALN">
             <map input="-100" output="0"/>
             <map input="100" output="1"/>
         </axis>
+        <axis default="400" minimum="1" maximum="400" name="Weight" tag="wght"/>
     </axes>
     <rules>
         <rule name="_0.clip">
@@ -175,56 +175,56 @@
             <location>
                 <dimension name="Weight" xvalue="1" />
                 <dimension name="Roundness" xvalue="0" />
-                <dimension name="Align" xvalue="0" />
+                <dimension name="Y Alignment" xvalue="0" />
             </location>
         </source>
         <source familyname="Wavefont" filename="Wavefont-w1r100a0.ufo" name="Master_w1r100a0" stylename="w1r100a0">
             <location>
                 <dimension name="Weight" xvalue="1" />
                 <dimension name="Roundness" xvalue="100" />
-                <dimension name="Align" xvalue="0" />
+                <dimension name="Y Alignment" xvalue="0" />
             </location>
         </source>
         <source familyname="Wavefont" filename="Wavefont-w400r0a0.ufo" name="Master_w400r0a0" stylename="w400r0a0">
             <location>
                 <dimension name="Weight" xvalue="400" />
                 <dimension name="Roundness" xvalue="0" />
-                <dimension name="Align" xvalue="0" />
+                <dimension name="Y Alignment" xvalue="0" />
             </location>
         </source>
         <source familyname="Wavefont" filename="Wavefont-w400r100a0.ufo" name="Master_w400r100a0" stylename="w400r100a0">
             <location>
                 <dimension name="Weight" xvalue="400" />
                 <dimension name="Roundness" xvalue="100" />
-                <dimension name="Align" xvalue="0" />
+                <dimension name="Y Alignment" xvalue="0" />
             </location>
         </source>
         <source familyname="Wavefont" filename="Wavefont-w1r0a1.ufo" name="Master_w1r0a1" stylename="w1r0a1">
             <location>
                 <dimension name="Weight" xvalue="1" />
                 <dimension name="Roundness" xvalue="0" />
-                <dimension name="Align" xvalue="1" />
+                <dimension name="Y Alignment" xvalue="1" />
             </location>
         </source>
         <source familyname="Wavefont" filename="Wavefont-w1r100a1.ufo" name="Master_w1r100a1" stylename="w1r100a1">
             <location>
                 <dimension name="Weight" xvalue="1" />
                 <dimension name="Roundness" xvalue="100" />
-                <dimension name="Align" xvalue="1" />
+                <dimension name="Y Alignment" xvalue="1" />
             </location>
         </source>
         <source familyname="Wavefont" filename="Wavefont-w400r0a1.ufo" name="Master_w400r0a1" stylename="w400r0a1">
             <location>
                 <dimension name="Weight" xvalue="400" />
                 <dimension name="Roundness" xvalue="0" />
-                <dimension name="Align" xvalue="1" />
+                <dimension name="Y Alignment" xvalue="1" />
             </location>
         </source>
         <source familyname="Wavefont" filename="Wavefont-w400r100a1.ufo" name="Master_w400r100a1" stylename="w400r100a1">
             <location>
                 <dimension name="Weight" xvalue="400" />
                 <dimension name="Roundness" xvalue="100" />
-                <dimension name="Align" xvalue="1" />
+                <dimension name="Y Alignment" xvalue="1" />
             </location>
         </source>
     </sources>
@@ -233,28 +233,28 @@
             <location>
                 <dimension name="Weight" xvalue="100" />
                 <dimension name="Roundness" xvalue="100" />
-                <dimension name="Align" xvalue="0.5" />
+                <dimension name="Y Alignment" xvalue="0.5" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-ExtraLight.ufo" name="Wavefont ExtraLight" familyname="Wavefont" stylename="ExtraLight">
             <location>
                 <dimension name="Weight" xvalue="200" />
                 <dimension name="Roundness" xvalue="100" />
-                <dimension name="Align" xvalue="0.5" />
+                <dimension name="Y Alignment" xvalue="0.5" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-Light.ufo" name="Wavefont Light" familyname="Wavefont" stylename="Light">
             <location>
                 <dimension name="Weight" xvalue="300" />
                 <dimension name="Roundness" xvalue="100" />
-                <dimension name="Align" xvalue="0.5" />
+                <dimension name="Y Alignment" xvalue="0.5" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-Regular.ufo" name="Wavefont Regular" familyname="Wavefont" stylename="Regular">
             <location>
                 <dimension name="Weight" xvalue="400" />
                 <dimension name="Roundness" xvalue="100" />
-                <dimension name="Align" xvalue="0.5" />
+                <dimension name="Y Alignment" xvalue="0.5" />
             </location>
         </instance>
     </instances>

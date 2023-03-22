@@ -18,8 +18,8 @@
         {{#each masters as |master name| }}
         <source familyname="{{ ../font.name }}" filename="{{ ../font.name }}-{{ name }}.ufo" name="Master_{{name}}" stylename="{{name}}">
             <location>
-                {{#each master as |axisValue axisName|}}
-                <dimension name="{{titleCase axisName }}" xvalue="{{ axisValue }}" />
+                {{#each master as |axisValue axisId|}}
+                <dimension name="{{axisName axisId }}" xvalue="{{ axisValue }}" />
                 {{/each}}
             </location>
         </source>
