@@ -10,12 +10,12 @@
     "hint-ufo": "psautohint --no-hint-sub --no-flex -d -c -a sources/*.ufo",
     "build-otf": "npm-run-all build-masterotfs build-vf add-blanks-otf",
     "build-masterotfs": "buildmasterotfs --mkot -r,-omitMacNames,-S,-ga,-adds -d \"sources/Wavefont.designspace\"",
-    "build-vf": "buildcff2vf --omit-mac-names -c -k -d \"sources/Wavefont.designspace\" -o ./fonts/variable/Wavefont[ROND,YALN,wght].otf",
-    "add-blanks-otf": "ttx -o ./fonts/variable/Wavefont[ROND,YALN,wght].otf -m ./fonts/variable/Wavefont[ROND,YALN,wght].otf sources/cmap.ttx",
-    "add-blanks-ttf": "ttx -o ./fonts/variable/Wavefont[ROND,YALN,wght].ttf -m ./fonts/variable/Wavefont[ROND,YALN,wght].ttf sources/cmap.ttx",
-    "build-ttf": "fontmake -m \"sources/Wavefont.designspace\" -o variable --output-path ./fonts/variable/Wavefont[ROND,YALN,wght].ttf --validate-ufo --round-instances --expand-features-to-instances --autohint && npm run add-blanks-ttf",
-    "build-woff2": "fonttools ttLib.woff2 compress ./fonts/variable/Wavefont[ROND,YALN,wght].ttf -o ./fonts/variable/Wavefont[ROND,YALN,wght].woff2",
-    "subroutinize-otf": "shx cp ./fonts/variable/Wavefont[ROND,YALN,wght].otf ./fonts/variable/Wavefont[ROND,YALN,wght].min.otf && tx -cff2 +S +b -o ./table.CFF2 -f ./fonts/variable/Wavefont[ROND,YALN,wght].otf && sfntedit -a CFF2=./table.CFF2 ./fonts/variable/Wavefont[ROND,YALN,wght].min.otf"
+    "build-vf": "buildcff2vf --omit-mac-names -c -k -d \"sources/Wavefont.designspace\" -o ./fonts/variable/Wavefont[ROND,YELA,wght].otf",
+    "add-blanks-otf": "ttx -o ./fonts/variable/Wavefont[ROND,YELA,wght].otf -m ./fonts/variable/Wavefont[ROND,YELA,wght].otf sources/cmap.ttx",
+    "add-blanks-ttf": "ttx -o ./fonts/variable/Wavefont[ROND,YELA,wght].ttf -m ./fonts/variable/Wavefont[ROND,YELA,wght].ttf sources/cmap.ttx",
+    "build-ttf": "fontmake -m \"sources/Wavefont.designspace\" -o variable --output-path ./fonts/variable/Wavefont[ROND,YELA,wght].ttf --validate-ufo --round-instances --expand-features-to-instances --autohint && npm run add-blanks-ttf",
+    "build-woff2": "fonttools ttLib.woff2 compress ./fonts/variable/Wavefont[ROND,YELA,wght].ttf -o ./fonts/variable/Wavefont[ROND,YELA,wght].woff2",
+    "subroutinize-otf": "shx cp ./fonts/variable/Wavefont[ROND,YELA,wght].otf ./fonts/variable/Wavefont[ROND,YELA,wght].min.otf && tx -cff2 +S +b -o ./table.CFF2 -f ./fonts/variable/Wavefont[ROND,YELA,wght].otf && sfntedit -a CFF2=./table.CFF2 ./fonts/variable/Wavefont[ROND,YELA,wght].min.otf"
   },
   "repository": {
     "type": "git",

@@ -2,7 +2,7 @@
 <designspace format="3">
     <axes>
         <axis default="0" minimum="0" maximum="100" name="Roundness" tag="ROND"/>
-        <axis default="-100" minimum="-100" maximum="100" name="Y Alignment" tag="YALN">
+        <axis default="-100" minimum="-100" maximum="100" name="Y Alignment" tag="YELA">
             <map input="-100" output="0"/>
             <map input="100" output="1"/>
         </axis>

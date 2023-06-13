@@ -5,7 +5,7 @@ sources:
 familyName: Wavefont
 axisOrder:
   - ROND
-  - YALN
+  - YELA
   - wght
 stat:
   - name: Round
@@ -15,7 +15,7 @@ stat:
       value: 100
       flags: 2
   - name: Y Alignment
-    tag: YALN
+    tag: YELA
     values:
     - name: Default
       value: 0
