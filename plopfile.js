@@ -51,9 +51,9 @@ function alias(value, char) {
 
 // axes definition, per https://github.com/dy/wavefont/issues/42
 const AXES = {
-  roundness: {name: 'Roundness', tag: 'ROND', min: 0, max: 100, default: 0},
+  roundness: {name: 'Roundness', tag: 'ROND', min: 0, max: 100, default: 100},
   weight: {name: 'Weight', tag: 'wght', min: 1, max: 400, default: 400},
-  align: {name: 'Y Alignment', tag: 'YELA', min: 0, max: 1, default: 0}
+  align: {name: 'Vertical Element Alignment', tag: 'YELA', min: 0, max: 1, default: 0}
 }
 
 // create masters
@@ -101,7 +101,7 @@ module.exports = function (plop) {
       // int 12.3 → 12
       plop.setHelper('int', v => v.toFixed(0));
 
-      // align -> Y Alignment
+      // align -> Vertical Element Alignment
       plop.setHelper('axisName', v => AXES[v].name);
 
       // {{#times N}}{{@index}}{{/times}}

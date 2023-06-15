@@ -8,13 +8,13 @@ axisOrder:
   - YELA
   - wght
 stat:
-  - name: Round
+  - name: Roundness
     tag: ROND
     values:
     - name: Default
       value: 100
       flags: 2
-  - name: Y Alignment
+  - name: Vertical Element Alignment
     tag: YELA
     values:
     - name: Default
