@@ -55,7 +55,7 @@ Tag | Range | Default | Meaning
 To adjust axes via CSS:
 ```css
 .wavefont {
-  font-variation-settings: 'wght' var(--wght, 40), 'ROND' var(--rond, 0), 'YELA' var(--align, 0);`
+  font-variation-settings: 'wght' var(--wght, 40), 'ROND' var(--rond, 0), 'YELA' var(--align, 0);
   letter-spacing: 1ch; /* 1ch unit === 1 bar width */
 }
 ```
