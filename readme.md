@@ -52,9 +52,13 @@ Tag | Range | Default | Meaning
 `ROND` | _0_-_100_ | 100 | Border radius, or roundness (percent).
 `YELA` | _-100_-_100_ | -1-- | Alignment: bottom, center or top.
 
-To adjust axes via CSS: `font-variation-settings: 'wght' var(--wght, 40), 'ROND' var(--rond, 0), 'YELA' var(--align, 0);`
-
-_Hint_: `letter-spacing` CSS property with `ch` units is useful to adjust distance between bars, 1ch === 1 bar width.
+To adjust axes via CSS:
+```css
+.wavefont {
+  font-variation-settings: 'wght' var(--wght, 40), 'ROND' var(--rond, 0), 'YELA' var(--align, 0);`
+  letter-spacing: 1ch; /* 1ch unit === 1 bar width */
+}
+```
 
 ## Features
 
