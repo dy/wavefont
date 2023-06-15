@@ -46,13 +46,15 @@ Wavefont bars correspond to values from 0 to 100, assigned to different characte
 
 ## Variable axes
 
-Tag | Range | Meaning
----|---|---
-`wght` | _1_-_400_ | Bar width, or boldness (in upm).
-`ROND` | _0_-_100_ | Border radius, or roundness (percent).
-`YELA` | _-100_-_+100_ | Alignment: bottom, center or top.
+Tag | Range | Default | Meaning
+---|---|---|---
+`wght` | _1_-_400_ | 400 | Bar width, or boldness (in upm).
+`ROND` | _0_-_100_ | 100 | Border radius, or roundness (percent).
+`YELA` | _-100_-_100_ | -1-- | Alignment: bottom, center or top.
 
-`letter-spacing` CSS property with `ch` units is useful to adjust distance between bars, 1ch === 1 bar width.
+To adjust axes via CSS: `font-variation-settings: 'wght' var(--wght, 40), 'ROND' var(--rond, 0), 'YELA' var(--align, 0);`
+
+_Hint_: `letter-spacing` CSS property with `ch` units is useful to adjust distance between bars, 1ch === 1 bar width.
 
 ## Features
 
