@@ -70,55 +70,55 @@ const MASTERS = {
 }
 
 module.exports = function (plop) {
+  const font = FONTFACE, axes = AXES, masters = MASTERS
+
+  // convert value to units-per-em (0-100 → 0-upm)
+  const upm = (v) => (UPM * v / font.max)
+  // int to hex
+  const hex = (v) => v.toString(16).toUpperCase()
+  // int to u0000 form
+  const uni = (v) => (Array.isArray(v) ? v : [v]).map(v => `u${hex(parseInt(v)).padStart(4,0)}`).join(',')
+
+  // uni 1 → uni0001
+  plop.setHelper('uni', uni);
+
+  // upm 12 → 120 (value to upm)
+  plop.setHelper('upm', upm);
+
+  // hex 12 -> C
+  plop.setHelper('hex', hex);
+
+  // sub 1 2 → -1
+  plop.setHelper('sub', (a,b) => a-b);
+
+  // half 1 → .5
+  plop.setHelper('half', (a) => a*.5);
+
+  // int 12.3 → 12
+  plop.setHelper('int', v => v.toFixed(0));
+
+  // align -> Vertical Element Alignment
+  plop.setHelper('axisName', v => AXES[v].name);
+
+  // {{#times N}}{{@index}}{{/times}}
+  plop.setHelper('times', function(n, block) {
+    var accum = '';
+    for(var i = 0; i < n; ++i) {
+        block.data.index = i;
+        block.data.first = i === 0;
+        block.data.last = i === (n - 1);
+        accum += block.fn(this);
+    }
+    return accum;
+  });
+
+  // clip values are more horizontal than vertical - need alternative glyph
+  const clips = font.values.filter((c, v) => upm(v) < AXES.weight.max);
+
 	plop.setGenerator('build-ufo', {
     description: 'Build font-face UFOs',
     prompts: [],
 		actions: ({}) => {
-      const font = FONTFACE, axes = AXES, masters = MASTERS
-
-      // convert value to units-per-em (0-100 → 0-upm)
-      const upm = (v) => (UPM * v / font.max)
-      // int to hex
-      const hex = (v) => v.toString(16).toUpperCase()
-      // int to u0000 form
-      const uni = (v) => (Array.isArray(v) ? v : [v]).map(v => `u${hex(parseInt(v)).padStart(4,0)}`).join(',')
-
-      // uni 1 → uni0001
-      plop.setHelper('uni', uni);
-
-      // upm 12 → 120 (value to upm)
-      plop.setHelper('upm', upm);
-
-      // hex 12 -> C
-      plop.setHelper('hex', hex);
-
-      // sub 1 2 → -1
-      plop.setHelper('sub', (a,b) => a-b);
-
-      // half 1 → .5
-      plop.setHelper('half', (a) => a*.5);
-
-      // int 12.3 → 12
-      plop.setHelper('int', v => v.toFixed(0));
-
-      // align -> Vertical Element Alignment
-      plop.setHelper('axisName', v => AXES[v].name);
-
-      // {{#times N}}{{@index}}{{/times}}
-      plop.setHelper('times', function(n, block) {
-        var accum = '';
-        for(var i = 0; i < n; ++i) {
-            block.data.index = i;
-            block.data.first = i === 0;
-            block.data.last = i === (n - 1);
-            accum += block.fn(this);
-        }
-        return accum;
-      });
-
-      // clip values are more horizontal than vertical - need alternative glyph
-      const clips = font.values.filter((c, v) => upm(v) < AXES.weight.max);
-
       return [
         // populate source skeleton
         {
@@ -131,112 +131,112 @@ module.exports = function (plop) {
         },
         ...Object.keys(masters).map(name => master({name, ...masters[name]})).flat()
       ]
-
-      // actions to build one master file
-      function master({name, weight, roundness, align}){
-        const radius = roundness / 2
-        const width = weight
-        const destination = `sources/${font.name}-${name}.ufo`
-
-        return [
-          // ufo skeleton
-          {
-            type: 'addMany',
-            force: true,
-            destination: `${destination}/`,
-            base: '_sources/master.ufo',
-            templateFiles: '_sources/master.ufo/**/*',
-            data: { width, weight, radius, axes, font, clips }
-          },
-          // caps
-          {
-            force: true,
-            type: 'add',
-            path: `${destination}/glyphs/cap.glif`,
-            template: cap({height: radius*.01*weight*2, width:0, radius: radius*.01*weight, weight, name: 'cap', align:0 })
-          },
-          // values
-          ...font.values.map((code, value) => ({
-            force: true,
-            type: 'add',
-            path: `${destination}/glyphs/_${value}.glif`,
-            template: bar({
-              value,
-              code: value ? code : null, // we make 0 value marking, aliasing it to 1, but keep 0 aliases
-              weight, width,
-              name: `_${value}`, capSize: radius*.01*weight, align, alias: font.alias[value] })
-          })),
-          // substitute glyphs lower than max weight to compensate wrong interpolation on weight clipping
-          // the logic: big weights would have big radius, but since it's limited to value, we interpolate between wrong 1 weight and max weight
-          ...clips.map((code, value) => ({
-            force: true,
-            type: 'add',
-            path: `${destination}/glyphs/_${value}.clip.glif`,
-            template: cap({height: upm(value), weight, width, name: `_${value}.clip`, radius: (radius && 1 ) * upm(value) * .5, align })
-          })).filter(Boolean)
-        ]
-      }
-
-      // cap glyph builder
-      function cap({width, weight, height, name, code, radius:R, align}) {
-        // bezier curve shift to approximate border-radius
-        const Rc = R * (1 - .55), yshift = (UPM - height) * align, l = 0, r = weight
-
-        return dedent`
-          <?xml version="1.0" encoding="UTF-8"?>
-          <glyph name="${name}" format="2">
-            <advance width="${width}"/>
-            ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
-            <outline>
-              <contour>
-                  <point x="${l}" y="${height-Rc + yshift}"/>
-
-                  <point x="${l+Rc}" y="${height + yshift}"/>
-                  <point x="${l+R}" y="${height + yshift}" type="curve" smooth="yes"/>
-                  <point x="${r-R}" y="${height + yshift}" type="line"/>
-                  <point x="${r-Rc}" y="${height + yshift}"/>
-
-                  <point x="${r}" y="${height-Rc + yshift}"/>
-                  <point x="${r}" y="${height-R + yshift}" type="curve" smooth="yes"/>
-                  <point x="${r}" y="${R + yshift}" type="line"/>
-                  <point x="${r}" y="${Rc + yshift}"/>
-
-                  <point x="${r-Rc}" y="${0 + yshift}"/>
-                  <point x="${r-R}" y="${0 + yshift}" type="curve" smooth="yes"/>
-                  <point x="${l+R}" y="${0 + yshift}" type="line"/>
-                  <point x="${l+Rc}" y="${0 + yshift}"/>
-
-                  <point x="${l}" y="${Rc + yshift}"/>
-                  <point x="${l}" y="${R + yshift}" type="curve" smooth="yes"/>
-                  <point x="${l}" y="${height-R + yshift}" type="line"/>
-              </contour>
-            </outline>
-          </glyph>
-        `
-      }
-
-      // bar glyph builder
-      function bar({value, code, width, weight, capSize, name, align, alias}) {
-        const yshift = upm((font.max - value) * align), l = 0, r = weight
-        return dedent`
-          <?xml version="1.0" encoding="UTF-8"?>
-          <glyph name="${name}" format="2">
-            <advance width="${width}"/>
-            ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
-            ${alias?.map(code => `<unicode hex="{{hex ${code} }}"/>`).join('') || ``}
-            ${value ? `<outline>
-              <component base="cap" xOffset="0" yOffset="{{int ${yshift}}}" />
-              <component base="cap" xOffset="0" yOffset="{{int ${upm(value) - capSize*2 + yshift}}}" />
-              <contour>
-                <point x="{{int ${l}}}" y="{{int ${yshift + capSize}}}" type="line"/>
-                <point x="{{int ${l}}}" y="{{int ${upm(value) + yshift - capSize}}}" type="line"/>
-                <point x="{{int ${r}}}" y="{{int ${upm(value) + yshift - capSize}}}" type="line"/>
-                <point x="{{int ${r}}}" y="{{int ${yshift + capSize}}}" type="line"/>
-              </contour>
-            </outline>` : ``}
-          </glyph>
-        `
-      }
     }
   });
+
+  // actions to build one master file
+  function master({name, weight, roundness, align}){
+    const radius = roundness / 2
+    const width = weight
+    const destination = `sources/${font.name}-${name}.ufo`
+
+    return [
+      // ufo skeleton
+      {
+        type: 'addMany',
+        force: true,
+        destination: `${destination}/`,
+        base: '_sources/master.ufo',
+        templateFiles: '_sources/master.ufo/**/*',
+        data: { width, weight, radius, axes, font, clips }
+      },
+      // caps
+      {
+        force: true,
+        type: 'add',
+        path: `${destination}/glyphs/cap.glif`,
+        template: cap({height: radius*.01*weight*2, width:0, radius: radius*.01*weight, weight, name: 'cap', align:0 })
+      },
+      // values
+      ...font.values.map((code, value) => ({
+        force: true,
+        type: 'add',
+        path: `${destination}/glyphs/_${value}.glif`,
+        template: bar({
+          value,
+          code: value ? code : null, // we make 0 value marking, aliasing it to 1, but keep 0 aliases
+          weight, width,
+          name: `_${value}`, capSize: radius*.01*weight, align, alias: font.alias[value] })
+      })),
+      // substitute glyphs lower than max weight to compensate wrong interpolation on weight clipping
+      // the logic: big weights would have big radius, but since it's limited to value, we interpolate between wrong 1 weight and max weight
+      ...clips.map((code, value) => ({
+        force: true,
+        type: 'add',
+        path: `${destination}/glyphs/_${value}.clip.glif`,
+        template: cap({height: upm(value), weight, width, name: `_${value}.clip`, radius: (radius && 1 ) * upm(value) * .5, align })
+      })).filter(Boolean)
+    ]
+  }
+
+  // cap glyph builder
+  function cap({width, weight, height, name, code, radius:R, align}) {
+    // bezier curve shift to approximate border-radius
+    const Rc = R * (1 - .55), yshift = (UPM - height) * align, l = 0, r = weight
+
+    return dedent`
+      <?xml version="1.0" encoding="UTF-8"?>
+      <glyph name="${name}" format="2">
+        <advance width="${width}"/>
+        ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
+        <outline>
+          <contour>
+              <point x="${l}" y="${height-Rc + yshift}"/>
+
+              <point x="${l+Rc}" y="${height + yshift}"/>
+              <point x="${l+R}" y="${height + yshift}" type="curve" smooth="yes"/>
+              <point x="${r-R}" y="${height + yshift}" type="line"/>
+              <point x="${r-Rc}" y="${height + yshift}"/>
+
+              <point x="${r}" y="${height-Rc + yshift}"/>
+              <point x="${r}" y="${height-R + yshift}" type="curve" smooth="yes"/>
+              <point x="${r}" y="${R + yshift}" type="line"/>
+              <point x="${r}" y="${Rc + yshift}"/>
+
+              <point x="${r-Rc}" y="${0 + yshift}"/>
+              <point x="${r-R}" y="${0 + yshift}" type="curve" smooth="yes"/>
+              <point x="${l+R}" y="${0 + yshift}" type="line"/>
+              <point x="${l+Rc}" y="${0 + yshift}"/>
+
+              <point x="${l}" y="${Rc + yshift}"/>
+              <point x="${l}" y="${R + yshift}" type="curve" smooth="yes"/>
+              <point x="${l}" y="${height-R + yshift}" type="line"/>
+          </contour>
+        </outline>
+      </glyph>
+    `
+  }
+
+  // bar glyph builder
+  function bar({value, code, width, weight, capSize, name, align, alias}) {
+    const yshift = upm((font.max - value) * align), l = 0, r = weight
+    return dedent`
+      <?xml version="1.0" encoding="UTF-8"?>
+      <glyph name="${name}" format="2">
+        <advance width="${width}"/>
+        ${code ? `<unicode hex="{{hex ${code} }}"/>` : ``}
+        ${alias?.map(code => `<unicode hex="{{hex ${code} }}"/>`).join('') || ``}
+        ${value ? `<outline>
+          <component base="cap" xOffset="0" yOffset="{{int ${yshift}}}" />
+          <component base="cap" xOffset="0" yOffset="{{int ${upm(value) - capSize*2 + yshift}}}" />
+          <contour>
+            <point x="{{int ${l}}}" y="{{int ${yshift + capSize}}}" type="line"/>
+            <point x="{{int ${l}}}" y="{{int ${upm(value) + yshift - capSize}}}" type="line"/>
+            <point x="{{int ${r}}}" y="{{int ${upm(value) + yshift - capSize}}}" type="line"/>
+            <point x="{{int ${r}}}" y="{{int ${yshift + capSize}}}" type="line"/>
+          </contour>
+        </outline>` : ``}
+      </glyph>
+    `
+  }
 }
