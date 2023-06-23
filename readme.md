@@ -4,7 +4,7 @@ A typeface for rendering data: waveforms, spectrums, diagrams, bars etc.
 
 <a href="https://dy.github.io/wavefont"><img src="./preview.png" width="240px"/></a>
 
-[**Wavearea**](https://dy.github.io/wavearea?src=https://cdn.freesound.org/previews/147/147582_1728127-lq.mp3)&nbsp;&nbsp;•&nbsp;&nbsp;[**Playground**](https://dy.github.io/wavefont/out)&nbsp;&nbsp;•&nbsp;&nbsp;[**V-fonts**](https://v-fonts.com/fonts/wavefont)&nbsp;&nbsp;•&nbsp;&nbsp;[**Test**](https://dy.github.io/wavefont/out/fontbakery/fontbakery-report)
+[**Wavearea**](https://dy.github.io/wavearea?src=https://cdn.freesound.org/previews/147/147582_1728127-lq.mp3)&nbsp;&nbsp;•&nbsp;&nbsp;[**Playground**](https://dy.github.io/wavefont/scripts)&nbsp;&nbsp;•&nbsp;&nbsp;[**V-fonts**](https://v-fonts.com/fonts/wavefont)&nbsp;&nbsp;•&nbsp;&nbsp;[**Test**](https://dy.github.io/wavefont/out/fontbakery/fontbakery-report)
 
 
 ## Usage
@@ -104,4 +104,4 @@ wf(0, 1, 50, 99, 127, ...) // ĀāĲţŤ...
 * [Designspace XML spec](https://github.com/fonttools/fonttools/tree/main/Doc/source/designspaceLib#document-xml-structure) − human-readable format for describing variable fonts.
 * [Adobe Blank](https://github.com/adobe-fonts/adobe-blank-vf) − blank characters variable font.
 
-<p align="center"><a href="https://github.com/krsnzd/license/">🕉</a><p>
+<p align="center"><a href="https://github.com/krishnized/license/">🕉</a><p>

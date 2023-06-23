@@ -136,7 +136,7 @@ module.exports = function (plop) {
       function master({name, weight, roundness, align}){
         const radius = roundness / 2
         const width = weight
-        const destination = `sources/${font.name}-${name.replace(" ","")}.ufo`
+        const destination = `sources/${font.name}-${name}.ufo`
 
         return [
           // ufo skeleton
