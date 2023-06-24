@@ -1,4 +1,4 @@
-# wavefont
+# wavefont [![build font](https://github.com/dy/wavefont/actions/workflows/build.yaml/badge.svg)](https://github.com/dy/wavefont/actions/workflows/build.yaml)
 
 A typeface for rendering data: waveforms, spectrums, diagrams, bars etc.
 

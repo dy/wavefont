@@ -1,9 +1,9 @@
 .notdef	.notdef
 
-up10 up10 uni0302
-up up uni0301
-down down uni0300
-down10 down10 uni030C
+up10 up10 u0302
+up up u0301
+down down u0300
+down10 down10 u030C
 cap cap
 
 {{#each font.values as |code value|}}
