@@ -2,15 +2,15 @@
 <glyph name="_6" format="2">
 	<unicode hex="0106"/>
 	<unicode hex="0064"/>
-	<advance width="4"/>
+	<advance width="5"/>
 	<outline>
 		<component base="cap" yOffset="940"/>
-		<component base="cap" yOffset="996"/>
+		<component base="cap" yOffset="995"/>
 		<contour>
-			<point x="0" y="942" type="line"/>
+			<point x="0" y="943" type="line"/>
 			<point x="0" y="998" type="line"/>
-			<point x="4" y="998" type="line"/>
-			<point x="4" y="942" type="line"/>
+			<point x="5" y="998" type="line"/>
+			<point x="5" y="943" type="line"/>
 		</contour>
 	</outline>
 </glyph>

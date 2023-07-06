@@ -7,232 +7,147 @@
             <map input="100" output="1"/>
         </axis>
         <axis default="100" minimum="100" maximum="900" name="Weight" tag="wght">
-            <map input="100" output="4"/>
+            <map input="100" output="5"/>
             <!-- We add non-linearity to mapping -->
             <map input="400" output="54"/>
-            <map input="700" output="204"/>
-            <map input="900" output="404"/>
+            <map input="900" output="200"/>
         </axis>
     </axes>
     <rules>
         <rule name="_0.clip">
-            <conditionset><condition minimum="0" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="0" maximum="200" name="Weight" /></conditionset>
             <sub name="_0" with="_0.clip"/>
         </rule>
         <rule name="_1.clip">
-            <conditionset><condition minimum="10" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="10" maximum="200" name="Weight" /></conditionset>
             <sub name="_1" with="_1.clip"/>
         </rule>
         <rule name="_2.clip">
-            <conditionset><condition minimum="20" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="20" maximum="200" name="Weight" /></conditionset>
             <sub name="_2" with="_2.clip"/>
         </rule>
         <rule name="_3.clip">
-            <conditionset><condition minimum="30" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="30" maximum="200" name="Weight" /></conditionset>
             <sub name="_3" with="_3.clip"/>
         </rule>
         <rule name="_4.clip">
-            <conditionset><condition minimum="40" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="40" maximum="200" name="Weight" /></conditionset>
             <sub name="_4" with="_4.clip"/>
         </rule>
         <rule name="_5.clip">
-            <conditionset><condition minimum="50" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="50" maximum="200" name="Weight" /></conditionset>
             <sub name="_5" with="_5.clip"/>
         </rule>
         <rule name="_6.clip">
-            <conditionset><condition minimum="60" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="60" maximum="200" name="Weight" /></conditionset>
             <sub name="_6" with="_6.clip"/>
         </rule>
         <rule name="_7.clip">
-            <conditionset><condition minimum="70" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="70" maximum="200" name="Weight" /></conditionset>
             <sub name="_7" with="_7.clip"/>
         </rule>
         <rule name="_8.clip">
-            <conditionset><condition minimum="80" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="80" maximum="200" name="Weight" /></conditionset>
             <sub name="_8" with="_8.clip"/>
         </rule>
         <rule name="_9.clip">
-            <conditionset><condition minimum="90" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="90" maximum="200" name="Weight" /></conditionset>
             <sub name="_9" with="_9.clip"/>
         </rule>
         <rule name="_10.clip">
-            <conditionset><condition minimum="100" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="100" maximum="200" name="Weight" /></conditionset>
             <sub name="_10" with="_10.clip"/>
         </rule>
         <rule name="_11.clip">
-            <conditionset><condition minimum="110" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="110" maximum="200" name="Weight" /></conditionset>
             <sub name="_11" with="_11.clip"/>
         </rule>
         <rule name="_12.clip">
-            <conditionset><condition minimum="120" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="120" maximum="200" name="Weight" /></conditionset>
             <sub name="_12" with="_12.clip"/>
         </rule>
         <rule name="_13.clip">
-            <conditionset><condition minimum="130" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="130" maximum="200" name="Weight" /></conditionset>
             <sub name="_13" with="_13.clip"/>
         </rule>
         <rule name="_14.clip">
-            <conditionset><condition minimum="140" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="140" maximum="200" name="Weight" /></conditionset>
             <sub name="_14" with="_14.clip"/>
         </rule>
         <rule name="_15.clip">
-            <conditionset><condition minimum="150" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="150" maximum="200" name="Weight" /></conditionset>
             <sub name="_15" with="_15.clip"/>
         </rule>
         <rule name="_16.clip">
-            <conditionset><condition minimum="160" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="160" maximum="200" name="Weight" /></conditionset>
             <sub name="_16" with="_16.clip"/>
         </rule>
         <rule name="_17.clip">
-            <conditionset><condition minimum="170" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="170" maximum="200" name="Weight" /></conditionset>
             <sub name="_17" with="_17.clip"/>
         </rule>
         <rule name="_18.clip">
-            <conditionset><condition minimum="180" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="180" maximum="200" name="Weight" /></conditionset>
             <sub name="_18" with="_18.clip"/>
         </rule>
         <rule name="_19.clip">
-            <conditionset><condition minimum="190" maximum="404" name="Weight" /></conditionset>
+            <conditionset><condition minimum="190" maximum="200" name="Weight" /></conditionset>
             <sub name="_19" with="_19.clip"/>
-        </rule>
-        <rule name="_20.clip">
-            <conditionset><condition minimum="200" maximum="404" name="Weight" /></conditionset>
-            <sub name="_20" with="_20.clip"/>
-        </rule>
-        <rule name="_21.clip">
-            <conditionset><condition minimum="210" maximum="404" name="Weight" /></conditionset>
-            <sub name="_21" with="_21.clip"/>
-        </rule>
-        <rule name="_22.clip">
-            <conditionset><condition minimum="220" maximum="404" name="Weight" /></conditionset>
-            <sub name="_22" with="_22.clip"/>
-        </rule>
-        <rule name="_23.clip">
-            <conditionset><condition minimum="230" maximum="404" name="Weight" /></conditionset>
-            <sub name="_23" with="_23.clip"/>
-        </rule>
-        <rule name="_24.clip">
-            <conditionset><condition minimum="240" maximum="404" name="Weight" /></conditionset>
-            <sub name="_24" with="_24.clip"/>
-        </rule>
-        <rule name="_25.clip">
-            <conditionset><condition minimum="250" maximum="404" name="Weight" /></conditionset>
-            <sub name="_25" with="_25.clip"/>
-        </rule>
-        <rule name="_26.clip">
-            <conditionset><condition minimum="260" maximum="404" name="Weight" /></conditionset>
-            <sub name="_26" with="_26.clip"/>
-        </rule>
-        <rule name="_27.clip">
-            <conditionset><condition minimum="270" maximum="404" name="Weight" /></conditionset>
-            <sub name="_27" with="_27.clip"/>
-        </rule>
-        <rule name="_28.clip">
-            <conditionset><condition minimum="280" maximum="404" name="Weight" /></conditionset>
-            <sub name="_28" with="_28.clip"/>
-        </rule>
-        <rule name="_29.clip">
-            <conditionset><condition minimum="290" maximum="404" name="Weight" /></conditionset>
-            <sub name="_29" with="_29.clip"/>
-        </rule>
-        <rule name="_30.clip">
-            <conditionset><condition minimum="300" maximum="404" name="Weight" /></conditionset>
-            <sub name="_30" with="_30.clip"/>
-        </rule>
-        <rule name="_31.clip">
-            <conditionset><condition minimum="310" maximum="404" name="Weight" /></conditionset>
-            <sub name="_31" with="_31.clip"/>
-        </rule>
-        <rule name="_32.clip">
-            <conditionset><condition minimum="320" maximum="404" name="Weight" /></conditionset>
-            <sub name="_32" with="_32.clip"/>
-        </rule>
-        <rule name="_33.clip">
-            <conditionset><condition minimum="330" maximum="404" name="Weight" /></conditionset>
-            <sub name="_33" with="_33.clip"/>
-        </rule>
-        <rule name="_34.clip">
-            <conditionset><condition minimum="340" maximum="404" name="Weight" /></conditionset>
-            <sub name="_34" with="_34.clip"/>
-        </rule>
-        <rule name="_35.clip">
-            <conditionset><condition minimum="350" maximum="404" name="Weight" /></conditionset>
-            <sub name="_35" with="_35.clip"/>
-        </rule>
-        <rule name="_36.clip">
-            <conditionset><condition minimum="360" maximum="404" name="Weight" /></conditionset>
-            <sub name="_36" with="_36.clip"/>
-        </rule>
-        <rule name="_37.clip">
-            <conditionset><condition minimum="370" maximum="404" name="Weight" /></conditionset>
-            <sub name="_37" with="_37.clip"/>
-        </rule>
-        <rule name="_38.clip">
-            <conditionset><condition minimum="380" maximum="404" name="Weight" /></conditionset>
-            <sub name="_38" with="_38.clip"/>
-        </rule>
-        <rule name="_39.clip">
-            <conditionset><condition minimum="390" maximum="404" name="Weight" /></conditionset>
-            <sub name="_39" with="_39.clip"/>
-        </rule>
-        <rule name="_40.clip">
-            <conditionset><condition minimum="400" maximum="404" name="Weight" /></conditionset>
-            <sub name="_40" with="_40.clip"/>
         </rule>
     </rules>
     <sources>
         <source familyname="Wavefont" filename="Wavefont-wmin,rmin,amin.ufo" name="Master_wmin,rmin,amin" stylename="wmin,rmin,amin">
             <location>
-                <dimension name="Weight" xvalue="4" />
+                <dimension name="Weight" xvalue="5" />
                 <dimension name="Roundness" xvalue="0" />
                 <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
         </source>
         <source familyname="Wavefont" filename="Wavefont-wmin,rmax,amin.ufo" name="Master_wmin,rmax,amin" stylename="wmin,rmax,amin">
             <location>
-                <dimension name="Weight" xvalue="4" />
+                <dimension name="Weight" xvalue="5" />
                 <dimension name="Roundness" xvalue="100" />
                 <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
         </source>
         <source familyname="Wavefont" filename="Wavefont-wmax,rmin,amin.ufo" name="Master_wmax,rmin,amin" stylename="wmax,rmin,amin">
             <location>
-                <dimension name="Weight" xvalue="404" />
+                <dimension name="Weight" xvalue="200" />
                 <dimension name="Roundness" xvalue="0" />
                 <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
         </source>
         <source familyname="Wavefont" filename="Wavefont-wmax,rmax,amin.ufo" name="Master_wmax,rmax,amin" stylename="wmax,rmax,amin">
             <location>
-                <dimension name="Weight" xvalue="404" />
+                <dimension name="Weight" xvalue="200" />
                 <dimension name="Roundness" xvalue="100" />
                 <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
         </source>
         <source familyname="Wavefont" filename="Wavefont-wmin,rmin,amax.ufo" name="Master_wmin,rmin,amax" stylename="wmin,rmin,amax">
             <location>
-                <dimension name="Weight" xvalue="4" />
+                <dimension name="Weight" xvalue="5" />
                 <dimension name="Roundness" xvalue="0" />
                 <dimension name="Vertical Element Alignment" xvalue="1" />
             </location>
         </source>
         <source familyname="Wavefont" filename="Wavefont-wmin,rmax,amax.ufo" name="Master_wmin,rmax,amax" stylename="wmin,rmax,amax">
             <location>
-                <dimension name="Weight" xvalue="4" />
+                <dimension name="Weight" xvalue="5" />
                 <dimension name="Roundness" xvalue="100" />
                 <dimension name="Vertical Element Alignment" xvalue="1" />
             </location>
         </source>
         <source familyname="Wavefont" filename="Wavefont-wmax,rmin,amax.ufo" name="Master_wmax,rmin,amax" stylename="wmax,rmin,amax">
             <location>
-                <dimension name="Weight" xvalue="404" />
+                <dimension name="Weight" xvalue="200" />
                 <dimension name="Roundness" xvalue="0" />
                 <dimension name="Vertical Element Alignment" xvalue="1" />
             </location>
         </source>
         <source familyname="Wavefont" filename="Wavefont-wmax,rmax,amax.ufo" name="Master_wmax,rmax,amax" stylename="wmax,rmax,amax">
             <location>
-                <dimension name="Weight" xvalue="404" />
+                <dimension name="Weight" xvalue="200" />
                 <dimension name="Roundness" xvalue="100" />
                 <dimension name="Vertical Element Alignment" xvalue="1" />
             </location>
@@ -241,21 +156,21 @@
     <instances>
         <instance filename="instance_ufo/Wavefont-Thin.ufo" name="Wavefont Thin" familyname="Wavefont" stylename="Thin">
             <location>
-                <dimension name="Weight" xvalue="4" />
+                <dimension name="Weight" xvalue="5" />
                 <dimension name="Roundness" xvalue="100" />
                 <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-ExtraLight.ufo" name="Wavefont ExtraLight" familyname="Wavefont" stylename="ExtraLight">
             <location>
-                <dimension name="Weight" xvalue="10" />
+                <dimension name="Weight" xvalue="16" />
                 <dimension name="Roundness" xvalue="100" />
                 <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-Light.ufo" name="Wavefont Light" familyname="Wavefont" stylename="Light">
             <location>
-                <dimension name="Weight" xvalue="24" />
+                <dimension name="Weight" xvalue="33" />
                 <dimension name="Roundness" xvalue="100" />
                 <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
@@ -269,35 +184,35 @@
         </instance>
         <instance filename="instance_ufo/Wavefont-Medium.ufo" name="Wavefont Medium" familyname="Wavefont" stylename="Medium">
             <location>
-                <dimension name="Weight" xvalue="108" />
+                <dimension name="Weight" xvalue="175" />
                 <dimension name="Roundness" xvalue="100" />
                 <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-SemiBold.ufo" name="Wavefont SemiBold" familyname="Wavefont" stylename="SemiBold">
             <location>
-                <dimension name="Weight" xvalue="160" />
+                <dimension name="Weight" xvalue="100" />
                 <dimension name="Roundness" xvalue="100" />
                 <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-Bold.ufo" name="Wavefont Bold" familyname="Wavefont" stylename="Bold">
             <location>
-                <dimension name="Weight" xvalue="228" />
+                <dimension name="Weight" xvalue="128" />
                 <dimension name="Roundness" xvalue="100" />
                 <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-ExtraBold.ufo" name="Wavefont ExtraBold" familyname="Wavefont" stylename="ExtraBold">
             <location>
-                <dimension name="Weight" xvalue="304" />
+                <dimension name="Weight" xvalue="160" />
                 <dimension name="Roundness" xvalue="100" />
                 <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-Black.ufo" name="Wavefont Black" familyname="Wavefont" stylename="Black">
             <location>
-                <dimension name="Weight" xvalue="404" />
+                <dimension name="Weight" xvalue="200" />
                 <dimension name="Roundness" xvalue="100" />
                 <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
