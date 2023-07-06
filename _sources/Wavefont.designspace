@@ -6,7 +6,13 @@
             <map input="-100" output="0"/>
             <map input="100" output="1"/>
         </axis>
-        <axis default="400" minimum="1" maximum="400" name="Weight" tag="wght"/>
+        <axis default="100" minimum="100" maximum="900" name="Weight" tag="wght">
+            <map input="100" output="{{axes.weight.min}}"/>
+            <!-- We add non-linearity to mapping -->
+            <map input="400" output="54"/>
+            <map input="700" output="204"/>
+            <map input="900" output="{{axes.weight.max}}"/>
+        </axis>
     </axes>
     <rules>{{#each clips as |code value| }}
         <rule name="_{{ value }}.clip">
@@ -28,30 +34,65 @@
     <instances>
         <instance filename="instance_ufo/Wavefont-Thin.ufo" name="Wavefont Thin" familyname="Wavefont" stylename="Thin">
             <location>
-                <dimension name="Weight" xvalue="100" />
+                <dimension name="Weight" xvalue="4" />
                 <dimension name="Roundness" xvalue="100" />
-                <dimension name="Vertical Element Alignment" xvalue="0.5" />
+                <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-ExtraLight.ufo" name="Wavefont ExtraLight" familyname="Wavefont" stylename="ExtraLight">
             <location>
-                <dimension name="Weight" xvalue="200" />
+                <dimension name="Weight" xvalue="10" />
                 <dimension name="Roundness" xvalue="100" />
-                <dimension name="Vertical Element Alignment" xvalue="0.5" />
+                <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-Light.ufo" name="Wavefont Light" familyname="Wavefont" stylename="Light">
             <location>
-                <dimension name="Weight" xvalue="300" />
+                <dimension name="Weight" xvalue="24" />
                 <dimension name="Roundness" xvalue="100" />
-                <dimension name="Vertical Element Alignment" xvalue="0.5" />
+                <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
         </instance>
         <instance filename="instance_ufo/Wavefont-Regular.ufo" name="Wavefont Regular" familyname="Wavefont" stylename="Regular">
             <location>
-                <dimension name="Weight" xvalue="400" />
+                <dimension name="Weight" xvalue="54" />
                 <dimension name="Roundness" xvalue="100" />
-                <dimension name="Vertical Element Alignment" xvalue="0.5" />
+                <dimension name="Vertical Element Alignment" xvalue="0" />
+            </location>
+        </instance>
+        <instance filename="instance_ufo/Wavefont-Medium.ufo" name="Wavefont Medium" familyname="Wavefont" stylename="Medium">
+            <location>
+                <dimension name="Weight" xvalue="108" />
+                <dimension name="Roundness" xvalue="100" />
+                <dimension name="Vertical Element Alignment" xvalue="0" />
+            </location>
+        </instance>
+        <instance filename="instance_ufo/Wavefont-SemiBold.ufo" name="Wavefont SemiBold" familyname="Wavefont" stylename="SemiBold">
+            <location>
+                <dimension name="Weight" xvalue="160" />
+                <dimension name="Roundness" xvalue="100" />
+                <dimension name="Vertical Element Alignment" xvalue="0" />
+            </location>
+        </instance>
+        <instance filename="instance_ufo/Wavefont-Bold.ufo" name="Wavefont Bold" familyname="Wavefont" stylename="Bold">
+            <location>
+                <dimension name="Weight" xvalue="228" />
+                <dimension name="Roundness" xvalue="100" />
+                <dimension name="Vertical Element Alignment" xvalue="0" />
+            </location>
+        </instance>
+        <instance filename="instance_ufo/Wavefont-ExtraBold.ufo" name="Wavefont ExtraBold" familyname="Wavefont" stylename="ExtraBold">
+            <location>
+                <dimension name="Weight" xvalue="304" />
+                <dimension name="Roundness" xvalue="100" />
+                <dimension name="Vertical Element Alignment" xvalue="0" />
+            </location>
+        </instance>
+        <instance filename="instance_ufo/Wavefont-Black.ufo" name="Wavefont Black" familyname="Wavefont" stylename="Black">
+            <location>
+                <dimension name="Weight" xvalue="404" />
+                <dimension name="Roundness" xvalue="100" />
+                <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
         </instance>
     </instances>

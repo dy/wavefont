@@ -48,7 +48,7 @@ Wavefont bars correspond to values from 0 to 100, assigned to different characte
 
 Tag | Range | Default | Meaning
 ---|---|---|---
-`wght` | _1_-_400_ | 400 | Bar width, or boldness (in upm).
+`wght` | _100_-_900_ | 400 | Bar width, or boldness (in upm).
 `ROND` | _0_-_100_ | 100 | Border radius, or roundness (percent).
 `YELA` | _-100_-_100_ | -1-- | Alignment: bottom, center or top.
 

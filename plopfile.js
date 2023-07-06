@@ -51,22 +51,22 @@ function alias(value, char) {
 
 // axes definition, per https://github.com/dy/wavefont/issues/42
 const AXES = {
-  roundness: {name: 'Roundness', tag: 'ROND', min: 0, max: 100, default: 100},
-  weight: {name: 'Weight', tag: 'wght', min: 1, max: 400, default: 400},
-  align: {name: 'Vertical Element Alignment', tag: 'YELA', min: 0, max: 1, default: 0}
+  roundness: {name: 'Roundness', tag: 'ROND', min: 0, max: 100},
+  weight: {name: 'Weight', tag: 'wght', min: 4, max: 404},
+  align: {name: 'Vertical Element Alignment', tag: 'YELA', min: 0, max: 1}
 }
 
 // create masters
 const MASTERS = {
-  'w1r0a0': {weight: AXES.weight.min, roundness: AXES.roundness.min, align: AXES.align.min},
-  'w1r100a0': {weight: AXES.weight.min, roundness: AXES.roundness.max, align: AXES.align.min},
-  'w400r0a0': {weight: AXES.weight.max, roundness: AXES.roundness.min, align: AXES.align.min},
-  'w400r100a0': {weight: AXES.weight.max, roundness: AXES.roundness.max, align: AXES.align.min},
+  'wmin,rmin,amin': {weight: AXES.weight.min, roundness: AXES.roundness.min, align: AXES.align.min},
+  'wmin,rmax,amin': {weight: AXES.weight.min, roundness: AXES.roundness.max, align: AXES.align.min},
+  'wmax,rmin,amin': {weight: AXES.weight.max, roundness: AXES.roundness.min, align: AXES.align.min},
+  'wmax,rmax,amin': {weight: AXES.weight.max, roundness: AXES.roundness.max, align: AXES.align.min},
 
-  'w1r0a1': {weight: AXES.weight.min, roundness: AXES.roundness.min, align: AXES.align.max},
-  'w1r100a1': {weight: AXES.weight.min, roundness: AXES.roundness.max, align: AXES.align.max},
-  'w400r0a1': {weight: AXES.weight.max, roundness: AXES.roundness.min, align: AXES.align.max},
-  'w400r100a1': {weight: AXES.weight.max, roundness: AXES.roundness.max, align: AXES.align.max}
+  'wmin,rmin,amax': {weight: AXES.weight.min, roundness: AXES.roundness.min, align: AXES.align.max},
+  'wmin,rmax,amax': {weight: AXES.weight.min, roundness: AXES.roundness.max, align: AXES.align.max},
+  'wmax,rmin,amax': {weight: AXES.weight.max, roundness: AXES.roundness.min, align: AXES.align.max},
+  'wmax,rmax,amax': {weight: AXES.weight.max, roundness: AXES.roundness.max, align: AXES.align.max}
 }
 
 module.exports = function (plop) {
