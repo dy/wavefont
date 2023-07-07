@@ -50,7 +50,7 @@ Tag | Range | Default | Meaning
 ---|---|---|---
 `wght` | _100_-_900_ | 400 | Bar width, or boldness (in upm).
 `ROND` | _0_-_100_ | 100 | Border radius, or roundness (percent).
-`YELA` | _-100_-_100_ | -1-- | Alignment: bottom, center or top.
+`YELA` | _-100_-_100_ | -100 | Alignment: bottom, center or top.
 
 To adjust axes via CSS:
 ```css
