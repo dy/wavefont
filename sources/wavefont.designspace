@@ -7,8 +7,8 @@
             <map input="100" output="1"/>
         </axis>
         <axis default="100" minimum="100" maximum="900" name="Weight" tag="wght">
-            <map input="100" output="5"/>
             <!-- We add non-linearity to mapping -->
+            <map input="100" output="5"/>
             <map input="200" output="16"/>
             <map input="300" output="33"/>
             <map input="400" output="54"/>
