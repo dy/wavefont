@@ -18,7 +18,7 @@ stat:
     tag: YELA
     values:
     - name: Default
-      value: 0
+      value: -100
       flags: 2
   - name: Weight
     tag: wght
