@@ -9,7 +9,13 @@
         <axis default="100" minimum="100" maximum="900" name="Weight" tag="wght">
             <map input="100" output="{{axes.weight.min}}"/>
             <!-- We add non-linearity to mapping -->
+            <map input="200" output="16"/>
+            <map input="300" output="33"/>
             <map input="400" output="54"/>
+            <map input="500" output="75"/>
+            <map input="600" output="100"/>
+            <map input="700" output="128"/>
+            <map input="800" output="160"/>
             <map input="900" output="{{axes.weight.max}}"/>
         </axis>
     </axes>
@@ -61,7 +67,7 @@
         </instance>
         <instance filename="instance_ufo/Wavefont-Medium.ufo" name="Wavefont Medium" familyname="Wavefont" stylename="Medium">
             <location>
-                <dimension name="Weight" xvalue="175" />
+                <dimension name="Weight" xvalue="75" />
                 <dimension name="Roundness" xvalue="100" />
                 <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
