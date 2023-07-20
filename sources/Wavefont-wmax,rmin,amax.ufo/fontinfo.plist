@@ -59,9 +59,9 @@
 		<key>openTypeOS2WinDescent</key>
 		<integer>200</integer>
 		<key>postscriptFontName</key>
-		<string>Wavefont-Regular</string>
+		<string>Wavefont-Thin</string>
 		<key>postscriptFullName</key>
-		<string>Wavefont Regular</string>
+		<string>Wavefont Thin</string>
 		<key>postscriptIsFixedPitch</key>
 		<true/>
 		<key>postscriptUnderlinePosition</key>
@@ -69,9 +69,9 @@
 		<key>postscriptUnderlineThickness</key>
 		<integer>50</integer>
 		<key>postscriptWeightName</key>
-		<string>Regular</string>
+		<string>Thin</string>
 		<key>styleName</key>
-		<string>Regular</string>
+		<string>Thin</string>
 		<key>unitsPerEm</key>
 		<integer>1000</integer>
 		<key>versionMajor</key>

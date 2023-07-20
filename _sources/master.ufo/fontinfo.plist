@@ -5,13 +5,13 @@
   <key>familyName</key>
   <string>Wavefont</string>
   <key>styleName</key>
-  <string>Regular</string>
+  <string>Thin</string>
   <key>postscriptFontName</key>
-  <string>Wavefont-Regular</string>
+  <string>Wavefont-Thin</string>
   <key>postscriptFullName</key>
-  <string>Wavefont Regular</string>
+  <string>Wavefont Thin</string>
   <key>postscriptWeightName</key>
-  <string>Regular</string>
+  <string>Thin</string>
   <key>versionMajor</key>
   <integer>{{ font.version.major }}</integer>
   <key>versionMinor</key>
