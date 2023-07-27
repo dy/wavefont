@@ -1,4 +1,4 @@
-gftools<0.9.15
+gftools>=0.9.33
 ufonormalizer>=0.6
 fontbakery>=0.8.11
 fonttools
