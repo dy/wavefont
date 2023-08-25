@@ -99,9 +99,9 @@ wf(0, 1, 50, 99, 127, ...) // ĀāĲţŤ...
 * [Google Fonts guide](https://googlefonts.github.io/gf-guide/variable.html#most-common-axes).
 * [Unified font object spec](https://unifiedfontobject.org/versions/ufo3) − unified human-readable format for storing font data.
 * [Feature file spec](https://adobe-type-tools.github.io/afdko/OpenTypeFeatureFileSpecification.html#6.h) − defining opentype font features.
-* [Unicode-table](https://unicode-table.com/) − convenient unicode table.
 * [Adobe-variable-font-prototype](https://github.com/adobe-fonts/adobe-variable-font-prototype) − example variable font.
 * [Designspace XML spec](https://github.com/fonttools/fonttools/tree/main/Doc/source/designspaceLib#document-xml-structure) − human-readable format for describing variable fonts.
 * [Adobe Blank](https://github.com/adobe-fonts/adobe-blank-vf) − blank characters variable font.
+<!-- * [Unicode-table](https://unicode-table.com/) − convenient unicode table.-->
 
 <p align="center"><a href="https://github.com/krishnized/license/">🕉</a><p>
