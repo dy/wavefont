@@ -2,10 +2,7 @@
 
 A typeface for rendering vertical bars data: waveforms, spectrums, diagrams, histograms, columns etc.
 
-<img src="./article-wavefont_1x1-1.png" width="240px"/>
-<img src="./article-wavefont_1x1-2.png" width="240px"/>
-<img src="./article-wavefont_1x1-3.png" width="240px"/>
-<img src="./article-wavefont_1x1-4.png" width="240px"/>
+<img src="./preview.png" width="240px"/>
 
 [**Playground**](https://dy.github.io/wavefont/scripts)&nbsp;&nbsp;•&nbsp;&nbsp;[**Google fonts**](https://fonts.google.com/specimen/Wavefont/tester)&nbsp;&nbsp;•&nbsp;&nbsp;[**V-fonts**](https://v-fonts.com/fonts/wavefont)&nbsp;&nbsp;•&nbsp;&nbsp;
 [**Wavearea**](https://audio-lab.github.io/wavearea?src=https://cdn.freesound.org/previews/147/147582_1728127-lq.mp3)
@@ -48,6 +45,8 @@ Wavefont bars correspond to values from 0 to 100, assigned to different characte
 * <kbd>U+0100-017F</kbd> for 0..127 values with step 1 (`char = String.fromCharCode(0x100 + value)`).
 
 ## Variable axes
+
+<img src="./article-wavefont_1x1-2.png" width="240px"/>
 
 Tag | Range | Default | Meaning
 ---|---|---|---
