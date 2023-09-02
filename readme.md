@@ -46,8 +46,6 @@ Wavefont bars correspond to values from 0 to 100, assigned to different characte
 
 ## Variable axes
 
-<img src="./article-wavefont_1x1-2.png" width="240px"/>
-
 Tag | Range | Default | Meaning
 ---|---|---|---
 `wght` | _100_-_900_ | 400 | Bar width, or boldness (in upm).
