@@ -1,6 +1,6 @@
 # wavefont [![build](https://github.com/dy/wavefont/actions/workflows/build.yaml/badge.svg)](https://github.com/dy/wavefont/actions/workflows/build.yaml)
 
-A typeface for rendering data: waveforms, spectrums, diagrams, bars etc.
+A typeface for rendering vertical bars data: waveforms, spectrums, diagrams, histograms, columns etc.
 
 <a href="https://dy.github.io/wavefont"><img src="./preview.png" width="240px"/></a>
 
