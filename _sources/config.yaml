@@ -7,6 +7,7 @@ axisOrder:
   - ROND
   - YELA
   - wght
+  - wdth
 stat:
   - name: Roundness
     tag: ROND
@@ -19,6 +20,12 @@ stat:
     values:
     - name: Default
       value: -100
+      flags: 2
+  - name: Width
+    tag: wdth
+    values:
+    - name: Default
+      value: 200
       flags: 2
   - name: Weight
     tag: wght
