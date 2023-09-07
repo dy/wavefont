@@ -10,6 +10,7 @@
     font-weight: 900;
     src: url(../fonts/variable/Wavefont[ROND\,YELA\,wght].woff2);
   }
+
   @font-face {
     font-family: blank;
     font-style: normal;
@@ -21,10 +22,13 @@
 
 <style>
   /* flex font size */
-  html {font-size: 100%;}
+  html {
+    font-size: 100%;
+  }
 
-  body{
-    margin:0; font-family: sans-serif;
+  body {
+    margin: 0;
+    font-family: sans-serif;
   }
 
   @media screen and (min-width: 320px) {
@@ -32,6 +36,7 @@
       font-size: calc(12px + 6 * ((100vw - 320px) / 680));
     }
   }
+
   @media screen and (min-width: 1000px) {
     html {
       font-size: 18px;
@@ -41,20 +46,21 @@
   :root {
     font-size: 100%/1.5;
   }
+
   a {
     color: black;
-    text-decoration-color: rgba(0,0,0,.108);
+    text-decoration-color: rgba(0, 0, 0, .108);
     text-underline-offset: .108em;
     text-underline-offset: .25em;
   }
 </style>
 
-<form id="panel" action="https://github.com/a-vis/wavefont"  onclick="event.target === this && togglePanel()">
+<form id="panel" action="https://github.com/a-vis/wavefont" onclick="event.target === this && togglePanel()">
   <script>
     let toggle = localStorage.getItem('wf:panel-toggle')
     if (toggle) panel.classList.add('folded')
-    function togglePanel(){
-      localStorage.setItem('wf:panel-toggle', panel.classList.contains('folded') ? '':'1')
+    function togglePanel() {
+      localStorage.setItem('wf:panel-toggle', panel.classList.contains('folded') ? '' : '1')
       panel.classList.toggle('folded');
     }
   </script>
@@ -72,26 +78,28 @@
         0 22.3px 17.9px rgba(49, 43, 65, 0.072),
         0 41.8px 33.4px rgba(49, 43, 65, 0.086),
         0 100px 80px rgba(49, 43, 65, 0.12);
-      border-top: .5rem solid rgba(252,252,253,.99);
-      border-left: .5rem solid rgba(238,238,240,.98);
-      border-right: .5rem solid rgba(238,238,239,.97);
-      border-bottom: .5rem solid rgba(231,231,232,.97);
-      background: rgba(238,238,239,1);
+      border-top: .5rem solid rgba(252, 252, 253, .99);
+      border-left: .5rem solid rgba(238, 238, 240, .98);
+      border-right: .5rem solid rgba(238, 238, 239, .97);
+      border-bottom: .5rem solid rgba(231, 231, 232, .97);
+      background: rgba(238, 238, 239, 1);
       z-index: 1;
       -webkit-backdrop-filter: blur(2px);
       backdrop-filter: blur(2px);
       cursor: e-resize;
-      transition: right .3s cubic-bezier(.34,.03,.26,1), bottom .3s cubic-bezier(.34,.03,.61,1);
+      transition: right .3s cubic-bezier(.34, .03, .26, 1), bottom .3s cubic-bezier(.34, .03, .61, 1);
     }
+
     #panel.folded {
       right: -21rem;
       bottom: -8rem;
       cursor: w-resize;
     }
+
     .panel-content {
       padding: 1.5rem 1.5rem 1.5rem;
       height: 100%;
-      background: linear-gradient(to bottom right, rgba(232,232,233,.35) 20%, rgba(255,255,255,.7) 180%), rgba(245,245,245,1);
+      background: linear-gradient(to bottom right, rgba(232, 232, 233, .35) 20%, rgba(255, 255, 255, .7) 180%), rgba(245, 245, 245, 1);
       display: flex;
       flex-direction: column;
       align-items: stretch;
@@ -100,6 +108,7 @@
       /* box-shadow: 0 -5px rgba(255,255,255,.75), 0 5px rgba(255,255,255,.75), -5px 0 rgba(255,255,255,.5), 5px 0 rgba(255,255,255,.5); */
       /* background: linear-gradient(to bottom, rgba(252,252,252,1), rgba(238,238,238,1)); */
     }
+
     #panel h1 {
       cursor: default;
       margin: -.1rem auto .8rem;
@@ -107,30 +116,36 @@
       font-size: 1.1rem;
       line-height: 1;
     }
+
     #panel h1 small {
       font-weight: normal;
       font-size: .66em;
     }
+
     .panel-field {
       display: flex;
       flex-direction: row;
       height: 1.75rem;
       align-items: center;
     }
+
     .panel-field label {
       flex: 3rem 0 0;
       text-align: right;
       margin-right: 1rem;
     }
+
     .panel-field input[type=range] {
       margin-top: 3px;
       flex: 1 0 0;
     }
+
     .panel-field output {
       flex: 2rem 0 0;
       margin-left: .5rem;
       font-size: smaller;
     }
+
     .panel-cta {
       align-self: center;
       margin-top: 1rem;
@@ -138,6 +153,7 @@
       flex-direction: row;
       justify-content: space-between;
     }
+
     .panel-cta button {
       margin: 0 .25rem;
       line-height: 1.5;
@@ -145,28 +161,46 @@
       display: inline-block;
     }
   </style>
-  <div class="panel-content" onclick="event.target === this && togglePanel()" >
+  <div class="panel-content" onclick="event.target === this && togglePanel()">
     <h1>
-    Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wavefont">3.3</a></small></sup>
+      Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wavefont">3.3</a></small></sup>
     </h1>
     <div class="panel-field">
-      <label for="weight"><small>Weight</small></label> <input id="weight" type="range" min="100" value="400" step="10" max="900"/>
+      <label for="weight"><small>Weight</small></label> <input id="weight" type="range" min="0" value="400" step="10"
+        max="1000" list="weights" />
+      <datalist id="weights">
+        <option>0</option>
+        <option>100</option>
+        <option>200</option>
+        <option>300</option>
+        <option>400</option>
+        <option>500</option>
+        <option>600</option>
+        <option>700</option>
+        <option>800</option>
+        <option>900</option>
+        <option>1000</option>
+      </datalist>
       <output id="weightValue"></output>
     </div>
     <div class="panel-field">
-      <label for="spacing"><small>Spacing</small></label> <input id="spacing" type="range" min="0" value="1" step=".25" max="10"/>
+      <label for="spacing"><small>Spacing</small></label> <input id="spacing" type="range" min="0" value="1" step=".25"
+        max="10" />
       <output id="spacingValue"></output>
     </div>
     <div class="panel-field">
-      <label for="roundness"><small>Round</small></label> <input id="roundness" type="range" min="0" value="100" max="100" step="1"/>
+      <label for="roundness"><small>Round</small></label> <input id="roundness" type="range" min="0" value="100"
+        max="100" step="1" />
       <output id="roundnessValue"></output>
     </div>
     <div class="panel-field">
-      <label for="align"><small>Align</small></label> <input id="align" type="range" min="-100" value="0" max="100" step="1"/>
+      <label for="align"><small>Align</small></label> <input id="align" type="range" min="-100" value="0" max="100"
+        step="1" />
       <output id="alignValue"></output>
     </div>
     <div class="panel-field">
-      <label for="size"><small>Size</small></label> <input id="size" type="range" min="5" value="100" max="200" step="1"/>
+      <label for="size"><small>Size</small></label> <input id="size" type="range" min="5" value="100" max="200"
+        step="1" />
       <output id="sizeValue"></output>
     </div>
   </div>
@@ -176,10 +210,14 @@
 <main id="waveareas">
   <style>
     #waveareas {
-      display: grid; grid-template-columns: 1fr; margin-bottom: 20rem; gap: 3rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      margin-bottom: 20rem;
+      gap: 3rem;
       margin: 4rem auto;
       max-width: 1080px;
     }
+
     @media screen and (min-width: 2160px) {
       #waveareas {
         grid-template-columns: 1fr 1fr;
@@ -188,6 +226,7 @@
         padding-right: 4rem;
       }
     }
+
     .wavearea {
       text-align: center;
       font-family: wavefont;
@@ -212,9 +251,11 @@
       position: relative;
       width: 100%;
     }
+
     .wavearea:focus {
       outline: none;
     }
+
     .wavearea::before {
       position: absolute;
       content: attr(title);
@@ -226,54 +267,74 @@
     }
   </style>
 
-  <div id="sawtooth" title="Sawtooth" class="wavearea" contenteditable spellcheck="false">ĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĺļľŀłńņňŊŌŎŐŒŔŖŘŚŜŞŠŢĀĂĆĊĎĒĖĚĞĢĦĪĮĲĶĺľłņŊŎŒŖŚŞŢĀĂĊĒĚĢĪĲĺłŊŒŚŢĀĂĒĢĲłŒŢĀĂĢłŢ</div>
+  <div id="sawtooth" title="Sawtooth" class="wavearea" contenteditable spellcheck="false">
+    <!-- ĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĺļľŀłńņňŊŌŎŐŒŔŖŘŚŜŞŠŢĀĂĆĊĎĒĖĚĞĢĦĪĮĲĶĺľłņŊŎŒŖŚŞŢĀĂĊĒĚĢĪĲĺłŊŒŚŢĀĂĒĢĲłŒŢĀĂĢłŢ -->
+  </div>
   <script>
-  // sawtooth
-  // wavearea.textContent += Array.from({length: 108}, (_,i) => String.fromCharCode(0x100 + (i * 2) % 100)).join('') + '\t\t'
+    // sawtooth
+    sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 2) % 100)).join('') + '\t\t'
+    sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 4) % 100)).join('') + '\t\t'
+    sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 8) % 100)).join('') + '\t\t'
+    sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 16) % 100)).join('') + '\t\t'
   </script>
 
-  <div id="sine" title="Sine" class="wavearea" contenteditable spellcheck="false">ĲĺłŉŐŗŜşŢţţŢşśŖŏňŁĹİĨĠĘĒČćăāĀĀĂąĉĎĕĜĤĬĴļńŌŒŘŝŠţţţšŞřŔōņľĶĮĦĞĖĐĊĆĂĀĀĀĂĆĊĐėĞĦĮķĿŇŎŔŚŞšţţţŠŝŘŒŋńļĴīģěĔĎĉĄāĀĀāăć</div>
+  <div id="sine" title="Sine" class="wavearea" contenteditable spellcheck="false">
+    <!-- ĲĺłŉŐŗŜşŢţţŢşśŖŏňŁĹİĨĠĘĒČćăāĀĀĂąĉĎĕĜĤĬĴļńŌŒŘŝŠţţţšŞřŔōņľĶĮĦĞĖĐĊĆĂĀĀĀĂĆĊĐėĞĦĮķĿŇŎŔŚŞšţţţŠŝŘŒŋńļĴīģěĔĎĉĄāĀĀāăć -->
+  </div>
   <script>
-  // sine
-  // wavearea.textContent += Array.from({length: 108}, (_,i) => String.fromCharCode(0x100 + (Math.sin(i/6) * 50 + 50))).join('') + '\t\t'
+    // sine
+    sine.textContent +=
+      Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 8) * 50 + 50))).join('')
+      + Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 4) * 50 + 50))).join('')
+      + Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 2) * 50 + 50))).join('')
+      + Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 1) * 50 + 50))).join('')
   </script>
 
-  <div id="triangle" title="Tri" contenteditable class="wavearea">ĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİ</div>
+  <div id="triangle" title="Tri" contenteditable class="wavearea">
+    <!-- ĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİ -->
+  </div>
   <script>
     // triangle
-    // wavearea.textContent += Array.from({length: 108}, (_,i) => (
-    //   i = (i/33) % 1, i = i > .5 ? 1-i : i,
-    //   String.fromCharCode(0x100 + (i * 200))
-    // )).join('') + '\t\t'
+    triangle.textContent += Array.from({ length: 108 }, (_, i) => (
+      i = (i / 7) % 1, i = i > .5 ? 1 - i : i,
+      // i = (i / 26) % 1, i = i > .5 ? 1 - i : i,
+      String.fromCharCode(0x100 + (i * 200))
+    )).join('') + '\t\t'
   </script>
 
   <div id="rect" title="Rect" class="wavearea" contenteditable></div>
   <script>
-  rect.textContent += Array.from({length: 108}, (_,i) => (String.fromCharCode(0x100 + ((i/33) % 1 > .5 ? 100 : 1)))).join('')
+    rect.textContent += Array.from({ length: 108 }, (_, i) => (String.fromCharCode(0x100 + ((i / 33) % 1 > .5 ? 100 : 1)))).join('')
   </script>
 
   <div id="noise" title="Noise" class="wavearea" contenteditable></div>
   <script>
-  noise.textContent += Array.from({length: 108}, (_,i) => (String.fromCharCode(0x100 + Math.floor(Math.random() * 100)))).join('')
+    noise.textContent += Array.from({ length: 108 }, (_, i) => (String.fromCharCode(0x100 + Math.floor(Math.random() * 100)))).join('')
   </script>
 
   <div id="speech" title="Sample" class="wavearea" contenteditable></div>
   <script>
-  // speech
-  let values = `āĂăĄąĆćĈċĊĉċčīıēģĹĶĲĺķĺĺĳĽĳĶĵĦČģĹĪĞĠĝġđČĐĤĨĳħģĚģĢıĞĢİķīİĳķĴĲĪĬģęĬķĦĒěěėďĒĚĪĢēČċěĩĘđēĞĝĚČčĖħĨĝġĈĉċĊĉċčąĄăĂāāā`.split('').map(c => c.charCodeAt(0))
-  speech.textContent += String.fromCharCode(...values)
+    // speech
+    let values = `āĂăĄąĆćĈċĊĉċčīıēģĹĶĲĺķĺĺĳĽĳĶĵĦČģĹĪĞĠĝġđČĐĤĨĳħģĚģĢıĞĢİķīİĳķĴĲĪĬģęĬķĦĒěěėďĒĚĪĢēČċěĩĘđēĞĝĚČčĖħĨĝġĈĉċĊĉċčąĄăĂāāā`.split('').map(c => c.charCodeAt(0))
+    speech.textContent += String.fromCharCode(...values)
   </script>
 
-  <div id="keyboard" title="0-9 a-Z ▁▂▃▄▅▆▇█" class="wavearea" spellcheck="false" contenteditable>0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ▁▂▃▄▅▆▇█</div>
+  <div id="keyboard" title="0-9 a-Z ▁▂▃▄▅▆▇█" class="wavearea" spellcheck="false" contenteditable>0123456789
+    abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ▁▂▃▄▅▆▇█</div>
 
   <div id="range128" title="Latin Ext (+clipping)" class="wavearea" contenteditable></div>
   <script>
-  range128.textContent += Array(130).fill(0).map((v,i)=> String.fromCharCode(0x100+i)).join('')
+    range128.textContent += Array(130).fill(0).map((v, i) => String.fromCharCode(0x100 + i)).join('')
   </script>
 
 
 
-  <div id="shift" title="Shifts" class="wavearea" contenteditable>11́1́́1́́́1́́́́1́́́́́1́́́́́́1́́́́́́́1́́́́́́́́1́́́́́́́́́1́́́́́́́́́́1́́́́́́́́́́́ 33́3́́3̂3̂́3̂́́3̂̂3̂̂́3̂̂́́3̂̂̂3̂̂̂́3̂̂̂́́3̂̂̂̂3̂̂̂̂́3̂̂̂̂́́3̂̂̂̂̂3̂̂̂̂̂́3̂̂̂̂̂́́3̂̂̂̂̂̂3̂̂̂̂̂̂́3̂̂̂̂̂̂́́3̂̂̂̂̂̂̂3̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂̂́́ 11̀1̀̀1̀̀̀1̀̀̀̀1̀̀̀̀̀1̀̀̀̀̀̀1̀̀̀̀̀̀̀1̀̀̀̀̀̀̀̀1̀̀̀̀̀̀̀̀̀1̀̀̀̀̀̀̀̀̀̀1̀̀̀̀̀̀̀̀̀̀̀1̀̀̀̀̀̀̀̀̀̀̀̀ 33̀3̀̀3̌3̌̀3̌̀̀3̌̌3̌̌̀3̌̌̀̀3̌̌̌3̌̌̌̀3̌̌̌̀̀3̌̌̌̌3̌̌̌̌̀3̌̌̌̌̀̀3̌̌̌̌̌3̌̌̌̌̌̀3̌̌̌̌̌̀̀3̌̌̌̌̌̌3̌̌̌̌̌̌̀3̌̌̌̌̌̌̀̀3̌̌̌̌̌̌̌3̌̌̌̌̌̌̌̀3̌̌̌̌̌̌̌̀̀3̌̌̌̌̌̌̌̌3̌̌̌̌̌̌̌̌̀3̌̌̌̌̌̌̌̌̀̀3̌̌̌̌̌̌̌̌̌3̌̌̌̌̌̌̌̌̌̀3̌̌̌̌̌̌̌̌̌̀̀</div>
+  <div id="shift" title="Shifts" class="wavearea" contenteditable>
+    11́1́́1́́́1́́́́1́́́́́1́́́́́́1́́́́́́́1́́́́́́́́1́́́́́́́́́1́́́́́́́́́́1́́́́́́́́́́́
+    33́3́́3̂3̂́3̂́́3̂̂3̂̂́3̂̂́́3̂̂̂3̂̂̂́3̂̂̂́́3̂̂̂̂3̂̂̂̂́3̂̂̂̂́́3̂̂̂̂̂3̂̂̂̂̂́3̂̂̂̂̂́́3̂̂̂̂̂̂3̂̂̂̂̂̂́3̂̂̂̂̂̂́́3̂̂̂̂̂̂̂3̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂̂́́
+    11̀1̀̀1̀̀̀1̀̀̀̀1̀̀̀̀̀1̀̀̀̀̀̀1̀̀̀̀̀̀̀1̀̀̀̀̀̀̀̀1̀̀̀̀̀̀̀̀̀1̀̀̀̀̀̀̀̀̀̀1̀̀̀̀̀̀̀̀̀̀̀1̀̀̀̀̀̀̀̀̀̀̀̀
+    33̀3̀̀3̌3̌̀3̌̀̀3̌̌3̌̌̀3̌̌̀̀3̌̌̌3̌̌̌̀3̌̌̌̀̀3̌̌̌̌3̌̌̌̌̀3̌̌̌̌̀̀3̌̌̌̌̌3̌̌̌̌̌̀3̌̌̌̌̌̀̀3̌̌̌̌̌̌3̌̌̌̌̌̌̀3̌̌̌̌̌̌̀̀3̌̌̌̌̌̌̌3̌̌̌̌̌̌̌̀3̌̌̌̌̌̌̌̀̀3̌̌̌̌̌̌̌̌3̌̌̌̌̌̌̌̌̀3̌̌̌̌̌̌̌̌̀̀3̌̌̌̌̌̌̌̌̌3̌̌̌̌̌̌̌̌̌̀3̌̌̌̌̌̌̌̌̌̀̀
+  </div>
 
   <!-- <div id="rangecyr100" title="Cyrillic (centered + clipping)" class="wavearea" contenteditable></div>
   <script>
@@ -283,12 +344,12 @@
 </main>
 
 <script>
-  (spacing.oninput = e => {
-    let value = +spacing.value;
-    spacing.title = `'spacing' ${value}ch`;
-    spacingValue.textContent = value + 'ch';
-    waveareas.style.setProperty('--spacing', value + 'ch')
-  })();
+    (spacing.oninput = e => {
+      let value = +spacing.value;
+      spacing.title = `'spacing' ${value}ch`;
+      spacingValue.textContent = value + 'ch';
+      waveareas.style.setProperty('--spacing', value + 'ch')
+    })();
   (weight.oninput = e => {
     let value = +weight.value;
     weight.title = `'wght' ${value}`;
@@ -320,4 +381,3 @@
     waveareas.style.setProperty('--align', value)
   })();
 </script>
-
