@@ -38,4 +38,4 @@ proof: venv build.stamp
 	diffenator2 proof $(shell find fonts/ttf -type f) -o out/proof
 
 clean:
-	rm -rf sources/Wave* template.stamp build.stamp venv
+	rm -rf sources out fonts template.stamp build.stamp venv
