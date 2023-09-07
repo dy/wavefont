@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyph name="_1" format="2">
+	<unicode hex="0101"/>
+	<unicode hex="002E"/>
+	<unicode hex="002A"/>
+	<unicode hex="005F"/>
+	<unicode hex="02CD"/>
+	<unicode hex="002D"/>
+	<unicode hex="2013"/>
+	<unicode hex="2014"/>
+	<unicode hex="2015"/>
+	<unicode hex="2581"/>
+	<unicode hex="0100"/>
+	<unicode hex="0030"/>
+	<unicode hex="0061"/>
+	<advance width="200"/>
+	<outline>
+		<component base="cap"/>
+		<component base="cap" yOffset="10"/>
+		<contour>
+			<point x="0" y="0" type="line"/>
+			<point x="0" y="10" type="line"/>
+			<point x="256" y="10" type="line"/>
+			<point x="256" y="0" type="line"/>
+		</contour>
+	</outline>
+</glyph>
