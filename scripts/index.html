@@ -166,8 +166,8 @@
       Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wavefont">3.3</a></small></sup>
     </h1>
     <div class="panel-field">
-      <label for="weight"><small>Weight</small></label> <input id="weight" type="range" min="100" value="400" step="10"
-        max="900" list="weights" />
+      <label for="weight"><small>Weight</small></label> <input id="weight" type="range" min="0" value="400" step="10"
+        max="1000" list="weights" />
       <datalist id="weights">
         <option>0</option>
         <option>100</option>
@@ -268,27 +268,50 @@
   </style>
 
   <div id="sawtooth" title="Sawtooth" class="wavearea" contenteditable spellcheck="false">
-    ĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĺļľŀłńņňŊŌŎŐŒŔŖŘŚŜŞŠŢĀĂĆĊĎĒĖĚĞĢĦĪĮĲĶĺľłņŊŎŒŖŚŞŢĀĂĊĒĚĢĪĲĺłŊŒŚŢĀĂĒĢĲłŒŢĀĂĢłŢ</div>
+    <<<<<<< HEAD
+      ĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĺļľŀłńņňŊŌŎŐŒŔŖŘŚŜŞŠŢĀĂĆĊĎĒĖĚĞĢĦĪĮĲĶĺľłņŊŎŒŖŚŞŢĀĂĊĒĚĢĪĲĺłŊŒŚŢĀĂĒĢĲłŒŢĀĂĢłŢ</div>
+      =======
+      <!-- ĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĺļľŀłńņňŊŌŎŐŒŔŖŘŚŜŞŠŢĀĂĆĊĎĒĖĚĞĢĦĪĮĲĶĺľłņŊŎŒŖŚŞŢĀĂĊĒĚĢĪĲĺłŊŒŚŢĀĂĒĢĲłŒŢĀĂĢłŢ -->
+  </div>
+  >>>>>>> 12d8277a (Fix range mapping)
   <script>
-  // sawtooth
-  // wavearea.textContent += Array.from({length: 108}, (_,i) => String.fromCharCode(0x100 + (i * 2) % 100)).join('') + '\t\t'
+    // sawtooth
+    sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 2) % 100)).join('') + '\t\t'
+    sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 4) % 100)).join('') + '\t\t'
+    sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 8) % 100)).join('') + '\t\t'
+    sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 16) % 100)).join('') + '\t\t'
   </script>
 
   <div id="sine" title="Sine" class="wavearea" contenteditable spellcheck="false">
-    ĲĺłŉŐŗŜşŢţţŢşśŖŏňŁĹİĨĠĘĒČćăāĀĀĂąĉĎĕĜĤĬĴļńŌŒŘŝŠţţţšŞřŔōņľĶĮĦĞĖĐĊĆĂĀĀĀĂĆĊĐėĞĦĮķĿŇŎŔŚŞšţţţŠŝŘŒŋńļĴīģěĔĎĉĄāĀĀāăć</div>
+    <<<<<<< HEAD
+      ĲĺłŉŐŗŜşŢţţŢşśŖŏňŁĹİĨĠĘĒČćăāĀĀĂąĉĎĕĜĤĬĴļńŌŒŘŝŠţţţšŞřŔōņľĶĮĦĞĖĐĊĆĂĀĀĀĂĆĊĐėĞĦĮķĿŇŎŔŚŞšţţţŠŝŘŒŋńļĴīģěĔĎĉĄāĀĀāăć</div>
+      =======
+      <!-- ĲĺłŉŐŗŜşŢţţŢşśŖŏňŁĹİĨĠĘĒČćăāĀĀĂąĉĎĕĜĤĬĴļńŌŒŘŝŠţţţšŞřŔōņľĶĮĦĞĖĐĊĆĂĀĀĀĂĆĊĐėĞĦĮķĿŇŎŔŚŞšţţţŠŝŘŒŋńļĴīģěĔĎĉĄāĀĀāăć -->
+  </div>
+  >>>>>>> 12d8277a (Fix range mapping)
   <script>
-  // sine
-  // wavearea.textContent += Array.from({length: 108}, (_,i) => String.fromCharCode(0x100 + (Math.sin(i/6) * 50 + 50))).join('') + '\t\t'
+    // sine
+    sine.textContent +=
+      Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 8) * 50 + 50))).join('')
+      + Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 4) * 50 + 50))).join('')
+      + Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 2) * 50 + 50))).join('')
+      + Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 1) * 50 + 50))).join('')
   </script>
 
   <div id="triangle" title="Tri" contenteditable class="wavearea">
-    ĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİ</div>
+    <<<<<<< HEAD
+      ĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİ</div>
+      =======
+      <!-- ĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİ -->
+  </div>
+  >>>>>>> 12d8277a (Fix range mapping)
   <script>
     // triangle
-    // wavearea.textContent += Array.from({length: 108}, (_,i) => (
-    //   i = (i/33) % 1, i = i > .5 ? 1-i : i,
-    //   String.fromCharCode(0x100 + (i * 200))
-    // )).join('') + '\t\t'
+    triangle.textContent += Array.from({ length: 108 }, (_, i) => (
+      i = (i / 7) % 1, i = i > .5 ? 1 - i : i,
+      // i = (i / 26) % 1, i = i > .5 ? 1 - i : i,
+      String.fromCharCode(0x100 + (i * 200))
+    )).join('') + '\t\t'
   </script>
 
   <div id="rect" title="Rect" class="wavearea" contenteditable></div>
