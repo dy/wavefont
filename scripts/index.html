@@ -279,55 +279,46 @@
   </style>
 
   <div id="sawtooth" title="Sawtooth" class="wavearea" contenteditable spellcheck="false">
-    <<<<<<< HEAD
-      ĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĺļľŀłńņňŊŌŎŐŒŔŖŘŚŜŞŠŢĀĂĆĊĎĒĖĚĞĢĦĪĮĲĶĺľłņŊŎŒŖŚŞŢĀĂĊĒĚĢĪĲĺłŊŒŚŢĀĂĒĢĲłŒŢĀĂĢłŢ</div>
-      =======
-      <!-- ĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĺļľŀłńņňŊŌŎŐŒŔŖŘŚŜŞŠŢĀĂĆĊĎĒĖĚĞĢĦĪĮĲĶĺľłņŊŎŒŖŚŞŢĀĂĊĒĚĢĪĲĺłŊŒŚŢĀĂĒĢĲłŒŢĀĂĢłŢ -->
+    ĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĺļľŀłńņňŊŌŎŐŒŔŖŘŚŜŞŠŢĀĂĆĊĎĒĖĚĞĢĦĪĮĲĶĺľłņŊŎŒŖŚŞŢĀĂĊĒĚĢĪĲĺłŊŒŚŢĀĂĒĢĲłŒŢĀĂĢłŢ
   </div>
-  >>>>>>> 12d8277a (Fix range mapping)
+
   <script>
     // sawtooth
-    sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 2) % 100)).join('') + '\t\t'
-    sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 4) % 100)).join('') + '\t\t'
-    sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 8) % 100)).join('') + '\t\t'
-    sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 16) % 100)).join('') + '\t\t'
+    // sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 2) % 100)).join('') + '\t\t'
+    // sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 4) % 100)).join('') + '\t\t'
+    // sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 8) % 100)).join('') + '\t\t'
+    // sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 16) % 100)).join('') + '\t\t'
   </script>
 
   <div id="sine" title="Sine" class="wavearea" contenteditable spellcheck="false">
-    <<<<<<< HEAD
-      ĲĺłŉŐŗŜşŢţţŢşśŖŏňŁĹİĨĠĘĒČćăāĀĀĂąĉĎĕĜĤĬĴļńŌŒŘŝŠţţţšŞřŔōņľĶĮĦĞĖĐĊĆĂĀĀĀĂĆĊĐėĞĦĮķĿŇŎŔŚŞšţţţŠŝŘŒŋńļĴīģěĔĎĉĄāĀĀāăć</div>
-      =======
-      <!-- ĲĺłŉŐŗŜşŢţţŢşśŖŏňŁĹİĨĠĘĒČćăāĀĀĂąĉĎĕĜĤĬĴļńŌŒŘŝŠţţţšŞřŔōņľĶĮĦĞĖĐĊĆĂĀĀĀĂĆĊĐėĞĦĮķĿŇŎŔŚŞšţţţŠŝŘŒŋńļĴīģěĔĎĉĄāĀĀāăć -->
+    ĲĺłŉŐŗŜşŢţţŢşśŖŏňŁĹİĨĠĘĒČćăāĀĀĂąĉĎĕĜĤĬĴļńŌŒŘŝŠţţţšŞřŔōņľĶĮĦĞĖĐĊĆĂĀĀĀĂĆĊĐėĞĦĮķĿŇŎŔŚŞšţţţŠŝŘŒŋńļĴīģěĔĎĉĄāĀĀāăć
   </div>
-  >>>>>>> 12d8277a (Fix range mapping)
+
   <script>
     // sine
     sine.textContent +=
-      Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 8) * 50 + 50))).join('')
-      + Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 4) * 50 + 50))).join('')
-      + Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 2) * 50 + 50))).join('')
-      + Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 1) * 50 + 50))).join('')
+      // Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 8) * 50 + 50))).join('')
+      // + Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 4) * 50 + 50))).join('')
+      // + Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 2) * 50 + 50))).join('')
+      // + Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 1) * 50 + 50))).join('')
   </script>
 
   <div id="triangle" title="Tri" contenteditable class="wavearea">
-    <<<<<<< HEAD
-      ĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİ</div>
-      =======
-      <!-- ĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİ -->
+    ĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİ
   </div>
-  >>>>>>> 12d8277a (Fix range mapping)
+
   <script>
     // triangle
-    triangle.textContent += Array.from({ length: 108 }, (_, i) => (
-      i = (i / 7) % 1, i = i > .5 ? 1 - i : i,
-      // i = (i / 26) % 1, i = i > .5 ? 1 - i : i,
-      String.fromCharCode(0x100 + (i * 200))
-    )).join('') + '\t\t'
+    // triangle.textContent += Array.from({ length: 108 }, (_, i) => (
+    //   i = (i / 7) % 1, i = i > .5 ? 1 - i : i,
+    //   // i = (i / 26) % 1, i = i > .5 ? 1 - i : i,
+    //   String.fromCharCode(0x100 + (i * 200))
+    // )).join('') + '\t\t'
   </script>
 
   <div id="rect" title="Rect" class="wavearea" contenteditable></div>
   <script>
-    rect.textContent += Array.from({ length: 108 }, (_, i) => (String.fromCharCode(0x100 + ((i / 33) % 1 > .5 ? 100 : 1)))).join('')
+      rect.textContent += Array.from({ length: 108 }, (_, i) => (String.fromCharCode(0x100 + ((i / 33) % 1 > .5 ? 100 : 1)))).join('')
   </script>
 
   <div id="noise" title="Noise" class="wavearea" contenteditable></div>
