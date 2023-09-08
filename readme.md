@@ -9,19 +9,20 @@ A typeface for rendering vertical bars data: waveforms, spectrums, diagrams, his
 
 ## Usage
 
-Place [_Wavefont[ROND,YELA,wght].woff2_](./fonts/variable/Wavefont[ROND,YELA,wght].woff2) into your project directory and use this code:
+Place [_Wavefont[ROND,YELA,wdth,wght].woff2_](./fonts/variable/Wavefont[ROND,YELA,wdth,wght].woff2) into your project directory and use this code:
 
 ```html
 <style>
 @font-face {
 	font-family: wavefont;
 	font-display: block;
-	src: url(./Wavefont[ROND,YELA,wght].woff2) format('woff2');
+	src: url(./Wavefont[ROND,YELA,wdth,wght].woff2) format('woff2');
 }
 .wavefont {
 	--wght: 10;
+	--wdth: 100;
 	font-family: wavefont;
-	font-variation-settings: 'wght' var(--wght), 'ROND' 30, 'YELA' 0;
+	font-variation-settings: 'wght' var(--wght), 'wdth' var(--wdth), 'ROND' 30, 'YELA' 0;
 }
 </style>
 
@@ -48,27 +49,29 @@ Wavefont bars correspond to values from 0 to 100, assigned to different characte
 
 Tag | Range | Default | Meaning
 ---|---|---|---
-`wght` | _1_-_1000_ | 400 | Bar width, or boldness.
+`wght` | _1_-_1000_ | 1 | Bar width, or boldness.
+`wdth` | _25_–_200_ | 200 | Distance between bars (absolute).
 `ROND` | _0_-_100_ | 100 | Border radius, or roundness (percent).
 `YELA` | _-100_-_100_ | -100 | Alignment: bottom, center or top.
 
 To adjust axes via CSS:
 ```css
 .wavefont {
-  font-variation-settings: 'wght' var(--wght, 40), 'ROND' var(--rond, 0), 'YELA' var(--align, 0);
+  font-variation-settings: 'wght' var(--wght, 400), 'ROND' var(--rond, 0), 'YELA' var(--align, 0);
   letter-spacing: 1ch; /* 1ch unit === 1 bar width */
 }
 ```
 
 ## Features
 
-* Ranges, values and width is compatible with [linefont](https://github.com/dy/linefont), so fonts can be switched in coherent way.
+* Ranges, values, width and weight is compatible with [linefont](https://github.com/dy/linefont), so fonts can be switched in coherent way.
 * Visible charcodes fall under _marking characters_ unicode category, ie. recognized as word by regexp and can be selected with <kbd>Ctrl</kbd> + <kbd>→</kbd> or double click. Eg. waveform segments separated by ` ` or `-` are selectable by double click.
 * Characters outside of visible ranges are clipped to _0_, eg. ` `, `\t` etc.
 * `-–._*` map to _1_ value, `|` maps to max value, `▁▂▃▄▅▆▇█` map to corresponding bars.
 * Accent acute <kbd>&nbsp;&#x0301;</kbd> (U+0301) shifts bar 1-step up, circumflex accent <kbd>&nbsp;&#x0302;</kbd> (U+0302) 10-steps up. Eg. `\u0101\u0302\u0302\u0301\u0301\u0301` shifts 23 steps up.
 * Accent grave <kbd>&nbsp;&#x0300;</kbd> (U+0300) shifts bar 1-step down, caron <kbd>&nbsp;&#x030c;</kbd> (U+030C) shifts 10 steps down, eg. `\u0101\u030c\u0300\u0300\u0300` shifts 13 steps down.
 * Caret span is -20..120, so line-height = 1.4 is minimal non-overlapping selection.
+* `wght` can be mapped 1:1 to `wdth` as 300:25, 500:50, 700:100, 900:200.
 <!-- * Anti-[FOUT](https://css-tricks.com/fout-foit-foft/): any character out of visible range is mapped to blank (similar to [Adobe Blank](https://github.com/adobe-fonts/adobe-blank-vf)). -->
 
 ## JS package

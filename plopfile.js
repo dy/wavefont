@@ -51,22 +51,33 @@ function alias(value, char) {
 
 // axes definition, per https://github.com/dy/wavefont/issues/42
 const AXES = {
+  width: { name: 'Width', tag: 'wdth', min: 25, max: 200 },
+  weight: { name: 'Weight', tag: 'wght', min: 8, max: 256 },
   roundness: { name: 'Roundness', tag: 'ROND', min: 0, max: 100 },
-  weight: { name: 'Weight', tag: 'wght', min: 5, max: 200 },
   align: { name: 'Vertical Element Alignment', tag: 'YELA', min: 0, max: 1 }
 }
 
 // create masters
 const MASTERS = {
-  'wmin,rmin,amin': { weight: AXES.weight.min, roundness: AXES.roundness.min, align: AXES.align.min },
-  'wmin,rmax,amin': { weight: AXES.weight.min, roundness: AXES.roundness.max, align: AXES.align.min },
-  'wmax,rmin,amin': { weight: AXES.weight.max, roundness: AXES.roundness.min, align: AXES.align.min },
-  'wmax,rmax,amin': { weight: AXES.weight.max, roundness: AXES.roundness.max, align: AXES.align.min },
+  'wmin,rmin,amin,smin': { weight: AXES.weight.min, roundness: AXES.roundness.min, align: AXES.align.min, width: AXES.width.min },
+  'wmin,rmax,amin,smin': { weight: AXES.weight.min, roundness: AXES.roundness.max, align: AXES.align.min, width: AXES.width.min },
+  'wmax,rmin,amin,smin': { weight: AXES.weight.max, roundness: AXES.roundness.min, align: AXES.align.min, width: AXES.width.min },
+  'wmax,rmax,amin,smin': { weight: AXES.weight.max, roundness: AXES.roundness.max, align: AXES.align.min, width: AXES.width.min },
 
-  'wmin,rmin,amax': { weight: AXES.weight.min, roundness: AXES.roundness.min, align: AXES.align.max },
-  'wmin,rmax,amax': { weight: AXES.weight.min, roundness: AXES.roundness.max, align: AXES.align.max },
-  'wmax,rmin,amax': { weight: AXES.weight.max, roundness: AXES.roundness.min, align: AXES.align.max },
-  'wmax,rmax,amax': { weight: AXES.weight.max, roundness: AXES.roundness.max, align: AXES.align.max }
+  'wmin,rmin,amax,smin': { weight: AXES.weight.min, roundness: AXES.roundness.min, align: AXES.align.max, width: AXES.width.min },
+  'wmin,rmax,amax,smin': { weight: AXES.weight.min, roundness: AXES.roundness.max, align: AXES.align.max, width: AXES.width.min },
+  'wmax,rmin,amax,smin': { weight: AXES.weight.max, roundness: AXES.roundness.min, align: AXES.align.max, width: AXES.width.min },
+  'wmax,rmax,amax,smin': { weight: AXES.weight.max, roundness: AXES.roundness.max, align: AXES.align.max, width: AXES.width.min },
+
+  'wmin,rmin,amin,smax': { weight: AXES.weight.min, roundness: AXES.roundness.min, align: AXES.align.min, width: AXES.width.max },
+  'wmin,rmax,amin,smax': { weight: AXES.weight.min, roundness: AXES.roundness.max, align: AXES.align.min, width: AXES.width.max },
+  'wmax,rmin,amin,smax': { weight: AXES.weight.max, roundness: AXES.roundness.min, align: AXES.align.min, width: AXES.width.max },
+  'wmax,rmax,amin,smax': { weight: AXES.weight.max, roundness: AXES.roundness.max, align: AXES.align.min, width: AXES.width.max },
+
+  'wmin,rmin,amax,smax': { weight: AXES.weight.min, roundness: AXES.roundness.min, align: AXES.align.max, width: AXES.width.max },
+  'wmin,rmax,amax,smax': { weight: AXES.weight.min, roundness: AXES.roundness.max, align: AXES.align.max, width: AXES.width.max },
+  'wmax,rmin,amax,smax': { weight: AXES.weight.max, roundness: AXES.roundness.min, align: AXES.align.max, width: AXES.width.max },
+  'wmax,rmax,amax,smax': { weight: AXES.weight.max, roundness: AXES.roundness.max, align: AXES.align.max, width: AXES.width.max }
 }
 
 module.exports = function (plop) {
@@ -135,9 +146,8 @@ module.exports = function (plop) {
   });
 
   // actions to build one master file
-  function master({ name, weight, roundness, align }) {
+  function master({ name, weight, width, roundness, align }) {
     const radius = roundness / 2
-    const width = weight
     const destination = `sources/${font.name}-${name}.ufo`
 
     return [

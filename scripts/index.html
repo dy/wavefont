@@ -8,7 +8,7 @@
     font-style: normal;
     font-display: block;
     font-weight: 900;
-    src: url(../fonts/variable/Wavefont[ROND\,YELA\,wght].woff2);
+    src: url(../fonts/variable/Wavefont[ROND\,YELA\,wdth,wght].woff2);
   }
 
   @font-face {
@@ -163,11 +163,11 @@
   </style>
   <div class="panel-content" onclick="event.target === this && togglePanel()">
     <h1>
-      Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wavefont">3.3</a></small></sup>
+      Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wavefont">4.0</a></small></sup>
     </h1>
     <div class="panel-field">
-      <label for="weight"><small>Weight</small></label> <input id="weight" type="range" min="100" value="400" step="10"
-        max="900" list="weights" />
+      <label for="weight"><small>Weight</small></label> <input id="weight" type="range" min="0" value="400" step="10"
+        max="1000" list="weights" />
       <datalist id="weights">
         <option>0</option>
         <option>100</option>
@@ -184,7 +184,18 @@
       <output id="weightValue"></output>
     </div>
     <div class="panel-field">
-      <label for="spacing"><small>Spacing</small></label> <input id="spacing" type="range" min="0" value="1" step=".25"
+      <label for="width"><small>Width</small></label> <input id="width" type="range" min="25" value="200" max="200"
+        step="5" list="widths" />
+      <datalist id="widths">
+        <option>25</option>
+        <option>50</option>
+        <option>100</option>
+        <option>200</option>
+      </datalist>
+      <output id="widthValue"></output>
+    </div>
+    <div class="panel-field">
+      <label for="spacing"><small>Spacing</small></label> <input id="spacing" type="range" min="0" value="0" step=".25"
         max="10" />
       <output id="spacingValue"></output>
     </div>
@@ -240,7 +251,7 @@
       /* letter-spacing: var(--track); */
       font-size: var(--size);
       letter-spacing: var(--spacing);
-      font-variation-settings: 'wght' var(--wght, 40), 'ROND' var(--rond, 0), 'YELA' var(--align, 0);
+      font-variation-settings: 'wght' var(--wght, 1), 'wdth' var(--wdth, 200), 'ROND' var(--rond, 0), 'YELA' var(--align, 0);
       background-size: 100vw calc(var(--size, 100px) / 10);
       background-image: linear-gradient(to bottom, rgb(230, 245, 255) 1px, transparent 1px);
       background-attachment: local;
@@ -268,32 +279,46 @@
   </style>
 
   <div id="sawtooth" title="Sawtooth" class="wavearea" contenteditable spellcheck="false">
-    ĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĺļľŀłńņňŊŌŎŐŒŔŖŘŚŜŞŠŢĀĂĆĊĎĒĖĚĞĢĦĪĮĲĶĺľłņŊŎŒŖŚŞŢĀĂĊĒĚĢĪĲĺłŊŒŚŢĀĂĒĢĲłŒŢĀĂĢłŢ</div>
+    ĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĺļľŀłńņňŊŌŎŐŒŔŖŘŚŜŞŠŢĀĂĆĊĎĒĖĚĞĢĦĪĮĲĶĺľłņŊŎŒŖŚŞŢĀĂĊĒĚĢĪĲĺłŊŒŚŢĀĂĒĢĲłŒŢĀĂĢłŢ
+  </div>
+
   <script>
-  // sawtooth
-  // wavearea.textContent += Array.from({length: 108}, (_,i) => String.fromCharCode(0x100 + (i * 2) % 100)).join('') + '\t\t'
+    // sawtooth
+    // sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 2) % 100)).join('') + '\t\t'
+    // sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 4) % 100)).join('') + '\t\t'
+    // sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 8) % 100)).join('') + '\t\t'
+    // sawtooth.textContent += Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (i * 16) % 100)).join('') + '\t\t'
   </script>
 
   <div id="sine" title="Sine" class="wavearea" contenteditable spellcheck="false">
-    ĲĺłŉŐŗŜşŢţţŢşśŖŏňŁĹİĨĠĘĒČćăāĀĀĂąĉĎĕĜĤĬĴļńŌŒŘŝŠţţţšŞřŔōņľĶĮĦĞĖĐĊĆĂĀĀĀĂĆĊĐėĞĦĮķĿŇŎŔŚŞšţţţŠŝŘŒŋńļĴīģěĔĎĉĄāĀĀāăć</div>
+    ĲĺłŉŐŗŜşŢţţŢşśŖŏňŁĹİĨĠĘĒČćăāĀĀĂąĉĎĕĜĤĬĴļńŌŒŘŝŠţţţšŞřŔōņľĶĮĦĞĖĐĊĆĂĀĀĀĂĆĊĐėĞĦĮķĿŇŎŔŚŞšţţţŠŝŘŒŋńļĴīģěĔĎĉĄāĀĀāăć
+  </div>
+
   <script>
-  // sine
-  // wavearea.textContent += Array.from({length: 108}, (_,i) => String.fromCharCode(0x100 + (Math.sin(i/6) * 50 + 50))).join('') + '\t\t'
+    // sine
+    sine.textContent +=
+      // Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 8) * 50 + 50))).join('')
+      // + Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 4) * 50 + 50))).join('')
+      // + Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 2) * 50 + 50))).join('')
+      // + Array.from({ length: 108 }, (_, i) => String.fromCharCode(0x100 + (Math.sin(i / 1) * 50 + 50))).join('')
   </script>
 
   <div id="triangle" title="Tri" contenteditable class="wavearea">
-    ĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİ</div>
+    ĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİ
+  </div>
+
   <script>
     // triangle
-    // wavearea.textContent += Array.from({length: 108}, (_,i) => (
-    //   i = (i/33) % 1, i = i > .5 ? 1-i : i,
+    // triangle.textContent += Array.from({ length: 108 }, (_, i) => (
+    //   i = (i / 7) % 1, i = i > .5 ? 1 - i : i,
+    //   // i = (i / 26) % 1, i = i > .5 ? 1 - i : i,
     //   String.fromCharCode(0x100 + (i * 200))
     // )).join('') + '\t\t'
   </script>
 
   <div id="rect" title="Rect" class="wavearea" contenteditable></div>
   <script>
-    rect.textContent += Array.from({ length: 108 }, (_, i) => (String.fromCharCode(0x100 + ((i / 33) % 1 > .5 ? 100 : 1)))).join('')
+      rect.textContent += Array.from({ length: 108 }, (_, i) => (String.fromCharCode(0x100 + ((i / 33) % 1 > .5 ? 100 : 1)))).join('')
   </script>
 
   <div id="noise" title="Noise" class="wavearea" contenteditable></div>
@@ -344,6 +369,12 @@
     weight.title = `'wght' ${value}`;
     weightValue.textContent = (+value).toFixed(0);
     waveareas.style.setProperty('--wght', value)
+  })();
+  (width.oninput = e => {
+    let value = +width.value;
+    width.title = `'wdth' ${value}`;
+    widthValue.textContent = (+value).toFixed(0);
+    waveareas.style.setProperty('--wdth', value)
   })();
   (size.oninput = e => {
     let value = +size.value;
