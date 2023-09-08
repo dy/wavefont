@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="_35" format="2">
+  <advance width="16.0"/>
+  <unicode hex="0123"/>
+  <outline>
+    <contour>
+      <point x="0.0" y="8.477551020408164" type="line"/>
+      <point x="0.0" y="342.47755102040816" type="line"/>
+      <point x="16.0" y="342.47755102040816" type="line"/>
+      <point x="16.0" y="8.477551020408164" type="line"/>
+    </contour>
+    <component base="cap"/>
+    <component base="cap" yOffset="334.0"/>
+  </outline>
+</glyph>

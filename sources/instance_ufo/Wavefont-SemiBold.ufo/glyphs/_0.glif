@@ -1,0 +1,222 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="_0" format="2">
+  <advance width="64.0"/>
+  <unicode hex="0009"/>
+  <unicode hex="000A"/>
+  <unicode hex="000B"/>
+  <unicode hex="000C"/>
+  <unicode hex="000D"/>
+  <unicode hex="0020"/>
+  <unicode hex="0021"/>
+  <unicode hex="0022"/>
+  <unicode hex="0023"/>
+  <unicode hex="0024"/>
+  <unicode hex="0025"/>
+  <unicode hex="0026"/>
+  <unicode hex="0027"/>
+  <unicode hex="0028"/>
+  <unicode hex="0029"/>
+  <unicode hex="002B"/>
+  <unicode hex="002C"/>
+  <unicode hex="002F"/>
+  <unicode hex="003A"/>
+  <unicode hex="003B"/>
+  <unicode hex="003C"/>
+  <unicode hex="003D"/>
+  <unicode hex="003E"/>
+  <unicode hex="003F"/>
+  <unicode hex="0040"/>
+  <unicode hex="005B"/>
+  <unicode hex="005C"/>
+  <unicode hex="005D"/>
+  <unicode hex="005E"/>
+  <unicode hex="0060"/>
+  <unicode hex="007B"/>
+  <unicode hex="007D"/>
+  <unicode hex="007E"/>
+  <unicode hex="0085"/>
+  <unicode hex="00A0"/>
+  <unicode hex="00A1"/>
+  <unicode hex="00A2"/>
+  <unicode hex="00A3"/>
+  <unicode hex="00A5"/>
+  <unicode hex="00A7"/>
+  <unicode hex="00A8"/>
+  <unicode hex="00A9"/>
+  <unicode hex="00AA"/>
+  <unicode hex="00AB"/>
+  <unicode hex="00AE"/>
+  <unicode hex="00AF"/>
+  <unicode hex="00B0"/>
+  <unicode hex="00B4"/>
+  <unicode hex="00B6"/>
+  <unicode hex="00B7"/>
+  <unicode hex="00B8"/>
+  <unicode hex="00BA"/>
+  <unicode hex="00BB"/>
+  <unicode hex="00BF"/>
+  <unicode hex="00C0"/>
+  <unicode hex="00C1"/>
+  <unicode hex="00C2"/>
+  <unicode hex="00C3"/>
+  <unicode hex="00C4"/>
+  <unicode hex="00C5"/>
+  <unicode hex="00C6"/>
+  <unicode hex="00C7"/>
+  <unicode hex="00C8"/>
+  <unicode hex="00C9"/>
+  <unicode hex="00CA"/>
+  <unicode hex="00CB"/>
+  <unicode hex="00CC"/>
+  <unicode hex="00CD"/>
+  <unicode hex="00CE"/>
+  <unicode hex="00CF"/>
+  <unicode hex="00D0"/>
+  <unicode hex="00D1"/>
+  <unicode hex="00D2"/>
+  <unicode hex="00D3"/>
+  <unicode hex="00D4"/>
+  <unicode hex="00D5"/>
+  <unicode hex="00D6"/>
+  <unicode hex="00D7"/>
+  <unicode hex="00D8"/>
+  <unicode hex="00D9"/>
+  <unicode hex="00DA"/>
+  <unicode hex="00DB"/>
+  <unicode hex="00DC"/>
+  <unicode hex="00DD"/>
+  <unicode hex="00DE"/>
+  <unicode hex="00DF"/>
+  <unicode hex="00E0"/>
+  <unicode hex="00E1"/>
+  <unicode hex="00E2"/>
+  <unicode hex="00E3"/>
+  <unicode hex="00E4"/>
+  <unicode hex="00E5"/>
+  <unicode hex="00E6"/>
+  <unicode hex="00E7"/>
+  <unicode hex="00E8"/>
+  <unicode hex="00E9"/>
+  <unicode hex="00EA"/>
+  <unicode hex="00EB"/>
+  <unicode hex="00EC"/>
+  <unicode hex="00ED"/>
+  <unicode hex="00EE"/>
+  <unicode hex="00EF"/>
+  <unicode hex="00F0"/>
+  <unicode hex="00F1"/>
+  <unicode hex="00F2"/>
+  <unicode hex="00F3"/>
+  <unicode hex="00F4"/>
+  <unicode hex="00F5"/>
+  <unicode hex="00F6"/>
+  <unicode hex="00F7"/>
+  <unicode hex="00F8"/>
+  <unicode hex="00F9"/>
+  <unicode hex="00FA"/>
+  <unicode hex="00FB"/>
+  <unicode hex="00FC"/>
+  <unicode hex="00FD"/>
+  <unicode hex="00FE"/>
+  <unicode hex="00FF"/>
+  <unicode hex="0180"/>
+  <unicode hex="0181"/>
+  <unicode hex="0182"/>
+  <unicode hex="0183"/>
+  <unicode hex="0184"/>
+  <unicode hex="0185"/>
+  <unicode hex="0186"/>
+  <unicode hex="0187"/>
+  <unicode hex="0188"/>
+  <unicode hex="0218"/>
+  <unicode hex="0219"/>
+  <unicode hex="021A"/>
+  <unicode hex="021B"/>
+  <unicode hex="0237"/>
+  <unicode hex="02C6"/>
+  <unicode hex="02C7"/>
+  <unicode hex="02D8"/>
+  <unicode hex="02D9"/>
+  <unicode hex="02DA"/>
+  <unicode hex="02DB"/>
+  <unicode hex="02DC"/>
+  <unicode hex="02DD"/>
+  <unicode hex="0303"/>
+  <unicode hex="0304"/>
+  <unicode hex="0306"/>
+  <unicode hex="0307"/>
+  <unicode hex="0308"/>
+  <unicode hex="030A"/>
+  <unicode hex="030B"/>
+  <unicode hex="0312"/>
+  <unicode hex="0326"/>
+  <unicode hex="0327"/>
+  <unicode hex="0328"/>
+  <unicode hex="1680"/>
+  <unicode hex="180E"/>
+  <unicode hex="1E80"/>
+  <unicode hex="1E81"/>
+  <unicode hex="1E82"/>
+  <unicode hex="1E83"/>
+  <unicode hex="1E84"/>
+  <unicode hex="1E85"/>
+  <unicode hex="1E9E"/>
+  <unicode hex="1EF2"/>
+  <unicode hex="1EF3"/>
+  <unicode hex="2000"/>
+  <unicode hex="2001"/>
+  <unicode hex="2002"/>
+  <unicode hex="2003"/>
+  <unicode hex="2004"/>
+  <unicode hex="2005"/>
+  <unicode hex="2006"/>
+  <unicode hex="2007"/>
+  <unicode hex="2008"/>
+  <unicode hex="2009"/>
+  <unicode hex="200A"/>
+  <unicode hex="200B"/>
+  <unicode hex="200C"/>
+  <unicode hex="200D"/>
+  <unicode hex="2018"/>
+  <unicode hex="2019"/>
+  <unicode hex="201A"/>
+  <unicode hex="201C"/>
+  <unicode hex="201D"/>
+  <unicode hex="201E"/>
+  <unicode hex="2022"/>
+  <unicode hex="2026"/>
+  <unicode hex="2028"/>
+  <unicode hex="2029"/>
+  <unicode hex="202F"/>
+  <unicode hex="2039"/>
+  <unicode hex="203A"/>
+  <unicode hex="205F"/>
+  <unicode hex="2060"/>
+  <unicode hex="2061"/>
+  <unicode hex="2062"/>
+  <unicode hex="20AC"/>
+  <unicode hex="2122"/>
+  <unicode hex="2212"/>
+  <unicode hex="3000"/>
+  <unicode hex="FEFF"/>
+  <outline>
+    <contour>
+      <point x="0.0" y="0.0" type="curve" smooth="yes"/>
+      <point x="64.0" y="0.0" type="line"/>
+      <point x="64.0" y="0.0"/>
+      <point x="64.0" y="0.0"/>
+      <point x="64.0" y="0.0" type="curve" smooth="yes"/>
+      <point x="64.0" y="0.0" type="line"/>
+      <point x="64.0" y="0.0"/>
+      <point x="64.0" y="0.0"/>
+      <point x="64.0" y="0.0" type="curve" smooth="yes"/>
+      <point x="0.0" y="0.0" type="line"/>
+      <point x="0.0" y="0.0"/>
+      <point x="0.0" y="0.0"/>
+      <point x="0.0" y="0.0" type="curve" smooth="yes"/>
+      <point x="0.0" y="0.0" type="line"/>
+      <point x="0.0" y="0.0"/>
+      <point x="0.0" y="0.0"/>
+    </contour>
+  </outline>
+</glyph>

@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="_1.clip" format="2">
+  <advance width="12.0"/>
+  <outline>
+    <contour>
+      <point x="0.0" y="6.485714285714286" type="line"/>
+      <point x="0.0" y="4.485714285714286" type="line"/>
+      <point x="12.0" y="4.485714285714286" type="line"/>
+      <point x="12.0" y="6.485714285714286" type="line"/>
+    </contour>
+    <component base="cap"/>
+    <component base="cap" yOffset="-2.0"/>
+  </outline>
+</glyph>
