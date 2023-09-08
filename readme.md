@@ -62,7 +62,7 @@ To adjust axes via CSS:
 
 ## Features
 
-* Ranges, values and width is compatible with [linefont](https://github.com/dy/linefont), so fonts can be switched in coherent way.
+* Ranges, values and width is compatible with [linefont](https://github.com/dy/linefont), so fonts can be switched preserving visual coherency.
 * Visible charcodes fall under _marking characters_ unicode category, ie. recognized as word by regexp and can be selected with <kbd>Ctrl</kbd> + <kbd>→</kbd> or double click. Eg. waveform segments separated by ` ` or `-` are selectable by double click.
 * Characters outside of visible ranges are clipped to _0_, eg. ` `, `\t` etc.
 * `-–._*` map to _1_ value, `|` maps to max value, `▁▂▃▄▅▆▇█` map to corresponding bars.
