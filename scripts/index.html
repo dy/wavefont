@@ -142,8 +142,9 @@
 
     .panel-field output {
       flex: 2rem 0 0;
-      margin-left: .5rem;
       font-size: smaller;
+      min-width: 6ch;
+      text-align: right;
     }
 
     .panel-cta {
@@ -166,8 +167,12 @@
       Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wavefont">3.3</a></small></sup>
     </h1>
     <div class="panel-field">
-      <label for="weight"><small>Weight</small></label> <input id="weight" type="range" min="0" value="100" step="10"
-        max="1000" list="weights" />
+      <label for="weight"><small>Weight</small></label>
+      <input id="weight" type="range" min="0" value="100" step="10" max="1000" list="weights" oninput="
+        this.title = `'wght' ${this.value}`;
+        weightValue.textContent = (+this.value).toFixed(0);
+        waveareas.style.setProperty('--wght', this.value)
+      " />
       <datalist id="weights">
         <option>0</option>
         <option>100</option>
@@ -181,27 +186,43 @@
         <option>900</option>
         <option>1000</option>
       </datalist>
-      <output id="weightValue"></output>
+      <output id="weightValue">100</output>
     </div>
     <div class="panel-field">
-      <label for="spacing"><small>Spacing</small></label> <input id="spacing" type="range" min="0" value="1" step=".25"
-        max="10" />
-      <output id="spacingValue"></output>
+      <label for="spacing"><small>Spacing</small></label>
+      <input id="spacing" type="range" min="0" value="1" step=".25" max="10" oninput="
+        this.title = `'spacing' ${this.value}ch`;
+        spacingValue.textContent = this.value + 'ch';
+        waveareas.style.setProperty('--spacing', this.value + 'ch')
+      " />
+      <output id="spacingValue">1ch</output>
     </div>
     <div class="panel-field">
-      <label for="roundness"><small>Round</small></label> <input id="roundness" type="range" min="0" value="100"
-        max="100" step="1" />
-      <output id="roundnessValue"></output>
+      <label for="roundness"><small>Round</small></label>
+      <input id="roundness" type="range" min="0" value="100" max="100" step="1" oninput="
+        this.title = this.value;
+        roundnessValue.textContent = this.value + '%';
+        waveareas.style.setProperty('--rond', this.value);
+      " />
+      <output id="roundnessValue">100</output>
     </div>
     <div class="panel-field">
-      <label for="align"><small>Align</small></label> <input id="align" type="range" min="-100" value="0" max="100"
-        step="1" />
-      <output id="alignValue"></output>
+      <label for="align"><small>Align</small></label>
+      <input id="align" type="range" min="-100" value="0" max="100" step="1" oninput="
+        this.title = this.value;
+        alignValue.textContent = this.value;
+        waveareas.style.setProperty('--align', this.value);
+      " />
+      <output id="alignValue">0</output>
     </div>
     <div class="panel-field">
-      <label for="size"><small>Size</small></label> <input id="size" type="range" min="5" value="100" max="200"
-        step="1" />
-      <output id="sizeValue"></output>
+      <label for="size"><small>Size</small></label>
+      <input id="size" type="range" min="5" value="100" max="200" step="1" oninput="
+        this.title = this.value;
+        sizeValue.textContent = this.value + 'px';
+        waveareas.style.setProperty('--size', this.value + 'px')
+      " />
+      <output id="sizeValue">100px</output>
     </div>
   </div>
 </form>
@@ -237,17 +258,16 @@
       resize: none;
       word-break: break-all;
       /* --track: 2px; */
-      /* letter-spacing: var(--track); */
-      font-size: var(--size);
-      letter-spacing: var(--spacing);
-      font-variation-settings: 'wght' var(--wght, 40), 'ROND' var(--rond, 0), 'YELA' var(--align, 0);
+      font-size: var(--size, 100px);
+      letter-spacing: var(--spacing, 1ch);
+      font-variation-settings: 'wght' var(--wght, 100), 'ROND' var(--rond, 0), 'YELA' var(--align, 0);
       background-size: 100vw calc(var(--size, 100px) / 10);
       background-image: linear-gradient(to bottom, rgb(230, 245, 255) 1px, transparent 1px);
       background-attachment: local;
       background-position: 0 -0.5px;
       -webkit-overflow-scrolling: auto;
       border: none;
-      white-space: pre-wrap;
+      /* white-space: pre-wrap; */
       position: relative;
       width: 100%;
     }
@@ -275,10 +295,32 @@
   </script>
 
   <div id="sine" title="Sine" class="wavearea" contenteditable spellcheck="false">
-    ĲĺłŉŐŗŜşŢţţŢşśŖŏňŁĹİĨĠĘĒČćăāĀĀĂąĉĎĕĜĤĬĴļńŌŒŘŝŠţţţšŞřŔōņľĶĮĦĞĖĐĊĆĂĀĀĀĂĆĊĐėĞĦĮķĿŇŎŔŚŞšţţţŠŝŘŒŋńļĴīģěĔĎĉĄāĀĀāăć</div>
+    <!-- ĲĺłŉŐŗŜşŢţţŢşśŖŏňŁĹİĨĠĘĒČćăāĀĀĂąĉĎĕĜĤĬĴļńŌŒŘŝŠţţţšŞřŔōņľĶĮĦĞĖĐĊĆĂĀĀĀĂĆĊĐėĞĦĮķĿŇŎŔŚŞšţţţŠŝŘŒŋńļĴīģěĔĎĉĄāĀĀāăć -->
+  </div>
   <script>
-  // sine
-  // wavearea.textContent += Array.from({length: 108}, (_,i) => String.fromCharCode(0x100 + (Math.sin(i/6) * 50 + 50))).join('') + '\t\t'
+    // sine
+    sine.textContent +=
+      Array.from({ length: 108 }, (_, i) => (Math.sin(i / 6) * 0.5 + 0.5))
+        .map(v => String.fromCharCode(0x100 + Math.floor(v * 127)))
+        .join('')
+  </script>
+
+  <div id="circle" title="Circle" class="wavearea" contenteditable spellcheck="false">
+    <!-- ĲĺłŉŐŗŜşŢţţŢşśŖŏňŁĹİĨĠĘĒČćăāĀĀĂąĉĎĕĜĤĬĴļńŌŒŘŝŠţţţšŞřŔōņľĶĮĦĞĖĐĊĆĂĀĀĀĂĆĊĐėĞĦĮķĿŇŎŔŚŞšţţţŠŝŘŒŋńļĴīģěĔĎĉĄāĀĀāăć -->
+  </div>
+  <script>
+    // circle
+    const T = 0.108
+    circle.textContent +=
+      Array.from({ length: 108 }, (_, i) => {
+        let t = i / 108
+        let n = Math.floor(t / T)
+        t %= T
+        let A = 1
+        return !(n % 2) ? (A * Math.sqrt(1 - (((T - t) % T) / T) ** 2)) :
+          (A * Math.sqrt(1 - ((t % T) / T) ** 2))
+      }).map(v => String.fromCharCode(0x100 + Math.min(127, Math.floor(v * 127)))).join('')
+    // FIXME: also see https://www.desmos.com/calculator/qfsc3soqxb
   </script>
 
   <div id="triangle" title="Tri" contenteditable class="wavearea">
@@ -316,8 +358,6 @@
     range128.textContent += Array(130).fill(0).map((v, i) => String.fromCharCode(0x100 + i)).join('')
   </script>
 
-
-
   <div id="shift" title="Shifts" class="wavearea" contenteditable>
     11́1́́1́́́1́́́́1́́́́́1́́́́́́1́́́́́́́1́́́́́́́́1́́́́́́́́́1́́́́́́́́́́1́́́́́́́́́́́
     33́3́́3̂3̂́3̂́́3̂̂3̂̂́3̂̂́́3̂̂̂3̂̂̂́3̂̂̂́́3̂̂̂̂3̂̂̂̂́3̂̂̂̂́́3̂̂̂̂̂3̂̂̂̂̂́3̂̂̂̂̂́́3̂̂̂̂̂̂3̂̂̂̂̂̂́3̂̂̂̂̂̂́́3̂̂̂̂̂̂̂3̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂́́3̂̂̂̂̂̂̂̂̂3̂̂̂̂̂̂̂̂̂́3̂̂̂̂̂̂̂̂̂́́
@@ -329,44 +369,4 @@
   <script>
   rangecyr100.textContent += Array(120).fill(0).map((v,i)=> String.fromCharCode(0x400+i-10)).join('') + '---'
   </script> -->
-
 </main>
-
-<script>
-    (spacing.oninput = e => {
-      let value = +spacing.value;
-      spacing.title = `'spacing' ${value}ch`;
-      spacingValue.textContent = value + 'ch';
-      waveareas.style.setProperty('--spacing', value + 'ch')
-    })();
-  (weight.oninput = e => {
-    let value = +weight.value;
-    weight.title = `'wght' ${value}`;
-    weightValue.textContent = (+value).toFixed(0);
-    waveareas.style.setProperty('--wght', value)
-  })();
-  (size.oninput = e => {
-    let value = +size.value;
-    size.title = value;
-    sizeValue.textContent = value + 'px';
-    waveareas.style.setProperty('--size', value + 'px')
-  })();
-  // (track.oninput = e => {
-  //   let value = +track.value;
-  //   track.title = value;
-  //   trackValue.textContent = value + 'px';
-  //   waveareas.style.setProperty('--track', value + 'px')
-  // })();
-  (roundness.oninput = e => {
-    let value = +roundness.value;
-    roundness.title = value;
-    roundnessValue.textContent = value + '%';
-    waveareas.style.setProperty('--rond', value)
-  })();
-  (align.oninput = e => {
-    let value = +align.value;
-    align.title = value;
-    alignValue.textContent = value;
-    waveareas.style.setProperty('--align', value)
-  })();
-</script>
