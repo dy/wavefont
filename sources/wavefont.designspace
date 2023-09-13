@@ -6,8 +6,9 @@
             <map input="-100" output="0"/>
             <map input="100" output="1"/>
         </axis>
-        <axis default="20" minimum="20" maximum="1000" name="Weight" tag="wght">
+        <axis default="100" minimum="20" maximum="1000" name="Weight" tag="wght">
             <map input="20" output="5"/>
+            <map input="100" output="25"/>
             <map input="1000" output="250"/>
         </axis>
     </axes>
@@ -166,6 +167,34 @@
         <source familyname="Wavefont" filename="Wavefont-wmax,rmax,amax.ufo" name="Master_wmax,rmax,amax" stylename="wmax,rmax,amax">
             <location>
                 <dimension name="Weight" xvalue="250" />
+                <dimension name="Roundness" xvalue="100" />
+                <dimension name="Vertical Element Alignment" xvalue="1" />
+            </location>
+        </source>
+        <source familyname="Wavefont" filename="Wavefont-wdflt,rmin,amin.ufo" name="Master_wdflt,rmin,amin" stylename="wdflt,rmin,amin">
+            <location>
+                <dimension name="Weight" xvalue="25" />
+                <dimension name="Roundness" xvalue="0" />
+                <dimension name="Vertical Element Alignment" xvalue="0" />
+            </location>
+        </source>
+        <source familyname="Wavefont" filename="Wavefont-wdflt,rmax,amin.ufo" name="Master_wdflt,rmax,amin" stylename="wdflt,rmax,amin">
+            <location>
+                <dimension name="Weight" xvalue="25" />
+                <dimension name="Roundness" xvalue="100" />
+                <dimension name="Vertical Element Alignment" xvalue="0" />
+            </location>
+        </source>
+        <source familyname="Wavefont" filename="Wavefont-wdflt,rmin,amax.ufo" name="Master_wdflt,rmin,amax" stylename="wdflt,rmin,amax">
+            <location>
+                <dimension name="Weight" xvalue="25" />
+                <dimension name="Roundness" xvalue="0" />
+                <dimension name="Vertical Element Alignment" xvalue="1" />
+            </location>
+        </source>
+        <source familyname="Wavefont" filename="Wavefont-wdflt,rmax,amax.ufo" name="Master_wdflt,rmax,amax" stylename="wdflt,rmax,amax">
+            <location>
+                <dimension name="Weight" xvalue="25" />
                 <dimension name="Roundness" xvalue="100" />
                 <dimension name="Vertical Element Alignment" xvalue="1" />
             </location>
