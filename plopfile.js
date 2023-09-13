@@ -52,7 +52,7 @@ function alias(value, char) {
 // axes definition, per https://github.com/dy/wavefont/issues/42
 const AXES = {
   roundness: { name: 'Roundness', tag: 'ROND', min: 0, max: 100 },
-  weight: { name: 'Weight', tag: 'wght', min: 5, max: 250 },
+  weight: { name: 'Weight', tag: 'wght', min: 5, max: 250, dflt: 25 },
   align: { name: 'Vertical Element Alignment', tag: 'YELA', min: 0, max: 1 }
 }
 
@@ -66,7 +66,12 @@ const MASTERS = {
   'wmin,rmin,amax': { weight: AXES.weight.min, roundness: AXES.roundness.min, align: AXES.align.max },
   'wmin,rmax,amax': { weight: AXES.weight.min, roundness: AXES.roundness.max, align: AXES.align.max },
   'wmax,rmin,amax': { weight: AXES.weight.max, roundness: AXES.roundness.min, align: AXES.align.max },
-  'wmax,rmax,amax': { weight: AXES.weight.max, roundness: AXES.roundness.max, align: AXES.align.max }
+  'wmax,rmax,amax': { weight: AXES.weight.max, roundness: AXES.roundness.max, align: AXES.align.max },
+
+  'wdflt,rmin,amin': { weight: AXES.weight.dflt, roundness: AXES.roundness.min, align: AXES.align.min },
+  'wdflt,rmax,amin': { weight: AXES.weight.dflt, roundness: AXES.roundness.max, align: AXES.align.min },
+  'wdflt,rmin,amax': { weight: AXES.weight.dflt, roundness: AXES.roundness.min, align: AXES.align.max },
+  'wdflt,rmax,amax': { weight: AXES.weight.dflt, roundness: AXES.roundness.max, align: AXES.align.max }
 }
 
 module.exports = function (plop) {
