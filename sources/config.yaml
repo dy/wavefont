@@ -23,6 +23,8 @@ stat:
   - name: Weight
     tag: wght
     values:
+    - name: Hairline
+      value: 4
     - name: Thin
       value: 100
     - name: ExtraLight
@@ -45,4 +47,4 @@ stat:
       value: 900
     - name: ExtraBlack
       value: 1000
-      
+
