@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <glyph name="_17" format="2">
 	<unicode hex="0111"/>
-	<advance width="5"/>
+	<advance width="1"/>
 	<outline>
 		<component base="cap"/>
-		<component base="cap" yOffset="165"/>
+		<component base="cap" yOffset="169"/>
 		<contour>
-			<point x="0" y="3" type="line"/>
-			<point x="0" y="168" type="line"/>
-			<point x="5" y="168" type="line"/>
-			<point x="5" y="3" type="line"/>
+			<point x="0" y="1" type="line"/>
+			<point x="0" y="170" type="line"/>
+			<point x="1" y="170" type="line"/>
+			<point x="1" y="1" type="line"/>
 		</contour>
 	</outline>
 </glyph>

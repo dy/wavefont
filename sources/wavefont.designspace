@@ -6,8 +6,8 @@
             <map input="-100" output="0"/>
             <map input="100" output="1"/>
         </axis>
-        <axis default="100" minimum="20" maximum="1000" name="Weight" tag="wght">
-            <map input="20" output="5"/>
+        <axis default="100" minimum="4" maximum="1000" name="Weight" tag="wght">
+            <map input="4" output="1"/>
             <map input="100" output="25"/>
             <map input="1000" output="250"/>
         </axis>
@@ -117,14 +117,14 @@
     <sources>
         <source familyname="Wavefont" filename="Wavefont-wmin,rmin,amin.ufo" name="Master_wmin,rmin,amin" stylename="wmin,rmin,amin">
             <location>
-                <dimension name="Weight" xvalue="5" />
+                <dimension name="Weight" xvalue="1" />
                 <dimension name="Roundness" xvalue="0" />
                 <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
         </source>
         <source familyname="Wavefont" filename="Wavefont-wmin,rmax,amin.ufo" name="Master_wmin,rmax,amin" stylename="wmin,rmax,amin">
             <location>
-                <dimension name="Weight" xvalue="5" />
+                <dimension name="Weight" xvalue="1" />
                 <dimension name="Roundness" xvalue="100" />
                 <dimension name="Vertical Element Alignment" xvalue="0" />
             </location>
@@ -145,14 +145,14 @@
         </source>
         <source familyname="Wavefont" filename="Wavefont-wmin,rmin,amax.ufo" name="Master_wmin,rmin,amax" stylename="wmin,rmin,amax">
             <location>
-                <dimension name="Weight" xvalue="5" />
+                <dimension name="Weight" xvalue="1" />
                 <dimension name="Roundness" xvalue="0" />
                 <dimension name="Vertical Element Alignment" xvalue="1" />
             </location>
         </source>
         <source familyname="Wavefont" filename="Wavefont-wmin,rmax,amax.ufo" name="Master_wmin,rmax,amax" stylename="wmin,rmax,amax">
             <location>
-                <dimension name="Weight" xvalue="5" />
+                <dimension name="Weight" xvalue="1" />
                 <dimension name="Roundness" xvalue="100" />
                 <dimension name="Vertical Element Alignment" xvalue="1" />
             </location>

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <glyph name="_11.clip" format="2">
-	<advance width="5"/>
+	<advance width="1"/>
 	<outline>
 		<contour>
 			<point x="0" y="975.25"/>
 			<point x="24.75" y="1000"/>
 			<point x="55" y="1000" type="curve" smooth="yes"/>
-			<point x="-50" y="1000" type="line"/>
-			<point x="-19.75" y="1000"/>
-			<point x="5" y="975.25"/>
-			<point x="5" y="945" type="curve" smooth="yes"/>
-			<point x="5" y="945" type="line"/>
-			<point x="5" y="914.75"/>
-			<point x="-19.75" y="890"/>
-			<point x="-50" y="890" type="curve" smooth="yes"/>
+			<point x="-54" y="1000" type="line"/>
+			<point x="-23.75" y="1000"/>
+			<point x="1" y="975.25"/>
+			<point x="1" y="945" type="curve" smooth="yes"/>
+			<point x="1" y="945" type="line"/>
+			<point x="1" y="914.75"/>
+			<point x="-23.75" y="890"/>
+			<point x="-54" y="890" type="curve" smooth="yes"/>
 			<point x="55" y="890" type="line"/>
 			<point x="24.75" y="890"/>
 			<point x="0" y="914.75"/>

@@ -53,7 +53,7 @@
 		<key>openTypeOS2VendorID</key>
 		<string>DY  </string>
 		<key>openTypeOS2WeightClass</key>
-		<integer>5</integer>
+		<integer>1</integer>
 		<key>openTypeOS2WinAscent</key>
 		<integer>1200</integer>
 		<key>openTypeOS2WinDescent</key>

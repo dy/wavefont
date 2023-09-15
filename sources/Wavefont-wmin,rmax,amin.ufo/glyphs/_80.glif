@@ -3,15 +3,15 @@
 	<unicode hex="0150"/>
 	<unicode hex="0038"/>
 	<unicode hex="004F"/>
-	<advance width="5"/>
+	<advance width="1"/>
 	<outline>
 		<component base="cap"/>
-		<component base="cap" yOffset="795"/>
+		<component base="cap" yOffset="799"/>
 		<contour>
-			<point x="0" y="3" type="line"/>
-			<point x="0" y="798" type="line"/>
-			<point x="5" y="798" type="line"/>
-			<point x="5" y="3" type="line"/>
+			<point x="0" y="1" type="line"/>
+			<point x="0" y="800" type="line"/>
+			<point x="1" y="800" type="line"/>
+			<point x="1" y="1" type="line"/>
 		</contour>
 	</outline>
 </glyph>
