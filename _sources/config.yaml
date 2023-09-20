@@ -24,7 +24,7 @@ stat:
     tag: wght
     values:
     - name: Hairline
-      value: 4
+      value: 1
     - name: Thin
       value: 100
     - name: ExtraLight
