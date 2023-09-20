@@ -6,8 +6,8 @@
             <map input="-100" output="0"/>
             <map input="100" output="1"/>
         </axis>
-        <axis default="100" minimum="4" maximum="1000" name="Weight" tag="wght">
-            <map input="4" output="1"/>
+        <axis default="100" minimum="1" maximum="1000" name="Weight" tag="wght">
+            <map input="1" output="4"/>
             <map input="100" output="25"/>
             <map input="1000" output="250"/>
         </axis>
