@@ -19,7 +19,7 @@ Place [_Wavefont[ROND,YELA,wght].woff2_](./fonts/variable/Wavefont[ROND,YELA,wgh
 	src: url(./Wavefont[ROND,YELA,wght].woff2) format('woff2');
 }
 .wavefont {
-	--wght: 10;
+	--wght: 400;
 	font-family: wavefont;
 	font-variation-settings: 'wght' var(--wght), 'ROND' 30, 'YELA' 0;
 }
