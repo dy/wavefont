@@ -5,7 +5,7 @@ A typeface for rendering vertical bars data: waveforms, spectrums, diagrams, his
 <img src="./preview.png" width="240px"/>
 
 [**Playground**](https://dy.github.io/wavefont/scripts)&nbsp;&nbsp;•&nbsp;&nbsp;[**Google fonts**](https://fonts.google.com/specimen/Wavefont/tester)&nbsp;&nbsp;•&nbsp;&nbsp;[**V-fonts**](https://v-fonts.com/fonts/wavefont)&nbsp;&nbsp;•&nbsp;&nbsp;
-[**Wavearea**](https://audio-lab.github.io/wavearea?src=https://cdn.freesound.org/previews/147/147582_1728127-lq.mp3)
+[**Wavearea**](https://dy.github.io/wavearea?src=https://cdn.freesound.org/previews/147/147582_1728127-lq.mp3)
 
 ## Usage
 
