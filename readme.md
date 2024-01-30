@@ -103,6 +103,7 @@ wf(0, 1, 50, 99, 127, ...) // ĀāĲţŤ...
 * [Adobe-variable-font-prototype](https://github.com/adobe-fonts/adobe-variable-font-prototype) − example variable font.
 * [Designspace XML spec](https://github.com/fonttools/fonttools/tree/main/Doc/source/designspaceLib#document-xml-structure) − human-readable format for describing variable fonts.
 * [Adobe Blank](https://github.com/adobe-fonts/adobe-blank-vf) − blank characters variable font.
+* [Sparks](https://github.com/aftertheflood/sparks) – alternative font with similar purpose.
 <!-- * [Unicode-table](https://unicode-table.com/) − convenient unicode table.-->
 
 <p align="center"><a href="https://github.com/krishnized/license/">🕉</a><p>
