@@ -235,7 +235,7 @@
         sizeValue.textContent = this.value + 'px';
         waveareas.style.setProperty('--size', this.value + 'px')
       " />
-      <output id="sizeValue">100px</output>
+      <output id="sizeValue">80px</output>
     </div>
   </div>
 </form>
@@ -250,6 +250,8 @@
       gap: 3rem;
       margin: 4rem auto;
       max-width: 1080px;
+      -webkit-font-smoothing: antialiased;
+      font-smoothing: antialiased;
     }
 
     @media screen and (min-width: 2160px) {
@@ -271,10 +273,10 @@
       resize: none;
       word-break: break-all;
       /* --track: 2px; */
-      font-size: var(--size, 100px);
+      font-size: var(--size, 80px);
       letter-spacing: var(--spacing, 1ch);
       font-variation-settings: 'wght' var(--wght, 100), 'ROND' var(--rond, 100), 'YELA' var(--align, 0);
-      background-size: 100vw calc(var(--size, 100px) / 10);
+      background-size: 100vw calc(var(--size, 80px) / 10);
       background-image: linear-gradient(to bottom, rgb(244, 244, 244) 1px, transparent 1px);
       background-attachment: local;
       background-position: 0 -0.5px;
