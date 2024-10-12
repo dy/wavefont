@@ -6,9 +6,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: 3.8
     - name: Install sys tools/deps
@@ -16,7 +16,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install ttfautohint
         sudo snap install yq
-    - uses: actions/cache@v2
+    - uses: actions/cache@v4
       with:
         path: ./venv/
         key: ${{ runner.os }}-venv-${{ hashFiles('**/requirements*.txt') }}
@@ -27,7 +27,6 @@ jobs:
       shell: bash
       # Set the archive name to repo name + "-assets" e.g "MavenPro-assets"
       run: echo "ZIP_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')-fonts" >> $GITHUB_ENV
-      # If a new release is cut, use the release tag to auto-bump the source files
     - name: Bump release
       if: github.event_name == 'release'
       run: |
@@ -49,13 +48,13 @@ jobs:
     - name: setup site
       run: cp scripts/index.html out/index.html
     - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
+      uses: peaceiris/actions-gh-pages@v4
       if: ${{ github.ref == 'refs/heads/main' }}
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./out
     - name: Archive artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ env.ZIP_NAME }}
         path: |
@@ -63,19 +62,18 @@ jobs:
           out
     outputs:
       zip_name: ${{ env.ZIP_NAME }}
+
   release:
-    # only run if the commit is tagged...
     if: github.event_name == 'release'
-    # ... and it builds successfully
     needs:
       - build
     runs-on: ubuntu-latest
     env:
       ZIP_NAME: ${{ needs.build.outputs.zip_name }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Download artefact files
-        uses: actions/download-artifact@v4.1.7
+        uses: actions/download-artifact@v4
         with:
           name: ${{ env.ZIP_NAME }}
           path: ${{ env.ZIP_NAME }}
