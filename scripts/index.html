@@ -53,9 +53,15 @@
     text-underline-offset: .108em;
     text-underline-offset: .25em;
   }
+
+  ::selection {
+    background: rgba(0, 0, 0, 0.108);
+    /* color: white; */
+  }
 </style>
 
-<form id="panel" action="https://github.com/a-vis/wavefont" onclick="event.target === this && togglePanel()">
+<form id="panel" action="https://github.com/a-vis/wavefont"
+      onclick="event.target === this && togglePanel()">
   <script>
     let toggle = localStorage.getItem('wf:panel-toggle')
     if (toggle) panel.classList.add('folded')
@@ -66,6 +72,7 @@
   </script>
   <style>
     #panel {
+      font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
       position: fixed;
       right: 1rem;
       bottom: 1rem;
@@ -78,11 +85,11 @@
         0 22.3px 17.9px rgba(49, 43, 65, 0.072),
         0 41.8px 33.4px rgba(49, 43, 65, 0.086),
         0 100px 80px rgba(49, 43, 65, 0.12);
-      border-top: .5rem solid rgba(252, 252, 253, .99);
-      border-left: .5rem solid rgba(238, 238, 240, .98);
-      border-right: .5rem solid rgba(238, 238, 239, .97);
-      border-bottom: .5rem solid rgba(231, 231, 232, .97);
-      background: rgba(238, 238, 239, 1);
+      border-top: .2rem solid rgba(252, 252, 253, .99);
+      border-left: .2rem solid rgba(238, 238, 240, .98);
+      border-right: .2rem solid rgba(238, 238, 239, .97);
+      border-bottom: .2rem solid rgba(231, 231, 232, .97);
+      background: rgb(134, 134, 178);
       z-index: 1;
       -webkit-backdrop-filter: blur(2px);
       backdrop-filter: blur(2px);
@@ -99,21 +106,20 @@
     .panel-content {
       padding: 1.5rem 1.5rem 1.5rem;
       height: 100%;
-      background: linear-gradient(to bottom right, rgba(232, 232, 233, .35) 20%, rgba(255, 255, 255, .7) 180%), rgba(245, 245, 245, 1);
+      background: linear-gradient(to bottom right, rgba(232, 232, 233, .2) 20%, rgba(255, 255, 255, .4) 180%), rgba(245, 245, 245, 1);
       display: flex;
       flex-direction: column;
       align-items: stretch;
       justify-content: space-around;
       text-shadow: 1px 1px white;
-      /* box-shadow: 0 -5px rgba(255,255,255,.75), 0 5px rgba(255,255,255,.75), -5px 0 rgba(255,255,255,.5), 5px 0 rgba(255,255,255,.5); */
-      /* background: linear-gradient(to bottom, rgba(252,252,252,1), rgba(238,238,238,1)); */
+      accent-color: rgb(27, 27, 27);
     }
 
     #panel h1 {
       cursor: default;
       margin: -.1rem auto .8rem;
-      font-weight: 600;
-      font-size: 1.1rem;
+      /* font-weight: 600; */
+      font-size: 1.2rem;
       line-height: 1;
     }
 
@@ -144,7 +150,8 @@
       flex: 2rem 0 0;
       font-size: smaller;
       min-width: 6ch;
-      text-align: right;
+      margin-left: 0.5rem;
+      /* text-align: right; */
     }
 
     .panel-cta {
@@ -164,11 +171,13 @@
   </style>
   <div class="panel-content" onclick="event.target === this && togglePanel()">
     <h1>
-      Wavefont&thinsp;<sup><small><a title="github" href="https://github.com/a-vis/wavefont">3.3</a></small></sup>
+      Wavefont <sup><small><a title="github"
+             href="https://github.com/a-vis/wavefont">3.3</a></small></sup>
     </h1>
     <div class="panel-field">
       <label for="weight"><small>Weight</small></label>
-      <input id="weight" type="range" min="0" value="100" step="10" max="1000" list="weights" oninput="
+      <input id="weight" type="range" min="0" value="100" step="10" max="1000"
+             list="weights" oninput="
         this.title = `'wght' ${this.value}`;
         weightValue.textContent = (+this.value).toFixed(0);
         waveareas.style.setProperty('--wght', this.value)
@@ -190,7 +199,8 @@
     </div>
     <div class="panel-field">
       <label for="spacing"><small>Spacing</small></label>
-      <input id="spacing" type="range" min="0" value="1" step=".25" max="10" oninput="
+      <input id="spacing" type="range" min="0" value="1" step=".25" max="10"
+             oninput="
         this.title = `'spacing' ${this.value}ch`;
         spacingValue.textContent = this.value + 'ch';
         waveareas.style.setProperty('--spacing', this.value + 'ch')
@@ -199,7 +209,8 @@
     </div>
     <div class="panel-field">
       <label for="roundness"><small>Round</small></label>
-      <input id="roundness" type="range" min="0" value="100" max="100" step="1" oninput="
+      <input id="roundness" type="range" min="0" value="100" max="100" step="1"
+             oninput="
         this.title = this.value;
         roundnessValue.textContent = this.value + '%';
         waveareas.style.setProperty('--rond', this.value);
@@ -208,7 +219,8 @@
     </div>
     <div class="panel-field">
       <label for="align"><small>Align</small></label>
-      <input id="align" type="range" min="-100" value="0" max="100" step="1" oninput="
+      <input id="align" type="range" min="-100" value="0" max="100" step="1"
+             oninput="
         this.title = this.value;
         alignValue.textContent = this.value;
         waveareas.style.setProperty('--align', this.value);
@@ -217,7 +229,8 @@
     </div>
     <div class="panel-field">
       <label for="size"><small>Size</small></label>
-      <input id="size" type="range" min="5" value="100" max="200" step="1" oninput="
+      <input id="size" type="range" min="5" value="100" max="200" step="1"
+             oninput="
         this.title = this.value;
         sizeValue.textContent = this.value + 'px';
         waveareas.style.setProperty('--size', this.value + 'px')
@@ -262,7 +275,7 @@
       letter-spacing: var(--spacing, 1ch);
       font-variation-settings: 'wght' var(--wght, 100), 'ROND' var(--rond, 100), 'YELA' var(--align, 0);
       background-size: 100vw calc(var(--size, 100px) / 10);
-      background-image: linear-gradient(to bottom, rgb(230, 245, 255) 1px, transparent 1px);
+      background-image: linear-gradient(to bottom, rgb(244, 244, 244) 1px, transparent 1px);
       background-attachment: local;
       background-position: 0 -0.5px;
       -webkit-overflow-scrolling: auto;
@@ -287,14 +300,17 @@
     }
   </style>
 
-  <div id="sawtooth" title="Sawtooth" class="wavearea" contenteditable spellcheck="false">
-    ĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĺļľŀłńņňŊŌŎŐŒŔŖŘŚŜŞŠŢĀĂĆĊĎĒĖĚĞĢĦĪĮĲĶĺľłņŊŎŒŖŚŞŢĀĂĊĒĚĢĪĲĺłŊŒŚŢĀĂĒĢĲłŒŢĀĂĢłŢ</div>
+  <div id="sawtooth" title="Sawtooth" class="wavearea" contenteditable
+       spellcheck="false">
+    ĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĺļľŀłńņňŊŌŎŐŒŔŖŘŚŜŞŠŢĀĂĆĊĎĒĖĚĞĢĦĪĮĲĶĺľłņŊŎŒŖŚŞŢĀĂĊĒĚĢĪĲĺłŊŒŚŢĀĂĒĢĲłŒŢĀĂĢłŢ
+  </div>
   <script>
-  // sawtooth
-  // wavearea.textContent += Array.from({length: 108}, (_,i) => String.fromCharCode(0x100 + (i * 2) % 100)).join('') + '\t\t'
+    // sawtooth
+    // wavearea.textContent += Array.from({length: 108}, (_,i) => String.fromCharCode(0x100 + (i * 2) % 100)).join('') + '\t\t'
   </script>
 
-  <div id="sine" title="Sine" class="wavearea" contenteditable spellcheck="false">
+  <div id="sine" title="Sine" class="wavearea" contenteditable
+       spellcheck="false">
     <!-- ĲĺłŉŐŗŜşŢţţŢşśŖŏňŁĹİĨĠĘĒČćăāĀĀĂąĉĎĕĜĤĬĴļńŌŒŘŝŠţţţšŞřŔōņľĶĮĦĞĖĐĊĆĂĀĀĀĂĆĊĐėĞĦĮķĿŇŎŔŚŞšţţţŠŝŘŒŋńļĴīģěĔĎĉĄāĀĀāăć -->
   </div>
   <script>
@@ -305,7 +321,8 @@
         .join('')
   </script>
 
-  <div id="circle" title="Circle" class="wavearea" contenteditable spellcheck="false">
+  <div id="circle" title="Circle" class="wavearea" contenteditable
+       spellcheck="false">
     <!-- ĲĺłŉŐŗŜşŢţţŢşśŖŏňŁĹİĨĠĘĒČćăāĀĀĂąĉĎĕĜĤĬĴļńŌŒŘŝŠţţţšŞřŔōņľĶĮĦĞĖĐĊĆĂĀĀĀĂĆĊĐėĞĦĮķĿŇŎŔŚŞšţţţŠŝŘŒŋńļĴīģěĔĎĉĄāĀĀāăć -->
   </div>
   <script>
@@ -324,7 +341,8 @@
   </script>
 
   <div id="triangle" title="Tri" contenteditable class="wavearea">
-    ĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİ</div>
+    ĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİĶļłňŎŔŚŠŠŚŔŎňłļĶİĪĤĞĘĒČĆĀĆČĒĘĞĤĪİ
+  </div>
   <script>
     // triangle
     // wavearea.textContent += Array.from({length: 108}, (_,i) => (
@@ -350,10 +368,12 @@
     speech.textContent += String.fromCharCode(...values)
   </script>
 
-  <div id="keyboard" title="0-9 a-Z ▁▂▃▄▅▆▇█" class="wavearea" spellcheck="false" contenteditable>0123456789
+  <div id="keyboard" title="0-9 a-Z ▁▂▃▄▅▆▇█" class="wavearea"
+       spellcheck="false" contenteditable>0123456789
     abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ▁▂▃▄▅▆▇█</div>
 
-  <div id="range128" title="Latin Ext (+clipping)" class="wavearea" contenteditable></div>
+  <div id="range128" title="Latin Ext (+clipping)" class="wavearea"
+       contenteditable></div>
   <script>
     range128.textContent += Array(130).fill(0).map((v, i) => String.fromCharCode(0x100 + i)).join('')
   </script>
