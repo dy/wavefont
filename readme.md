@@ -68,7 +68,7 @@ To adjust axes via CSS:
 * `-–._*` map to _1_ value, `|` maps to max value, `▁▂▃▄▅▆▇█` map to corresponding bars.
 * Accent acute <kbd>&nbsp;&#x0301;</kbd> (U+0301) shifts bar 1-step up, circumflex accent <kbd>&nbsp;&#x0302;</kbd> (U+0302) 10-steps up. Eg. `\u0101\u0302\u0302\u0301\u0301\u0301` shifts 23 steps up.
 * Accent grave <kbd>&nbsp;&#x0300;</kbd> (U+0300) shifts bar 1-step down, caron <kbd>&nbsp;&#x030c;</kbd> (U+030C) shifts 10 steps down, eg. `\u0101\u030c\u0300\u0300\u0300` shifts 13 steps down.
-* Mark order is canonical: 10-step marks first, then up to nine 1-step marks, \u00b1100 steps max. Runs of 11+ same 1-step marks are recognized only up to the 10th \u2014 use `shift()` from the JS package to encode correctly.
+* Mark order is canonical: 10-step marks first, then up to nine 1-step marks, ±100 steps max. Runs of 11+ same 1-step marks are recognized only up to the 10th — use `shift()` from the JS package to encode correctly.
 * Caret span is -30..130 (covers full ink incl. value 127 bars), so line-height = 1.6 is minimal non-overlapping selection.
 <!-- * Anti-[FOUT](https://css-tricks.com/fout-foit-foft/): any character out of visible range is mapped to blank (similar to [Adobe Blank](https://github.com/adobe-fonts/adobe-blank-vf)). -->
 
