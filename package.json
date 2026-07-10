@@ -1,11 +1,23 @@
 {
   "name": "wavefont",
-  "version": "3.5.0",
+  "version": "3.6.0",
   "description": "Typeface for visualizing waveform data",
+  "type": "module",
   "main": "index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./fonts/*": "./fonts/*",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
   "scripts": {
+    "test": "node --test test.js",
     "build": "npm-run-all build-ufo normalize-ufo && npm-run-all --parallel build-otf build-ttf && npm run build-woff2",
-    "build-ufo": "plop build-ufo",
+    "build-ufo": "plop --plopfile plopfile.cjs build-ufo",
     "normalize-ufo": "for file in sources/*.ufo; do ufonormalizer -a --float-precision 3 -m $file; done",
     "hint-ufo": "psautohint --no-hint-sub --no-flex -d -c -a sources/*.ufo",
     "build-otf": "npm-run-all build-masterotfs build-vf add-blanks-otf",
@@ -32,10 +44,12 @@
   ],
   "files": [
     "fonts",
-    "index.js"
+    "index.js",
+    "index.d.ts",
+    "OFL.txt"
   ],
   "author": "Dmitry Iv <dfcreative@gmail.com>",
-  "license": "MIT",
+  "license": "(MIT AND OFL-1.1)",
   "bugs": {
     "url": "https://github.com/dy/wavefont/issues"
   },

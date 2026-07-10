@@ -3,21 +3,21 @@
 <plist version="1.0">
 	<dict>
 		<key>ascender</key>
-		<integer>1200</integer>
+		<integer>1300</integer>
 		<key>capHeight</key>
 		<integer>0</integer>
 		<key>copyright</key>
 		<string>Copyright 2022 The Wavefont Project Authors (https://github.com/dy/wavefont)</string>
 		<key>descender</key>
-		<integer>-200</integer>
+		<integer>-300</integer>
 		<key>familyName</key>
 		<string>Wavefont</string>
 		<key>openTypeHheaAscender</key>
-		<integer>1200</integer>
+		<integer>1300</integer>
 		<key>openTypeHheaCaretOffset</key>
 		<integer>0</integer>
 		<key>openTypeHheaDescender</key>
-		<integer>-200</integer>
+		<integer>-300</integer>
 		<key>openTypeHheaLineGap</key>
 		<integer>0</integer>
 		<key>openTypeNameLicense</key>
@@ -45,9 +45,9 @@
 		<array>
 		</array>
 		<key>openTypeOS2TypoAscender</key>
-		<integer>1200</integer>
+		<integer>1300</integer>
 		<key>openTypeOS2TypoDescender</key>
-		<integer>-200</integer>
+		<integer>-300</integer>
 		<key>openTypeOS2TypoLineGap</key>
 		<integer>0</integer>
 		<key>openTypeOS2VendorID</key>
@@ -55,9 +55,9 @@
 		<key>openTypeOS2WeightClass</key>
 		<integer>25</integer>
 		<key>openTypeOS2WinAscent</key>
-		<integer>1200</integer>
+		<integer>1300</integer>
 		<key>openTypeOS2WinDescent</key>
-		<integer>200</integer>
+		<integer>300</integer>
 		<key>postscriptFontName</key>
 		<string>Wavefont-Thin</string>
 		<key>postscriptFullName</key>
@@ -77,7 +77,7 @@
 		<key>versionMajor</key>
 		<integer>3</integer>
 		<key>versionMinor</key>
-		<integer>5</integer>
+		<integer>6</integer>
 		<key>xHeight</key>
 		<integer>0</integer>
 	</dict>

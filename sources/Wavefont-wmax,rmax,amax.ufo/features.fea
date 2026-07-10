@@ -23,8 +23,8 @@ table BASE {
 # somehow ignored by fontinfo.plist, so we duplicate
 # indicate selection range
 table OS/2 {
-  TypoAscender 1200;
-  TypoDescender -200;
+  TypoAscender 1300;
+  TypoDescender -300;
   TypoLineGap 0;
   Panose 2 0 0 9 0 0 0 0 0 0;
 } OS/2;

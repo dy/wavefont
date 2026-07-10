@@ -118,7 +118,6 @@
 	<unicode hex="00FD"/>
 	<unicode hex="00FE"/>
 	<unicode hex="00FF"/>
-	<unicode hex="0180"/>
 	<unicode hex="0181"/>
 	<unicode hex="0182"/>
 	<unicode hex="0183"/>
@@ -132,6 +131,9 @@
 	<unicode hex="021A"/>
 	<unicode hex="021B"/>
 	<unicode hex="0237"/>
+	<unicode hex="0243"/>
+	<unicode hex="0253"/>
+	<unicode hex="0254"/>
 	<unicode hex="02C6"/>
 	<unicode hex="02C7"/>
 	<unicode hex="02D8"/>

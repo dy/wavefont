@@ -1,5 +1,8 @@
+setuptools<81 # gftools 0.9.33 imports pkg_resources, removed in setuptools 81+
+glyphsets==0.6.11 # gftools 0.9.33 imports glyphsets.subsets, removed in glyphsets 0.6.13+
 gftools==0.9.33
 ufonormalizer>=0.6
-fontbakery>=0.8.11
+fontbakery[googlefonts]>=0.8.11
 diffenator2>=0.2.7
 fonttools
+bumpfontversion
