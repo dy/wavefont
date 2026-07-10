@@ -3,6 +3,6 @@ glyphsets==0.6.11 # gftools 0.9.33 imports glyphsets.subsets, removed in glyphse
 gftools==0.9.33
 ufonormalizer>=0.6
 fontbakery[googlefonts]>=0.8.11
-diffenator2>=0.2.7
+diffenator2==0.3.8 # newest importable next to glyphsets 0.6.11 (0.4+ needs new glyphsets API)
 fonttools
 bumpfontversion
