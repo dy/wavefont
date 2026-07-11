@@ -26,4 +26,4 @@ venv
 .DS_Store
 .ninja_log
 *.ninja
-.DS_Store
+out/
