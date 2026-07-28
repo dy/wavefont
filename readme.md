@@ -115,4 +115,8 @@ char(64) + shift(-13) // bar 64 shifted 13 steps down
 * [Sparks](https://github.com/aftertheflood/sparks) – alternative font with similar purpose.
 <!-- * [Unicode-table](https://symbl.cc/) − convenient unicode table.-->
 
+## Alternatives
+
+* [datatype](https://github.com/franktisellano/datatype)
+
 <p align="center"><a href="https://github.com/krishnized/license/">🕉</a><p>
