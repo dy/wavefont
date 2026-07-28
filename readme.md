@@ -117,6 +117,10 @@ char(64) + shift(-13) // bar 64 shifted 13 steps down
 
 ## Alternatives
 
-* [datatype](https://github.com/franktisellano/datatype)
+- **[Linefont](https://github.com/dy/linefont)** — Closest companion to Wavefont. Uses the same `0–127` character encoding but renders connected line charts instead of bars.
+- **[Datatype](https://github.com/franktisellano/datatype)** — Inline bar, line and pie charts with readable syntax such as `{b:30,70}`. Supports up to 20 values.
+- **[Sparks](https://github.com/aftertheflood/sparks)** — Compact inline sparklines using normalized `0–100` values. Includes bars, dots and connected-dot styles.
+- **[FF Chartwell](https://www.typeface.com/fonts/chartwell)** — Commercial chart-font family for pie, bar, line, area, ring, radar, scatter and other chart types.
+- **Unicode block elements** — Characters such as `▁▂▃▄▅▆▇█`. Dependency-free and widely supported, but limited to eight height levels.
 
 <p align="center"><a href="https://github.com/krishnized/license/">🕉</a><p>
