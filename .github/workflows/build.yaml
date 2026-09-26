@@ -42,10 +42,7 @@ jobs:
     - name: Build font
       run: make build
     - name: Test
-      run: npm test && . venv/bin/activate && python scripts/test-pairs.py fonts/variable/*.ttf fonts/ttf/*.ttf
-    - name: Check with fontbakery
-      run: make test
-      continue-on-error: true
+      run: npm test && make test
     - name: proof
       run: make proof
     - name: setup site

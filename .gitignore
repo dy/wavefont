@@ -27,3 +27,4 @@ venv
 .ninja_log
 *.ninja
 out/
+sources/instance_ufos/
