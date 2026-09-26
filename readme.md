@@ -43,6 +43,7 @@ Wavefont bars correspond to values from 0 to 100, assigned to different characte
 * <kbd>0-9</kbd> chars are for simplified manual input with step 10 (bar height = number).
 * <kbd>a-zA-Z</kbd> for manual input with step 2, softened at edges <kbd>a</kbd> and <kbd>Z</kbd> (bar height = number of letter).
 * <kbd>U+0100-017F</kbd> for 0..127 values with step 1 (`char = String.fromCharCode(0x100 + value)`). <kbd>U+0180</kbd> renders as max bar (off-by-one clamp guard), higher codepoints render blank — clamp values to _127_.
+* <kbd>U+F0000-F7F7F</kbd> for bars by level range: one char per bar from level `lo` to level `hi`, see [bars by range](#bars-by-range).
 
 ## Variable axes
 
@@ -72,12 +73,20 @@ To adjust axes via CSS:
 * Caret span is -30..130 (covers full ink incl. value 127 bars), so line-height = 1.6 is minimal non-overlapping selection.
 <!-- * Anti-[FOUT](https://css-tricks.com/fout-foit-foft/): any character out of visible range is mapped to blank (similar to [Adobe Blank](https://github.com/adobe-fonts/adobe-blank-vf)). -->
 
+## Bars by range
+
+Char <kbd>U+F0000 | lo << 8 | hi</kbd> is a bar from level `lo` to level `hi` (_0_-_127_, `lo` ≤ `hi`), eg. a waveform block from its min to its max. At center alignment it looks exactly like value `hi − lo` shifted by `(lo + hi) / 2 − 64` steps, but it is one precomposed glyph: no combining marks and no layout rules, so text lays out like plain text: about 10× faster than value + shift marks in Safari (and every iOS browser), 2.7× in Chrome.
+
+* Level _64_ is the middle of the line, `YELA` doesn't apply. Samples `min..max` in _-1..1_ are levels `64 × (min + 1)`..`64 × (max + 1)`.
+* Chars are outside the BMP: 2 UTF-16 units each in JS strings.
+* Static OTF fonts carry values only. Web fonts drop glyph names.
+
 ## JS package
 
 Optional wavefont package exposes a function that calculates string from values for your convenience. Types included.
 
 ```js
-import wf, { char, shift } from 'wavefont'
+import wf, { char, shift, bar, bars } from 'wavefont'
 
 // characters for values from 0..127 range (clamped & rounded)
 wf(0, 1, 50, 99, 127) // 'ĀāĲţſ'
@@ -88,6 +97,12 @@ wf(new Float32Array([0, 64, 127])) // 'Āŀſ'
 // single value char + canonical shift marks (10-step first, then 1-step)
 char(64) + shift(23)  // bar 64 shifted 23 steps up
 char(64) + shift(-13) // bar 64 shifted 13 steps down
+
+// bar from level 40 to level 90, one char (either order, clamped & rounded)
+bar(40, 90)
+
+// bars from lo[i] to hi[i], eg. block min/max samples as levels 64 × (sample + 1)
+bars(lo, hi)
 ```
 
 

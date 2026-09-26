@@ -1,6 +1,6 @@
 {
   "name": "wavefont",
-  "version": "3.7.0",
+  "version": "3.8.0",
   "description": "Typeface for visualizing waveform data",
   "type": "module",
   "main": "index.js",
@@ -16,7 +16,7 @@
   "sideEffects": false,
   "scripts": {
     "test": "node --test test.js",
-    "build": "npm-run-all build-ufo normalize-ufo && npm-run-all --parallel build-otf build-ttf && npm run build-woff2",
+    "build": "npm-run-all build-ufo normalize-ufo && npm-run-all --parallel build-otf build-ttf && npm run build-pairs && npm run build-woff2",
     "build-ufo": "plop --plopfile plopfile.cjs build-ufo",
     "normalize-ufo": "for file in sources/*.ufo; do ufonormalizer -a --float-precision 3 -m $file; done",
     "hint-ufo": "psautohint --no-hint-sub --no-flex -d -c -a sources/*.ufo",
@@ -26,7 +26,8 @@
     "add-blanks-otf": "ttx -o ./fonts/variable/Wavefont[ROND,YELA,wght].otf -m ./fonts/variable/Wavefont[ROND,YELA,wght].otf sources/cmap.ttx",
     "add-blanks-ttf": "ttx -o ./fonts/variable/Wavefont[ROND,YELA,wght].ttf -m ./fonts/variable/Wavefont[ROND,YELA,wght].ttf sources/cmap.ttx",
     "build-ttf": "fontmake -m \"sources/Wavefont.designspace\" -o variable --output-path ./fonts/variable/Wavefont[ROND,YELA,wght].ttf --validate-ufo --round-instances --expand-features-to-instances --autohint && npm run add-blanks-ttf",
-    "build-woff2": "fonttools ttLib.woff2 compress ./fonts/variable/Wavefont[ROND,YELA,wght].ttf -o ./fonts/variable/Wavefont[ROND,YELA,wght].woff2",
+    "build-pairs": "python scripts/pairs.py fonts/variable/*.ttf fonts/ttf/*.ttf",
+    "build-woff2": "python scripts/woff2.py fonts/webfonts fonts/variable/*.ttf fonts/ttf/*.ttf && cp \"fonts/webfonts/Wavefont[ROND,YELA,wght].woff2\" fonts/variable/",
     "subroutinize-otf": "shx cp ./fonts/variable/Wavefont[ROND,YELA,wght].otf ./fonts/variable/Wavefont[ROND,YELA,wght].min.otf && tx -cff2 +S +b -o ./table.CFF2 -f ./fonts/variable/Wavefont[ROND,YELA,wght].otf && sfntedit -a CFF2=./table.CFF2 ./fonts/variable/Wavefont[ROND,YELA,wght].min.otf"
   },
   "repository": {
