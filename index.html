@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wavefont</title>
+<meta name="description" content="A typeface for rendering vertical bars data: waveforms, spectrums, diagrams, histograms, columns etc.">
+<meta property="og:title" content="Wavefont">
+<meta property="og:description" content="A typeface for rendering vertical bars data: waveforms, spectrums, diagrams, histograms, columns etc.">
+<meta property="og:image" content="https://dy.github.io/wavefont/article-wavefont_1x1-1.png">
+<meta name="theme-color" content="#202025">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='3' fill='%23202025'/><path fill='%23fff' d='M3 4h2v8H3zM7 11h2v1H7zM11 7h2v5h-2z'/></svg>">
+<link rel="preload" href="fonts/variable/Wavefont[ROND,YELA,wght].woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Geist+Mono:wght@400..700&display=swap">
+<link rel="stylesheet" href="site/main.css">
+<script type="module" src="site/main.js"></script>
+
+<body>
+
+<main>
+
+  <section id="wavefont" class="slide dark hero" aria-labelledby="hero-title">
+    <nav class="top" aria-label="Links">
+      <a href="scripts/">playground</a>
+      <a href="https://github.com/dy/wavefont">github</a>
+      <a href="#get">get</a>
+    </nav>
+    <h1 id="hero-title" class="sr">Wavefont</h1>
+    <div class="mark">
+      <div class="mark-bars wf" contenteditable="plaintext-only" spellcheck="false" autocorrect="off" autocapitalize="off"
+        role="textbox" aria-label="Type letters to set bars">Wavefont</div>
+      <div class="mark-letters" aria-hidden="true">Wavefont</div>
+    </div>
+    <ul class="facts" aria-label="Features">
+      <li><a href="#values">127 values</a></li>
+      <li><a href="#keys">latin+ core</a></li>
+      <li><a href="#axes">3 axes</a></li>
+      <li><a href="#text">textual semantics</a></li>
+      <li><a href="#shift">vertical shift</a></li>
+      <li><a href="#range">bars by range</a></li>
+      <li><a href="#speed">60 fps</a></li>
+    </ul>
+  </section>
+
+  <section id="values" class="slide dark values" aria-labelledby="values-label">
+    <h2 id="values-label" class="label">127 values</h2>
+    <div class="grid-wrap">
+      <span class="edge from" aria-hidden="true">0</span>
+      <div class="grid" role="group" aria-label="All 128 bars, click one to copy it"></div>
+      <span class="edge to" aria-hidden="true">127</span>
+    </div>
+    <dl class="readout" aria-live="polite">
+      <div><dt>value</dt><dd class="r-value">64</dd></div>
+      <div><dt>char</dt><dd class="r-char">ŀ</dd></div>
+      <div><dt>code</dt><dd class="r-code">U+0140</dd></div>
+    </dl>
+  </section>
+
+  <section id="keys" class="slide dark keys" aria-labelledby="keys-label">
+    <h2 id="keys-label" class="label">latin+ core</h2>
+    <dl class="keymap">
+      <div><dt>0–9</dt><dd class="rosetta" data-keys="0123456789"></dd></div>
+      <div><dt>a–z</dt><dd class="rosetta" data-keys="abcdefghijklmnopqrstuvwxyz"></dd></div>
+      <div><dt>A–Z</dt><dd class="rosetta" data-keys="ABCDEFGHIJKLMNOPQRSTUVWXYZ"></dd></div>
+      <div><dt>▁–█</dt><dd class="rosetta" data-keys="▁▂▃▄▅▆▇█"></dd></div>
+      <div><dt>- _ . |</dt><dd class="rosetta" data-keys="-_.|"></dd></div>
+    </dl>
+  </section>
+
+  <section id="axes" class="slide blue axes" aria-labelledby="axes-label">
+    <h2 id="axes-label" class="label">3 axes</h2>
+    <div class="specimen wf" aria-hidden="true"></div>
+    <div class="sliders">
+      <label class="axis"><span class="label">weight</span><input type="range" name="wght" min="4" max="1000" value="120"><output>wght 120</output></label>
+      <label class="axis"><span class="label">roundness</span><input type="range" name="rond" min="0" max="100" value="0"><output>ROND 0</output></label>
+      <label class="axis"><span class="label">alignment</span><input type="range" name="yela" min="-100" max="100" value="0"><output>YELA 0</output></label>
+    </div>
+  </section>
+
+  <section id="text" class="slide pale text" aria-labelledby="text-label">
+    <h2 id="text-label" class="label">textual semantics</h2>
+    <div class="doc" contenteditable="plaintext-only" spellcheck="false" autocorrect="off" autocapitalize="off"
+      role="textbox" aria-multiline="true" aria-label="Text set in Wavefont: a title and two paragraphs, editable">
+      <div class="doc-title wf"></div>
+      <div class="doc-body wf"></div>
+    </div>
+    <div class="doc-bar">
+      <div class="weights" role="toolbar" aria-label="Weight of the selected text"></div>
+      <output class="doc-count" aria-live="polite"></output>
+    </div>
+  </section>
+
+  <section id="shift" class="slide dark shift" aria-labelledby="shift-label">
+    <h2 id="shift-label" class="label">vertical shift</h2>
+    <div class="field" role="img" aria-label="Rows of dashes, each lifted or lowered off its line into rings"></div>
+  </section>
+
+  <section id="range" class="slide blue range" aria-labelledby="range-label">
+    <h2 id="range-label" class="label">bars by range</h2>
+    <figure class="temps">
+      <ol class="degrees" aria-hidden="true"><li style="--k: 0">40°</li><li style="--k: 1">30°</li><li style="--k: 2">20°</li><li style="--k: 3">10°</li><li style="--k: 4">0°</li><li style="--k: 5">−10°</li><li style="--k: 6">−20°</li><li style="--k: 7">−30°</li></ol>
+      <div class="temp-bars wf" role="slider" tabindex="0" aria-label="Montreal, 2025, daily low to high temperature" aria-valuemin="1" aria-valuemax="365"></div>
+      <ol class="months" aria-hidden="true"><li>j</li><li>f</li><li>m</li><li>a</li><li>m</li><li>j</li><li>j</li><li>a</li><li>s</li><li>o</li><li>n</li><li>d</li></ol>
+      <figcaption class="temp-foot">
+        <output class="temp-read" aria-live="polite"></output>
+        <span class="source">Montreal 2025, daily low to high, °C · <a href="https://open-meteo.com/">Open-Meteo</a>, CC BY 4.0</span>
+      </figcaption>
+    </figure>
+  </section>
+
+  <section id="speed" class="slide pale speed" aria-labelledby="speed-label">
+    <h2 id="speed-label" class="label">60 fps</h2>
+    <figure class="race">
+      <div class="scale" aria-hidden="true"><span style="--at: 1">1 s</span><span style="--at: .75">100 ms</span><span class="frame" style="--at: .5556">16.7 ms<span class="wide">, one frame</span></span><span style="--at: .5">10 ms</span><span style="--at: .25">1 ms</span></div>
+      <div class="lanes" role="img"></div>
+    </figure>
+    <div class="race-bar">
+      <div class="ops" role="radiogroup" aria-label="Operation"></div>
+      <div class="browsers" role="radiogroup" aria-label="Browser"></div>
+    </div>
+    <p class="race-note">An hour of speech in one editor view, 155,039 bars, main thread through paint, median of 5 runs on an Apple M4 Max. Canvas is faster: it paints pixels, with no selection, caret, copy or find.</p>
+  </section>
+
+  <section id="messages" class="slide dark messages" aria-label="Voice messages">
+    <div class="chat">
+      <ol class="thread" aria-label="Conversation"></ol>
+      <form class="composer">
+        <div class="composer-field">
+          <input class="composer-input" type="text" name="message" placeholder="Message" aria-label="Message" autocomplete="off" enterkeyhint="send" maxlength="300">
+          <div class="composer-tape wf" aria-hidden="true"><span></span></div>
+          <span class="composer-time" aria-live="off"></span>
+        </div>
+        <button class="mic" type="button" aria-label="Record a voice message">
+          <svg class="i" viewBox="0 0 16 16" aria-hidden="true"><g class="i-mic"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3 8a5 5 0 0 0 10 0M8 13v2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></g><path class="i-send" d="M8 13.5V2.8M3.6 7.2 8 2.8l4.4 4.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect class="i-stop" x="3.5" y="3.5" width="9" height="9" rx="1.5"/></svg>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <section id="player" class="slide player" aria-label="Audio player">
+    <div class="strip" role="slider" tabindex="0" aria-label="Song position, seconds" aria-valuemin="0" aria-valuenow="0">
+      <div class="side played"><div class="tape wf"></div></div>
+      <div class="side rest"><div class="tape wf"></div></div>
+    </div>
+    <button class="toggle" type="button" aria-label="Play">
+      <svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path class="i-play" d="M4.5 2v12l10-6z"/><path class="i-pause" d="M3.5 2h3v12h-3zM9.5 2h3v12h-3z"/></svg>
+    </button>
+  </section>
+
+  <section id="renderings" class="slide dark renderings" aria-label="Renderings">
+    <div class="tiles"></div>
+  </section>
+
+  <section class="slide work on-white" data-piece="bands" aria-label="Eight bands of black bars, each band at its own pitch, sliding with the pointer"><div class="piece"></div></section>
+  <section class="slide work on-black" data-piece="figure" aria-label="A figure drawn by the widths of white lines on black; a lens follows the pointer"><div class="piece"></div></section>
+  <section class="slide work on-white" data-piece="stairs" aria-label="Black bars cut by a white stair that rides the pointer"><div class="piece"></div></section>
+  <section class="slide work on-black" data-piece="steps" aria-label="White bars in four bands, each set a step off the next, lining up with the pointer"><div class="piece"></div></section>
+  <section class="slide work on-black" data-piece="slide" aria-label="Thin lines, every other one handing over from floor to ceiling where the pointer is"><div class="piece"></div></section>
+  <section class="slide work on-black" data-piece="checker" aria-label="A receding checkerboard of bars, shearing with the pointer"><div class="piece"></div></section>
+
+  <section id="memo" class="slide memo" aria-label="Voice Memos">
+    <div class="vm" data-state="idle">
+      <div class="vm-top">
+        <div class="vm-title">New Recording</div>
+        <div class="vm-sub"><span class="vm-date"></span><span class="vm-len">00:00</span></div>
+      </div>
+      <div class="vm-wave" role="slider" tabindex="-1" aria-label="Position in the recording" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0">
+        <div class="vm-bars wf" aria-hidden="true"></div>
+        <div class="vm-head" aria-hidden="true"></div>
+      </div>
+      <div class="vm-ruler" aria-hidden="true"><div class="vm-scale"></div></div>
+      <div class="vm-time" role="timer" aria-live="off">00:00.00</div>
+      <div class="vm-ctrl">
+        <button class="vm-back" type="button" aria-label="Back 15 seconds"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M9.2 5.4A10 10 0 1 1 4 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M11.8 1.6 7.6 5.4l4.6 3.1z" fill="currentColor"/><text x="14" y="18.2" text-anchor="middle">15</text></svg></button>
+        <button class="vm-play" type="button" aria-label="Play"><svg viewBox="0 0 28 28" aria-hidden="true"><path class="i-play" d="M6 2.5v23L25 14z"/><path class="i-pause" d="M5 3h6v22H5zM17 3h6v22h-6z"/></svg></button>
+        <button class="vm-fwd" type="button" aria-label="Forward 15 seconds"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M18.8 5.4A10 10 0 1 0 24 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M16.2 1.6l4.2 3.8-4.6 3.1z" fill="currentColor"/><text x="14" y="18.2" text-anchor="middle">15</text></svg></button>
+      </div>
+      <div class="vm-foot">
+        <button class="vm-rec" type="button" aria-label="Record"><span></span></button>
+        <button class="vm-done" type="button" disabled>Done</button>
+      </div>
+      <p class="vm-note" role="status"></p>
+    </div>
+  </section>
+
+  <section id="journey" class="slide pale journey" aria-labelledby="journey-label">
+    <h2 id="journey-label" class="label">journey</h2>
+    <blockquote class="why"><p>I wanted an experiment first for faster rendering stack with text support.</p></blockquote>
+    <figure class="years">
+      <div class="commits wf" role="img" aria-label="Commits to wavefont, wavearea and linefont, one bar per month, August 2016 to September 2026"></div>
+      <ol class="year-marks" aria-hidden="true"><li style="--m: 0">2016</li><li style="--m: 5">2017</li><li style="--m: 17">2018</li><li style="--m: 29">2019</li><li style="--m: 41">2020</li><li style="--m: 53">2021</li><li style="--m: 65">2022</li><li style="--m: 77">2023</li><li style="--m: 89">2024</li><li style="--m: 101">2025</li><li style="--m: 113">2026</li></ol>
+      <figcaption class="sr">Commits per month: a burst in August 2016, silence until 2021, steady work through 2023, and a return in 2026.</figcaption>
+    </figure>
+    <ol class="milestones">
+      <li><time datetime="2016-08">2016</time>first bars, drawn for wavearea: audio edited in a textarea</li>
+      <li><time datetime="2021-02">2021</time>variable width; linefont, for lines</li>
+      <li><time datetime="2022-12">2022</time>three axes: weight, roundness, alignment</li>
+      <li><time datetime="2023-06">2023</time>on Google Fonts</li>
+      <li><time datetime="2026-09">2026</time>bars by range, one character each: 60 fps</li>
+    </ol>
+  </section>
+
+</main>
+
+<footer id="get" class="foot dark">
+  <div class="ways">
+    <article class="way">
+      <h2 class="label">google fonts</h2>
+      <pre class="code"><code>&lt;link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Wavefont:ROND,YELA,wght@0..100,-100..100,4..1000&amp;display=block"&gt;</code></pre>
+      <button class="btn ghost copy-code" type="button">Copy</button>
+    </article>
+    <article class="way">
+      <h2 class="label">npm</h2>
+      <pre class="code"><code>npm i wavefont</code></pre>
+      <pre class="code"><code>import wf, { bars } from 'wavefont'
+
+el.textContent = wf(values)   // 0–127 each
+el.textContent = bars(lo, hi) // level ranges</code></pre>
+      <button class="btn ghost copy-code" type="button">Copy</button>
+    </article>
+    <article class="way">
+      <h2 class="label">files</h2>
+      <ul class="files">
+        <li><a href="fonts/variable/Wavefont[ROND,YELA,wght].woff2" download>Wavefont[ROND,YELA,wght].woff2</a></li>
+        <li><a href="fonts/variable/Wavefont[ROND,YELA,wght].ttf" download>Wavefont[ROND,YELA,wght].ttf</a></li>
+        <li><a href="https://github.com/dy/wavefont/releases/latest">All formats</a></li>
+        <li><a href="scripts/">Playground</a></li>
+      </ul>
+    </article>
+  </div>
+  <p class="about">Version <span class="s-version">3.8.1</span>, <span class="s-size">variable woff2</span>. Font under the <a href="https://github.com/dy/wavefont/blob/master/OFL.txt">SIL Open Font License</a>, code under MIT. <span class="npm">Downloaded <span class="npm-total">…</span> from npm last year <span class="spark wf" role="img" aria-label="Weekly downloads over the last year"></span></span></p>
+  <p class="credits">Wavefont by <a href="https://github.com/dy">Dmitry Iv</a>. See also <a href="https://github.com/dy/linefont">linefont</a> for lines and <a href="https://dy.github.io/wavearea">wavearea</a> for editing audio as text. Google Fonts still serves an earlier build without range bars. <a class="om" href="https://github.com/krishnized/license/" aria-label="Krishnized license">🕉</a></p>
+</footer>
+</body>
+</html>
