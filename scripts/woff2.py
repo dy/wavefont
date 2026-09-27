@@ -1,5 +1,5 @@
 """Web fonts: woff2 of each TTF without glyph names (post format 3) – browsers never read
-them, and the range bars' names are a third of the file.
+them.
 
     python scripts/woff2.py OUT_DIR FONT.ttf [...]
 """

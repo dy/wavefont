@@ -18,7 +18,7 @@ template.stamp: _sources/master.ufo _sources/master.ufo/features.fea _sources/ma
 	touch template.stamp
 
 build.stamp: venv template.stamp
-	. venv/bin/activate && npm run normalize-ufo && gftools builder sources/config.yaml && npm run build-pairs && npm run build-woff2
+	. venv/bin/activate && npm run normalize-ufo && gftools builder sources/config.yaml && npm run build-woff2
 	touch build.stamp
 
 venv: venv/touchfile
@@ -32,10 +32,11 @@ venv/touchfile: requirements.txt
 # Excluded, by design: axis defaults ROND 100 / YELA -100 are not the registry's 0 (Google Fonts
 # carries registry_default_overrides); vertical metrics widened in 3.6 (caret span -30..130) differ
 # from the older version on Google Fonts until it updates; combining marks shift bars instead of
-# attaching to letters, so language shaping cannot pass.
+# attaching to letters, so language shaping cannot pass; usWinDescent 300 covers the bars at top
+# alignment (down to -270 at YELA 100), which the check doesn't see from the default location
+# (yMin -15): less would clip them on Windows.
 test: venv build.stamp
-	. venv/bin/activate && python scripts/test-pairs.py fonts/variable/*.ttf fonts/ttf/*.ttf
-	. venv/bin/activate && mkdir -p out/fontbakery && fontbakery check-googlefonts -l WARN --full-lists --succinct -x fvar_axis_defaults -x vertical_metrics_regressions -x shape_languages --badges out/badges --html out/fontbakery/fontbakery-report.html --ghmarkdown out/fontbakery/fontbakery-report.md fonts/variable/*.ttf
+	. venv/bin/activate && mkdir -p out/fontbakery && fontbakery check-googlefonts -l WARN --full-lists --succinct -x fvar_axis_defaults -x vertical_metrics_regressions -x shape_languages -x win_ascent_and_descent --badges out/badges --html out/fontbakery/fontbakery-report.html --ghmarkdown out/fontbakery/fontbakery-report.md fonts/variable/*.ttf
 
 proof: venv build.stamp
 	. venv/bin/activate; mkdir -p out/ out/proof; diffenator2 proof $(shell find fonts/ttf -type f) -o out/proof
