@@ -352,7 +352,7 @@ function rangeChart() {
   // the plot as wide as its bars on whole pixels, so the lines and months end where the year does
   const fig = $('.temps'), stage = fig.parentNode
   new ResizeObserver(() => {
-    const room = stage.clientWidth - fig.firstElementChild.offsetWidth - parseFloat(getComputedStyle(fig).columnGap), px = dpx()
+    const room = stage.clientWidth - fig.firstElementChild.offsetWidth - (parseFloat(getComputedStyle(fig).columnGap) || 0), px = dpx()
     const n = room / 365 >= 2.4 ? 365 : 52
     if (n !== set.length) set = group(n), chart.textContent = text(), chart.setAttribute('aria-valuemax', n), pick(null)
     pitch = Math.max(2 * px, Math.floor(room / n / px) * px)

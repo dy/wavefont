@@ -42,7 +42,7 @@
   --space-xl: 2.5rem;
   --space-2xl: 4rem;
 
-  /* every slide: these paddings, twelve columns, and a status band at its foot */
+  /* every slide: these paddings, then a grid of twelve columns and rows a status band tall; content a cell in */
   --pad-x: clamp(1rem, 5vw, 6rem);
   --pad-y: clamp(1.5rem, 5svh, 4rem);
   --band: 3rem;
@@ -56,6 +56,11 @@
   --dur-micro: 120ms;
   --dur-short: 220ms;
   --dur-long: 420ms;
+}
+
+/* the grid a whole number of rows tall: the vertical padding takes what's left over */
+@supports (padding: round(down, 10px, 3px)) {
+  :root { --pad-y: calc((100svh - round(down, 100svh - 2 * clamp(1.5rem, 5svh, 4rem), var(--band))) / 2); }
 }
 
 /* papers: each derives what it needs from the four colours; --tint lifts what's picked or hovered */
@@ -207,7 +212,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 1.2
 input[type="range"]::-moz-range-thumb { width: 1.25rem; height: 1.25rem; border-radius: 50%; background: var(--fg); border: 0; }
 input[type="range"]:focus-visible { outline-offset: 0; }
 
-/* ── slides: paddings, content, and a status band at the foot ── */
+/* ── slides: the grid – twelve columns, and rows: a cell of margin, the stage, the status band, a cell of margin ── */
 
 .slide {
   position: relative;
@@ -217,13 +222,19 @@ input[type="range"]:focus-visible { outline-offset: 0; }
   color: var(--fg);
   scroll-snap-align: start;
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1fr) var(--band);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: var(--band) minmax(0, 1fr) var(--band) var(--band);
   align-items: center;
+  /* sized by its columns: a column is a twelfth of it, as a length for whatever inside needs one */
+  container-type: inline-size;
+  --col: calc(100cqw / 12);
 }
-.slide > .stage { grid-row: 1; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); min-width: 0; }
-/* the status line: what the slide reports, on the same line of every slide */
-.status { grid-row: 2; align-self: end; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-sm) var(--space-xl); min-height: 2.75rem; font: var(--label); color: var(--dim); }
+/* the stage: the ten columns a cell in from the edges, the slide's own, so what's on it starts where a column does;
+   centred in its row, left-aligned. (No containment on it or in it: a contained box can't share its parent's grid) */
+.slide > .stage { grid-area: 2 / 2 / 3 / 12; display: grid; grid-template-columns: subgrid; row-gap: var(--space-xl); min-width: 0; }
+.stage > * { grid-column: 1 / -1; min-width: 0; }
+/* the status line: what the slide reports, in the band, a cell in */
+.status { grid-area: 3 / 2 / 4 / 12; align-self: end; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-sm) var(--space-xl); min-height: 2.75rem; font: var(--label); color: var(--dim); }
 .status output, .status b { color: var(--fg); font-weight: inherit; font-variant-numeric: tabular-nums; }
 
 /* layout overlay, for tuning while building: the grid switch top right, g, or the page opened with ?grid */
@@ -251,20 +262,18 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 
 /* ── hero: the name, set in itself; what it does beside it, on the bars' baseline ── */
 
-.hero { align-items: center; }
 .mark {
   --n: 8;
-  --facts: 0px;
-  --size: min(46svh, calc((100cqi - var(--facts)) / (var(--n) * 0.265)));
+  --bars: 10; /* the columns the bars may take */
+  --size: min(46svh, calc(var(--col) * var(--bars) / (var(--n) * 0.265)));
   --wght: 500;
   --pitch: calc(var(--size) * 0.265);
   --adv: calc(var(--size) * 0.125);
-  container-type: inline-size;
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: subgrid;
   align-items: last baseline;
-  min-width: 0;
 }
+.mark > * { grid-column: 1 / -1; }
 .mark-bars {
   --yela: -100;
   font-size: var(--size);
@@ -293,13 +302,13 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .facts a { text-decoration: none; display: inline-block; padding: 0.15em 0; white-space: nowrap; }
 .facts a:hover { color: var(--accent); }
 
-/* ── latin+ core: each key's bar, the key under it; row names on the keys' baseline ── */
+/* ── latin+ core: each key's bar, the key under it; row names in the first column, on the keys' baseline ── */
 
-.keymap { display: grid; gap: var(--space-xl); margin: 0; }
-.keymap > div { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-xs); align-items: last baseline; }
-.keymap dt { font: var(--label); color: var(--dim); }
-.keymap dd { margin: 0; }
-.rosetta { --size: clamp(2rem, 1.25rem + 2vw, 3rem); display: flex; flex-wrap: wrap; }
+.keymap { display: grid; grid-template-columns: subgrid; row-gap: min(var(--space-xl), 3.5svh); margin: 0; }
+.keymap > div { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; row-gap: var(--space-xs); align-items: last baseline; }
+.keymap dt { grid-column: 1 / -1; font: var(--label); color: var(--dim); }
+.keymap dd { grid-column: 1 / -1; margin: 0; }
+.rosetta { --size: min(clamp(2rem, 1.25rem + 2vw, 3rem), 5.5svh); display: flex; flex-wrap: wrap; }
 /* a row of two sets: the second a step apart */
 .rosetta > [data-keys] { display: flex; flex-wrap: wrap; }
 .rosetta > [data-keys] + [data-keys] { margin-left: var(--space-lg); }
@@ -308,14 +317,14 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 /* a mark's name is its spacing form, small in any font: set larger */
 .marks .k { font-size: 1.375rem; line-height: 1; }
 
-/* ── 127 values: every bar in a grid, 0 and 127 on the lines of the first and the last,
-   the picked one's value, character and code under the grid's first column ── */
+/* ── 127 values: every bar in a grid, two to a column, starting at the second; 0 and 127 on the lines of the first
+   and the last, the picked one's value, character and code under the grid's first column ── */
 
-.values .stage { justify-items: center; }
 .grid {
-  --cell: min(3.25rem, 5.2svh, calc((100vw - 2 * var(--pad-x) - 5rem) / 16));
+  /* as tall as the stage allows: eight rows a cell and a half high, the readout under them */
+  --cell: min(var(--col) / 2, calc((100svh - 2 * var(--pad-y) - 16rem) / 11.6));
   display: grid;
-  grid-template-columns: auto repeat(16, var(--cell)) auto;
+  grid-template-columns: var(--col) repeat(16, var(--cell)) auto;
   grid-template-rows: repeat(8, calc(var(--cell) * 1.45)) auto;
   align-items: last baseline;
 }
@@ -350,27 +359,32 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 }
 @media (hover: hover) { .readout button:hover { text-decoration-color: var(--dim); } }
 
-/* ── 3 axes: the specimen in the middle, a slider per axis at the foot, named at the left ── */
+/* ── 3 axes: the specimen across all twelve columns, the sliders on the columns in the middle, in the band ── */
 
+.axes .stage { grid-area: 2 / 1 / 4 / -1; align-self: stretch; grid-template-rows: subgrid; row-gap: 0; }
+/* the first bar on the grid's left edge and the last on its right, at any weight: the gaps share what the bars leave */
 .specimen {
   --n: 15;
-  --size: min(30svh, calc((100vw - 2 * var(--pad-x)) / (var(--n) * 0.27)));
+  --size: min(30svh, 100cqw / 3.75); /* 100cqw: the twelve columns */
+  grid-row: 1;
+  align-self: center;
   font-size: var(--size);
-  letter-spacing: calc(var(--size) * (0.27 - var(--wght) / 4000));
+  letter-spacing: calc((100cqw - var(--n) * var(--size) * var(--wght) / 4000) / (var(--n) - 1));
   line-height: 1.1;
   white-space: pre;
 }
-.axes .stage { align-self: stretch; grid-template-rows: 1fr auto 1fr; justify-items: center; }
-.specimen { grid-row: 2; }
-.sliders { grid-row: 3; align-self: end; display: grid; gap: var(--space-xs); width: min(100%, 34rem); }
-.axis { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr) 4ch; align-items: center; gap: 0 var(--space-lg); }
-.axis .name { font: var(--label); color: var(--dim); cursor: help; }
-.axis output { font: var(--label); color: var(--fg); font-variant-numeric: tabular-nums; text-align: right; }
+/* in the band, rising from its foot: taller than the band, and the band keeps its height */
+.sliders { grid-area: 2 / 2 / 3 / 12; align-self: end; display: grid; grid-template-columns: subgrid; row-gap: var(--space-xs); }
+.axis { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: center; }
+.axis .name { grid-column: 1 / 4; font: var(--label); color: var(--dim); cursor: help; }
+.axis input { grid-column: 4 / 9; }
+.axis output { grid-column: 9 / -1; font: var(--label); color: var(--fg); font-variant-numeric: tabular-nums; text-align: right; }
 
 /* ── textual semantics: a document, as in the article – the title a third larger than the text, bars on one pitch
    per block, each weight a share of it, set in whole device pixels by the script (--w0…4, --s0…4) ── */
 
-.text .stage { align-self: start; padding-top: clamp(1rem, 7svh, 5rem); }
+/* set high: from the first row inside the margin */
+.text .stage { align-self: start; }
 .doc { --body: min(clamp(1.75rem, 0.9rem + 2.3vw, 3rem), 5.2svh); position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: calc(var(--body) * 0.6); outline: none; cursor: text; }
 .doc-title { --yela: 0; --wght: var(--w2); letter-spacing: var(--s2); font-size: calc(var(--body) * 1.33); line-height: 1.2; white-space: pre; }
 .doc-body { --yela: 0; --wght: var(--w0); letter-spacing: var(--s0); font-size: var(--body); line-height: 1.5; color: var(--fg); }
@@ -396,10 +410,11 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 
 /* ── min–max bars: a year of weather, each day from its low to its high ── */
 
-.temps { --chart-h: clamp(13rem, 52svh, 32rem); margin: 0; display: grid; grid-template-columns: auto var(--plot-w, minmax(0, 1fr)); gap: var(--space-sm) var(--space-md); justify-content: start; }
-.degrees { position: relative; list-style: none; margin: 0; padding: 0; width: 4ch; height: var(--chart-h); font: var(--label); color: var(--dim); font-variant-numeric: tabular-nums; text-align: right; }
+.temps { --chart-h: clamp(13rem, 52svh, 32rem); --deg: var(--col); margin: 0; display: grid; grid-template-columns: var(--deg) var(--plot-w, minmax(0, 1fr)); row-gap: var(--space-sm); justify-content: start; }
+/* the degrees in the first column, the plot from the second */
+.degrees { position: relative; list-style: none; margin: 0; padding: 0; height: var(--chart-h); font: var(--label); color: var(--dim); font-variant-numeric: tabular-nums; text-align: right; }
 /* each label centred on its line, 10° apart */
-.degrees li { position: absolute; right: 0; top: calc(var(--k) / 7 * 100%); transform: translateY(-50%); }
+.degrees li { position: absolute; right: var(--space-md); top: calc(var(--k) / 7 * 100%); transform: translateY(-50%); }
 /* range bars ignore YELA: at line-height 1, level 14 is the floor and 114 the top: −30 °C to 40 °C, a line every 10° */
 .temp-bars {
   font-size: var(--chart-h);
@@ -423,11 +438,12 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 
 /* ── 60 fps: one column per way of drawing, milliseconds on a log scale ── */
 
-.race { --chart-h: clamp(12rem, 46svh, 28rem); margin: calc(var(--space-xl) + 1rem) 0 var(--space-xl); position: relative; padding-left: 4.5rem; }
+/* the scale's names in the first column, the four ways in the next eight, two columns each */
+.race { --chart-h: clamp(12rem, 46svh, 28rem); margin: calc(var(--space-xl) + 1rem) 0 var(--space-xl); position: relative; padding-left: var(--col); }
 .scale { position: absolute; inset: 0; height: var(--chart-h); pointer-events: none; font: var(--label); color: var(--dim); }
 .scale > span { position: absolute; left: 0; right: 0; bottom: calc(var(--at) * 100%); border-bottom: 1px solid var(--faint); padding-bottom: 0.3em; white-space: nowrap; }
 .scale .frame { border-bottom: 2px solid var(--fg); color: var(--fg); text-align: right; z-index: 1; }
-.lanes { position: relative; height: var(--chart-h); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.lanes { position: relative; width: calc(8 * var(--col)); height: var(--chart-h); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .col { position: relative; display: grid; justify-items: center; align-content: end; height: var(--chart-h); }
 /* one bar, no spacing after it, so it stands in the middle of its column, over its name */
 .col .glyph { font-size: var(--chart-h); line-height: 1; height: var(--chart-h); white-space: pre; letter-spacing: 0; color: var(--unplayed); }
@@ -445,8 +461,8 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 
 /* ── voice messages: pills, round-capped bars close together, the time beside them – as the reference ── */
 
-.messages .stage { justify-items: center; }
-.chat { width: 100%; max-width: 30rem; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-md); }
+/* the chat on the columns in the middle: as many as a phone's width needs */
+.chat { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-md); }
 /* no scrolling box: the thread keeps as many whole messages as fit */
 .thread { position: relative; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: var(--space-sm); height: min(56svh, 34rem); overflow: hidden; }
 .msg { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: start; }
@@ -494,9 +510,17 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 /* the triangle and the pause bars have round corners, as the bars have round caps */
 .round { stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
 
-/* ── renderings: the article's nine, each moving as it suggests ── */
+/* ── renderings: the article's nine, each moving as it suggests; the grid of them on the middle columns, as many
+   as the grid's height allows, an even number so it stays centred; on the widest, a tile is two columns ── */
 
-.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(0.25rem, 0.8vw, 0.75rem); width: min(100%, 76svh, 48rem); justify-self: center; }
+.renderings { container-type: size; height: 100svh; } /* a size container is queried by its height, which min-height doesn't give */
+.renderings .stage { grid-row: 1 / -1; align-self: stretch; align-content: center; }
+/* k columns of square tiles stand k twelfths of the grid's width tall: they fit while its aspect is at most 12 / k */
+.tiles { grid-column: 5 / 7; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@container (max-aspect-ratio: 3 / 1) { .tiles { grid-column: 4 / 8; } }
+@container (max-aspect-ratio: 2 / 1) { .tiles { grid-column: 3 / 9; } }
+@container (max-aspect-ratio: 3 / 2) { .tiles { grid-column: 2 / 10; } }
+@container (max-aspect-ratio: 6 / 5) { .tiles { grid-column: 1 / -1; } }
 .tile { position: relative; aspect-ratio: 1; color: var(--fg); overflow: hidden; }
 .tile svg text { fill: currentColor; }
 .tile .piece, .tile svg { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -506,10 +530,10 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .tile .over { clip-path: inset(0 100% 0 0); animation: sweep 5s linear infinite; }
 @keyframes sweep { to { clip-path: inset(0 0 0 0); } }
 
-/* ── the flower: a screen of its own, as large as the screen allows ── */
+/* ── the flower: a screen of its own, the grid's full height, top and bottom on its edges ── */
 
-.work .stage { justify-items: center; }
-.work .piece { width: min(100%, calc((100svh - 2 * var(--pad-y) - var(--band)) * var(--ar, 1))); overflow: hidden; touch-action: pan-y; }
+.work .stage { grid-area: 1 / 1 / -1 / -1; justify-items: center; }
+.work .piece { width: min(100%, calc((100svh - 2 * var(--pad-y)) * var(--ar, 1))); overflow: hidden; touch-action: pan-y; }
 
 /* traced pieces: every line is text, each bar a character standing at its own x */
 .piece { position: relative; width: 100%; }
@@ -518,8 +542,9 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 
 /* ── Voice Memos, fitted to the screen: name, the waveform band under a fixed playhead, ruler, time, transport, record ── */
 
-.memo { padding-inline: 0; grid-template-rows: minmax(0, 1fr); }
-.vm { --band-bg: color-mix(in oklab, var(--white) 6%, var(--dark)); align-self: stretch; min-height: 30rem; display: flex; flex-direction: column; align-items: center; gap: clamp(0.5rem, 2svh, 1.25rem); }
+/* a device of its own: edge to edge, off the grid */
+.memo { padding-inline: 0; grid-template-columns: minmax(0, 1fr); grid-template-rows: var(--band) minmax(0, 1fr) var(--band); }
+.vm { --band-bg: color-mix(in oklab, var(--white) 6%, var(--dark)); grid-row: 2; align-self: stretch; min-height: 30rem; display: flex; flex-direction: column; align-items: center; gap: clamp(0.5rem, 2svh, 1.25rem); }
 .vm button { border: 0; background: none; padding: 0; color: inherit; cursor: pointer; }
 .vm button:disabled { cursor: default; }
 .vm-top { display: grid; justify-items: center; padding: 0 var(--space-md); }
@@ -580,9 +605,11 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .commits { --yela: 0; font-size: clamp(4rem, 16svh, 9rem); line-height: 1.1; white-space: pre; color: var(--fg); }
 .year-marks { position: relative; list-style: none; margin: 0; padding: 0; height: 1.4em; font: var(--label); color: var(--dim); font-variant-numeric: tabular-nums; }
 .year-marks li { position: absolute; left: calc((var(--m) + 0.5) / 122 * 100%); transform: translateX(-50%); }
-.milestones { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-sm); max-width: 44rem; }
-.milestones li { display: grid; grid-template-columns: 4rem minmax(0, 1fr); gap: var(--space-md); }
-.milestones time { font: var(--label); color: var(--accent); line-height: 1.55rem; }
+/* each year in the first column, what happened in the next six */
+.milestones { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: subgrid; row-gap: var(--space-sm); }
+.milestones li { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; }
+.milestones time { grid-column: 1 / 3; font: var(--label); color: var(--accent); line-height: 1.55rem; }
+.milestones li > span { grid-column: 3 / -1; }
 .milestones a { text-decoration-color: color-mix(in oklab, currentColor 35%, transparent); }
 
 /* ── get: where it is, and nothing else; ॐ in the corner ── */
@@ -605,27 +632,53 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 }
 
 @media (min-width: 48rem) {
-  .keymap > div { grid-template-columns: 8rem minmax(0, 1fr); }
+  .chat { grid-column: 2 / 10; }
+  .milestones time { grid-column: 1 / 2; }
+  .milestones li > span { grid-column: 2 / 8; }
+  .keymap dt { grid-column: 1 / 2; }
+  .keymap dd { grid-column: 2 / -1; }
+  /* sliders on the middle eight columns: names in two, values in one */
+  .sliders { grid-column: 3 / 11; }
+  .axis .name { grid-column: 1 / 3; }
+  .axis input { grid-column: 3 / 8; }
+  .axis output { grid-column: 8 / -1; }
 }
 
 @media (min-width: 64rem) {
-  /* the features beside the bars, their last line on the bars' baseline */
-  .mark { --facts: 22rem; grid-template-columns: minmax(0, 1fr) var(--facts); }
-  .mark-bars { grid-area: 1 / 1; }
-  .facts { grid-area: 1 / 2; margin: 0; grid-template-columns: max-content; grid-auto-flow: row; grid-template-rows: none; gap: var(--space-sm); }
-  .mark-letters { grid-area: 2 / 1; }
+  .chat { grid-column: 3 / 9; }
+  /* the features in the last three columns, beside the bars, their last line on the bars' baseline;
+     set small enough that the longest fits its three columns */
+  .mark { --bars: 7; }
+  .mark-bars { grid-area: 1 / 1 / 2 / 8; }
+  .mark-letters { grid-area: 2 / 1 / 3 / 8; }
+  .facts { grid-area: 1 / 8 / 2 / -1; margin: 0; grid-template-columns: max-content; grid-auto-flow: row; grid-template-rows: none; gap: var(--space-sm); font-size: min(1.5rem, calc(var(--col) * 0.185)); }
+}
+
+@media (min-width: 80rem) {
+  /* on the middle six: names in one */
+  .sliders { grid-column: 4 / 10; }
+  .axis .name { grid-column: 1 / 2; }
+  .axis input { grid-column: 2 / 6; }
+  .axis output { grid-column: 6 / -1; }
+}
+
+@media (min-width: 90rem) {
+  .chat { grid-column: 4 / 8; }
 }
 
 @media (max-width: 40rem) {
-  .hero { align-items: start; padding-top: clamp(3rem, 12svh, 7rem); }
+  /* the name on the first row inside the margin, not lost at the foot of a tall screen */
+  .hero .stage { align-self: start; }
   .weights { gap: var(--space-2xs); }
   .weights button { width: 2.75rem; height: 2.75rem; }
   .race { padding-left: 0; }
+  .lanes { width: auto; }
+  /* the degrees in two columns, where one is too narrow for them */
+  .temps { --deg: calc(2 * var(--col)); }
   .scale > span:not(.frame) { color: transparent; }
   .scale .wide { display: none; }
   .col .name { font-size: 0.75rem; }
   .year-marks li:nth-child(even) { visibility: hidden; }
-  .axis { grid-template-columns: 5.5rem minmax(0, 1fr) 4ch; gap: 0 var(--space-sm); }
 }
 
 @media (prefers-reduced-motion: reduce) {
