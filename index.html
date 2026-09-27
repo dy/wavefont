@@ -183,9 +183,13 @@
     </div>
   </section>
 
-  <section id="get" class="slide dark get" data-variant="1" aria-label="Get Wavefont">
-    <div class="variants" role="group" aria-label="Layout of this slide"><button type="button" aria-pressed="true">1</button><button type="button" aria-pressed="false">2</button><button type="button" aria-pressed="false">3</button></div>
+  <section id="get" class="slide dark get" aria-label="Get Wavefont">
     <div class="stage">
+      <div class="pad">
+        <div class="pad-bars wf" role="img" aria-label="Bars drawn with the pencil: draw over them, or type their values under them"></div>
+        <label class="pad-values"><span class="sr">Values of the bars, 0 to 100</span><input type="text" inputmode="numeric" spellcheck="false" autocomplete="off"></label>
+        <button class="pad-copy" type="button" title="Copy the bars as text">copy</button>
+      </div>
       <ul class="links">
         <li><a href="https://fonts.google.com/specimen/Wavefont">Google Fonts</a></li>
         <li><a href="scripts/">Playground</a></li>

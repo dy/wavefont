@@ -146,24 +146,21 @@ function axes() {
   }
   inputs.forEach(i => set(i.name, +i.value))
 
-  // a walk through what the axes do: weight by weight, from 100 to 1000; at each weight, square, half round and round;
-  // at each roundness, the three alignments. Each move changes one axis, there and back in turn, a longer one taking
-  // longer; a new weight holds longest, a new roundness less, an alignment least
-  const WGHT = Array.from({ length: 10 }, (_, i) => 100 + 100 * i), ROND = [0, 50, 100], YELA = [-100, 0, 100]
+  // a walk through what the axes do: weight by weight, the extremes first and closing in – 100, 900, 200, 800, …, 500;
+  // at each weight, square, half round and round, there and back in turn; at each roundness, the same three moves:
+  // down to the floor, up to the ceiling, back to the middle. Each move changes one axis, a longer one taking longer;
+  // a new weight holds longest, a new roundness less, an alignment least. Twice through the weights, the roundness
+  // comes back where it began
+  const WGHT = [100, 900, 200, 800, 300, 700, 400, 600, 500], ROND = [0, 50, 100], YELA = [-100, 100, 0]
   const INTO = [['wght', 100]], ROUND = []
-  let r = 0, y = 1
-  WGHT.forEach((w, i) => {
+  let r = 0
+  for (const [i, w] of [...WGHT, ...WGHT].entries()) {
     if (i) ROUND.push(['wght', w])
-    const rs = i % 2 ? [...ROND].reverse() : ROND
-    rs.forEach((rv, j) => {
+    for (const rv of i % 2 ? [...ROND].reverse() : ROND) {
       if (rv !== r) ROUND.push(['rond', rv]), r = rv
-      const ys = (i * 3 + j) % 2 ? [...YELA].reverse() : YELA
-      for (const yv of ys) if (yv !== y) ROUND.push(['yela', yv]), y = yv
-    })
-  })
-  // back to the start, a move at a time
-  if (y !== 0) ROUND.push(['yela', 0])
-  if (r !== 0) ROUND.push(['rond', 0])
+      for (const yv of YELA) ROUND.push(['yela', yv])
+    }
+  }
   ROUND.push(['wght', 100])
   const SPAN = { wght: 950, rond: 100, yela: 200 }, HOLD = { wght: 1100, rond: 550, yela: 250 }
   let raf = 0, k = 0, t0 = null, from = 0, move = 0
@@ -600,23 +597,58 @@ function journey() {
 }
 
 
-/* ── get: where it is ──────────────────────────────────────────────────────── */
+/* ── get: bars of your own, and where the font is ────────────────────────── */
+
+/** A line of bars to draw on with a pencil, their values under it to read or type; copy takes the bars as text. */
+function pad() {
+  const line = $('.pad-bars'), input = $('.pad-values input'), btn = $('.pad-copy')
+  // to begin with, a word of speech: it swells and fades
+  let values = Array.from({ length: 32 }, (_, i) => Math.round(6 + 82 * Math.sin(Math.PI * (i + 0.5) / 32) ** 1.2 * (0.55 + 0.45 * Math.abs(Math.sin(i * 1.9))))), P = 0
+  const show = () => { line.textContent = wf(values), P = fit(line, values.length, 0.5) }
+  const say = () => input.value = values.join(' ')
+  new ResizeObserver(show).observe(line), say()
+  // the pencil: the bar under its tip as high, each way from the middle, as the tip is from it; a stroke fills the
+  // bars it passes between two moves
+  let last = null
+  const at = e => {
+    const r = line.getBoundingClientRect()
+    return [Math.min(values.length - 1, Math.max(0, Math.floor((e.clientX - r.left) / P))), Math.min(100, Math.round(Math.abs(e.clientY - r.top - r.height / 2) / (r.height / 2) * 100))]
+  }
+  const stroke = ([i, v]) => {
+    const [i0, v0] = last ?? [i, v]
+    for (let k = Math.min(i0, i); k <= Math.max(i0, i); k++) values[k] = i === i0 ? v : Math.round(v0 + (v - v0) * (k - i0) / (i - i0))
+    last = [i, v], show(), say()
+  }
+  line.addEventListener('pointerdown', e => { line.setPointerCapture(e.pointerId), last = null, stroke(at(e)) })
+  line.addEventListener('pointermove', e => line.hasPointerCapture(e.pointerId) && stroke(at(e)))
+  line.addEventListener('pointerup', () => last = null)
+  // values typed: a bar for each number, up to 64
+  input.addEventListener('input', () => {
+    const vs = (input.value.match(/\d+(\.\d+)?/g) ?? []).slice(0, 64).map(v => Math.min(100, Math.round(+v)))
+    if (vs.length) values = vs, show()
+  })
+  btn.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(wf(values)), btn.textContent = 'copied' } catch { btn.textContent = 'copy failed' }
+    setTimeout(() => btn.textContent = 'copy', 1200)
+  })
+}
 
 function get() {
   // the version this page was built with, as the package says
   soon($('#get'), () => fetch('package.json').then(r => r.json()).then(p => $('.s-version').textContent = p.version).catch(() => {}))
-  // each link's name, and the same name set in the font: its bars, shown where the layout draws them
-  const links = $$('.links a'), px = dpx()
+  pad()
+  // each link's name set in the font over its letters, a letter under each bar, as the first slide sets the name
+  const list = $('.links'), links = $$('a', list), stage = $('#get .stage'), px = dpx()
   for (const a of links) {
-    const bars = h('span', { className: 'wf', textContent: a.textContent })
-    bars.setAttribute('aria-hidden', 'true')
-    a.replaceChildren(bars, h('span', { className: 'name', textContent: a.textContent }))
+    const name = a.textContent, bars = h('span', { className: 'wf', textContent: name }), letters = h('span', { className: 'letters' })
+    bars.setAttribute('aria-hidden', 'true'), letter(letters, name), a.replaceChildren(bars, letters)
   }
   // all on one pitch, whole device pixels: the longest name and a pitch more to two of the stage's ten columns
-  const stage = $('#get .stage')
   new ResizeObserver(() => {
     const most = Math.max(...links.map(a => a.lastChild.textContent.length)), P = Math.floor(stage.clientWidth / 5 / (most + 1) / px) * px
     for (const a of links) { const b = a.firstChild; fit(b, b.textContent.length, 0.5, b.textContent.length * P) }
+    const b = links[0].firstChild
+    list.style.setProperty('--pitch', `${P}px`), list.style.setProperty('--adv', `${b.style.getPropertyValue('--wght') * parseFloat(getComputedStyle(b).fontSize) / 4000}px`)
   }).observe(stage)
 }
 

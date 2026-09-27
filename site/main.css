@@ -246,6 +246,12 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .status output, .status b { color: var(--fg); font-weight: inherit; font-variant-numeric: tabular-nums; }
 .status > :is(output, span, p, a) { margin-bottom: var(--sink); }
 
+/* a slide offering layouts to choose from: the switch in its top right cell. Narrower, they are one: the switch shows
+   where they differ */
+.variants { grid-area: 1 / 12 / 2 / 13; justify-self: end; align-self: center; display: none; gap: var(--space-2xs); font: var(--label); }
+.variants button { width: 2rem; height: 2rem; padding: 0; border: 1px solid var(--faint); border-radius: 50%; background: none; color: var(--dim); cursor: pointer; }
+.variants button[aria-pressed="true"] { border-color: var(--fg); color: var(--fg); }
+
 /* out of view, a slide's animations hold where they are, whatever sets them going */
 .slide.off, .slide.off * { animation-play-state: paused !important; }
 
@@ -321,11 +327,14 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .facts a:hover { color: var(--accent); }
 
 /* ── latin+ core: the keys that draw bars – three lines of 26 across the ten columns, a key's bar standing on a row
-   line, its name hanging from it in the row under; a row between the capitals and the rest ── */
+   line, its name hanging from it in the row under; a row between the lines. The lowercase reach half the height the
+   rest do: one row of bars is theirs ── */
 
 .keys .stage { grid-row: 2 / 12; }
-.keymap { align-self: start; display: grid; grid-template-rows: repeat(2, calc(3 * var(--row))) calc(4 * var(--row)); }
-.keymap .line:last-child { align-self: end; }
+.keymap { align-self: start; display: grid; grid-template-rows: calc(2 * var(--row)) var(--row) calc(3 * var(--row)) var(--row) calc(3 * var(--row)); }
+.keymap .line:nth-child(2) { grid-row: 3; }
+.keymap .line:nth-child(3) { grid-row: 5; }
+.keymap .line:first-child { grid-template-rows: var(--row) var(--row); }
 .keymap .line { display: grid; grid-template-columns: repeat(26, minmax(0, 1fr)); grid-template-rows: calc(2 * var(--row)) var(--row); }
 .keymap .k { grid-row: 1 / -1; display: grid; grid-template-rows: subgrid; justify-items: center; }
 /* at line-height 1 a bar standing on the floor stands on the foot of its box */
@@ -615,16 +624,21 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 
 /* ── Voice Memos, fitted to the screen: name, the waveform band under a fixed playhead, ruler, time, transport, record ── */
 
-/* a device of its own: edge to edge, off the grid */
+/* a device of its own, edge to edge, on the slide's rows: the name hanging from the second, the band over the next
+   five, the ruler under it, the time standing on the ninth, the transport on the tenth, the record button on the
+   band's foot, a note beside it */
 .memo { padding-inline: 0; grid-template-columns: minmax(0, 1fr); }
-.vm { --band-bg: color-mix(in oklab, var(--white) 6%, var(--dark)); grid-row: 2 / 12; align-self: stretch; min-height: 30rem; display: flex; flex-direction: column; align-items: center; gap: clamp(0.5rem, 2svh, 1.25rem); }
+.vm { --band-bg: color-mix(in oklab, var(--white) 6%, var(--dark)); --rec: min(4.25rem, var(--row)); grid-row: 2 / 12; align-self: stretch; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: subgrid; justify-items: center; }
+/* all in the one column, placed: the note shares the record button's row rather than making a column of its own */
+.vm > * { grid-column: 1; }
 .vm button { border: 0; background: none; padding: 0; color: inherit; cursor: pointer; }
 .vm button:disabled { cursor: default; }
-.vm-top { display: grid; justify-items: center; padding: 0 var(--space-md); }
-.vm-title { width: min(100%, 22rem); padding: 0.1em 0.35em; border: 0; border-radius: var(--radius-sm); background: none; color: inherit; font: 600 clamp(1.25rem, 1rem + 1vw, 1.75rem)/1.2 var(--font-sans); text-align: center; outline: none; }
+.vm-top { grid-row: 1; align-self: start; display: grid; justify-items: center; padding: 0 var(--space-md); }
+/* the name's capitals from the row's top line: the field's padding and half its leading above them */
+.vm-title { width: min(100%, 22rem); margin-top: calc(var(--sink) - 0.1em); padding: 0.1em 0.35em; border: 0; border-radius: var(--radius-sm); background: none; color: inherit; font: 600 clamp(1.25rem, 1rem + 1vw, 1.75rem)/1.2 var(--font-sans); text-align: center; outline: none; }
 .vm-title:focus-visible { outline: none; }
 .vm-sub { display: flex; justify-content: center; gap: 0.6em; margin-top: 0.25em; font: var(--label); color: var(--dim); font-variant-numeric: tabular-nums; }
-.vm-wave { position: relative; align-self: stretch; flex: 1 1 0; min-height: 8rem; max-height: 28rem; background: var(--band-bg); overflow: hidden; touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: grab; outline: none; }
+.vm-wave { grid-row: 2 / 7; position: relative; align-self: stretch; justify-self: stretch; background: var(--band-bg); overflow: hidden; touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: grab; outline: none; }
 .vm-wave.is-dragging { cursor: grabbing; }
 .vm-wave:focus-visible { box-shadow: inset 0 0 0 2px var(--blue); }
 .vm[data-state="recording"] .vm-wave { cursor: default; }
@@ -644,7 +658,7 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .vm-head::before { top: -0.3rem; }
 .vm-head::after { bottom: -0.3rem; }
 .vm[data-state="recording"] .vm-head, .vm[data-state="paused"] .vm-head { background: var(--red); }
-.vm-ruler { position: relative; align-self: stretch; height: 2.25rem; margin-top: calc(-1 * clamp(0.5rem, 2svh, 1.25rem)); overflow: hidden; flex: none; }
+.vm-ruler { grid-row: 7; position: relative; align-self: start; justify-self: stretch; height: 2.25rem; overflow: hidden; }
 .vm-scale {
   position: absolute; top: 0; left: 0; height: 100%;
   /* a tick every quarter second, a taller one every second */
@@ -654,23 +668,25 @@ input[type="range"]:focus-visible { outline-offset: 0; }
   will-change: transform;
 }
 .vm-scale span { position: absolute; top: 0.9rem; transform: translateX(-50%); font: var(--label); font-size: 0.75rem; color: var(--dim); font-variant-numeric: tabular-nums; }
-.vm-time { font: 500 clamp(2.5rem, 1.5rem + 4.5vw, 4.5rem)/1 var(--font-sans); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; flex: none; }
-.vm-ctrl { display: flex; align-items: center; justify-content: center; gap: clamp(2.5rem, 10vw, 5rem); flex: none; }
+.vm-time { grid-row: 8; align-self: end; margin-bottom: var(--sink); font: 500 clamp(2.5rem, 1.5rem + 4.5vw, 4.5rem)/1 var(--font-sans); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.vm-ctrl { grid-row: 9; align-self: end; display: flex; align-items: center; justify-content: center; gap: clamp(2.5rem, 10vw, 5rem); }
 .vm-ctrl svg { display: block; fill: currentColor; }
 .vm-ctrl text { font: 700 8px var(--font-sans); fill: currentColor; }
 .vm-back svg, .vm-fwd svg { width: 1.75rem; height: 1.75rem; }
 .vm-play svg { width: 2.1rem; height: 2.1rem; }
 .vm-ctrl button { padding: 0.5rem; border-radius: 50%; }
 .vm-ctrl button:disabled { color: var(--faint); }
-.vm-foot { position: relative; display: flex; justify-content: center; align-items: center; width: min(100%, 30rem); height: 4.5rem; flex: none; }
-.vm-rec { position: relative; display: grid; place-items: center; width: 4.25rem; height: 4.25rem; border-radius: 2.125rem; box-shadow: inset 0 0 0 0.22rem var(--white); transition: width var(--dur-short) var(--ease-out); }
-.vm-rec span { display: block; width: 3.35rem; height: 3.35rem; border-radius: 1.675rem; background: var(--red); transition: width var(--dur-short) var(--ease-out), height var(--dur-short) var(--ease-out), border-radius var(--dur-short) var(--ease-out); }
-.vm[data-state="recording"] .vm-rec { width: 9rem; }
-.vm[data-state="recording"] .vm-rec span { width: 1.9rem; height: 1.6rem; border-radius: 0; background: linear-gradient(to right, var(--red) 0 38%, transparent 38% 62%, var(--red) 62%); }
+/* the record button a row high where a row is less than its own size, in proportion */
+.vm-foot { grid-row: 10; align-self: end; position: relative; display: flex; justify-content: center; align-items: center; width: min(100%, 30rem); height: var(--rec); }
+.vm-rec { position: relative; display: grid; place-items: center; width: var(--rec); height: var(--rec); border-radius: calc(var(--rec) / 2); box-shadow: inset 0 0 0 calc(var(--rec) * 0.052) var(--white); transition: width var(--dur-short) var(--ease-out); }
+.vm-rec span { display: block; width: calc(var(--rec) * 0.79); height: calc(var(--rec) * 0.79); border-radius: 50%; background: var(--red); transition: width var(--dur-short) var(--ease-out), height var(--dur-short) var(--ease-out), border-radius var(--dur-short) var(--ease-out); }
+.vm[data-state="recording"] .vm-rec { width: calc(var(--rec) * 2.12); }
+.vm[data-state="recording"] .vm-rec span { width: calc(var(--rec) * 0.45); height: calc(var(--rec) * 0.38); border-radius: 0; background: linear-gradient(to right, var(--red) 0 38%, transparent 38% 62%, var(--red) 62%); }
 /* as in Voice Memos: Done shows while a recording is open */
 .vm .vm-done { position: absolute; right: var(--space-lg); font-size: var(--text-body); color: var(--accent); visibility: hidden; }
 .vm:not([data-state="idle"]) .vm-done { visibility: visible; }
-.vm-note { margin: 0; min-height: 1.4em; padding: 0 var(--space-lg); text-align: center; font: var(--label); color: var(--dim); flex: none; }
+/* a note from the second column of the other slides, standing on the band's line, clear of the record button */
+.vm-note { --lead: calc(var(--pad-x) + (100cqw - 2 * var(--pad-x)) / 12); grid-row: 10; align-self: end; justify-self: start; max-width: calc(50% - var(--rec) - var(--lead)); margin: 0 0 var(--sink) var(--lead); font: var(--label); color: var(--dim); }
 
 /* ── journey: ten years of commits, set as a recording ── */
 
@@ -682,9 +698,9 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 /* each mark starts at its month's bar: the script sets the bars' pitch */
 .marks { position: relative; list-style: none; margin: 0; padding: 0; height: 1lh; font: var(--label); font-variant-numeric: tabular-nums; }
 .marks li { position: absolute; top: 0; left: calc(var(--m) * var(--pitch, 0.82%)); }
-/* a version is a tag: white on black, clear of the bars by as much as the years hang under them */
-.tag { display: inline-block; padding: 0 0.4em; border-radius: 2px; background: var(--fg); color: var(--white); font: var(--label); text-decoration: none; }
-@media (hover: hover) { a.tag:hover { background: var(--accent); } }
+/* a version is a tag: white on blue, clear of the bars by as much as the years hang under them */
+.tag { display: inline-block; padding: 0 0.4em; border-radius: 2px; background: var(--accent); color: var(--white); font: var(--label); text-decoration: none; }
+@media (hover: hover) { a.tag:hover { background: var(--fg); } }
 .version-marks { grid-row: 1; align-self: end; height: 1lh; margin-bottom: var(--space-sm); line-height: 1.4; }
 .year-marks { grid-row: 4; align-self: start; margin-top: calc(var(--sink) + var(--space-sm)); color: var(--dim); }
 /* each year in the first column, what happened from the next, its baseline on the row's foot */
@@ -694,27 +710,39 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .milestones li > span { grid-column: 3 / -1; margin-bottom: var(--sink); }
 .milestones a { text-decoration-color: color-mix(in oklab, currentColor 35%, transparent); }
 
-/* ── get: where it is, and nothing else; the credits and ॐ in the band. Three layouts to choose from, the switch in
-   the top right cell: 1 a link a row; 2 a link to two columns, its name drawn in bars over it; 3 a link to every other
-   row, its capitals the row's height ── */
+/* ── get: bars of your own, and where the font is. A line to draw on with a pencil, four rows high, its values
+   under it to read or type; the links under that, each name's bars over its letters, as the name is set on the
+   first slide; the credits and ॐ in the band ── */
 
-/* narrower, the three are one: the switch shows where they differ */
-.variants { grid-area: 1 / 12 / 2 / 13; justify-self: end; align-self: center; display: none; gap: var(--space-2xs); font: var(--label); }
-.variants button { width: 2rem; height: 2rem; padding: 0; border: 1px solid var(--faint); border-radius: 50%; background: none; color: var(--dim); cursor: pointer; }
-.variants button[aria-pressed="true"] { border-color: var(--fg); color: var(--fg); }
+.pad { grid-row: 1 / 6; align-self: stretch; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; }
+/* bars round the middle line, the pencil drawing them: its tip is where it draws */
+.pad-bars {
+  --yela: 0;
+  grid-column: 1 / -1; grid-row: 1 / 5;
+  font-size: calc(4 * var(--row)); line-height: 1; white-space: pre; letter-spacing: var(--gap);
+  touch-action: none; user-select: none; -webkit-user-select: none;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M3 21l1.3-5L16.4 3.9a1.9 1.9 0 0 1 2.7 0l1 1a1.9 1.9 0 0 1 0 2.7L8 19.7z' fill='white' stroke='black' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cpath d='M14.6 5.7l3.7 3.7M4.3 16l3.7 3.7' stroke='black' stroke-width='1.2'/%3E%3C/svg%3E") 3 21, crosshair;
+}
+/* the values on the row under, a field of text standing on its line; copy at its end */
+.pad-values { grid-column: 1 / 10; grid-row: 5; align-self: end; margin-bottom: var(--sink); }
+.pad-values input { width: 100%; padding: 0; border: 0; background: none; color: var(--dim); font: var(--label); font-variant-numeric: tabular-nums; outline: none; }
+.pad-values input:focus { color: var(--fg); }
+.pad-copy { grid-column: 10; grid-row: 5; align-self: end; justify-self: end; margin-bottom: var(--sink); padding: 0; border: 0; background: none; color: var(--fg); font: var(--label); cursor: pointer; text-decoration: underline 1px color-mix(in oklab, currentColor 40%, transparent); text-underline-offset: 0.2em; }
+@media (hover: hover) { .pad-copy:hover { text-decoration-color: currentColor; } }
 
-.links { grid-row: 3 / 8; align-self: stretch; list-style: none; margin: 0; padding: 0; display: grid; grid-template-rows: subgrid; align-items: end; font: 600 min(var(--text-links), calc(var(--row) * 0.75))/1.25 var(--font-sans); }
-.links li { margin-bottom: var(--sink); }
-/* the underline under the name only: a decoration would carry into the bars */
-.links a { text-decoration-line: none; }
-.links .name { text-decoration: underline 1px color-mix(in oklab, currentColor 40%, transparent); text-underline-offset: 0.2em; }
-/* a name's bars: three rows high, standing on their foot */
-.links .wf { --yela: -100; display: none; font-size: calc(3 * var(--row)); font-weight: normal; line-height: 1; letter-spacing: var(--gap); white-space: pre; }
-@media (hover: hover) { .links a:hover { color: var(--accent); } .links a:hover .name { text-decoration-color: currentColor; } }
+/* the links: two columns each, a name's bars two rows high on one pitch, its letters a pitch apart under them */
+.links { grid-row: 7 / 10; align-self: stretch; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; grid-auto-flow: column; }
+.links li { grid-column: span 2; grid-row: 1 / -1; display: grid; grid-template-rows: subgrid; }
+.links a { grid-row: 1 / -1; display: grid; grid-template-rows: subgrid; text-decoration: none; }
+.links .wf { --yela: -100; grid-row: 1 / 3; align-self: end; font-size: calc(2 * var(--row)); line-height: 1; letter-spacing: var(--gap); white-space: pre; }
+/* one cell per bar, centred under it: cells start half a gap left of the first bar, as on the first slide */
+.links .letters { grid-row: 3; align-self: end; display: flex; margin-left: calc((var(--adv) - var(--pitch)) / 2); font: 700 var(--text-label)/1 var(--font-sans); }
+.links .letters span { flex: none; width: var(--pitch); margin-bottom: var(--sink); text-align: center; }
+@media (hover: hover) { .links a:hover { color: var(--accent); } }
 .credits { margin: 0; }
 .credits a { color: var(--fg); }
-/* the sign itself, as the credits are set */
-.om { color: var(--fg); text-decoration: none; }
+/* the sign itself, as the credits are set, and as quiet */
+.om { color: var(--dim); text-decoration: none; }
 
 /* ── wider screens ──────────────────────────────────────── */
 
@@ -724,21 +752,11 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 }
 
 @media (min-width: 48rem) {
-  /* the last slide's and the speed slide's layouts differ from here: the switch shows */
+  /* the speed slide's layouts differ from here: the switch shows */
   .variants { display: flex; }
   .speed[data-variant="2"] .lanes, .speed[data-variant="2"] .ops, .speed[data-variant="3"] .race, .speed[data-variant="3"] .ops { display: none; }
   .speed[data-variant="2"] .multiples, .speed[data-variant="3"] .bench { display: grid; }
   .speed[data-variant="2"] .legend { display: flex; }
-  /* 2: the links across the ten columns, two each; a name's bars three rows high, the font drawing it, the name
-     standing on the row under them */
-  .get[data-variant="2"] .links { grid-row: 3 / 7; grid-template-columns: subgrid; grid-auto-flow: column; font-size: min(var(--text-lead), calc(var(--col) / 4.5)); }
-  .get[data-variant="2"] .links li { grid-column: span 2; grid-row: 1 / -1; align-self: stretch; margin: 0; }
-  .get[data-variant="2"] .links a { display: grid; height: 100%; grid-template-rows: minmax(0, 1fr) var(--row); }
-  .get[data-variant="2"] .links .wf { display: block; align-self: end; }
-  .get[data-variant="2"] .links .name { align-self: end; margin-bottom: var(--sink); }
-  /* 3: a link to every other row, from the first, its capitals as tall as the row where the width allows: they fill
-     it, baseline to cap height, and the descenders hang in the row between */
-  .get[data-variant="3"] .links { grid-row: 1 / -1; grid-template-rows: none; grid-auto-rows: var(--row); row-gap: var(--row); font-size: min(calc(var(--row) / 0.668), calc(var(--col) * 10 / 7)); line-height: 1; }
   .chat { grid-column: 2 / 10; }
   .milestones time { grid-column: 1 / 2; }
   .milestones li > span { grid-column: 2 / -1; }
