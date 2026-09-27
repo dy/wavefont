@@ -409,7 +409,8 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .sliders { grid-area: 8 / 2 / 11 / 12; align-self: stretch; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; }
 /* a slider a row, its track on the row's line and its name and value standing on it */
 .axis { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: end; }
-.axis input { margin-bottom: -1.375rem; }
+/* the track on the line, half the slider below it, over the next axis's label: it stays in reach */
+.axis input { position: relative; z-index: 1; margin-bottom: -1.375rem; }
 .axis .name, .axis output { margin-bottom: var(--sink); }
 .axis .name { grid-column: 1 / 4; font: var(--label); color: var(--dim); cursor: help; }
 .axis input { grid-column: 4 / 9; }
