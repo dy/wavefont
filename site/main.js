@@ -10,7 +10,6 @@ import { bench, weather, commits } from './data.js'
 import { $, $$, h, soon, seen, animate, noise, still, ease, swing } from './dom.js'
 import { chat } from './chat.js'
 import { memo } from './memo.js'
-import { om } from './om.js'
 
 /** Letter the bars: one centred cell per character of s. */
 const letter = (row, s) => row.replaceChildren(...Array.from(s, c => h('span', { textContent: c === ' ' ? ' ' : c })))
@@ -145,9 +144,10 @@ function axes() {
   }
   inputs.forEach(i => set(i.name, +i.value))
 
-  // to a corner, then round all eight: a Gray code, so each move changes one axis, end to end
-  const INTO = [['wght', 1000], ['yela', -100]]
-  const ROUND = [['yela', 100], ['rond', 100], ['yela', -100], ['wght', 50], ['yela', 100], ['rond', 0], ['yela', -100], ['wght', 1000]]
+  // three looks – thin; thick and square; thick and round – at each of three alignments – bottom, middle, top:
+  // nine, gone round so that each move changes one axis
+  const INTO = [['wght', 50], ['yela', -100]]
+  const ROUND = [['wght', 1000], ['rond', 100], ['yela', 0], ['yela', 100], ['rond', 0], ['yela', 0], ['wght', 50], ['yela', 100], ['yela', -100]]
   const MOVE = 900, HOLD = 450
   let raf = 0, k = 0, t0 = null, from = 0
   const step = now => {
@@ -542,7 +542,6 @@ for (const sec of $$('.work')) soon(sec, () => artwork(sec))
 memo()
 journey()
 get()
-soon($('.om'), () => om($('.om .piece')))
 
 // each slide's own motion runs when most of it is in view
 const onenter = { values: values(), text: textDoc(), range: rangeChart() }

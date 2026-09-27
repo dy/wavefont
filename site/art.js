@@ -93,7 +93,7 @@ export function ring({ inner, outer, size, spokes }) {
 /* ── motion: each piece as a function of time t (s) and pointer p ({x, y}, 0..1 across it) ───── */
 
 /** One-slice piece of bars, laid into lines of text: each line a run of bars left to right, none starting inside another. */
-export const laid = (piece, bars) => {
+const laid = (piece, bars) => {
   const lines = []
   for (const b of bars.sort((a, b) => a[0] - b[0])) {
     const line = lines.find(l => l.at(-4) + l.at(-3) <= b[0])

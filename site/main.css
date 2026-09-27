@@ -42,10 +42,10 @@
   --space-xl: 2.5rem;
   --space-2xl: 4rem;
 
-  /* every slide: these paddings, then a grid of twelve columns and rows a status band tall; content a cell in */
+  /* every slide: these paddings, then a grid of twelve columns and twelve rows; content a cell in */
   --pad-x: clamp(1rem, 5vw, 6rem);
   --pad-y: clamp(1.5rem, 5svh, 4rem);
-  --band: 3rem;
+  --row: calc((100svh - 2 * var(--pad-y)) / 12);
 
   --radius-sm: 0.375rem;
   --radius-md: 0.75rem;
@@ -56,11 +56,6 @@
   --dur-micro: 120ms;
   --dur-short: 220ms;
   --dur-long: 420ms;
-}
-
-/* the grid a whole number of rows tall: the vertical padding takes what's left over */
-@supports (padding: round(down, 10px, 3px)) {
-  :root { --pad-y: calc((100svh - round(down, 100svh - 2 * clamp(1.5rem, 5svh, 4rem), var(--band))) / 2); }
 }
 
 /* papers: each derives what it needs from the four colours; --tint lifts what's picked or hovered */
@@ -212,7 +207,8 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 1.2
 input[type="range"]::-moz-range-thumb { width: 1.25rem; height: 1.25rem; border-radius: 50%; background: var(--fg); border: 0; }
 input[type="range"]:focus-visible { outline-offset: 0; }
 
-/* ── slides: the grid – twelve columns, and rows: a cell of margin, the stage, the status band, a cell of margin ── */
+/* ── slides: the grid – twelve columns and twelve rows: a cell of margin all round, the stage, the status band in the
+   eleventh row ── */
 
 .slide {
   position: relative;
@@ -223,18 +219,20 @@ input[type="range"]:focus-visible { outline-offset: 0; }
   scroll-snap-align: start;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-template-rows: var(--band) minmax(0, 1fr) var(--band) var(--band);
+  /* a row grows only when what's in it needs more */
+  grid-template-rows: repeat(12, minmax(var(--row), auto));
   align-items: center;
   /* sized by its columns: a column is a twelfth of it, as a length for whatever inside needs one */
   container-type: inline-size;
   --col: calc(100cqw / 12);
 }
-/* the stage: the ten columns a cell in from the edges, the slide's own, so what's on it starts where a column does;
-   centred in its row, left-aligned. (No containment on it or in it: a contained box can't share its parent's grid) */
-.slide > .stage { grid-area: 2 / 2 / 3 / 12; display: grid; grid-template-columns: subgrid; row-gap: var(--space-xl); min-width: 0; }
-.stage > * { grid-column: 1 / -1; min-width: 0; }
-/* the status line: what the slide reports, in the band, a cell in */
-.status { grid-area: 3 / 2 / 4 / 12; align-self: end; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-sm) var(--space-xl); min-height: 2.75rem; font: var(--label); color: var(--dim); }
+/* the stage: the ten columns and nine rows a cell in from the edges, the slide's own, so what's on it starts where
+   a column or a row does. (No containment on it or in it: a contained box can't share its parent's grid) */
+.slide > .stage { grid-area: 2 / 2 / 11 / 12; align-self: stretch; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; min-width: 0; }
+/* what's on it: left-aligned, centred in its height, unless placed */
+.stage > * { grid-column: 1 / -1; grid-row: 1 / -1; align-self: center; min-width: 0; }
+/* the status line: what the slide reports, in the eleventh row, a cell in */
+.status { grid-area: 11 / 2 / 12 / 12; align-self: center; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-sm) var(--space-xl); min-height: 2.75rem; font: var(--label); color: var(--dim); }
 .status output, .status b { color: var(--fg); font-weight: inherit; font-variant-numeric: tabular-nums; }
 
 /* layout overlay, for tuning while building: the grid switch top right, g, or the page opened with ?grid */
@@ -245,11 +243,11 @@ input[type="range"]:focus-visible { outline-offset: 0; }
   pointer-events: none;
   z-index: 50;
   outline: 1px solid color-mix(in oklab, var(--grid) 60%, transparent);
-  /* twelve columns, no gutters; rows a status band tall, counted up from the foot, so the last row is the band */
+  /* twelve columns and twelve rows, no gutters */
   --line: color-mix(in oklab, var(--grid) 45%, transparent);
   background:
     repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px calc(100% / 12)),
-    repeating-linear-gradient(to top, var(--line) 0 1px, transparent 1px var(--band));
+    repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px calc(100% / 12));
 }
 .grid-toggle {
   position: fixed; top: var(--space-sm); right: var(--space-sm); z-index: 60;
@@ -260,22 +258,28 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 }
 .grid-toggle[aria-pressed="true"] { background: color-mix(in oklab, var(--grid) 85%, transparent); }
 
-/* ── hero: the name, set in itself; what it does beside it, on the bars' baseline ── */
+/* ── hero: the name, set in itself, its bars standing on the fifth row; the letters in the sixth; what it does
+   under them, a row further down, a row each ── */
 
+.hero .stage { grid-row: 2 / 12; }
 .mark {
   --n: 8;
-  --bars: 10; /* the columns the bars may take */
-  --size: min(46svh, calc(var(--col) * var(--bars) / (var(--n) * 0.265)));
+  --bar-rows: 5;
+  --size: min(calc(var(--bar-rows) * var(--row)), calc(var(--col) * 10 / (var(--n) * 0.265)));
   --wght: 500;
   --pitch: calc(var(--size) * 0.265);
   --adv: calc(var(--size) * 0.125);
+  align-self: start;
   display: grid;
   grid-template-columns: subgrid;
-  align-items: last baseline;
 }
 .mark > * { grid-column: 1 / -1; }
 .mark-bars {
   --yela: -100;
+  /* the bars' foot – the baseline, 0.15em above the line's – on the foot of the fifth row; the empty top of the
+     line may reach into the margin */
+  margin-top: calc(var(--bar-rows) * var(--row) - 1.15 * var(--size));
+  margin-bottom: calc(-0.15 * var(--size));
   font-size: var(--size);
   letter-spacing: calc(var(--pitch) - var(--adv));
   line-height: 1.3;
@@ -287,45 +291,53 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 /* one cell per bar, centred under it: cells start half a gap left of the first bar */
 .mark-letters {
   display: flex;
-  min-height: 1em;
-  margin: calc(var(--size) * -0.08) 0 0 calc((var(--adv) - var(--pitch)) / 2);
+  height: var(--row);
+  margin-left: calc((var(--adv) - var(--pitch)) / 2);
   font: 700 clamp(1.375rem, calc(var(--size) * 0.105), 3rem)/1 var(--font-sans);
 }
 .mark-letters span { flex: none; width: var(--pitch); text-align: center; }
 .mark:focus-within .mark-letters { color: var(--accent); }
 .facts {
-  list-style: none; margin: var(--space-xl) 0 0; padding: 0;
-  display: grid; gap: var(--space-xs) 0;
+  list-style: none; margin: var(--row) 0 0; padding: 0;
+  display: grid; grid-auto-rows: calc(var(--row) / 2); align-items: center;
   font: 700 clamp(1rem, 0.72rem + 0.85vw, 1.5rem)/1.35 var(--font-sans);
   letter-spacing: 0.3em;
 }
 .facts a { text-decoration: none; display: inline-block; padding: 0.15em 0; white-space: nowrap; }
 .facts a:hover { color: var(--accent); }
 
-/* ── latin+ core: each key's bar, the key under it; row names in the first column, on the keys' baseline ── */
+/* ── latin+ core: each key's bar, the key under it; a row a set, a row between; names in the first column,
+   on the keys' baseline ── */
 
-.keymap { display: grid; grid-template-columns: subgrid; row-gap: min(var(--space-xl), 3.5svh); margin: 0; }
-.keymap > div { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; row-gap: var(--space-xs); align-items: last baseline; }
+.keymap { display: grid; grid-template-columns: subgrid; grid-auto-rows: minmax(var(--row), auto); row-gap: var(--row); margin: 0; }
+.keymap > div { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; row-gap: var(--space-xs); align-items: last baseline; align-self: center; }
 .keymap dt { grid-column: 1 / -1; font: var(--label); color: var(--dim); }
 .keymap dd { grid-column: 1 / -1; margin: 0; }
-.rosetta { --size: min(clamp(2rem, 1.25rem + 2vw, 3rem), 5.5svh); display: flex; flex-wrap: wrap; }
+/* a set's keys fit their row: the bar, the gap, the name */
+.rosetta { --size: min(clamp(2rem, 1.25rem + 2vw, 3rem), calc((var(--row) - 1.8rem) / 1.05)); display: flex; flex-wrap: wrap; }
 /* a row of two sets: the second a step apart */
 .rosetta > [data-keys] { display: flex; flex-wrap: wrap; }
 .rosetta > [data-keys] + [data-keys] { margin-left: var(--space-lg); }
 .rosetta .k { display: grid; justify-items: center; gap: 0.5em; width: max(1.5rem, calc(var(--size) * 0.3)); font: var(--label); color: var(--fg); }
 .rosetta .k b { --wght: 300; --yela: -100; font-weight: normal; font-size: var(--size); line-height: 1.05; }
 /* a mark's name is its spacing form, small in any font: set larger */
-.marks .k { font-size: 1.375rem; line-height: 1; }
+.marks .k { font-size: 1.125rem; line-height: 1; }
 
-/* ── 127 values: every bar in a grid, two to a column, starting at the second; 0 and 127 on the lines of the first
-   and the last, the picked one's value, character and code under the grid's first column ── */
+/* ── 127 values: every bar in a grid across the ten inner columns, its eight rows shared out over nine; 0 and 127
+   in the margin cells, on the lines of the first bar and the last; the picked one's value, character and code in
+   the band ── */
 
+.values .stage { grid-area: 2 / 1 / 12 / -1; }
 .grid {
-  /* as tall as the stage allows: eight rows a cell and a half high, the readout under them */
-  --cell: min(var(--col) / 2, calc((100svh - 2 * var(--pad-y) - 16rem) / 11.6));
+  /* the bars as large as their cells allow: a sixteenth of ten columns wide, an eighth of nine rows high */
+  --w: calc(var(--col) * 10 / 16);
+  --h: calc(var(--row) * 9 / 8);
+  --cell: min(var(--w), var(--h) / 1.35);
+  grid-row: 1 / -1;
+  align-self: stretch;
   display: grid;
-  grid-template-columns: var(--col) repeat(16, var(--cell)) auto;
-  grid-template-rows: repeat(8, calc(var(--cell) * 1.45)) auto;
+  grid-template-columns: var(--col) repeat(16, var(--w)) var(--col);
+  grid-template-rows: repeat(8, var(--h)) var(--row);
   align-items: last baseline;
 }
 .grid .cell {
@@ -347,34 +359,33 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .edge { padding: 0 var(--space-sm) calc(var(--cell) * 0.1); font: var(--label); color: var(--dim); }
 .edge.from { grid-area: 1 / 1; justify-self: end; }
 .edge.to { grid-area: 8 / 18; }
-.readout { grid-area: 9 / 2 / 10 / 18; display: flex; flex-wrap: wrap; gap: var(--space-xl); margin: var(--space-xl) 0 0; }
-.readout div { display: grid; gap: var(--space-xs); }
+.readout { grid-area: 9 / 2 / 10 / 18; align-self: center; display: flex; flex-wrap: wrap; gap: var(--space-xl); margin: 0; }
+.readout div { display: grid; gap: var(--space-2xs); }
 .readout dt { font: var(--label); color: var(--dim); }
 .readout dd { margin: 0; }
 .readout button {
   padding: 0; border: 0; background: none; color: var(--fg); cursor: copy;
-  font: 500 var(--text-big)/1 var(--font-mono); font-variant-numeric: tabular-nums;
+  font: 500 min(var(--text-big), calc(var(--row) * 0.5))/1 var(--font-mono); font-variant-numeric: tabular-nums;
   text-decoration: underline 1px transparent; text-underline-offset: 0.2em;
   transition: text-decoration-color var(--dur-micro) var(--ease-out);
 }
 @media (hover: hover) { .readout button:hover { text-decoration-color: var(--dim); } }
 
-/* ── 3 axes: the specimen across all twelve columns, the sliders on the columns in the middle, in the band ── */
+/* ── 3 axes: the specimen across all twelve columns, in the seven rows at the top; the sliders on the columns in
+   the middle, a row each, the last in the band ── */
 
-.axes .stage { grid-area: 2 / 1 / 4 / -1; align-self: stretch; grid-template-rows: subgrid; row-gap: 0; }
+.axes .stage { grid-area: 2 / 1 / 12 / -1; }
 /* the first bar on the grid's left edge and the last on its right, at any weight: the gaps share what the bars leave */
 .specimen {
   --n: 15;
   --size: min(30svh, 100cqw / 3.75); /* 100cqw: the twelve columns */
-  grid-row: 1;
-  align-self: center;
+  grid-row: 1 / 8;
   font-size: var(--size);
   letter-spacing: calc((100cqw - var(--n) * var(--size) * var(--wght) / 4000) / (var(--n) - 1));
   line-height: 1.1;
   white-space: pre;
 }
-/* in the band, rising from its foot: taller than the band, and the band keeps its height */
-.sliders { grid-area: 2 / 2 / 3 / 12; align-self: end; display: grid; grid-template-columns: subgrid; row-gap: var(--space-xs); }
+.sliders { grid-area: 8 / 2 / 11 / 12; align-self: stretch; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; }
 .axis { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: center; }
 .axis .name { grid-column: 1 / 4; font: var(--label); color: var(--dim); cursor: help; }
 .axis input { grid-column: 4 / 9; }
@@ -383,11 +394,10 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 /* ── textual semantics: a document, as in the article – the title a third larger than the text, bars on one pitch
    per block, each weight a share of it, set in whole device pixels by the script (--w0…4, --s0…4) ── */
 
-/* set high: from the first row inside the margin */
-.text .stage { align-self: start; }
-.doc { --body: min(clamp(1.75rem, 0.9rem + 2.3vw, 3rem), 5.2svh); position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: calc(var(--body) * 0.6); outline: none; cursor: text; }
-.doc-title { --yela: 0; --wght: var(--w2); letter-spacing: var(--s2); font-size: calc(var(--body) * 1.33); line-height: 1.2; white-space: pre; }
-.doc-body { --yela: 0; --wght: var(--w0); letter-spacing: var(--s0); font-size: var(--body); line-height: 1.5; color: var(--fg); }
+/* on the rows: the title in the first, then a row, then the text a line a row */
+.doc { --body: min(clamp(1.75rem, 0.9rem + 2.3vw, 3rem), 5.2svh); position: relative; align-self: start; display: grid; grid-template-columns: minmax(0, 1fr); row-gap: var(--row); outline: none; cursor: text; }
+.doc-title { --yela: 0; --wght: var(--w2); letter-spacing: var(--s2); font-size: calc(var(--body) * 1.33); line-height: var(--row); white-space: pre; }
+.doc-body { --yela: 0; --wght: var(--w0); letter-spacing: var(--s0); font-size: var(--body); line-height: var(--row); color: var(--fg); }
 .doc .w0 { --wght: var(--w0); letter-spacing: var(--s0); }
 .doc .w1 { --wght: var(--w1); letter-spacing: var(--s1); }
 .doc .w2 { --wght: var(--w2); letter-spacing: var(--s2); }
@@ -410,7 +420,8 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 
 /* ── min–max bars: a year of weather, each day from its low to its high ── */
 
-.temps { --chart-h: clamp(13rem, 52svh, 32rem); --deg: var(--col); margin: 0; display: grid; grid-template-columns: var(--deg) var(--plot-w, minmax(0, 1fr)); row-gap: var(--space-sm); justify-content: start; }
+/* the plot in seven rows from the top, a row for every 10°; the months in the row under it */
+.temps { --chart-h: calc(7 * var(--row)); --deg: var(--col); margin: 0; align-self: start; display: grid; grid-template-columns: var(--deg) var(--plot-w, minmax(0, 1fr)); grid-template-rows: var(--chart-h) var(--row); justify-content: start; }
 /* the degrees in the first column, the plot from the second */
 .degrees { position: relative; list-style: none; margin: 0; padding: 0; height: var(--chart-h); font: var(--label); color: var(--dim); font-variant-numeric: tabular-nums; text-align: right; }
 /* each label centred on its line, 10° apart */
@@ -433,13 +444,14 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .temp-bars::selection { background: transparent; color: var(--fg); }
 .plot { position: relative; }
 .plot .lift { position: absolute; top: 0; height: var(--chart-h); background: var(--tint); pointer-events: none; }
-.months { grid-column: 2; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); font: var(--label); color: var(--dim); }
+.months { grid-column: 2; align-self: start; list-style: none; margin: 0; padding: var(--space-sm) 0 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); font: var(--label); color: var(--dim); }
 .range .status a { color: inherit; }
 
 /* ── 60 fps: one column per way of drawing, milliseconds on a log scale ── */
 
-/* the scale's names in the first column, the four ways in the next eight, two columns each */
-.race { --chart-h: clamp(12rem, 46svh, 28rem); margin: calc(var(--space-xl) + 1rem) 0 var(--space-xl); position: relative; padding-left: var(--col); }
+/* the scale's names in the first column, the four ways in the next eight, two columns each; eight rows from the
+   top, two to a decade, the ways' names in the row under them */
+.race { --chart-h: calc(8 * var(--row)); align-self: start; margin: 0; position: relative; padding-left: var(--col); }
 .scale { position: absolute; inset: 0; height: var(--chart-h); pointer-events: none; font: var(--label); color: var(--dim); }
 .scale > span { position: absolute; left: 0; right: 0; bottom: calc(var(--at) * 100%); border-bottom: 1px solid var(--faint); padding-bottom: 0.3em; white-space: nowrap; }
 .scale .frame { border-bottom: 2px solid var(--fg); color: var(--fg); text-align: right; z-index: 1; }
@@ -461,10 +473,13 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 
 /* ── voice messages: pills, round-capped bars close together, the time beside them – as the reference ── */
 
-/* the chat on the columns in the middle: as many as a phone's width needs */
-.chat { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-md); }
+/* the chat on the columns in the middle, as many as a phone's width needs: the thread in the nine rows, the
+   composer in the band */
+.messages .stage { grid-row: 2 / 12; }
+.chat { align-self: stretch; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) var(--row); }
+.composer { align-self: center; }
 /* no scrolling box: the thread keeps as many whole messages as fit */
-.thread { position: relative; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: var(--space-sm); height: min(56svh, 34rem); overflow: hidden; }
+.thread { position: relative; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: var(--space-sm); overflow: hidden; }
 .msg { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: start; }
 .msg.out { justify-items: end; }
 .bubble {
@@ -543,8 +558,8 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 /* ── Voice Memos, fitted to the screen: name, the waveform band under a fixed playhead, ruler, time, transport, record ── */
 
 /* a device of its own: edge to edge, off the grid */
-.memo { padding-inline: 0; grid-template-columns: minmax(0, 1fr); grid-template-rows: var(--band) minmax(0, 1fr) var(--band); }
-.vm { --band-bg: color-mix(in oklab, var(--white) 6%, var(--dark)); grid-row: 2; align-self: stretch; min-height: 30rem; display: flex; flex-direction: column; align-items: center; gap: clamp(0.5rem, 2svh, 1.25rem); }
+.memo { padding-inline: 0; grid-template-columns: minmax(0, 1fr); }
+.vm { --band-bg: color-mix(in oklab, var(--white) 6%, var(--dark)); grid-row: 2 / 12; align-self: stretch; min-height: 30rem; display: flex; flex-direction: column; align-items: center; gap: clamp(0.5rem, 2svh, 1.25rem); }
 .vm button { border: 0; background: none; padding: 0; color: inherit; cursor: pointer; }
 .vm button:disabled { cursor: default; }
 .vm-top { display: grid; justify-items: center; padding: 0 var(--space-md); }
@@ -601,34 +616,33 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 
 /* ── journey: ten years of commits, set as a recording ── */
 
-.years { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-sm); }
+/* the commits in the top three rows, their years under them; the milestones lower, a row each */
+.years { grid-row: 1 / 4; margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-sm); }
 .commits { --yela: 0; font-size: clamp(4rem, 16svh, 9rem); line-height: 1.1; white-space: pre; color: var(--fg); }
 .year-marks { position: relative; list-style: none; margin: 0; padding: 0; height: 1.4em; font: var(--label); color: var(--dim); font-variant-numeric: tabular-nums; }
 .year-marks li { position: absolute; left: calc((var(--m) + 0.5) / 122 * 100%); transform: translateX(-50%); }
 /* each year in the first column, what happened in the next six */
-.milestones { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: subgrid; row-gap: var(--space-sm); }
-.milestones li { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; }
+.milestones { grid-row: 5 / 10; align-self: stretch; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; }
+.milestones li { grid-column: 1 / -1; align-self: center; display: grid; grid-template-columns: subgrid; align-items: baseline; }
 .milestones time { grid-column: 1 / 3; font: var(--label); color: var(--accent); line-height: 1.55rem; }
 .milestones li > span { grid-column: 3 / -1; }
 .milestones a { text-decoration-color: color-mix(in oklab, currentColor 35%, transparent); }
 
-/* ── get: where it is, and nothing else; ॐ in the corner ── */
+/* ── get: where it is, and nothing else: a link a row, the middle five of the nine; ॐ at the end of the band ── */
 
-.links { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-sm); font: 600 clamp(1.75rem, 1.1rem + 2.2vw, 3rem)/1.25 var(--font-sans); }
+.links { grid-row: 3 / 8; align-self: stretch; list-style: none; margin: 0; padding: 0; display: grid; grid-template-rows: subgrid; align-items: center; font: 600 min(clamp(1.75rem, 1.1rem + 2.2vw, 3rem), calc(var(--row) * 0.75))/1.25 var(--font-sans); }
 .links a { text-decoration: none; }
 @media (hover: hover) { .links a:hover { color: var(--accent); } }
 .credits { margin: 0; }
 .credits a { color: var(--fg); }
-/* the credits on the bottom line; ॐ, a link, standing in the corner beside them */
-.get .status { flex-wrap: nowrap; align-items: flex-end; }
-.om { flex: none; width: 6rem; color: var(--fg); transition: color var(--dur-short) var(--ease-out); }
-@media (hover: hover) { .om:hover { color: var(--accent); } }
+/* the sign itself, as the credits are set */
+.om { color: var(--fg); text-decoration: none; }
 
 /* ── wider screens ──────────────────────────────────────── */
 
 @media (min-width: 36rem) {
-  /* two columns, the second standing under the fifth bar – the f */
-  .facts { grid-template-columns: calc(4 * var(--pitch)) auto; grid-template-rows: repeat(3, auto); grid-auto-flow: column; }
+  /* two columns, the second standing under the fifth bar – the f; a row each */
+  .facts { grid-template-columns: calc(4 * var(--pitch)) auto; grid-template-rows: repeat(3, var(--row)); grid-auto-flow: column; }
 }
 
 @media (min-width: 48rem) {
@@ -646,12 +660,6 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 
 @media (min-width: 64rem) {
   .chat { grid-column: 3 / 9; }
-  /* the features in the last three columns, beside the bars, their last line on the bars' baseline;
-     set small enough that the longest fits its three columns */
-  .mark { --bars: 7; }
-  .mark-bars { grid-area: 1 / 1 / 2 / 8; }
-  .mark-letters { grid-area: 2 / 1 / 3 / 8; }
-  .facts { grid-area: 1 / 8 / 2 / -1; margin: 0; grid-template-columns: max-content; grid-auto-flow: row; grid-template-rows: none; gap: var(--space-sm); font-size: min(1.5rem, calc(var(--col) * 0.185)); }
 }
 
 @media (min-width: 80rem) {
@@ -667,8 +675,8 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 }
 
 @media (max-width: 40rem) {
-  /* the name on the first row inside the margin, not lost at the foot of a tall screen */
-  .hero .stage { align-self: start; }
+  /* the name narrower than its rows: three of them */
+  .mark { --bar-rows: 3; }
   .weights { gap: var(--space-2xs); }
   .weights button { width: 2.75rem; height: 2.75rem; }
   .race { padding-left: 0; }
@@ -679,6 +687,11 @@ input[type="range"]:focus-visible { outline-offset: 0; }
   .scale .wide { display: none; }
   .col .name { font-size: 0.75rem; }
   .year-marks li:nth-child(even) { visibility: hidden; }
+}
+
+/* upright screens: a row is tall for a line of text, so it takes two */
+@media (max-aspect-ratio: 1 / 1) {
+  .doc-body { line-height: calc(var(--row) / 2); }
 }
 
 @media (prefers-reduced-motion: reduce) {
