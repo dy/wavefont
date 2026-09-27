@@ -45,7 +45,6 @@
   /* every slide: these paddings, twelve columns, and a status band at its foot */
   --pad-x: clamp(1rem, 5vw, 6rem);
   --pad-y: clamp(1.5rem, 5svh, 4rem);
-  --gutter: clamp(0.75rem, 1.6vw, 1.5rem);
   --band: 3rem;
 
   --radius-sm: 0.375rem;
@@ -235,10 +234,11 @@ input[type="range"]:focus-visible { outline-offset: 0; }
   pointer-events: none;
   z-index: 50;
   outline: 1px solid color-mix(in oklab, var(--grid) 60%, transparent);
-  --col: calc((100% - 11 * var(--gutter)) / 12);
+  /* twelve columns, no gutters; rows a status band tall, counted up from the foot, so the last row is the band */
+  --line: color-mix(in oklab, var(--grid) 45%, transparent);
   background:
-    linear-gradient(to top, color-mix(in oklab, var(--grid) 22%, transparent) var(--band), transparent var(--band)),
-    repeating-linear-gradient(to right, color-mix(in oklab, var(--grid) 10%, transparent) 0 var(--col), transparent var(--col) calc(var(--col) + var(--gutter)));
+    repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px calc(100% / 12)),
+    repeating-linear-gradient(to top, var(--line) 0 1px, transparent 1px var(--band));
 }
 .grid-toggle {
   position: fixed; top: var(--space-sm); right: var(--space-sm); z-index: 60;
