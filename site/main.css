@@ -444,24 +444,63 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 /* four bars on a quarter-em pitch: the heaviest fills it, a square */
 .weights .wf { --yela: 0; font-size: 1.5rem; line-height: 1; white-space: pre; }
 
-/* ── shifts: marks move a bar up or down, and bars moved so draw pictures – each bar here a value and its marks.
-   Three layouts to choose from: 1 one picture; 2 the four sent for it; 3 four that shift the most. In hand a
-   picture moves: its time runs, or it follows the pointer ── */
+/* ── 60 fps: what drawing an hour of speech costs, milliseconds on a log scale. Three layouts to choose from: 1 the
+   four ways for one operation; 2 every operation at once; 3 a table, each time with its bar ── */
 
-.pieces { --tile-h: calc(4 * var(--row)); align-self: stretch; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, var(--tile-h)); row-gap: var(--row); }
-.pieces .tile { display: none; place-items: center; min-width: 0; overflow: hidden; }
-/* each as large as its cell allows, keeping its proportions */
-.tile .piece { width: min(100%, calc(var(--tile-h) * var(--ar, 1))); overflow: hidden; }
-.shifts[data-variant="1"] .pieces { --tile-h: calc(9 * var(--row)); grid-template-columns: minmax(0, 1fr); grid-template-rows: var(--tile-h); }
-.shifts[data-variant="1"] [data-piece="floating"],
-.shifts[data-variant="2"] :is([data-piece="floating"], [data-piece="arcs"], [data-piece="stripes"], [data-piece="speaker"]),
-.shifts[data-variant="3"] :is([data-piece="floating"], [data-piece="arcs"], [data-piece="slide"], [data-piece="stairs"]) { display: grid; }
-
-/* traced pieces: every line is text, each bar a character standing at its own x; the values centred, their marks
-   moving them */
-.piece { position: relative; width: 100%; }
-.art-line { --yela: 0; position: absolute; left: 0; height: 1.28em; line-height: 1.28; letter-spacing: 0; white-space: pre; will-change: transform; }
-.art-line > span { position: absolute; top: 0; }
+.speed .stage { grid-column: 1 / -1; }
+/* the chart on the eight rows from the second, two to a decade, 0.1 ms on the floor and 1 s at the top; each decade
+   named in the first column, centred on its line; a frame at 60 fps, 16.7 ms, the line that counts */
+.race { --chart-h: calc(8 * var(--row)); grid-row: 1 / 9; align-self: start; margin: 0; display: grid; grid-template-columns: subgrid; }
+.race > * { grid-row: 1; height: var(--chart-h); }
+.scale { grid-column: 2 / 12; position: relative; pointer-events: none; font: var(--label); color: var(--dim); }
+.scale > span { position: absolute; left: 0; right: 0; bottom: calc(var(--at) * 100%); border-bottom: 1px solid var(--faint); }
+.scale b { position: absolute; right: calc(100% + var(--space-md)); bottom: 0; transform: translateY(50%); font-weight: inherit; white-space: nowrap; font-variant-numeric: tabular-nums; }
+/* over the bars; a time over it cuts it out from behind itself */
+.scale .frame { border-bottom: 2px solid var(--fg); color: var(--fg); z-index: 1; }
+/* the frame's name at the end of its line, standing on it */
+.scale i { position: absolute; right: 0; bottom: var(--space-xs); margin-bottom: var(--sink); padding-left: 0.3em; background: var(--bg); font-style: normal; white-space: nowrap; }
+/* 1: the four ways in the eight columns from the third, two each; a bar in the middle of each, its time standing on
+   it, its name hanging from the floor */
+.lanes { grid-column: 3 / 11; position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.col { position: relative; display: grid; justify-items: center; align-content: end; height: var(--chart-h); }
+.glyph { --yela: -100; font-size: var(--chart-h); line-height: 1; height: var(--chart-h); white-space: pre; letter-spacing: 0; color: var(--unplayed); }
+.is-ours .glyph, .glyph.is-ours { color: var(--accent); }
+.col .ms { position: absolute; z-index: 2; bottom: calc(var(--h, 0) * var(--chart-h) + var(--space-xs)); margin-bottom: var(--sink); padding: 0 0.3em; background: var(--bg); font: var(--label); color: var(--fg); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.col.is-ours .ms { color: var(--accent); font-weight: 700; }
+.col .name, .group .name { position: absolute; top: calc(100% + var(--space-sm) + var(--sink)); font: var(--label); color: var(--dim); white-space: nowrap; }
+.col.is-ours .name { color: var(--fg); }
+/* 2: every operation in the ten columns from the second, two each, its four bars a half column apart in the same
+   order, named under them */
+.multiples { grid-column: 2 / 12; display: none; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.group { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); justify-items: center; align-items: end; height: var(--chart-h); }
+.group .name { left: 0; right: 0; text-align: center; }
+/* 3: a table: the ways named in the first column, the operations over the ten from the second, two each; a row each,
+   each time standing on its row's line after its bar, a row high at 1 s; times past a frame dim */
+.bench { grid-area: 3 / 1 / 8 / -1; display: none; grid-template-columns: subgrid; grid-template-rows: subgrid; font: var(--label); font-variant-numeric: tabular-nums; }
+.bench [role="row"] { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: end; }
+.bench [role="rowheader"], .bench [role="columnheader"] { margin-bottom: var(--sink); font-weight: inherit; color: var(--dim); }
+.bench [role="rowheader"] { grid-column: 1; justify-self: end; padding-right: var(--space-md); }
+.bench .is-ours [role="rowheader"] { color: var(--fg); }
+.bench [role="columnheader"], .bench [role="cell"] { grid-column: span 2; }
+.bench [role="columnheader"]:nth-child(2), .bench [role="cell"]:nth-child(2) { grid-column: 2 / span 2; }
+.bench [role="cell"] { display: flex; align-items: flex-end; gap: var(--space-xs); color: var(--fg); }
+.bench [role="cell"] .wf { --yela: -100; --wght: 480; font-size: var(--row); line-height: 1; color: var(--unplayed); }
+.bench .is-ours [role="cell"] .wf { color: var(--accent); }
+.bench [role="cell"] span:last-child { margin-bottom: var(--sink); }
+.bench .over { color: var(--dim); }
+/* the tabs: their names on the band's line, the one picked in ink and underlined */
+.ops, .browsers, .legend { display: flex; flex-wrap: wrap; gap: 0 var(--space-lg); margin-bottom: var(--sink); font: var(--label); }
+.ops button, .browsers button {
+  padding: 0; border: 0; background: none; color: var(--dim); font: inherit; cursor: pointer;
+  text-decoration: underline 1px transparent; text-underline-offset: 0.35em;
+}
+@media (hover: hover) { .ops button:hover, .browsers button:hover { color: var(--fg); } }
+.ops button[aria-checked="true"], .browsers button[aria-checked="true"] { color: var(--fg); text-decoration-color: currentColor; }
+/* the second layout's key: the four ways, each after a bar of its colour */
+.legend { display: none; color: var(--dim); }
+.legend .wf { --yela: -100; --wght: 1000; font-size: 1em; line-height: 1; margin-right: 0.4em; color: var(--unplayed); }
+.legend .is-ours { color: var(--fg); }
+.legend .is-ours .wf { color: var(--accent); }
 
 /* ── voice messages: pills, round-capped bars close together, the time beside them – as the reference ── */
 
@@ -653,6 +692,9 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 @media (min-width: 48rem) {
   /* the layouts differ from here: the switch shows */
   .variants { display: flex; }
+  .speed[data-variant="2"] .lanes, .speed[data-variant="2"] .ops, .speed[data-variant="3"] .race, .speed[data-variant="3"] .ops { display: none; }
+  .speed[data-variant="2"] .multiples, .speed[data-variant="3"] .bench { display: grid; }
+  .speed[data-variant="2"] .legend { display: flex; }
   .chat { grid-column: 2 / 10; }
   .milestones time { grid-column: 1 / 2; }
   .milestones li > span { grid-column: 2 / -1; }
@@ -685,6 +727,11 @@ input[type="range"]:focus-visible { outline-offset: 0; }
   /* the pencil's line a row lower, so the links, a line each, keep clear of the credits wrapping above the band */
   .pad { --rows: 4; }
   .links { grid-row: 6 / 9; }
+  /* the speed chart a row shorter, to leave the status its row above; the ways over the ten columns from the
+     second, the decades' lines without their names, too wide for a column */
+  .race { --chart-h: calc(7 * var(--row)); }
+  .lanes { grid-column: 2 / 12; }
+  .scale b { display: none; }
   /* the status wraps to lines: it may take the row above it too, still standing on the eleventh's foot. The weights
      and the count on one line */
   .status { grid-row: 10 / 12; column-gap: var(--space-md); }

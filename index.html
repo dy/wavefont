@@ -34,7 +34,7 @@
           <li><a href="#values">127 values</a></li>
           <li><a href="#axes">3 axes</a></li>
           <li><a href="#text">textual semantics</a></li>
-          <li><a href="#shifts">shifts</a></li>
+          <li><a href="#speed">60 fps</a></li>
         </ul>
       </div>
     </div>
@@ -83,9 +83,21 @@
     </div>
   </section>
 
-  <section id="shifts" class="slide dark shifts" data-variant="2" aria-label="Shifts: bars moved up and down by marks">
-    <div class="variants" role="group" aria-label="Layout of this slide"><button type="button" aria-pressed="false">1</button><button type="button" aria-pressed="true">2</button><button type="button" aria-pressed="false">3</button></div>
-    <div class="stage"><div class="pieces"></div></div>
+  <section id="speed" class="slide gray speed" data-variant="1" aria-label="60 fps: what drawing an hour of speech costs">
+    <div class="variants" role="group" aria-label="Layout of this slide"><button type="button" aria-pressed="true">1</button><button type="button" aria-pressed="false">2</button><button type="button" aria-pressed="false">3</button></div>
+    <div class="stage">
+      <figure class="race">
+        <div class="scale" aria-hidden="true"><span style="--at: 1"><b>1 s</b></span><span style="--at: .75"><b>100 ms</b></span><span style="--at: .5"><b>10 ms</b></span><span style="--at: .25"><b>1 ms</b></span><span style="--at: 0"><b>0.1 ms</b></span><span class="frame" style="--at: .5557"><i>16.7 ms, 60 fps</i></span></div>
+        <div class="lanes" role="img"></div>
+        <div class="multiples" role="img"></div>
+      </figure>
+      <div class="bench" role="table" aria-label="Milliseconds to draw an hour of speech"></div>
+    </div>
+    <div class="status">
+      <div class="ops" role="radiogroup" aria-label="Operation"></div>
+      <div class="legend" aria-hidden="true"></div>
+      <div class="browsers" role="radiogroup" aria-label="Browser"></div>
+    </div>
   </section>
 
   <section id="messages" class="slide white messages" aria-label="Voice messages">

@@ -4,9 +4,7 @@
  */
 import wf, { char } from '../index.js'
 import { fit, weight } from './wave.js'
-import { draw, motion, reach, crop } from './art.js'
-import { art as ART } from './art-data.js'
-import { commits } from './data.js'
+import { bench, commits } from './data.js'
 import { $, $$, h, soon, seen, noise, still, ease, swing } from './dom.js'
 import { chat } from './chat.js'
 import { memo } from './memo.js'
@@ -324,53 +322,89 @@ function textDoc() {
 }
 
 
-/* ── shifts: pictures of bars moved up and down, each bar a value and its marks ── */
+/* ── 60 fps: what drawing an hour of speech costs, as text and otherwise ── */
 
-// in the order the layouts place them: the four sent for the slide, then two more that shift the most
-const PIECES = ['floating', 'arcs', 'stripes', 'speaker', 'slide', 'stairs']
+function speed() {
+  const sec = $('#speed'), lanes = $('.lanes'), multi = $('.multiples'), table = $('.bench'), opBox = $('.ops'), browserBox = $('.browsers')
+  const { ops: OPS, stacks: STACKS, text: TEXT, browsers: DATA } = bench, BROWSERS = Object.keys(DATA)
+  // milliseconds on a log scale: 0.1 on the floor, 1000 at the top
+  const height = ms => ms ? Math.min(1, Math.max(0, (Math.log10(ms) + 1) / 4)) : 0
+  const num = ms => ms < 1 ? ms.toFixed(2) : ms < 10 ? ms.toFixed(1) : String(Math.round(ms))
+  const ours = i => TEXT[i] ? 'is-ours' : ''
+  const role = (el, r) => (el.setAttribute('role', r), el)
 
-function shifts() {
-  const box = $('.pieces'), state = new Map(), width = new Map()
-  const redraw = el => { const s = state.get(el); width.get(el) && draw(el, s.at(s.t, s), width.get(el)) }
-  const ro = new ResizeObserver(es => es.forEach(e => (width.set(e.target, e.target.clientWidth), redraw(e.target))))
-  box.replaceChildren(...PIECES.map(name => {
-    const raw = ART[name], make = motion[name]
-    // a one-band picture cut to where its bars go as it moves, so it fills its tile
-    const piece = raw.slices.length === 1 ? crop(raw, reach(raw, make(raw))) : raw
-    const el = h('div', { className: 'piece' }), tile = h('div', { className: 'tile' }, el)
-    tile.dataset.piece = name
-    // its proportions set before it's watched: set by its first drawing, they'd resize what the observer just measured
-    el.style.setProperty('--ar', (piece.w / piece.h).toFixed(4)), el.dataset.ar = el.style.aspectRatio = `${piece.w} / ${piece.h}`
-    // at rest 5 s in, the pointer in the middle: the picture as traced, or its motion under way
-    const s = { at: make(piece), x: 0.5, y: 0.5, k: 0, tx: 0.5, ty: 0.5, tk: 0, t: 5 }
-    state.set(el, s), ro.observe(el)
-    const aim = (e, on) => {
-      const r = el.getBoundingClientRect()
-      s.tk = +on, s.tx = on ? Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)) : 0.5, s.ty = on ? Math.min(1, Math.max(0, (e.clientY - r.top) / r.height)) : 0.5
-      wake()
-    }
-    tile.addEventListener('pointerenter', e => aim(e, true)), tile.addEventListener('pointermove', e => aim(e, true))
-    tile.addEventListener('pointerleave', e => aim(e, false))
-    return tile
+  // 1: a column a way, for one operation
+  const cols = STACKS.map((name, i) => {
+    const glyph = h('span', { className: 'glyph wf' }), ms = h('span', { className: 'ms' })
+    return { el: h('div', { className: 'col ' + ours(i) }, ms, glyph, h('span', { className: 'name', textContent: name })), glyph, ms, h: 0, from: 0, to: 0 }
+  })
+  lanes.replaceChildren(...cols.map(c => c.el))
+  // 2: every operation, its four bars in the same order
+  const bars = OPS.map(() => STACKS.map((_, i) => ({ glyph: h('span', { className: 'glyph wf ' + ours(i) }), h: 0, from: 0, to: 0 })))
+  multi.replaceChildren(...OPS.map((op, j) => h('div', { className: 'group' }, ...bars[j].map(b => b.glyph), h('span', { className: 'name', textContent: op }))))
+  $('.legend').replaceChildren(...STACKS.map((s, i) => h('span', { className: ours(i) }, h('span', { className: 'wf', textContent: char(100) }), s)))
+  // 3: a table, a row a way, a column an operation; a time after its bar
+  const cells = STACKS.map(() => OPS.map(() => {
+    const b = h('span', { className: 'wf' }), n = h('span')
+    b.setAttribute('aria-hidden', 'true')
+    return { el: role(h('div', {}, b, n), 'cell'), b, n }
   }))
-  // a picture moves while it's in hand: its time runs, its pointer follows; let go, it eases back to rest
-  let raf = 0, last = null
-  const tick = now => {
-    const dt = Math.min(0.1, (now - (last ?? now)) / 1000)
-    last = now
-    let busy = false
-    for (const [el, s] of state) {
-      if (!s.tk && !s.k && s.x === 0.5 && s.y === 0.5) continue
-      const f = Math.min(1, dt * 6)
-      s.x += (s.tx - s.x) * f, s.y += (s.ty - s.y) * f, s.k += (s.tk - s.k) * Math.min(1, dt * 4), s.t += dt * s.k
-      // near enough, at rest exactly
-      if (!s.tk && s.k < 1e-3 && Math.abs(s.x - 0.5) < 1e-3 && Math.abs(s.y - 0.5) < 1e-3) s.x = s.y = 0.5, s.k = 0
-      busy = true, redraw(el)
+  table.replaceChildren(
+    role(h('div', {}, role(h('div'), 'columnheader'), ...OPS.map(op => role(h('div', { textContent: op }), 'columnheader'))), 'row'),
+    ...STACKS.map((s, i) => role(h('div', { className: ours(i) }, role(h('div', { textContent: s }), 'rowheader'), ...cells[i].map(c => c.el)), 'row'))
+  )
+
+  let op = 0, browser = BROWSERS[0], auto = true, raf = 0, t0 = 0, timer = 0
+  const moving = [...cols, ...bars.flat()]
+  const tween = now => {
+    const k = still ? 1 : ease(Math.min(1, (now - t0) / 650))
+    for (const c of moving) {
+      c.h = c.from + (c.to - c.from) * k
+      c.glyph.textContent = c.h ? char(100 * c.h) : ''
+      c.el?.style.setProperty('--h', c.h.toFixed(4))
     }
-    raf = busy ? requestAnimationFrame(tick) : (last = null, 0)
+    if (k < 1) raf = requestAnimationFrame(tween)
   }
-  const wake = () => { if (!raf && !still) raf = requestAnimationFrame(tick) }
+  const show = () => {
+    const rows = DATA[browser]
+    cols.forEach((c, i) => { const ms = rows[i][op]; c.from = c.h, c.to = height(ms), c.ms.textContent = num(ms) })
+    bars.forEach((bs, j) => bs.forEach((b, i) => { b.from = b.h, b.to = height(rows[i][j]) }))
+    cells.forEach((cs, i) => cs.forEach((c, j) => {
+      const ms = rows[i][j]
+      c.b.textContent = char(Math.round(100 * height(ms))), c.n.textContent = num(ms), c.el.classList.toggle('over', ms > 1000 / 60)
+    }))
+    const said = j => STACKS.map((s, i) => `${s} ${rows[i][j]}`).join(', ')
+    lanes.setAttribute('aria-label', `${OPS[op]}, ${browser}, milliseconds: ${said(op)}`)
+    multi.setAttribute('aria-label', `${browser}, milliseconds: ` + OPS.map((o, j) => `${o}: ${said(j)}`).join('; '))
+    for (const b of opBox.children) b.setAttribute('aria-checked', b.textContent === OPS[op])
+    for (const b of browserBox.children) b.setAttribute('aria-checked', b.textContent === browser)
+    cancelAnimationFrame(raf), t0 = performance.now(), raf = requestAnimationFrame(tween)
+  }
+  const tabs = (box, names, pick) => box.replaceChildren(...names.map((n, i) => {
+    const b = role(h('button', { type: 'button', textContent: n }), 'radio')
+    b.addEventListener('click', () => { auto = false, clearInterval(timer), pick(i), show() })
+    return b
+  }))
+  tabs(opBox, OPS, i => op = i)
+  tabs(browserBox, BROWSERS, i => browser = BROWSERS[i])
+  // bar width: a quarter of a way's column, half of a bar's place in a group; whole device pixels, whole font units
+  const thick = (el, n, fill) => new ResizeObserver(() => {
+    const px = dpx(), F = el.clientHeight
+    if (F) el.style.setProperty('--wght', weight(Math.round(fill * el.clientWidth / n / px) * px, F))
+  }).observe(el)
+  thick(lanes, STACKS.length, 0.25), thick(multi, OPS.length * STACKS.length, 0.5)
+  show()
+  // while in view and untouched, it walks through the operations, or, where they're all shown, the browsers
+  seen(sec, on => {
+    clearInterval(timer)
+    if (on && auto && !still) timer = setInterval(() => {
+      if (opBox.offsetParent) op = (op + 1) % OPS.length
+      else browser = BROWSERS[(BROWSERS.indexOf(browser) + 1) % BROWSERS.length]
+      show()
+    }, 2800)
+  }, 0.4)
 }
+
 
 // a slide offering layouts to choose from: its switch sets which
 const variants = () => $$('.variants').forEach(box => {
@@ -449,7 +483,7 @@ keys()
 axes()
 chat()
 memo()
-soon($('#shifts'), shifts)
+speed()
 journey()
 get()
 
