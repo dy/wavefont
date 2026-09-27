@@ -519,11 +519,13 @@ function get() {
   soon($('#get'), () => fetch('package.json').then(r => r.json()).then(p => $('.s-version').textContent = p.version).catch(() => {}))
 }
 
-// the layout's grid, for tuning while building: g toggles it, ?grid opens with it
+// the layout's grid, for tuning while building: the switch top right or g toggles it, ?grid opens with it
 const overlay = () => {
-  const root = document.documentElement
-  if (/[?&]grid\b/.test(location.search)) root.classList.add('grid-on')
-  addEventListener('keydown', e => { if (e.key === 'g' && !e.target.closest('input, textarea, [contenteditable]')) root.classList.toggle('grid-on') })
+  const root = document.documentElement, button = $('.grid-toggle')
+  const show = on => { root.classList.toggle('grid-on', on), button.setAttribute('aria-pressed', on) }
+  show(/[?&]grid\b/.test(location.search))
+  button.addEventListener('click', () => show(!root.classList.contains('grid-on')))
+  addEventListener('keydown', e => { if (e.key === 'g' && !e.target.closest('input, textarea, [contenteditable]')) show(!root.classList.contains('grid-on')) })
 }
 
 
@@ -540,7 +542,7 @@ for (const sec of $$('.work')) soon(sec, () => artwork(sec))
 memo()
 journey()
 get()
-soon($('#om'), () => om($('#om')))
+soon($('.om'), () => om($('.om .piece')))
 
 // each slide's own motion runs when most of it is in view
 const onenter = { values: values(), text: textDoc(), range: rangeChart() }

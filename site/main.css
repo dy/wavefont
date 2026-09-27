@@ -22,6 +22,8 @@
   --gray: oklch(94.6% 0.004 271.4);
   --white: oklch(100% 0 0);
   --red: oklch(66.3% 0.224 28.3);
+  /* the layout overlay's, and nothing else's */
+  --grid: oklch(62% 0.25 350);
 
   --font-wave: wavefont;
   --font-sans: "Atkinson Hyperlegible Next", ui-sans-serif, system-ui, sans-serif;
@@ -225,19 +227,27 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .status { grid-row: 2; align-self: end; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-sm) var(--space-xl); min-height: 2.75rem; font: var(--label); color: var(--dim); }
 .status output, .status b { color: var(--fg); font-weight: inherit; font-variant-numeric: tabular-nums; }
 
-/* layout overlay, for tuning while building: press g, or open the page with ?grid */
+/* layout overlay, for tuning while building: the grid switch top right, g, or the page opened with ?grid */
 .grid-on .slide::after {
   content: "";
   position: absolute;
   inset: var(--pad-y) var(--pad-x);
   pointer-events: none;
   z-index: 50;
-  outline: 1px solid oklch(62% 0.25 350 / 0.6);
+  outline: 1px solid color-mix(in oklab, var(--grid) 60%, transparent);
   --col: calc((100% - 11 * var(--gutter)) / 12);
   background:
-    linear-gradient(to top, oklch(62% 0.25 350 / 0.22) var(--band), transparent var(--band)),
-    repeating-linear-gradient(to right, oklch(62% 0.25 350 / 0.1) 0 var(--col), transparent var(--col) calc(var(--col) + var(--gutter)));
+    linear-gradient(to top, color-mix(in oklab, var(--grid) 22%, transparent) var(--band), transparent var(--band)),
+    repeating-linear-gradient(to right, color-mix(in oklab, var(--grid) 10%, transparent) 0 var(--col), transparent var(--col) calc(var(--col) + var(--gutter)));
 }
+.grid-toggle {
+  position: fixed; top: var(--space-sm); right: var(--space-sm); z-index: 60;
+  padding: var(--space-2xs) var(--space-sm);
+  border: 1px solid color-mix(in oklab, var(--grid) 60%, transparent); border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--dark) 70%, transparent); color: var(--white);
+  font: var(--label); cursor: pointer;
+}
+.grid-toggle[aria-pressed="true"] { background: color-mix(in oklab, var(--grid) 85%, transparent); }
 
 /* ── hero: the name, set in itself; what it does beside it, on the bars' baseline ── */
 
@@ -575,22 +585,17 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .milestones time { font: var(--label); color: var(--accent); line-height: 1.55rem; }
 .milestones a { text-decoration-color: color-mix(in oklab, currentColor 35%, transparent); }
 
-/* ── get: where it is, and nothing else ── */
+/* ── get: where it is, and nothing else; ॐ in the corner ── */
 
 .links { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-sm); font: 600 clamp(1.75rem, 1.1rem + 2.2vw, 3rem)/1.25 var(--font-sans); }
 .links a { text-decoration: none; }
 @media (hover: hover) { .links a:hover { color: var(--accent); } }
 .credits { margin: 0; }
 .credits a { color: var(--fg); }
-
-/* ── ॐ over the flower: the last screen, and a link ── */
-
-.om-slide { text-decoration: none; }
-.om-slide .stage { justify-items: center; }
-.om-art { position: relative; width: min(100%, calc((100svh - 2 * var(--pad-y) - var(--band)) * var(--ar, 1))); }
-.om-art .flower { color: color-mix(in oklab, var(--white) 30%, var(--dark)); transition: color var(--dur-long) var(--ease-out); }
-.om-art .sign { position: absolute; inset: 0; color: var(--white); }
-.om-slide:hover .flower, .om-slide:focus-visible .flower { color: color-mix(in oklab, var(--white) 40%, var(--dark)); }
+/* the credits on the bottom line; ॐ, a link, standing in the corner beside them */
+.get .status { flex-wrap: nowrap; align-items: flex-end; }
+.om { flex: none; width: 6rem; color: var(--fg); transition: color var(--dur-short) var(--ease-out); }
+@media (hover: hover) { .om:hover { color: var(--accent); } }
 
 /* ── wider screens ──────────────────────────────────────── */
 
