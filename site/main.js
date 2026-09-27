@@ -4,7 +4,7 @@
  */
 import wf, { char, bar, bars } from '../index.js'
 import { fit, weight } from './wave.js'
-import { draw, ring, motion, tileMotion } from './art.js'
+import { draw, ring, motion, tileMotion, drift } from './art.js'
 import { tiles as TILES, ring as RING, art as ART } from './art-data.js'
 import { bench, weather, commits } from './data.js'
 import { $, $$, h, soon, seen, animate, noise, still, ease, swing } from './dom.js'
@@ -119,14 +119,54 @@ function values() {
 }
 
 
-/* ── latin+ core ─────────────────────────────────────────────────────────── */
+/* ── latin+ core: the keys that draw bars – four layouts to choose from ───── */
+
+const LOWER = 'abcdefghijklmnopqrstuvwxyz', UPPER = LOWER.toUpperCase(), DIGITS = '0123456789'
+const BLOCKS = '▁▂▃▄▅▆▇█', SYMBOLS = '|-–_.*', MARKS = [['\u0302', 'ˆ'], ['\u0301', '´'], ['\u0300', '`'], ['\u030C', 'ˇ']]
 
 function keys() {
-  // each key's bar over its name; a mark is shown on a bar of its own, named by its spacing form
-  for (const set of $$('.rosetta[data-keys], .rosetta [data-keys]')) {
-    const base = set.dataset.base ?? '', names = set.dataset.names?.split(' ')
-    set.replaceChildren(...Array.from(set.dataset.keys, (c, i) => h('span', { className: 'k' }, h('b', { className: 'wf', textContent: base + c }), names?.[i] ?? c)))
+  const sec = $('#keys'), map = $('.keymap', sec), buttons = $$('.variants button', sec)
+  // a key: its bar over its name
+  const key = (glyph, name = glyph) => h('span', { className: 'k' }, h('b', { className: 'wf', textContent: glyph }), name)
+  const set = chars => h('span', { className: 'set' }, ...Array.from(chars, c => key(c)))
+  // a mark, shown on a bar of its own and named by its spacing form
+  const marks = () => h('span', { className: 'set marks' }, ...MARKS.map(([m, name]) => key('Ĩ' + m, name)))
+  const line = (...parts) => h('div', { className: 'line' }, ...parts)
+  const rest = () => [set(DIGITS), set(BLOCKS), set(SYMBOLS), marks()]
+  // a keyboard: the keys where the fingers find them, a column each; shift, or the Shift key, for the capitals
+  let flip = null
+  const keyboard = () => {
+    const shift = h('button', { type: 'button', className: 'k shift', textContent: 'shift' })
+    shift.setAttribute('aria-pressed', 'false')
+    const lines = ['1234567890', 'qwertyuiop', 'asdfghjkl', 'zxcvbnm'].map((r, i) => line(...(i === 3 ? [shift] : []), set(r)))
+    flip = up => {
+      shift.setAttribute('aria-pressed', up)
+      for (const k of lines.flatMap(l => [...l.querySelectorAll('.set .k')])) {
+        const c = up ? k.lastChild.data.toUpperCase() : k.lastChild.data.toLowerCase()
+        k.firstChild.textContent = k.lastChild.data = c
+      }
+    }
+    shift.addEventListener('click', () => flip(shift.getAttribute('aria-pressed') !== 'true'))
+    return lines
   }
+  const LAYOUTS = {
+    // the letters low to high, the capitals on up, then the digits and the rest
+    1: () => [line(set(LOWER)), line(set(UPPER)), line(...rest())],
+    // one ramp, a to Z, then the rest
+    2: () => [line(set(LOWER + UPPER)), line(...rest())],
+    3: keyboard,
+    // each set named by what it draws
+    4: () => [['1 – 50', set(LOWER)], ['52 – 100', set(UPPER)], ['1 – 90', set(DIGITS)], ['1 – 100', set(BLOCKS)], ['100, 1', set(SYMBOLS)], ['±10, ±1', marks()]]
+      .map(([name, s]) => line(h('span', { className: 'name', textContent: name }), s))
+  }
+  const show = v => {
+    sec.dataset.variant = v, buttons.forEach(b => b.setAttribute('aria-pressed', b.textContent === v))
+    flip = null, map.replaceChildren(...LAYOUTS[v]())
+  }
+  buttons.forEach(b => b.addEventListener('click', () => show(b.textContent)))
+  // the Shift key, held, shows the capitals on the keyboard
+  for (const type of ['keydown', 'keyup']) addEventListener(type, e => { if (e.key === 'Shift' && flip) flip(type === 'keydown') })
+  show(sec.dataset.variant)
 }
 
 
@@ -144,17 +184,20 @@ function axes() {
   }
   inputs.forEach(i => set(i.name, +i.value))
 
-  // three looks – thin; thick and square; thick and round – at each of three alignments – bottom, middle, top:
-  // nine, gone round so that each move changes one axis
-  const INTO = [['wght', 50], ['yela', -100]]
-  const ROUND = [['wght', 1000], ['rond', 100], ['yela', 0], ['yela', 100], ['rond', 0], ['yela', 0], ['wght', 50], ['yela', 100], ['yela', -100]]
-  const MOVE = 900, HOLD = 450
-  let raf = 0, k = 0, t0 = null, from = 0
+  // a walk through what the axes do: the weights by hundreds, square; half round and round at the heaviest; there,
+  // the three alignments; back to square and thin. Each move changes one axis, a longer one taking longer
+  const INTO = [['wght', 100]]
+  const ROUND = [
+    ...Array.from({ length: 9 }, (_, i) => ['wght', 200 + 100 * i]),
+    ['rond', 50], ['rond', 100], ['yela', -100], ['yela', 100], ['yela', 0], ['rond', 50], ['rond', 0], ['wght', 100]
+  ]
+  const SPAN = { wght: 950, rond: 100, yela: 200 }, HOLD = 500
+  let raf = 0, k = 0, t0 = null, from = 0, move = 0
   const step = now => {
     const [name, to] = k < INTO.length ? INTO[k] : ROUND[(k - INTO.length) % ROUND.length]
-    if (t0 === null) t0 = now, from = +input(name).value
-    set(name, from + (to - from) * swing(Math.min(1, (now - t0) / MOVE)))
-    if (now - t0 >= MOVE + HOLD) k++, t0 = null
+    if (t0 === null) t0 = now, from = +input(name).value, move = 350 + 800 * Math.abs(to - from) / SPAN[name]
+    set(name, from + (to - from) * swing(Math.min(1, (now - t0) / move)))
+    if (now - t0 >= move + HOLD) k++, t0 = null
     raf = requestAnimationFrame(step)
   }
   const run = on => { cancelAnimationFrame(raf), t0 = null; if (on && !still) raf = requestAnimationFrame(step) }
@@ -319,7 +362,7 @@ function rangeChart() {
   const LOW = -30, HIGH = 40, level = c => 14 + (c - LOW) / (HIGH - LOW) * 100, zero = level(0)
   const date = i => new Date(Date.UTC(year, 0, 1 + i)).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
   const deg = c => `${c < 0 ? '−' : ''}${Math.abs(c).toFixed(1)}`
-  // a bar per day where there's room, else per week: the week's lowest low to its highest high
+  // the year as n bars: each from its days' lowest low to their highest high
   const group = n => Array.from({ length: n }, (_, k) => {
     const a = Math.round(k * lo.length / n), b = Math.round((k + 1) * lo.length / n)
     return [Math.min(...lo.slice(a, b)), Math.max(...hi.slice(a, b)), a, b - 1]
@@ -349,15 +392,16 @@ function rangeChart() {
     read.textContent = say(k, k)
     chart.setAttribute('aria-valuenow', k + 1), chart.setAttribute('aria-valuetext', read.textContent)
   }
-  // the plot as wide as its bars on whole pixels, so the lines and months end where the year does
+  // the plot between the degrees' column and as much again on the right: the least whole-pixel pitch that holds
+  // the year, at least 3 px, and as many bars at it as fill the room – a bar a day, or a few days where it's narrow
   const fig = $('.temps'), stage = fig.parentNode
   new ResizeObserver(() => {
-    const room = stage.clientWidth - fig.firstElementChild.offsetWidth - (parseFloat(getComputedStyle(fig).columnGap) || 0), px = dpx()
-    const n = room / 365 >= 2.4 ? 365 : 52
+    const room = stage.clientWidth - 2 * fig.firstElementChild.offsetWidth, px = dpx()
+    pitch = Math.ceil(Math.max(3, room / lo.length) / px) * px
+    const n = Math.min(lo.length, Math.floor(room / pitch))
     if (n !== set.length) set = group(n), chart.textContent = text(), chart.setAttribute('aria-valuemax', n), pick(null)
-    pitch = Math.max(2 * px, Math.floor(room / n / px) * px)
     fig.style.setProperty('--plot-w', `${(n * pitch).toFixed(2)}px`)
-    fit(chart, n, n === 365 ? 0.6 : 0.5, n * pitch)
+    fit(chart, n, pitch > 4 ? 0.5 : 0.6, n * pitch)
   }).observe(stage)
   chart.addEventListener('pointermove', e => {
     if (e.buttons || !getSelection().isCollapsed) return
@@ -456,49 +500,48 @@ function speed() {
 
 function renderings() {
   const sec = $('#renderings'), box = $('.tiles'), moving = [], still_ = []
-  box.replaceChildren(...TILES.map((t, i) => {
+  const piece = t => {
+    const el = h('div', { className: 'piece' })
+    el.style.setProperty('--ar', (t.w / t.h).toFixed(4))
+    if (t.rond) el.style.setProperty('--rond', t.rond)
+    return el
+  }
+  const nine = TILES.map((t, i) => {
     const tile = h('div', { className: 'tile' })
     // the ring is a spinner: it turns, a spoke a step
     if (!t) return tile.innerHTML = ring(RING), tile.firstElementChild.classList.add('spin'), tile
-    const el = h('div', { className: 'piece' })
-    if (t.rond) el.style.setProperty('--rond', t.rond)
+    const el = piece(t)
     tile.append(el)
     // the waveform plays: its played part sweeps across it
     if (!tileMotion[i]) {
-      const over = h('div', { className: 'piece over' })
-      tile.classList.add('playing'), tile.append(over), still_.push([el, t], [over, t])
+      const over = piece(t)
+      over.classList.add('over'), tile.classList.add('playing'), tile.append(over), still_.push([el, t], [over, t])
     } else moving.push([el, tileMotion[i](t)])
     return tile
-  }))
-  let width = 0, time = 0
+  })
+  // the traced pictures, moving as they would under a pointer left alone
+  const more = ['steps', 'checker', 'stairs'].map(name => {
+    const el = piece(ART[name]), at = motion[name](ART[name])
+    el.classList.add('pic'), moving.push([el, t => at(t, drift(t))])
+    return h('div', { className: 'tile' }, el)
+  })
+  box.replaceChildren(...nine, ...more)
+  // each at its own width, read when the layout changes, not as it moves
+  const width = new Map()
+  let time = 0
   new ResizeObserver(() => {
-    width = moving[0][0].clientWidth
-    still_.forEach(([el, t]) => draw(el, t, width)), moving.forEach(([el, at]) => draw(el, at(time), width))
+    for (const [el] of [...still_, ...moving]) width.set(el, el.clientWidth)
+    still_.forEach(([el, t]) => draw(el, t, width.get(el))), moving.forEach(([el, at]) => draw(el, at(time), width.get(el)))
   }).observe(box)
-  animate(sec, now => { time = now / 1000, moving.forEach(([el, at]) => draw(el, at(time), width)) })
+  animate(sec, now => { time = now / 1000, moving.forEach(([el, at]) => draw(el, at(time), width.get(el))) })
 }
 
-// each artwork a screen of its own: it follows the pointer, and drifts on its own when left alone
+// the flower, the whole screen wide, its bars as traced: taller than the screen, it drifts from its top to its foot
 function artwork(sec) {
-  const name = sec.dataset.piece, el = $('.piece', sec), at = motion[name](ART[name])
-  const rest = ART[name]
-  let p = { x: 0.5, y: 0.5 }, aim = null, t = 0, width = 0
-  const frame = () => draw(el, still ? (aim ? at(0, aim) : rest) : at(t, p), width)
-  sec.style.setProperty('--ar', (rest.w / rest.h).toFixed(4))
+  const rest = ART[sec.dataset.piece], el = $('.piece', sec)
   el.dataset.ar = el.style.aspectRatio = `${rest.w} / ${rest.h}`
-  new ResizeObserver(([e]) => { width = e.contentRect.width, frame() }).observe(el)
-  el.addEventListener('pointermove', e => {
-    const b = el.getBoundingClientRect()
-    aim = { x: (e.clientX - b.left) / b.width, y: (e.clientY - b.top) / b.height }
-    if (still) frame()
-  })
-  el.addEventListener('pointerleave', () => { aim = null; if (still) frame() })
-  animate(sec, now => {
-    t = now / 1000
-    const to = aim ?? { x: 0.5 + 0.3 * Math.sin(t / 2.9), y: 0.5 + 0.28 * Math.sin(t / 4.1 + 1.3) }
-    p = { x: p.x + (to.x - p.x) * 0.06, y: p.y + (to.y - p.y) * 0.06 }
-    frame()
-  })
+  el.style.setProperty('--ar', (rest.w / rest.h).toFixed(4))
+  new ResizeObserver(([e]) => draw(el, rest, e.contentRect.width)).observe(el)
 }
 
 

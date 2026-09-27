@@ -65,7 +65,7 @@ const { ring } = await import('./art.js')
 
 test('traced pieces: bars inside their slice, each line sorted and not overlapping', () => {
   const pieces = [...tiles.filter(Boolean), ...Object.values(art)]
-  assert.equal(pieces.length, 8 + 1)
+  assert.equal(pieces.length, 8 + 4)
   for (const p of pieces) for (const s of p.slices) {
     assert.ok(s.y >= 0 && s.y + s.h <= p.h + 1)
     for (const line of s.lines) {

@@ -102,31 +102,75 @@ const laid = (piece, bars) => {
   return { ...piece, slices: [{ ...piece.slices[0], lines }] }
 }
 
-export const motion = {
-  // figure: a lens under the pointer widens the bars it passes over, about their middles; widened bars
-  // may run into their neighbours, which text draws over each other, so the lines stay as traced
-  figure: piece => {
-    const R = 0.13 * piece.w
-    return (t, p) => {
-      const px = p.x * piece.w, py = p.y * piece.h
-      return {
-        ...piece,
-        slices: piece.slices.map(slice => ({
-          ...slice,
-          lines: slice.lines.map(line => {
-            const out = []
-            for (let i = 0; i < line.length; i += 4) {
-              const [x, w, top, bot] = line.slice(i, i + 4), dx = x + w / 2 - px, dy = Math.max(0, slice.y + top - py, py - slice.y - bot)
-              const k = 1 + 2.2 * Math.exp(-(dx * dx + dy * dy) / (R * R))
-              out.push(x + w / 2 - w * k / 2, w * k, top, bot)
-            }
-            return out
-          })
-        }))
-      }
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v))
+
+/**
+ * Piece with slice k moved dx(k) pixels right. A periodic slice wraps: bars from its first period and a half
+ * repeat two periods before it, and from its last before that, two after it – so no edge shows as it moves.
+ */
+const moved = (piece, dx, periodic) => ({
+  ...piece,
+  slices: piece.slices.map((slice, k) => {
+    // the period: the median step between the slice's full-height bars
+    const d = dx(k), main = [], first = slice.lines[0] ?? []
+    for (let i = 0; i < first.length; i += 4) if (first[i + 3] - first[i + 2] > 0.8 * slice.h) main.push(first[i])
+    const steps = main.slice(1).map((x, i) => x - main[i]).sort((a, b) => a - b)
+    const P = periodic && steps.length ? steps[steps.length >> 1] : 0
+    return {
+      ...slice,
+      lines: slice.lines.map(line => {
+        const bars = []
+        for (let i = 0; i < line.length; i += 4) bars.push(line.slice(i, i + 4))
+        if (!P) return bars.flatMap(([x, ...b]) => [x + d, ...b])
+        // copies stay clear of the line's own bars
+        const from = bars[0][0], to = bars.at(-1)[0] + bars.at(-1)[1]
+        const head = bars.filter(([x]) => x < main[0] + 1.5 * P).map(([x, ...b]) => [x - 2 * P, ...b]).filter(([x, w]) => x + w <= from)
+        const tail = bars.filter(([x]) => x > main.at(-1) - 1.5 * P).map(([x, ...b]) => [x + 2 * P, ...b]).filter(([x]) => x >= to)
+        return [...head, ...bars, ...tail].flatMap(([x, ...b]) => [x + d, ...b])
+      })
     }
+  })
+})
+
+/** Bars of a one-slice piece as [x, width, top, bottom], lines merged, 1 px slivers of antialiasing left out. */
+const barsOf = piece => {
+  const out = []
+  for (const line of piece.slices[0].lines) for (let i = 0; i < line.length; i += 4) if (line[i + 1] > 1) out.push(line.slice(i, i + 4))
+  return out
+}
+
+export const motion = {
+  // steps: the four bands slide apart as the pointer moves off the middle, and line up at it; each band its
+  // full-height bars only – the trace's slivers at the joins would hang off them as they move
+  steps: piece => {
+    const bands = { ...piece, slices: piece.slices.map(sl => ({ ...sl, lines: sl.lines.map(line => {
+      const out = []
+      for (let i = 0; i < line.length; i += 4) if (line[i + 3] - line[i + 2] > 0.8 * sl.h) out.push(line[i], line[i + 1], 0, sl.h)
+      return out
+    }).filter(l => l.length) })) }
+    return (t, p) => moved(bands, k => (p.x - 0.5) * (k - 1.5) * 16, true)
+  },
+
+  // checker: rows shear in proportion to their height, as the pointer leans
+  checker: piece => (t, p) => moved(piece, k => (p.x - 0.5) * (k - piece.slices.length / 2) * 7 + 2 * Math.sin(1.3 * t + 0.5 * k)),
+
+  // stairs: the white stair between floor and ceiling rides the pointer's height, and bends with its side
+  stairs: piece => {
+    const H = piece.slices[0].h, all = barsOf(piece)
+    const ceiling = all.filter(b => b[2] === 0 && b[3] < H), floor = all.filter(b => b[2] > 0 && b[3] >= H - 3)
+    const cols = floor.map(f => [f, ceiling.find(c => c[0] === f[0])]).filter(([, c]) => c)
+    const rest = all.filter(b => !cols.some(([f, c]) => b === f || b === c))
+    return (t, p) => laid(piece, [...rest, ...cols.flatMap(([[x, w, b], [, , , a]]) => {
+      const gap = b - a, top = clamp(a + (p.y - 0.5) * 0.7 * H + (p.x - 0.5) * 0.3 * H * Math.sin(2 * Math.PI * x / piece.w), 0, H - gap), out = []
+      if (top >= 1) out.push([x, w, 0, top])
+      if (top + gap <= H - 1) out.push([x, w, top + gap, H])
+      return out
+    })])
   }
 }
+
+/** Where a pointer left alone drifts, t seconds on: a slow figure-eight about the middle. */
+export const drift = t => ({ x: 0.5 + 0.3 * Math.sin(t / 2.9), y: 0.5 + 0.28 * Math.sin(t / 4.1 + 1.3) })
 
 
 /* ── the article's nine in motion: each moves the way its picture suggests; t in seconds ───── */

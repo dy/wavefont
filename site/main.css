@@ -207,8 +207,8 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 1.2
 input[type="range"]::-moz-range-thumb { width: 1.25rem; height: 1.25rem; border-radius: 50%; background: var(--fg); border: 0; }
 input[type="range"]:focus-visible { outline-offset: 0; }
 
-/* ── slides: the grid – twelve columns and twelve rows: a cell of margin all round, the stage, the status band in the
-   eleventh row ── */
+/* ── slides: the grid – twelve columns and twelve rows: a cell of margin at the top and the sides, the stage, the
+   status band in the last row ── */
 
 .slide {
   position: relative;
@@ -226,13 +226,13 @@ input[type="range"]:focus-visible { outline-offset: 0; }
   container-type: inline-size;
   --col: calc(100cqw / 12);
 }
-/* the stage: the ten columns and nine rows a cell in from the edges, the slide's own, so what's on it starts where
+/* the stage: the ten columns and ten rows a cell in from the edges, the slide's own, so what's on it starts where
    a column or a row does. (No containment on it or in it: a contained box can't share its parent's grid) */
-.slide > .stage { grid-area: 2 / 2 / 11 / 12; align-self: stretch; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; min-width: 0; }
+.slide > .stage { grid-area: 2 / 2 / 12 / 12; align-self: stretch; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; min-width: 0; }
 /* what's on it: left-aligned, centred in its height, unless placed */
 .stage > * { grid-column: 1 / -1; grid-row: 1 / -1; align-self: center; min-width: 0; }
-/* the status line: what the slide reports, in the eleventh row, a cell in */
-.status { grid-area: 11 / 2 / 12 / 12; align-self: center; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-sm) var(--space-xl); min-height: 2.75rem; font: var(--label); color: var(--dim); }
+/* the status line: what the slide reports, in the last row, a cell in */
+.status { grid-area: 12 / 2 / 13 / 12; align-self: center; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-sm) var(--space-xl); min-height: 2.75rem; font: var(--label); color: var(--dim); }
 .status output, .status b { color: var(--fg); font-weight: inherit; font-variant-numeric: tabular-nums; }
 
 /* layout overlay, for tuning while building: the grid switch top right, g, or the page opened with ?grid */
@@ -261,7 +261,6 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 /* ── hero: the name, set in itself, its bars standing on the fifth row; the letters in the sixth; what it does
    under them, a row further down, a row each ── */
 
-.hero .stage { grid-row: 2 / 12; }
 .mark {
   --n: 8;
   --bar-rows: 5;
@@ -291,6 +290,7 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 /* one cell per bar, centred under it: cells start half a gap left of the first bar */
 .mark-letters {
   display: flex;
+  align-items: center;
   height: var(--row);
   margin-left: calc((var(--adv) - var(--pitch)) / 2);
   font: 700 clamp(1.375rem, calc(var(--size) * 0.105), 3rem)/1 var(--font-sans);
@@ -306,28 +306,53 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .facts a { text-decoration: none; display: inline-block; padding: 0.15em 0; white-space: nowrap; }
 .facts a:hover { color: var(--accent); }
 
-/* ── latin+ core: each key's bar, the key under it; a row a set, a row between; names in the first column,
-   on the keys' baseline ── */
+/* ── latin+ core: the keys that draw bars, each its bar over its name – four layouts to choose from, switched in
+   the top right cell ── */
 
-.keymap { display: grid; grid-template-columns: subgrid; grid-auto-rows: minmax(var(--row), auto); row-gap: var(--row); margin: 0; }
-.keymap > div { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; row-gap: var(--space-xs); align-items: last baseline; align-self: center; }
-.keymap dt { grid-column: 1 / -1; font: var(--label); color: var(--dim); }
-.keymap dd { grid-column: 1 / -1; margin: 0; }
-/* a set's keys fit their row: the bar, the gap, the name */
-.rosetta { --size: min(clamp(2rem, 1.25rem + 2vw, 3rem), calc((var(--row) - 1.8rem) / 1.05)); display: flex; flex-wrap: wrap; }
-/* a row of two sets: the second a step apart */
-.rosetta > [data-keys] { display: flex; flex-wrap: wrap; }
-.rosetta > [data-keys] + [data-keys] { margin-left: var(--space-lg); }
-.rosetta .k { display: grid; justify-items: center; gap: 0.5em; width: max(1.5rem, calc(var(--size) * 0.3)); font: var(--label); color: var(--fg); }
-.rosetta .k b { --wght: 300; --yela: -100; font-weight: normal; font-size: var(--size); line-height: 1.05; }
+.keys .stage { grid-row: 2 / 13; }
+.variants { grid-area: 1 / 12 / 2 / 13; justify-self: end; align-self: center; display: flex; gap: var(--space-2xs); font: var(--label); }
+.variants button { width: 2rem; height: 2rem; border: 1px solid var(--faint); border-radius: 50%; background: none; color: var(--dim); cursor: pointer; }
+.variants button[aria-pressed="true"] { border-color: var(--fg); color: var(--fg); }
+
+/* a line of keys two rows high, their bars as tall as that leaves over their names; a key's width between sets */
+.keymap {
+  --lines: 2;
+  --key: calc((var(--lines) * var(--row) - 1.8rem) / 1.05);
+  --kw: max(1.5rem, calc(var(--key) * 0.3));
+  display: grid; grid-template-columns: subgrid; grid-auto-rows: minmax(calc(var(--lines) * var(--row)), auto); row-gap: var(--row);
+}
+.keymap .line { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: flex-end; row-gap: var(--space-sm); }
+.keymap .set { display: flex; flex-wrap: wrap; }
+.keymap .set + .set { margin-left: var(--kw); }
+.keymap .k { display: grid; justify-items: center; gap: 0.5em; width: var(--kw); font: var(--label); color: var(--fg); }
+.keymap .k b { --wght: 300; --yela: -100; font-weight: normal; font-size: var(--key); line-height: 1.05; }
 /* a mark's name is its spacing form, small in any font: set larger */
-.marks .k { font-size: 1.125rem; line-height: 1; }
+.keymap .marks .k { font-size: 1.125rem; line-height: 1; }
+
+/* 1: a to z, A to Z, then the rest; three lines */
+.keys[data-variant="1"] .keymap { grid-row: 2 / 10; }
+/* 2: one ramp, a to Z across the ten columns, three rows high; the rest under it */
+.keys[data-variant="2"] .keymap { grid-row: 3 / 9; grid-template-rows: minmax(calc(3 * var(--row)), auto) minmax(calc(2 * var(--row)), auto); }
+.keys[data-variant="2"] .line:first-child { --key: calc((3 * var(--row) - 1.8rem) / 1.05); }
+.keys[data-variant="2"] .line:first-child .set { flex: 1; flex-wrap: nowrap; }
+.keys[data-variant="2"] .line:first-child .k { flex: 1 1 0; width: auto; min-width: 0; }
+/* 3: a keyboard, a key a column, the rows touching */
+.keys[data-variant="3"] .keymap { --kw: var(--col); grid-row: 2 / 10; row-gap: 0; }
+.keys[data-variant="3"] .k b { --wght: 700; }
+.keys[data-variant="3"] .set + .set { margin-left: 0; }
+.shift { align-self: center; height: 2rem; padding: 0; border: 1px solid var(--faint); border-radius: var(--radius-sm); background: none; color: var(--dim); cursor: pointer; }
+.shift[aria-pressed="true"] { border-color: var(--fg); color: var(--fg); }
+/* 4: a line a row, each set named in the first column by what it draws */
+.keys[data-variant="4"] .keymap { --lines: 1; grid-row: 1 / -1; }
+.keys[data-variant="4"] .line { display: grid; grid-template-columns: subgrid; align-items: last baseline; }
+.keymap .name { grid-column: 1; font: var(--label); color: var(--dim); }
+.keys[data-variant="4"] .line > .set { grid-column: 2 / -1; }
 
 /* ── 127 values: every bar in a grid across the ten inner columns, its eight rows shared out over nine; 0 and 127
    in the margin cells, on the lines of the first bar and the last; the picked one's value, character and code in
    the band ── */
 
-.values .stage { grid-area: 2 / 1 / 12 / -1; }
+.values .stage { grid-area: 2 / 1 / 13 / -1; }
 .grid {
   /* the bars as large as their cells allow: a sixteenth of ten columns wide, an eighth of nine rows high */
   --w: calc(var(--col) * 10 / 16);
@@ -337,7 +362,7 @@ input[type="range"]:focus-visible { outline-offset: 0; }
   align-self: stretch;
   display: grid;
   grid-template-columns: var(--col) repeat(16, var(--w)) var(--col);
-  grid-template-rows: repeat(8, var(--h)) var(--row);
+  grid-template-rows: repeat(8, var(--h)) var(--row) var(--row);
   align-items: last baseline;
 }
 .grid .cell {
@@ -359,7 +384,7 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .edge { padding: 0 var(--space-sm) calc(var(--cell) * 0.1); font: var(--label); color: var(--dim); }
 .edge.from { grid-area: 1 / 1; justify-self: end; }
 .edge.to { grid-area: 8 / 18; }
-.readout { grid-area: 9 / 2 / 10 / 18; align-self: center; display: flex; flex-wrap: wrap; gap: var(--space-xl); margin: 0; }
+.readout { grid-area: 10 / 2 / 11 / 18; align-self: center; display: flex; flex-wrap: wrap; gap: var(--space-xl); margin: 0; }
 .readout div { display: grid; gap: var(--space-2xs); }
 .readout dt { font: var(--label); color: var(--dim); }
 .readout dd { margin: 0; }
@@ -374,7 +399,7 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 /* ── 3 axes: the specimen across all twelve columns, in the seven rows at the top; the sliders on the columns in
    the middle, a row each, the last in the band ── */
 
-.axes .stage { grid-area: 2 / 1 / 12 / -1; }
+.axes .stage { grid-area: 2 / 1 / 13 / -1; }
 /* the first bar on the grid's left edge and the last on its right, at any weight: the gaps share what the bars leave */
 .specimen {
   --n: 15;
@@ -385,7 +410,7 @@ input[type="range"]:focus-visible { outline-offset: 0; }
   line-height: 1.1;
   white-space: pre;
 }
-.sliders { grid-area: 8 / 2 / 11 / 12; align-self: stretch; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; }
+.sliders { grid-area: 9 / 2 / 12 / 12; align-self: stretch; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; }
 .axis { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: center; }
 .axis .name { grid-column: 1 / 4; font: var(--label); color: var(--dim); cursor: help; }
 .axis input { grid-column: 4 / 9; }
@@ -420,7 +445,9 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 
 /* ── min–max bars: a year of weather, each day from its low to its high ── */
 
-/* the plot in seven rows from the top, a row for every 10°; the months in the row under it */
+/* the plot from the second column to the eleventh, the degrees in the first; seven rows from the top, a row for
+   every 10°; the months in the row under it */
+.range .stage { grid-column: 1 / -1; }
 .temps { --chart-h: calc(7 * var(--row)); --deg: var(--col); margin: 0; align-self: start; display: grid; grid-template-columns: var(--deg) var(--plot-w, minmax(0, 1fr)); grid-template-rows: var(--chart-h) var(--row); justify-content: start; }
 /* the degrees in the first column, the plot from the second */
 .degrees { position: relative; list-style: none; margin: 0; padding: 0; height: var(--chart-h); font: var(--label); color: var(--dim); font-variant-numeric: tabular-nums; text-align: right; }
@@ -473,82 +500,84 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 
 /* ── voice messages: pills, round-capped bars close together, the time beside them – as the reference ── */
 
-/* the chat on the columns in the middle, as many as a phone's width needs: the thread in the nine rows, the
-   composer in the band */
-.messages .stage { grid-row: 2 / 12; }
-.chat { align-self: stretch; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) var(--row); }
+/* the chat on the columns in the middle, as many as a phone's width needs: the thread in the rows above the band,
+   the composer in it */
+.messages .stage { grid-row: 2 / 13; }
+/* everything in the chat in one unit, a rem and a fifth: it scales as one */
+.chat { --u: 1.2rem; font-size: calc(1.0625 * var(--u)); align-self: stretch; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) var(--row); }
 .composer { align-self: center; }
 /* no scrolling box: the thread keeps as many whole messages as fit */
-.thread { position: relative; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: var(--space-sm); overflow: hidden; }
+.thread { position: relative; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: calc(0.75 * var(--u)); overflow: hidden; }
 .msg { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: start; }
 .msg.out { justify-items: end; }
 .bubble {
   --played: var(--dark);
   --rond: 100;
-  display: flex; align-items: center; gap: 0.55rem;
+  display: flex; align-items: center; gap: calc(0.55 * var(--u));
   max-width: 100%;
-  padding: 0.7rem 1.2rem 0.7rem 1.1rem;
+  padding: calc(0.7 * var(--u)) calc(1.2 * var(--u)) calc(0.7 * var(--u)) calc(1.1 * var(--u));
   border-radius: var(--radius-pill);
   background: var(--gray);
   color: var(--dark);
 }
 .msg.out .bubble { --played: var(--white); background: var(--blue); color: var(--white); }
 .msg.fresh .bubble { animation: arrive var(--dur-long) var(--ease-out); }
-@keyframes arrive { from { opacity: 0; transform: translateY(0.5rem); } }
-.bubble.textual { padding: 0.65rem 1.1rem; border-radius: 1.35rem; max-width: 20rem; font-size: 1.0625rem; line-height: 1.4; overflow-wrap: anywhere; }
-.bubble .pp { display: grid; place-items: center; width: 1.4rem; height: 2.5rem; flex: none; padding: 0; border: 0; background: none; color: inherit; font-size: 1.25rem; cursor: pointer; }
-.bubble .wave, .composer-tape { --yela: 0; font-size: 2.6rem; line-height: 1; white-space: pre; letter-spacing: var(--gap); }
+@keyframes arrive { from { opacity: 0; transform: translateY(calc(0.5 * var(--u))); } }
+.bubble.textual { padding: calc(0.65 * var(--u)) calc(1.1 * var(--u)); border-radius: calc(1.35 * var(--u)); max-width: calc(20 * var(--u)); font-size: calc(1.0625 * var(--u)); line-height: 1.4; overflow-wrap: anywhere; }
+.bubble .pp { display: grid; place-items: center; width: calc(1.4 * var(--u)); height: calc(2.5 * var(--u)); flex: none; padding: 0; border: 0; background: none; color: inherit; font-size: calc(1.25 * var(--u)); cursor: pointer; }
+.bubble .wave, .composer-tape { --yela: 0; font-size: calc(2.6 * var(--u)); line-height: 1; white-space: pre; letter-spacing: var(--gap); }
 .bubble .wave { color: inherit; cursor: pointer; min-width: 0; overflow: hidden; }
 /* playing, the bars ahead dim; the played ones take the ink back */
 .bubble.is-playing .wave { color: color-mix(in oklab, currentColor 40%, transparent); }
-.bubble .dur { font: var(--label); font-size: 0.8125rem; opacity: 0.75; font-variant-numeric: tabular-nums; }
+.bubble .dur { font: 500 calc(0.875 * var(--u))/1.4 var(--font-mono); font-size: calc(0.8125 * var(--u)); opacity: 0.75; font-variant-numeric: tabular-nums; }
 /* the other side, recording: its bars come in behind a red dot */
 .bubble.live .wave { cursor: default; }
-.bubble .rec, .composer-dot { width: 0.55rem; height: 0.55rem; flex: none; border-radius: 50%; background: var(--red); animation: blink 1s var(--ease-in-out) infinite alternate; }
-.bubble .rec { margin: 0 0.4rem; }
+.bubble .rec, .composer-dot { width: calc(0.55 * var(--u)); height: calc(0.55 * var(--u)); flex: none; border-radius: 50%; background: var(--red); animation: blink 1s var(--ease-in-out) infinite alternate; }
+.bubble .rec { margin: 0 calc(0.4 * var(--u)); }
 @keyframes blink { to { opacity: 0.25; } }
-.composer { display: flex; gap: var(--space-xs); align-items: center; }
-.composer-field { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-sm); height: 3.25rem; padding: 0 var(--space-md); border-radius: var(--radius-pill); background: var(--gray); color: var(--dim); overflow: hidden; }
+.composer { display: flex; gap: calc(0.5 * var(--u)); align-items: center; }
+.composer-field { flex: 1; min-width: 0; display: flex; align-items: center; gap: calc(0.75 * var(--u)); height: calc(3.25 * var(--u)); padding: 0 var(--u); border-radius: var(--radius-pill); background: var(--gray); color: var(--dim); overflow: hidden; }
 .composer-input { flex: 1; min-width: 0; height: 100%; padding: 0; border: 0; background: none; color: var(--fg); font: inherit; outline: none; }
 .composer-input::placeholder { color: var(--dim); }
 .composer-field:focus-within { box-shadow: 0 0 0 2px var(--blue); }
 .composer-tape { --rond: 100; flex: 1; min-width: 0; overflow: hidden; display: none; justify-content: flex-end; color: var(--dark); }
 .composer-tape > span { flex: none; }
-.composer-time { font: var(--label); font-variant-numeric: tabular-nums; }
+.composer-time { font: 500 calc(0.875 * var(--u))/1.4 var(--font-mono); font-variant-numeric: tabular-nums; }
 .composer-dot { display: none; }
 .composer.is-on .composer-input { display: none; }
 .composer.is-on .composer-tape, .composer.is-on .composer-dot { display: flex; }
-.mic { display: grid; place-items: center; width: 3.25rem; height: 3.25rem; flex: none; border: 0; border-radius: 50%; background: var(--blue); color: var(--white); font-size: 1.25rem; cursor: pointer; }
+.mic { display: grid; place-items: center; width: calc(3.25 * var(--u)); height: calc(3.25 * var(--u)); flex: none; border: 0; border-radius: 50%; background: var(--blue); color: var(--white); font-size: calc(1.25 * var(--u)); cursor: pointer; }
 .mic .i-send, .mic .i-stop, .composer.has-text .mic .i-mic, .composer.is-on .mic .i-mic { display: none; }
 .composer.has-text .mic .i-send, .composer.is-on .mic .i-stop { display: inline; }
 .composer.is-on .mic { background: var(--red); }
 /* the triangle and the pause bars have round corners, as the bars have round caps */
 .round { stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
 
-/* ── renderings: the article's nine, each moving as it suggests; the grid of them on the middle columns, as many
-   as the grid's height allows, an even number so it stays centred; on the widest, a tile is two columns ── */
+/* ── renderings: the article's nine, and three pictures traced for the site, each moving as it suggests; a tile two
+   columns wide and three rows high, four to a row, on the middle eight columns; the art centred in its tile ── */
 
-.renderings { container-type: size; height: 100svh; } /* a size container is queried by its height, which min-height doesn't give */
-.renderings .stage { grid-row: 1 / -1; align-self: stretch; align-content: center; }
-/* k columns of square tiles stand k twelfths of the grid's width tall: they fit while its aspect is at most 12 / k */
-.tiles { grid-column: 5 / 7; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-@container (max-aspect-ratio: 3 / 1) { .tiles { grid-column: 4 / 8; } }
-@container (max-aspect-ratio: 2 / 1) { .tiles { grid-column: 3 / 9; } }
-@container (max-aspect-ratio: 3 / 2) { .tiles { grid-column: 2 / 10; } }
-@container (max-aspect-ratio: 6 / 5) { .tiles { grid-column: 1 / -1; } }
-.tile { position: relative; aspect-ratio: 1; color: var(--fg); overflow: hidden; }
+.renderings .stage { grid-row: 2 / 11; }
+.tiles { --tile-cols: 2; --tile-rows: 3; grid-column: 2 / 10; align-self: stretch; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; }
+.tile { grid-column: span var(--tile-cols); grid-row: span var(--tile-rows); display: grid; place-items: center; color: var(--fg); overflow: hidden; }
+.tile > * { grid-area: 1 / 1; }
+/* the art as large as its tile allows, keeping its proportions; the pictures, drawn to their edges, a little less */
+.tile .piece { width: min(100%, calc(var(--tile-rows) * var(--row) * var(--ar, 1))); }
+.tile .pic { width: min(84%, calc(0.84 * var(--tile-rows) * var(--row) * var(--ar, 1))); }
+.tile svg { width: min(100%, calc(var(--tile-rows) * var(--row))); height: auto; aspect-ratio: 1; }
 .tile svg text { fill: currentColor; }
-.tile .piece, .tile svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .tile svg.spin { transform-origin: 50% 50%; animation: spin 1s steps(20) infinite; }
 @keyframes spin { to { transform: rotate(1turn); } }
 .tile.playing .piece:not(.over) { color: var(--unplayed); }
 .tile .over { clip-path: inset(0 100% 0 0); animation: sweep 5s linear infinite; }
 @keyframes sweep { to { clip-path: inset(0 0 0 0); } }
 
-/* ── the flower: a screen of its own, the grid's full height, top and bottom on its edges ── */
+/* ── the flower: the whole screen, edge to edge, its bars as traced; it covers the screen both ways, and drifts
+   slowly along the way it overflows – down on a wide screen, across on an upright one – and back ── */
 
-.work .stage { grid-area: 1 / 1 / -1 / -1; justify-items: center; }
-.work .piece { width: min(100%, calc((100svh - 2 * var(--pad-y)) * var(--ar, 1))); overflow: hidden; touch-action: pan-y; }
+.work { display: block; height: 100svh; padding: 0; overflow: hidden; }
+.work .stage { display: block; }
+.work .piece { width: max(100cqw, calc(100svh * var(--ar, 1))); transform: translate(calc((100cqw - 100%) / 2), calc((100svh - 100%) / 2)); animation: pan 48s var(--ease-in-out) infinite alternate; }
+@keyframes pan { from { transform: translate(0, 0); } to { transform: translate(calc(100cqw - 100%), calc(100svh - 100%)); } }
 
 /* traced pieces: every line is text, each bar a character standing at its own x */
 .piece { position: relative; width: 100%; }
@@ -559,7 +588,7 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 
 /* a device of its own: edge to edge, off the grid */
 .memo { padding-inline: 0; grid-template-columns: minmax(0, 1fr); }
-.vm { --band-bg: color-mix(in oklab, var(--white) 6%, var(--dark)); grid-row: 2 / 12; align-self: stretch; min-height: 30rem; display: flex; flex-direction: column; align-items: center; gap: clamp(0.5rem, 2svh, 1.25rem); }
+.vm { --band-bg: color-mix(in oklab, var(--white) 6%, var(--dark)); grid-row: 2 / 13; align-self: stretch; min-height: 30rem; display: flex; flex-direction: column; align-items: center; gap: clamp(0.5rem, 2svh, 1.25rem); }
 .vm button { border: 0; background: none; padding: 0; color: inherit; cursor: pointer; }
 .vm button:disabled { cursor: default; }
 .vm-top { display: grid; justify-items: center; padding: 0 var(--space-md); }
@@ -622,16 +651,15 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .year-marks { position: relative; list-style: none; margin: 0; padding: 0; height: 1.4em; font: var(--label); color: var(--dim); font-variant-numeric: tabular-nums; }
 .year-marks li { position: absolute; left: calc((var(--m) + 0.5) / 122 * 100%); transform: translateX(-50%); }
 /* each year in the first column, what happened in the next six */
-.milestones { grid-row: 5 / 10; align-self: stretch; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; }
+.milestones { grid-row: 6 / 11; align-self: stretch; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; }
 .milestones li { grid-column: 1 / -1; align-self: center; display: grid; grid-template-columns: subgrid; align-items: baseline; }
 .milestones time { grid-column: 1 / 3; font: var(--label); color: var(--accent); line-height: 1.55rem; }
 .milestones li > span { grid-column: 3 / -1; }
 .milestones a { text-decoration-color: color-mix(in oklab, currentColor 35%, transparent); }
 
-/* ── get: where it is, and nothing else: a link a row, the middle five of the nine; ॐ at the end of the band ── */
+/* ── get: where it is, and nothing else: a link a row, from the third; ॐ at the end of the band ── */
 
-.links { grid-row: 3 / 8; align-self: stretch; list-style: none; margin: 0; padding: 0; display: grid; grid-template-rows: subgrid; align-items: center; font: 600 min(clamp(1.75rem, 1.1rem + 2.2vw, 3rem), calc(var(--row) * 0.75))/1.25 var(--font-sans); }
-.links a { text-decoration: none; }
+.links { grid-row: 2 / 7; align-self: stretch; list-style: none; margin: 0; padding: 0; display: grid; grid-template-rows: subgrid; align-items: center; font: 600 min(clamp(1.75rem, 1.1rem + 2.2vw, 3rem), calc(var(--row) * 0.75))/1.25 var(--font-sans); }
 @media (hover: hover) { .links a:hover { color: var(--accent); } }
 .credits { margin: 0; }
 .credits a { color: var(--fg); }
@@ -649,8 +677,6 @@ input[type="range"]:focus-visible { outline-offset: 0; }
   .chat { grid-column: 2 / 10; }
   .milestones time { grid-column: 1 / 2; }
   .milestones li > span { grid-column: 2 / 8; }
-  .keymap dt { grid-column: 1 / 2; }
-  .keymap dd { grid-column: 2 / -1; }
   /* sliders on the middle eight columns: names in two, values in one */
   .sliders { grid-column: 3 / 11; }
   .axis .name { grid-column: 1 / 3; }
@@ -689,9 +715,17 @@ input[type="range"]:focus-visible { outline-offset: 0; }
   .year-marks li:nth-child(even) { visibility: hidden; }
 }
 
-/* upright screens: a row is tall for a line of text, so it takes two */
+/* upright screens: a row is tall for a line of text, so it takes two; a tile is four columns wide and two rows
+   high, three to a row */
 @media (max-aspect-ratio: 1 / 1) {
   .doc-body { line-height: calc(var(--row) / 2); }
+  .renderings .stage { grid-area: 2 / 1 / 10 / -1; }
+  .tiles { --tile-cols: 4; --tile-rows: 2; grid-column: 1 / -1; }
+  /* keys a row high, the sets wrapping */
+  .keymap { --lines: 1; }
+  .keys[data-variant="2"] .line:first-child { --key: calc((var(--row) - 1.8rem) / 1.05); }
+  .keys[data-variant="2"] .line:first-child .set { flex-wrap: wrap; }
+  .keys[data-variant="2"] .line:first-child .k { flex: none; width: var(--kw); }
 }
 
 @media (prefers-reduced-motion: reduce) {
