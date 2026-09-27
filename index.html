@@ -8,7 +8,7 @@
 <meta property="og:description" content="A typeface for rendering vertical bars data: waveforms, spectrums, diagrams, histograms, columns etc.">
 <meta property="og:image" content="https://dy.github.io/wavefont/article-wavefont_1x1-1.png">
 <meta name="theme-color" content="#202025">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='3' fill='%23202025'/><path fill='%23fff' d='M3 4h2v8H3zM7 11h2v1H7zM11 7h2v5h-2z'/></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%235775aa'><rect x='1.5' y='2' width='3' height='12'><animate attributeName='y' from='14' to='2' dur='.3s' fill='freeze'/><animate attributeName='height' from='0' to='12' dur='.3s' fill='freeze'/></rect><rect x='6.5' y='12' width='3' height='2'><animate attributeName='y' from='14' to='12' begin='.15s' dur='.3s' fill='freeze'/><animate attributeName='height' from='0' to='2' begin='.15s' dur='.3s' fill='freeze'/></rect><rect x='11.5' y='6' width='3' height='8'><animate attributeName='y' from='14' to='6' begin='.3s' dur='.3s' fill='freeze'/><animate attributeName='height' from='0' to='8' begin='.3s' dur='.3s' fill='freeze'/></rect></svg>">
 <link rel="preload" href="fonts/variable/Wavefont[ROND,YELA,wght].woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,6 +34,7 @@
           <li><a href="#values">127 values</a></li>
           <li><a href="#axes">3 axes</a></li>
           <li><a href="#text">textual semantics</a></li>
+          <li><a href="#shifts">shifts</a></li>
         </ul>
       </div>
     </div>
@@ -80,6 +81,11 @@
       <div class="weights" role="toolbar" aria-label="Weight of the selected text"></div>
       <output class="doc-count" aria-live="polite"></output>
     </div>
+  </section>
+
+  <section id="shifts" class="slide dark shifts" data-variant="2" aria-label="Shifts: bars moved up and down by marks">
+    <div class="variants" role="group" aria-label="Layout of this slide"><button type="button" aria-pressed="false">1</button><button type="button" aria-pressed="true">2</button><button type="button" aria-pressed="false">3</button></div>
+    <div class="stage"><div class="pieces"></div></div>
   </section>
 
   <section id="messages" class="slide white messages" aria-label="Voice messages">
@@ -144,12 +150,11 @@
   </section>
 
   <section id="get" class="slide dark get" aria-label="Get Wavefont">
+    <div class="pad">
+      <div class="pad-bars wf" role="img" aria-label="Bars drawn with the pencil"></div>
+      <button class="pad-copy" type="button" aria-label="Copy the bars as text" title="Copy the bars as text"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path class="i-copy" d="M5.5 5.5h7v8h-7zM3.5 10.5V2.5h7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path class="i-done" d="M3 8.5l3.2 3.2L13 4.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
     <div class="stage">
-      <div class="pad">
-        <div class="pad-bars wf" role="img" aria-label="Bars drawn with the pencil: draw over them, or type their values under them"></div>
-        <label class="pad-values"><span class="sr">Values of the bars, 0 to 100</span><input type="text" spellcheck="false" autocomplete="off"></label>
-        <button class="pad-copy" type="button" title="Copy the bars as text">copy</button>
-      </div>
       <ul class="links">
         <li><a href="https://fonts.google.com/specimen/Wavefont">Google Fonts</a></li>
         <li><a href="scripts/">Playground</a></li>

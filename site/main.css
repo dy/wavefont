@@ -246,6 +246,12 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .status output, .status b { color: var(--fg); font-weight: inherit; font-variant-numeric: tabular-nums; }
 .status > :is(output, span, p, a) { margin-bottom: var(--sink); }
 
+/* a slide offering layouts to choose from: the switch in its top right cell. Narrower, they are one: the switch shows
+   where they differ */
+.variants { grid-area: 1 / 12 / 2 / 13; justify-self: end; align-self: center; display: none; gap: var(--space-2xs); font: var(--label); }
+.variants button { width: 2rem; height: 2rem; padding: 0; border: 1px solid var(--faint); border-radius: 50%; background: none; color: var(--dim); cursor: pointer; }
+.variants button[aria-pressed="true"] { border-color: var(--fg); color: var(--fg); }
+
 /* out of view, a slide's animations hold where they are, whatever sets them going */
 .slide.off, .slide.off * { animation-play-state: paused !important; }
 
@@ -437,6 +443,25 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 /* four bars on a quarter-em pitch: the heaviest fills it, a square */
 .weights .wf { --yela: 0; font-size: 1.5rem; line-height: 1; white-space: pre; }
 
+/* ── shifts: marks move a bar up or down, and bars moved so draw pictures – each bar here a value and its marks.
+   Three layouts to choose from: 1 one picture; 2 the four sent for it; 3 four that shift the most. In hand a
+   picture moves: its time runs, or it follows the pointer ── */
+
+.pieces { --tile-h: calc(4 * var(--row)); align-self: stretch; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, var(--tile-h)); row-gap: var(--row); }
+.pieces .tile { display: none; place-items: center; min-width: 0; overflow: hidden; }
+/* each as large as its cell allows, keeping its proportions */
+.tile .piece { width: min(100%, calc(var(--tile-h) * var(--ar, 1))); overflow: hidden; }
+.shifts[data-variant="1"] .pieces { --tile-h: calc(9 * var(--row)); grid-template-columns: minmax(0, 1fr); grid-template-rows: var(--tile-h); }
+.shifts[data-variant="1"] [data-piece="floating"],
+.shifts[data-variant="2"] :is([data-piece="floating"], [data-piece="arcs"], [data-piece="stripes"], [data-piece="speaker"]),
+.shifts[data-variant="3"] :is([data-piece="floating"], [data-piece="arcs"], [data-piece="slide"], [data-piece="stairs"]) { display: grid; }
+
+/* traced pieces: every line is text, each bar a character standing at its own x; the values centred, their marks
+   moving them */
+.piece { position: relative; width: 100%; }
+.art-line { --yela: 0; position: absolute; left: 0; height: 1.28em; line-height: 1.28; letter-spacing: 0; white-space: pre; will-change: transform; }
+.art-line > span { position: absolute; top: 0; }
+
 /* ── voice messages: pills, round-capped bars close together, the time beside them – as the reference ── */
 
 /* the chat on the columns in the middle, as many as a phone's width needs: the thread in the rows above the band,
@@ -580,34 +605,35 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .milestones li > span { grid-column: 3 / -1; margin-bottom: var(--sink); }
 .milestones a { text-decoration-color: color-mix(in oklab, currentColor 35%, transparent); }
 
-/* ── get: bars of your own, and where the font is. A line to draw on with a pencil, four rows high, its values
-   under it to read or type; the links under that, each name's bars over its letters, as the name is set on the
-   first slide; the credits and ॐ in the band ── */
+/* ── get: bars of your own, and where the font is. A line to draw on with a pencil, the screen's width and five rows
+   high, its bars standing on the sixth row's foot, copy in its top right corner; the links under it, as the features
+   on the first slide; the credits and ॐ in the band ── */
 
-.pad { grid-row: 1 / 6; align-self: stretch; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; }
-/* bars round the middle line, the pencil drawing them: its tip is where it draws */
+.pad { --rows: 5; grid-area: 2 / 1 / span var(--rows) / -1; position: relative; margin-inline: calc(-1 * var(--pad-x)); }
+/* the pencil draws the bar under its tip as high as the tip is over the line */
 .pad-bars {
-  --yela: 0;
-  grid-column: 1 / -1; grid-row: 1 / 5;
-  font-size: calc(4 * var(--row)); line-height: 1; white-space: pre; letter-spacing: var(--gap);
+  --yela: -100;
+  height: calc(var(--rows) * var(--row));
+  font-size: calc(var(--rows) * var(--row)); line-height: 1; white-space: pre; letter-spacing: var(--gap);
   touch-action: none; user-select: none; -webkit-user-select: none;
   cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M3 21l1.3-5L16.4 3.9a1.9 1.9 0 0 1 2.7 0l1 1a1.9 1.9 0 0 1 0 2.7L8 19.7z' fill='white' stroke='black' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cpath d='M14.6 5.7l3.7 3.7M4.3 16l3.7 3.7' stroke='black' stroke-width='1.2'/%3E%3C/svg%3E") 3 21, crosshair;
 }
-/* the values on the row under, a field of text standing on its line; copy at its end */
-.pad-values { grid-column: 1 / 10; grid-row: 5; align-self: end; margin-bottom: var(--sink); }
-.pad-values input { width: 100%; padding: 0; border: 0; background: none; color: var(--dim); font: var(--label); font-variant-numeric: tabular-nums; outline: none; }
-.pad-values input:focus { color: var(--fg); }
-.pad-copy { grid-column: 10; grid-row: 5; align-self: end; justify-self: end; margin-bottom: var(--sink); padding: 0; border: 0; background: none; color: var(--fg); font: var(--label); cursor: pointer; text-decoration: underline 1px color-mix(in oklab, currentColor 40%, transparent); text-underline-offset: 0.2em; }
-@media (hover: hover) { .pad-copy:hover { text-decoration-color: currentColor; } }
+/* copy: an icon hanging from the line's top where the columns end; a tick for a moment when done */
+.pad-copy { position: absolute; top: 0; right: calc(var(--pad-x) + var(--col)); display: grid; place-items: center; width: 2.75rem; height: 2.75rem; margin-right: -0.75rem; padding: 0; border: 0; border-radius: var(--radius-sm); background: none; color: var(--dim); font-size: 1.25rem; cursor: pointer; }
+@media (hover: hover) { .pad-copy:hover { color: var(--fg); } }
+.pad-copy .i-done, .pad-copy.is-done .i-copy { display: none; }
+.pad-copy.is-done .i-done { display: inline; }
 
-/* the links: two columns each, a name's bars two rows high on one pitch, its letters a pitch apart under them */
-.links { grid-row: 7 / 10; align-self: stretch; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; grid-auto-flow: column; }
-.links li { grid-column: span 2; grid-row: 1 / -1; display: grid; grid-template-rows: subgrid; }
-.links a { grid-row: 1 / -1; display: grid; grid-template-rows: subgrid; text-decoration: none; }
-.links .wf { --yela: -100; grid-row: 1 / 3; align-self: end; font-size: calc(2 * var(--row)); line-height: 1; letter-spacing: var(--gap); white-space: pre; }
-/* one cell per bar, centred under it: cells start half a gap left of the first bar, as on the first slide */
-.links .letters { grid-row: 3; align-self: end; display: flex; margin-left: calc((var(--adv) - var(--pitch)) / 2); font: 700 var(--text-label)/1 var(--font-sans); }
-.links .letters span { flex: none; width: var(--pitch); margin-bottom: var(--sink); text-align: center; }
+/* the links: a row each, bold and spaced as the first slide's features, a column on a phone and two beside it */
+.links {
+  /* the first slide's name, eight bars: its second column stands under the fifth, the f */
+  --first: calc(4 * min(5 * var(--row), var(--col) * 10 / 2.12) * 0.265);
+  grid-row: 7 / 10; align-self: stretch; list-style: none; margin: 0; padding: 0;
+  display: grid; grid-auto-rows: calc(var(--row) / 2); align-items: end;
+  font: 700 var(--text-lead)/1 var(--font-sans); letter-spacing: 0.3em;
+}
+.links li { margin-bottom: var(--sink); }
+.links a { text-decoration: none; white-space: nowrap; }
 @media (hover: hover) { .links a:hover { color: var(--accent); } }
 .credits { margin: 0; }
 .credits a { color: var(--fg); }
@@ -618,10 +644,14 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 
 @media (min-width: 36rem) {
   /* two columns, the second standing under the fifth bar – the f; a row each */
-  .facts { grid-template-columns: calc(4 * var(--pitch)) auto; grid-template-rows: repeat(2, var(--row)); grid-auto-flow: column; }
+  .facts { grid-template-columns: calc(4 * var(--pitch)) auto; grid-template-rows: repeat(3, var(--row)); grid-auto-flow: column; }
+  /* the last slide's links as the first slide's features, their second column where the features' is */
+  .links { grid-template-columns: var(--first) auto; grid-template-rows: repeat(3, var(--row)); grid-auto-flow: column; }
 }
 
 @media (min-width: 48rem) {
+  /* the layouts differ from here: the switch shows */
+  .variants { display: flex; }
   .chat { grid-column: 2 / 10; }
   .milestones time { grid-column: 1 / 2; }
   .milestones li > span { grid-column: 2 / -1; }
@@ -651,6 +681,9 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 @media (max-width: 40rem) {
   /* the name narrower than its rows: three of them */
   .mark { --bar-rows: 3; }
+  /* the pencil's line a row lower, so the links, a line each, keep clear of the credits wrapping above the band */
+  .pad { --rows: 4; }
+  .links { grid-row: 6 / 9; }
   /* the status wraps to lines: it may take the row above it too, still standing on the eleventh's foot. The weights
      and the count on one line */
   .status { grid-row: 10 / 12; column-gap: var(--space-md); }

@@ -69,6 +69,80 @@ test('commits: one count per month, August 2016 to September 2026', () => {
   assert.ok(commits.months[0] > 0 && commits.months.at(-1) > 0, 'first and last month have commits')
 })
 
+const { art } = await import('./art-data.js')
+const { bar, motion, reach, crop } = await import('./art.js')
+const { char, shift } = await import('../index.js')
+
+test('traced pieces: bars inside their slice, each line sorted and not overlapping', () => {
+  const pieces = Object.values(art)
+  assert.equal(pieces.length, 6)
+  for (const p of pieces) for (const s of p.slices) {
+    assert.ok(s.y >= 0 && s.y + s.h <= p.h + 1)
+    for (const line of s.lines) {
+      assert.equal(line.length % 4, 0)
+      for (let i = 0; i < line.length; i += 4) {
+        const [x, w, top, bot] = line.slice(i, i + 4)
+        assert.ok(x >= 0 && w > 0 && x + w <= p.w, `x ${x} w ${w} of ${p.w}`)
+        assert.ok(top >= 0 && bot > top && bot <= s.h + 1, `top ${top} bottom ${bot} of ${s.h}`)
+        if (i) assert.ok(x >= line[i - 4] + line[i - 3], 'a line is one run of text: no bar starts inside the one before')
+      }
+    }
+  }
+})
+
+test('bar: a value, centred, and the marks shifting it from level 64 to span lo to hi', () => {
+  // readme: a value is its height in levels; at YELA 0 it's centred on the line's middle, level 64; each 1-step mark
+  // moves it a level, U+0301 up and U+0300 down, each 10-step mark ten, U+0302 up and U+030C down
+  const steps = { '\u0302': 10, '\u0301': 1, '\u030C': -10, '\u0300': -1 }
+  const span = str => {
+    const v = str.charCodeAt(0) - 0x100, s = [...str.slice(1)].reduce((n, m) => n + steps[m], 0)
+    return [64 + s - v / 2, 64 + s + v / 2]
+  }
+  assert.equal(bar(10, 20), char(10) + shift(-49), 'centred at 15: 49 levels below the middle')
+  assert.equal(bar(54, 74), char(20), 'centred at 64: no marks')
+  // every span a slice's levels can ask for, 0 to 126: exact, or a level more at the top where lo + hi is odd
+  for (let lo = 0; lo <= 126; lo++) for (let hi = lo; hi <= 126; hi++) {
+    const [a, b] = span(bar(lo, hi))
+    assert.ok(a === lo && b === hi + ((lo + hi) & 1), `${lo}..${hi}: ${a}..${b}`)
+  }
+})
+
+test('motion: every piece, at any time, anywhere the pointer is, stays bars inside its slices', () => {
+  for (const [name, make] of Object.entries(motion)) {
+    const at = make(art[name])
+    for (const t of [0, 2.5, 13.1]) for (const x of [0, 0.3, 0.5, 1]) for (const y of [0, 0.5, 1]) {
+      const p = at(t, { x, y })
+      assert.ok(p.w > 0 && p.h > 0 && p.slices.length)
+      for (const s of p.slices) for (const line of s.lines) {
+        assert.equal(line.length % 4, 0)
+        for (let i = 0; i < line.length; i += 4) {
+          const [bx, w, top, bot] = line.slice(i, i + 4)
+          assert.ok(Number.isFinite(bx) && w > 0 && top >= 0 && bot > top && bot <= s.h + 1, `${name} at ${t}, ${x},${y}: ${line.slice(i, i + 4)}`)
+          if (i) assert.ok(bx >= line[i - 4] + line[i - 3] - 1e-9, `${name}: bars of a line don't start inside each other`)
+        }
+      }
+    }
+  }
+})
+
+test('motion: slide and stairs, the pointer in the middle, are the traced pieces', () => {
+  const bars = p => p.slices.flatMap(s => s.lines.flatMap(l => Array.from({ length: l.length / 4 }, (_, i) => l.slice(4 * i, 4 * i + 4)).filter(b => b[1] > 1).map(b => [s.y, ...b].join()))).sort()
+  for (const name of ['slide', 'stairs']) assert.deepEqual(bars(motion[name](art[name])(0, { x: 0.5, y: 0.5 })), bars(art[name]), name)
+})
+
+test('pieces cut to where they move: at any time, bars inside the cut', () => {
+  for (const [name, make] of Object.entries(motion)) {
+    const raw = art[name]
+    if (raw.slices.length > 1) continue
+    const cut = crop(raw, reach(raw, make(raw))), at = make(cut)
+    assert.ok(cut.w <= raw.w && cut.h <= raw.h, name)
+    for (const t of [0, 0.4, 2.7, 13.1, 61.3]) for (const line of at(t, { x: 0.5, y: 0.5 }).slices[0].lines) for (let k = 0; k < line.length; k += 4) {
+      const [x, w, top, bot] = line.slice(k, k + 4)
+      assert.ok(x >= -1 && x + w <= cut.w + 1 && top >= -1 && bot <= cut.h + 1, `${name} at ${t}: ${line.slice(k, k + 4)} of ${cut.w} × ${cut.h}`)
+    }
+  }
+})
+
 const { weight } = await import('./wave.js')
 
 test('weight: whole font units, the nearest to the width asked', () => {

@@ -4,6 +4,8 @@
  */
 import wf, { char } from '../index.js'
 import { fit, weight } from './wave.js'
+import { draw, motion, reach, crop } from './art.js'
+import { art as ART } from './art-data.js'
 import { commits } from './data.js'
 import { $, $$, h, soon, seen, noise, still, ease, swing } from './dom.js'
 import { chat } from './chat.js'
@@ -322,6 +324,63 @@ function textDoc() {
 }
 
 
+/* ── shifts: pictures of bars moved up and down, each bar a value and its marks ── */
+
+// in the order the layouts place them: the four sent for the slide, then two more that shift the most
+const PIECES = ['floating', 'arcs', 'stripes', 'speaker', 'slide', 'stairs']
+
+function shifts() {
+  const box = $('.pieces'), state = new Map(), width = new Map()
+  const redraw = el => { const s = state.get(el); width.get(el) && draw(el, s.at(s.t, s), width.get(el)) }
+  const ro = new ResizeObserver(es => es.forEach(e => (width.set(e.target, e.target.clientWidth), redraw(e.target))))
+  box.replaceChildren(...PIECES.map(name => {
+    const raw = ART[name], make = motion[name]
+    // a one-band picture cut to where its bars go as it moves, so it fills its tile
+    const piece = raw.slices.length === 1 ? crop(raw, reach(raw, make(raw))) : raw
+    const el = h('div', { className: 'piece' }), tile = h('div', { className: 'tile' }, el)
+    tile.dataset.piece = name
+    // its proportions set before it's watched: set by its first drawing, they'd resize what the observer just measured
+    el.style.setProperty('--ar', (piece.w / piece.h).toFixed(4)), el.dataset.ar = el.style.aspectRatio = `${piece.w} / ${piece.h}`
+    // at rest 5 s in, the pointer in the middle: the picture as traced, or its motion under way
+    const s = { at: make(piece), x: 0.5, y: 0.5, k: 0, tx: 0.5, ty: 0.5, tk: 0, t: 5 }
+    state.set(el, s), ro.observe(el)
+    const aim = (e, on) => {
+      const r = el.getBoundingClientRect()
+      s.tk = +on, s.tx = on ? Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)) : 0.5, s.ty = on ? Math.min(1, Math.max(0, (e.clientY - r.top) / r.height)) : 0.5
+      wake()
+    }
+    tile.addEventListener('pointerenter', e => aim(e, true)), tile.addEventListener('pointermove', e => aim(e, true))
+    tile.addEventListener('pointerleave', e => aim(e, false))
+    return tile
+  }))
+  // a picture moves while it's in hand: its time runs, its pointer follows; let go, it eases back to rest
+  let raf = 0, last = null
+  const tick = now => {
+    const dt = Math.min(0.1, (now - (last ?? now)) / 1000)
+    last = now
+    let busy = false
+    for (const [el, s] of state) {
+      if (!s.tk && !s.k && s.x === 0.5 && s.y === 0.5) continue
+      const f = Math.min(1, dt * 6)
+      s.x += (s.tx - s.x) * f, s.y += (s.ty - s.y) * f, s.k += (s.tk - s.k) * Math.min(1, dt * 4), s.t += dt * s.k
+      // near enough, at rest exactly
+      if (!s.tk && s.k < 1e-3 && Math.abs(s.x - 0.5) < 1e-3 && Math.abs(s.y - 0.5) < 1e-3) s.x = s.y = 0.5, s.k = 0
+      busy = true, redraw(el)
+    }
+    raf = busy ? requestAnimationFrame(tick) : (last = null, 0)
+  }
+  const wake = () => { if (!raf && !still) raf = requestAnimationFrame(tick) }
+}
+
+// a slide offering layouts to choose from: its switch sets which
+const variants = () => $$('.variants').forEach(box => {
+  const sec = box.closest('.slide'), buttons = $$('button', box)
+  buttons.forEach(b => b.addEventListener('click', () => {
+    sec.dataset.variant = b.textContent, buttons.forEach(x => x.setAttribute('aria-pressed', x === b))
+  }))
+})
+
+
 /* ── journey: ten years of commits, as a recording ───────────────────────── */
 
 function journey() {
@@ -335,37 +394,33 @@ function journey() {
 
 /* ── get: bars of your own, and where the font is ────────────────────────── */
 
-/** A line of bars to draw on with a pencil, their values under it to read or type; copy takes the bars as text. */
+/** A line of bars across the screen to draw on with a pencil; copy takes them as text. */
 function pad() {
-  const line = $('.pad-bars'), input = $('.pad-values input'), btn = $('.pad-copy')
+  const line = $('.pad-bars'), btn = $('.pad-copy'), N = 48
   // to begin with, a word of speech: it swells and fades
-  let values = Array.from({ length: 32 }, (_, i) => Math.round(6 + 82 * Math.sin(Math.PI * (i + 0.5) / 32) ** 1.2 * (0.55 + 0.45 * Math.abs(Math.sin(i * 1.9))))), P = 0
-  const show = () => { line.textContent = wf(values), P = fit(line, values.length, 0.5) }
-  const say = () => input.value = values.join(' ')
-  new ResizeObserver(show).observe(line), say()
-  // the pencil: the bar under its tip as high, each way from the middle, as the tip is from it; a stroke fills the
-  // bars it passes between two moves
+  const values = Array.from({ length: N }, (_, i) => Math.round(4 + 88 * Math.sin(Math.PI * (i + 0.5) / N) ** 1.2 * (0.55 + 0.45 * Math.abs(Math.sin(i * 1.9)))))
+  let P = 0
+  const show = () => { line.textContent = wf(values), P = fit(line, N, 0.5) }
+  new ResizeObserver(show).observe(line)
+  // the pencil: the bar under its tip as high as the tip is over the line's foot; a stroke fills the bars it passes
+  // between two moves
   let last = null
   const at = e => {
     const r = line.getBoundingClientRect()
-    return [Math.min(values.length - 1, Math.max(0, Math.floor((e.clientX - r.left) / P))), Math.min(100, Math.round(Math.abs(e.clientY - r.top - r.height / 2) / (r.height / 2) * 100))]
+    return [Math.min(N - 1, Math.max(0, Math.floor((e.clientX - r.left) / P))), Math.min(100, Math.max(0, Math.round((r.bottom - e.clientY) / r.height * 100)))]
   }
   const stroke = ([i, v]) => {
     const [i0, v0] = last ?? [i, v]
     for (let k = Math.min(i0, i); k <= Math.max(i0, i); k++) values[k] = i === i0 ? v : Math.round(v0 + (v - v0) * (k - i0) / (i - i0))
-    last = [i, v], show(), say()
+    last = [i, v], show()
   }
   line.addEventListener('pointerdown', e => { line.setPointerCapture(e.pointerId), last = null, stroke(at(e)) })
   line.addEventListener('pointermove', e => line.hasPointerCapture(e.pointerId) && stroke(at(e)))
   line.addEventListener('pointerup', () => last = null)
-  // values typed: a bar for each number, up to 64
-  input.addEventListener('input', () => {
-    const vs = (input.value.match(/\d+(\.\d+)?/g) ?? []).slice(0, 64).map(v => Math.min(100, Math.round(+v)))
-    if (vs.length) values = vs, show()
-  })
+  // a tick for a moment when copied; the title says if it wasn't
   btn.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(wf(values)), btn.textContent = 'copied' } catch { btn.textContent = 'copy failed' }
-    setTimeout(() => btn.textContent = 'copy', 1200)
+    try { await navigator.clipboard.writeText(wf(values)), btn.classList.add('is-done') } catch { btn.title = 'Copy failed' }
+    setTimeout(() => (btn.classList.remove('is-done'), btn.title = 'Copy the bars as text'), 1200)
   })
 }
 
@@ -373,19 +428,6 @@ function get() {
   // the version this page was built with, as the package says
   soon($('#get'), () => fetch('package.json').then(r => r.json()).then(p => $('.s-version').textContent = p.version).catch(() => {}))
   pad()
-  // each link's name set in the font over its letters, a letter under each bar, as the first slide sets the name
-  const list = $('.links'), links = $$('a', list), stage = $('#get .stage'), px = dpx()
-  for (const a of links) {
-    const name = a.textContent, bars = h('span', { className: 'wf', textContent: name }), letters = h('span', { className: 'letters' })
-    bars.setAttribute('aria-hidden', 'true'), letter(letters, name), a.replaceChildren(bars, letters)
-  }
-  // all on one pitch, whole device pixels: the longest name and a pitch more to two of the stage's ten columns
-  new ResizeObserver(() => {
-    const most = Math.max(...links.map(a => a.lastChild.textContent.length)), P = Math.floor(stage.clientWidth / 5 / (most + 1) / px) * px
-    for (const a of links) { const b = a.firstChild; fit(b, b.textContent.length, 0.5, b.textContent.length * P) }
-    const b = links[0].firstChild
-    list.style.setProperty('--pitch', `${P}px`), list.style.setProperty('--adv', `${b.style.getPropertyValue('--wght') * parseFloat(getComputedStyle(b).fontSize) / 4000}px`)
-  }).observe(stage)
 }
 
 // the layout's grid, for tuning while building: the switch top right or g toggles it, ?grid opens with it
@@ -401,13 +443,20 @@ const overlay = () => {
 /* ── start ───────────────────────────────────────────────────────────────── */
 
 overlay()
+variants()
 hero()
 keys()
 axes()
 chat()
 memo()
+soon($('#shifts'), shifts)
 journey()
 get()
+
+// the slide in view is the address's hash, so a reload or a link lands where you are; the first is the bare address
+const where = new IntersectionObserver(es => es.forEach(e => e.isIntersecting &&
+  history.replaceState(null, '', e.target.id === 'wavefont' ? location.pathname + location.search : `#${e.target.id}`)), { threshold: 0.5 })
+$$('main > .slide[id]').forEach(s => where.observe(s))
 
 // a slide out of view holds its CSS animations: they would still cost frames there. In view is a pixel in, not
 // just touching the edge
