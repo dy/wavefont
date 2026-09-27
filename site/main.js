@@ -4,7 +4,7 @@
  */
 import wf, { char, bar, bars } from '../index.js'
 import { fit, weight } from './wave.js'
-import { draw, ring, motion, tileMotion, drift, banded, reach, crop } from './art.js'
+import { draw, ring, motion, tileMotion, banded, reach, crop } from './art.js'
 import { scene, W, H } from './scenes.js'
 import { tiles as TILES, ring as RING, art as ART } from './art-data.js'
 import { bench, weather, commits } from './data.js'
@@ -146,20 +146,32 @@ function axes() {
   }
   inputs.forEach(i => set(i.name, +i.value))
 
-  // a walk through what the axes do: the weights by hundreds, square; half round and round at the heaviest; there,
-  // the three alignments; back to square and thin. Each move changes one axis, a longer one taking longer
-  const INTO = [['wght', 100]]
-  const ROUND = [
-    ...Array.from({ length: 9 }, (_, i) => ['wght', 200 + 100 * i]),
-    ['rond', 50], ['rond', 100], ['yela', -100], ['yela', 100], ['yela', 0], ['rond', 50], ['rond', 0], ['wght', 100]
-  ]
-  const SPAN = { wght: 950, rond: 100, yela: 200 }, HOLD = 500
+  // a walk through what the axes do: weight by weight, from 100 to 1000; at each weight, square, half round and round;
+  // at each roundness, the three alignments. Each move changes one axis, there and back in turn, a longer one taking
+  // longer; a new weight holds longest, a new roundness less, an alignment least
+  const WGHT = Array.from({ length: 10 }, (_, i) => 100 + 100 * i), ROND = [0, 50, 100], YELA = [-100, 0, 100]
+  const INTO = [['wght', 100]], ROUND = []
+  let r = 0, y = 1
+  WGHT.forEach((w, i) => {
+    if (i) ROUND.push(['wght', w])
+    const rs = i % 2 ? [...ROND].reverse() : ROND
+    rs.forEach((rv, j) => {
+      if (rv !== r) ROUND.push(['rond', rv]), r = rv
+      const ys = (i * 3 + j) % 2 ? [...YELA].reverse() : YELA
+      for (const yv of ys) if (yv !== y) ROUND.push(['yela', yv]), y = yv
+    })
+  })
+  // back to the start, a move at a time
+  if (y !== 0) ROUND.push(['yela', 0])
+  if (r !== 0) ROUND.push(['rond', 0])
+  ROUND.push(['wght', 100])
+  const SPAN = { wght: 950, rond: 100, yela: 200 }, HOLD = { wght: 1100, rond: 550, yela: 250 }
   let raf = 0, k = 0, t0 = null, from = 0, move = 0
   const step = now => {
     const [name, to] = k < INTO.length ? INTO[k] : ROUND[(k - INTO.length) % ROUND.length]
-    if (t0 === null) t0 = now, from = +input(name).value, move = 350 + 800 * Math.abs(to - from) / SPAN[name]
+    if (t0 === null) t0 = now, from = +input(name).value, move = 300 + 600 * Math.abs(to - from) / SPAN[name]
     set(name, from + (to - from) * swing(Math.min(1, (now - t0) / move)))
-    if (now - t0 >= move + HOLD) k++, t0 = null
+    if (now - t0 >= move + HOLD[name]) k++, t0 = null
     raf = requestAnimationFrame(step)
   }
   const run = on => { cancelAnimationFrame(raf), t0 = null; if (on && !still) raf = requestAnimationFrame(step) }
@@ -406,67 +418,96 @@ function rangeChart() {
 /* ── 60 fps: what drawing an hour of speech costs, as text and otherwise ── */
 
 function speed() {
-  const sec = $('#speed'), lanes = $('.lanes'), opBox = $('.ops'), browserBox = $('.browsers')
+  const sec = $('#speed'), lanes = $('.lanes'), multi = $('.multiples'), table = $('.bench'), opBox = $('.ops'), browserBox = $('.browsers')
   const { ops: OPS, stacks: STACKS, text: TEXT, browsers: DATA } = bench, BROWSERS = Object.keys(DATA)
   // milliseconds on a log scale: 0.1 on the floor, 1000 at the top
   const height = ms => ms ? Math.min(1, Math.max(0, (Math.log10(ms) + 1) / 4)) : 0
+  const num = ms => ms < 1 ? ms.toFixed(2) : ms < 10 ? ms.toFixed(1) : String(Math.round(ms))
+  const ours = i => TEXT[i] ? 'is-ours' : ''
+  const role = (el, r) => (el.setAttribute('role', r), el)
+
+  // 1: a column a way, for one operation
   const cols = STACKS.map((name, i) => {
     const glyph = h('span', { className: 'glyph wf' }), ms = h('span', { className: 'ms' })
-    return { el: h('div', { className: 'col' + (TEXT[i] ? ' is-ours' : '') }, ms, glyph, h('span', { className: 'name', textContent: name })), glyph, ms, h: 0, from: 0, to: 0 }
+    return { el: h('div', { className: 'col ' + ours(i) }, ms, glyph, h('span', { className: 'name', textContent: name })), glyph, ms, h: 0, from: 0, to: 0 }
   })
   lanes.replaceChildren(...cols.map(c => c.el))
-  let op = 0, browser = BROWSERS[0], auto = true, raf = 0, t0 = 0, timer = 0
+  // 2: every operation, its four bars in the same order
+  const bars = OPS.map(() => STACKS.map((_, i) => ({ glyph: h('span', { className: 'glyph wf ' + ours(i) }), h: 0, from: 0, to: 0 })))
+  multi.replaceChildren(...OPS.map((op, j) => h('div', { className: 'group' }, ...bars[j].map(b => b.glyph), h('span', { className: 'name', textContent: op }))))
+  $('.legend').replaceChildren(...STACKS.map((s, i) => h('span', { className: ours(i) }, h('span', { className: 'wf', textContent: char(100) }), s)))
+  // 3: a table, a row a way, a column an operation; a time after its bar
+  const cells = STACKS.map(() => OPS.map(() => {
+    const b = h('span', { className: 'wf' }), n = h('span')
+    b.setAttribute('aria-hidden', 'true')
+    return { el: role(h('div', {}, b, n), 'cell'), b, n }
+  }))
+  table.replaceChildren(
+    role(h('div', {}, role(h('div'), 'columnheader'), ...OPS.map(op => role(h('div', { textContent: op }), 'columnheader'))), 'row'),
+    ...STACKS.map((s, i) => role(h('div', { className: ours(i) }, role(h('div', { textContent: s }), 'rowheader'), ...cells[i].map(c => c.el)), 'row'))
+  )
 
+  let op = 0, browser = BROWSERS[0], auto = true, raf = 0, t0 = 0, timer = 0
+  const moving = [...cols, ...bars.flat()]
   const tween = now => {
     const k = still ? 1 : ease(Math.min(1, (now - t0) / 650))
-    for (const c of cols) {
+    for (const c of moving) {
       c.h = c.from + (c.to - c.from) * k
-      c.glyph.textContent = c.h ? bar(14, 14 + 100 * c.h) : '', c.el.style.setProperty('--h', c.h.toFixed(4))
+      c.glyph.textContent = c.h ? bar(14, 14 + 100 * c.h) : ''
+      c.el?.style.setProperty('--h', c.h.toFixed(4))
     }
     if (k < 1) raf = requestAnimationFrame(tween)
   }
   const show = () => {
     const rows = DATA[browser]
-    cols.forEach((c, i) => {
-      const ms = rows[i][op]
-      c.from = c.h, c.to = height(ms)
-      c.ms.textContent = ms < 1 ? ms.toFixed(2) : ms < 10 ? ms.toFixed(1) : Math.round(ms)
-    })
-    lanes.setAttribute('aria-label', `${OPS[op]}, ${browser}, milliseconds: ` + STACKS.map((s, i) => `${s} ${rows[i][op]}`).join(', '))
+    cols.forEach((c, i) => { const ms = rows[i][op]; c.from = c.h, c.to = height(ms), c.ms.textContent = num(ms) })
+    bars.forEach((bs, j) => bs.forEach((b, i) => { b.from = b.h, b.to = height(rows[i][j]) }))
+    cells.forEach((cs, i) => cs.forEach((c, j) => {
+      const ms = rows[i][j]
+      c.b.textContent = char(Math.round(100 * height(ms))), c.n.textContent = num(ms), c.el.classList.toggle('over', ms > 1000 / 60)
+    }))
+    const said = j => STACKS.map((s, i) => `${s} ${rows[i][j]}`).join(', ')
+    lanes.setAttribute('aria-label', `${OPS[op]}, ${browser}, milliseconds: ${said(op)}`)
+    multi.setAttribute('aria-label', `${browser}, milliseconds: ` + OPS.map((o, j) => `${o}: ${said(j)}`).join('; '))
     for (const b of opBox.children) b.setAttribute('aria-checked', b.textContent === OPS[op])
     for (const b of browserBox.children) b.setAttribute('aria-checked', b.textContent === browser)
     cancelAnimationFrame(raf), t0 = performance.now(), raf = requestAnimationFrame(tween)
   }
   const tabs = (box, names, pick) => box.replaceChildren(...names.map((n, i) => {
-    const b = h('button', { type: 'button', textContent: n })
-    b.setAttribute('role', 'radio'), b.addEventListener('click', () => { auto = false, clearInterval(timer), pick(i), show() })
+    const b = role(h('button', { type: 'button', textContent: n }), 'radio')
+    b.addEventListener('click', () => { auto = false, clearInterval(timer), pick(i), show() })
     return b
   }))
   tabs(opBox, OPS, i => op = i)
   tabs(browserBox, BROWSERS, i => browser = BROWSERS[i])
-  // bar width: two fifths of a column, on whole device pixels
-  new ResizeObserver(() => {
-    const px = dpx(), F = lanes.clientHeight, w = Math.round(0.4 * lanes.clientWidth / cols.length / px) * px
-    lanes.style.setProperty('--wght', Math.min(1000, w / F * 4000).toFixed(2))
-  }).observe(lanes)
+  // bar width: a quarter of a way's column, half of a bar's place in a group; whole device pixels, whole font units
+  const thick = (el, n, fill) => new ResizeObserver(() => {
+    const px = dpx(), F = el.clientHeight
+    if (F) el.style.setProperty('--wght', weight(Math.round(fill * el.clientWidth / n / px) * px, F))
+  }).observe(el)
+  thick(lanes, STACKS.length, 0.25), thick(multi, OPS.length * STACKS.length, 0.5)
   show()
-  // while in view and untouched, it walks through the operations
+  // while in view and untouched, it walks through the operations, or, where they're all shown, the browsers
   seen(sec, on => {
     clearInterval(timer)
-    if (on && auto && !still) timer = setInterval(() => { op = (op + 1) % OPS.length, show() }, 2800)
+    if (on && auto && !still) timer = setInterval(() => {
+      if (opBox.offsetParent) op = (op + 1) % OPS.length
+      else browser = BROWSERS[(BROWSERS.indexOf(browser) + 1) % BROWSERS.length]
+      show()
+    }, 2800)
   }, 0.4)
 }
 
 
-/* ── renderings: the article's nine, pictures traced for the site, scenes of other data – each moving ─── */
+/* ── renderings: the article's nine, op-art traced for the site, scenes of other data – each moving in hand ─ */
 
-// five rows of five: the article's nine between scenes of other data, then the pictures (#) among the last
+// five rows of five: the article's nine among the traced pictures (#) and three scenes of other data
 const RENDERINGS = [
-  0, 'spectrum', 1, 'ecg', 2,
-  'histogram', 3, 'lissajous', 4, 'automaton',
-  5, 'barcode', 6, 'clock', 7,
-  'sorting', 8, 'halftone', '#steps', 'boxplot',
-  '#checker', 'rain', '#stairs', '#slide', '#bands'
+  0, '#circle', 1, 'ecg', 2,
+  '#blocks', 3, '#lens', 4, '#descent',
+  5, 'barcode', 6, '#stripes', 7,
+  '#globe', 8, 'lissajous', '#steps', '#comb',
+  '#checker', '#wedge', '#stairs', '#slide', '#bands'
 ]
 
 function renderings() {
@@ -477,18 +518,17 @@ function renderings() {
     if (t.rond) el.style.setProperty('--rond', t.rond)
     return el
   }
-  // the tile at place i of the grid: row i / 5, column i % 5
-  const tile = (k, i) => {
+  const tile = k => {
     const el = h('div', { className: 'tile' })
     // a scene of the site's own
     if (typeof k === 'string' && k[0] !== '#') {
-      const at = scene(k), p = piece({ w: W, h: H })
-      return moving.push([p, at, i]), el.append(p), el
+      const p = piece({ w: W, h: H })
+      return moving.push([p, scene(k)]), el.append(p), el
     }
-    // a traced picture, moving as it would under a pointer left alone
+    // a traced picture
     if (typeof k === 'string') {
-      const name = k.slice(1), at = motion[name](ART[name]), p = piece(name === 'bands' ? banded(ART.bands) : ART[name])
-      return moving.push([p, t => at(t, drift(t)), i]), el.append(p), el
+      const name = k.slice(1), p = piece(name === 'bands' ? banded(ART.bands) : ART[name])
+      return moving.push([p, motion[name](ART[name])]), el.append(p), el
     }
     // one of the article's nine: the ring spins, a spoke a step
     const t = TILES[k], make = tileMotion[k]
@@ -500,33 +540,42 @@ function renderings() {
     if (!make) {
       const over = piece(cut)
       over.classList.add('over'), el.classList.add('playing'), el.append(over), still_.push([p, cut], [over, cut])
-    } else moving.push([p, make(cut), i])
+    } else moving.push([p, make(cut)])
     return el
   }
   box.replaceChildren(...RENDERINGS.map(tile))
-  // each at its own width, read when the layout changes, not as it moves; a hidden one isn't drawn. Each keeps its
-  // own time, from 5 s in, when every scene is under way: the histogram filled, the code printed
-  const width = new Map(), clock = new Map(), time = el => clock.get(el) ?? 5
-  const redraw = ([el, at]) => width.get(el) && draw(el, at(time(el)), width.get(el))
+
+  // a tile moves while it's in hand: its time runs, from 5 s in, when every scene is under way, and a traced picture
+  // follows the pointer over it. Let go, it eases back to rest
+  const hand = new Map(), width = new Map()
+  for (const [el] of moving) {
+    const s = { x: 0.5, y: 0.5, k: 0, tx: 0.5, ty: 0.5, tk: 0, t: 5 }, tile = el.parentNode
+    hand.set(el, s)
+    const aim = (e, on) => {
+      const r = el.getBoundingClientRect()
+      s.tk = +on, s.tx = on ? Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)) : 0.5, s.ty = on ? Math.min(1, Math.max(0, (e.clientY - r.top) / r.height)) : 0.5
+    }
+    tile.addEventListener('pointerenter', e => aim(e, true)), tile.addEventListener('pointermove', e => aim(e, true))
+    tile.addEventListener('pointerleave', e => aim(e, false))
+  }
+  // each at its own width, read when the layout changes, not as it moves; a hidden one isn't drawn
+  const redraw = ([el, at]) => { const s = hand.get(el); width.get(el) && draw(el, at(s.t, s), width.get(el)) }
   new ResizeObserver(() => {
     for (const [el] of [...still_, ...moving]) width.set(el, el.clientWidth)
     still_.forEach(([el, t]) => draw(el, t, width.get(el))), moving.forEach(redraw)
   }).observe(box)
-  // time runs through the grid as a wave, corner to corner every 10 s: a tile eases into motion as the wave reaches
-  // it and back to rest behind it, a third of them moving at once; the one under the pointer moves as well
-  const over = new Map(), near = new Map()
-  box.addEventListener('pointerover', e => over.set(e.target.closest('.tile'), 1))
-  box.addEventListener('pointerout', e => over.set(e.target.closest('.tile'), 0))
   let last = null
   animate(sec, now => {
     const t = now / 1000, dt = Math.min(0.1, t - (last ?? t))
     last = t
     for (const m of moving) {
-      const [el, , i] = m, tile = el.parentNode, u = ((t / 10 - ((i / 5 | 0) + i % 5) / 9) % 1 + 1) % 1
-      const hand = (near.get(tile) ?? 0) + ((over.get(tile) ?? 0) - (near.get(tile) ?? 0)) * Math.min(1, dt * 4)
-      const v = Math.max(u < 0.35 ? Math.sin(Math.PI * u / 0.35) ** 2 : 0, hand)
-      near.set(tile, hand)
-      if (v > 1e-3) clock.set(el, time(el) + dt * v), redraw(m)
+      const s = hand.get(m[0])
+      if (!s.tk && !s.k && s.x === 0.5 && s.y === 0.5) continue
+      const f = Math.min(1, dt * 6)
+      s.x += (s.tx - s.x) * f, s.y += (s.ty - s.y) * f, s.k += (s.tk - s.k) * Math.min(1, dt * 4), s.t += dt * s.k
+      // near enough, at rest exactly: the picture as traced
+      if (!s.tk && s.k < 1e-3 && Math.abs(s.x - 0.5) < 1e-3 && Math.abs(s.y - 0.5) < 1e-3) s.x = s.y = 0.5, s.k = 0
+      redraw(m)
     }
   })
 }

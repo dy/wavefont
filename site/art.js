@@ -179,7 +179,88 @@ const barsOf = piece => {
   return out
 }
 
+/**
+ * A lens under the pointer, as strong as p.k (0 at rest, 1 in hand): the bars it passes over widen about their
+ * middles, up to 3.2 times, and may run into their neighbours – each bar is placed on its own, so that's fine.
+ */
+const widen = piece => {
+  const R = 0.16 * piece.w
+  return (t, p) => {
+    const px = p.x * piece.w, py = p.y * piece.h, k = p.k ?? 1
+    if (!k) return piece
+    return {
+      ...piece,
+      slices: piece.slices.map(slice => ({
+        ...slice,
+        lines: slice.lines.map(line => {
+          const out = []
+          for (let i = 0; i < line.length; i += 4) {
+            const [x, w, top, bot] = line.slice(i, i + 4), dx = x + w / 2 - px, dy = Math.max(0, slice.y + top - py, py - slice.y - bot)
+            const f = 1 + 2.2 * k * Math.exp(-(dx * dx + dy * dy) / (R * R))
+            out.push(x + w / 2 - w * f / 2, w * f, top, bot)
+          }
+          return out
+        })
+      }))
+    }
+  }
+}
+
+/**
+ * Bars cut in two: where an upper part stands over a lower one, overlapping it across, the cut between them rides the
+ * pointer's height – the upper part's foot and the lower part's head move together, their outer ends stay.
+ */
+const cut = piece => {
+  const all = every(piece), H = piece.slices[0].h, pairs = [], taken = new Set()
+  const across = (a, b) => Math.min(a[0] + a[1], b[0] + b[1]) - Math.max(a[0], b[0]) > 0.5 * Math.min(a[1], b[1])
+  for (const u of all) {
+    if (taken.has(u)) continue
+    const l = all.filter(b => b !== u && !taken.has(b) && b[2] >= u[3] && across(u, b)).sort((a, b) => a[2] - b[2])[0]
+    if (l) pairs.push([u, l]), taken.add(u), taken.add(l)
+  }
+  const rest = all.filter(b => !taken.has(b))
+  return (t, p) => laid(piece, [...rest, ...pairs.flatMap(([u, l]) => {
+    const d = clamp((p.y - 0.5) * 0.6 * H, u[2] + 1 - u[3], l[3] - 1 - l[2])
+    return [[u[0], u[1], u[2], u[3] + d], [l[0], l[1], l[2] + d, l[3]]]
+  })])
+}
+
+/**
+ * Bars with stepped tops, each of parts side by side on one foot: the steps below a bar's top rise and fall with the
+ * pointer's height, within the bar.
+ */
+const steps = piece => {
+  const all = every(piece).sort((a, b) => a[0] - b[0]), bars = []
+  for (const b of all) {
+    const last = bars.at(-1)?.at(-1)
+    last && b[0] - (last[0] + last[1]) < 0.6 && Math.abs(b[3] - last[3]) < 1 ? bars.at(-1).push(b) : bars.push([b])
+  }
+  const H = piece.slices[0].h
+  return (t, p) => laid(piece, bars.flatMap(parts => {
+    const top = Math.min(...parts.map(b => b[2])), d = (p.y - 0.5) * 0.5 * H
+    return parts.map(([x, w, a, e]) => a === top ? [x, w, a, e] : [x, w, clamp(a + d, top, e - 1), e])
+  }))
+}
+
 export const motion = {
+  // the op-art pieces: a lens over the circle's, the lens', the comb's and the wedge's bars; the descent's cut and the
+  // globe's steps follow the pointer's height; the stripes' three bands slide against each other; the blocks rise and
+  // fall as a wave passes
+  circle: widen,
+  lens: widen,
+  comb: widen,
+  wedge: widen,
+  descent: cut,
+  globe: steps,
+  stripes: piece => (t, p) => moved(piece, k => (p.x - 0.5) * (k - 1) * 30, true),
+  blocks: piece => {
+    const bs = every(piece), H = piece.slices[0].h
+    return (t, p) => laid(piece, bs.map(([x, w, a, e]) => {
+      const d = clamp((p.k ?? 1) * 0.1 * H * Math.sin(2 * Math.PI * 1.5 * x / piece.w - 2.4 * t), -a, H - e)
+      return [x, w, a + d, e + d]
+    }))
+  },
+
   // bands slide against each other, alternate ways: the moiré follows the pointer
   bands: spec => (t, p) => banded(spec, spec.bands.map((_, k) => (k % 2 ? 1 : -1) * (p.x - 0.5) * 0.24 * spec.w)),
 
@@ -226,9 +307,6 @@ export const motion = {
     })])
   }
 }
-
-/** Where a pointer left alone drifts, t seconds on: a slow figure-eight about the middle. */
-export const drift = t => ({ x: 0.5 + 0.3 * Math.sin(t / 2.9), y: 0.5 + 0.28 * Math.sin(t / 4.1 + 1.3) })
 
 
 /* ── the article's nine in motion: each moves the way its picture suggests; t in seconds ───── */

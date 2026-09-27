@@ -98,15 +98,19 @@
     </div>
   </section>
 
-  <section id="speed" class="slide gray speed" aria-label="60 fps: what drawing an hour of speech costs">
+  <section id="speed" class="slide gray speed" data-variant="1" aria-label="60 fps: what drawing an hour of speech costs">
+    <div class="variants" role="group" aria-label="Layout of this slide"><button type="button" aria-pressed="true">1</button><button type="button" aria-pressed="false">2</button><button type="button" aria-pressed="false">3</button></div>
     <div class="stage">
       <figure class="race">
-        <div class="scale" aria-hidden="true"><span style="--at: 1">1 s</span><span style="--at: .75">100 ms</span><span class="frame" style="--at: .5556">16.7 ms<span class="wide">, 60 fps</span></span><span style="--at: .5">10 ms</span><span style="--at: .25">1 ms</span></div>
+        <div class="scale" aria-hidden="true"><span style="--at: 1"><b>1 s</b></span><span style="--at: .75"><b>100 ms</b></span><span style="--at: .5"><b>10 ms</b></span><span style="--at: .25"><b>1 ms</b></span><span style="--at: 0"><b>0.1 ms</b></span><span class="frame" style="--at: .5557"><i>16.7 ms, 60 fps</i></span></div>
         <div class="lanes" role="img"></div>
+        <div class="multiples" role="img"></div>
       </figure>
+      <div class="bench" role="table" aria-label="Milliseconds to draw an hour of speech"></div>
     </div>
     <div class="status">
       <div class="ops" role="radiogroup" aria-label="Operation"></div>
+      <div class="legend" aria-hidden="true"></div>
       <div class="browsers" role="radiogroup" aria-label="Browser"></div>
     </div>
   </section>
@@ -164,15 +168,15 @@
   <section id="journey" class="slide gray journey" aria-label="Journey">
     <div class="stage">
       <figure class="years">
-        <ol class="marks version-marks" aria-hidden="true"><li style="--m: 0">v1</li><li style="--m: 54">v2</li><li style="--m: 75">v3</li></ol>
+        <ol class="marks version-marks" aria-hidden="true"><li class="tag" style="--m: 0">v1</li><li class="tag" style="--m: 54">v2</li><li class="tag" style="--m: 75">v3</li></ol>
         <div class="commits wf" role="img" aria-label="Commits to wavefont, wavearea and linefont, one bar per month, August 2016 to September 2026"></div>
         <ol class="marks year-marks" aria-hidden="true"><li style="--m: 5">2017</li><li style="--m: 17">2018</li><li style="--m: 29">2019</li><li style="--m: 41">2020</li><li style="--m: 53">2021</li><li style="--m: 65">2022</li><li style="--m: 77">2023</li><li style="--m: 89">2024</li><li style="--m: 101">2025</li><li style="--m: 113">2026</li></ol>
         <figcaption class="sr">Commits per month: a burst in August 2016, v1; silence until v2 in February 2021; v3 from November 2022, steady work through 2023, and a return in 2026.</figcaption>
       </figure>
       <ol class="milestones">
-        <li><time datetime="2016-08">2016</time><span><a href="https://www.npmjs.com/package/wavefont/v/1.2.2">v1</a>, an experiment: bars as letters, for <a href="https://dy.github.io/wavearea">wavearea</a></span></li>
-        <li><time datetime="2021-02">2021</time><span><a href="https://github.com/dy/wavefont/tree/fa6a3d461c368c97306c5d2b8861f7be2ff8e0ae">v2</a>, finished: three axes – width, alignment, roundness – and accents that shift bars; <a href="https://github.com/dy/linefont">linefont</a> for lines</span></li>
-        <li><time datetime="2022-11">2022</time><span><a href="https://github.com/dy/wavefont/releases/tag/v3.1.1">v3</a>, to Google Fonts’ standards: registered axes, Latin Core</span></li>
+        <li><time datetime="2016-08">2016</time><span><a class="tag" href="https://www.npmjs.com/package/wavefont/v/1.2.2">v1</a> an experiment: bars as letters, for <a href="https://dy.github.io/wavearea">wavearea</a></span></li>
+        <li><time datetime="2021-02">2021</time><span><a class="tag" href="https://github.com/dy/wavefont/tree/fa6a3d461c368c97306c5d2b8861f7be2ff8e0ae">v2</a> finished: three axes – width, alignment, roundness – and accents that shift bars; <a href="https://github.com/dy/linefont">linefont</a> for lines</span></li>
+        <li><time datetime="2022-11">2022</time><span><a class="tag" href="https://github.com/dy/wavefont/releases/tag/v3.1.1">v3</a> to Google Fonts’ standards: registered axes, Latin Core</span></li>
         <li><time datetime="2023-06">2023</time><span>on <a href="https://fonts.google.com/specimen/Wavefont">Google Fonts</a></span></li>
         <li><time datetime="2026-09">2026</time><span><a href="https://github.com/dy/wavefont/releases/tag/v3.8.0">min–max bars</a>, one character each: 60 fps</span></li>
       </ol>
