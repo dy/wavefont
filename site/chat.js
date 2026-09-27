@@ -7,33 +7,42 @@ import { voice, playing } from './sound.js'
 import { clock, strip, track, listen, fit } from './wave.js'
 import { $, h, soon, noise, still } from './dom.js'
 
-const PLAY = '<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path class="i-play" d="M3 1.2v13.6L15 8z"/><path class="i-pause" d="M2.5 1.5h4v13h-4zM9.5 1.5h4v13h-4z"/></svg>'
-const PITCH = 0.3, FILL = 0.36 // em a bar, share of it inked: the reference bubble's proportions
+// a triangle and two bars with round corners, as the bars have round caps
+const PLAY = '<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path class="i-play round" d="M4 2.6v10.8L13.4 8z"/><path class="i-pause round" d="M3.6 2.5h2.8v11H3.6zM9.6 2.5h2.8v11H9.6z"/></svg>'
+// the reference's proportions: bars close together, a little under half of each pitch inked (em, of the bars' height)
+const PITCH = 0.13, FILL = 0.45
 
-/** Bars in a bubble: about four a second, within what a bubble holds. */
-const count = buf => Math.round(Math.min(32, Math.max(14, buf.duration * 4)))
+/** Bars in a bubble: about six a second, within what a bubble holds. */
+const count = buf => Math.round(Math.min(40, Math.max(20, buf.duration * 6)))
+/** The oldest bars of a live recording lower as they go, rather than being cut: WhatsApp's way. */
+const taper = (lv, n, soft = 10) => lv.slice(-n).map((v, i, a) => Math.max(4, v * 100) * Math.min(1, (i + 1 + (n - a.length)) / soft))
 
 export function chat() {
   const thread = $('.thread'), form = $('.composer'), input = $('.composer-input'), btn = $('.mic')
-  const tape = $('.composer-tape > span'), ctime = $('.composer-time')
+  const tape = $('.composer-tape'), bars = $('.composer-tape > span'), ctime = $('.composer-time')
   const r = noise(21)
   let recorder = null, starting = false, pending = 0, answering = false, seed = 40
-  // each waveform, once laid out, gets whole-pixel bars
-  const sizing = new ResizeObserver(es => es.forEach(e => fit(e.target, +e.target.dataset.n, FILL)))
+  // each waveform gets whole-pixel bars and ends where its last bar does: the time follows it at the bubble's gap,
+  // as the bars follow the play button. Set once a message is in, and again as the thread resizes
+  const size = el => {
+    const n = +el.dataset.n, P = fit(el, n, FILL, n * PITCH * parseFloat(getComputedStyle(el).fontSize))
+    if (P) el.style.width = `${(n * P - parseFloat(el.style.getPropertyValue('--gap'))).toFixed(3)}px`
+  }
+  const settle = () => thread.querySelectorAll('.wave').forEach(size)
+  new ResizeObserver(settle).observe(thread)
 
   const wave = (text, n) => {
     const el = h('span', { className: 'wave wf', textContent: text })
-    el.dataset.n = n, el.style.width = `${(n * PITCH).toFixed(2)}em`
-    sizing.observe(el)
+    el.dataset.n = n
     return el
   }
   const bubble = buf => {
-    const n = count(buf), take = strip(buf, n, 18), bars = wave('', n)
+    const n = count(buf), take = strip(buf, n, 18), line = wave('', n)
     const pp = h('button', { type: 'button', className: 'pp', innerHTML: PLAY })
     const dur = h('span', { className: 'dur', textContent: clock(buf.duration) })
-    const el = h('div', { className: 'bubble voice' }, pp, bars, dur)
+    const el = h('div', { className: 'bubble voice' }, pp, line, dur)
     pp.setAttribute('aria-label', `Play voice message, ${clock(buf.duration)}`)
-    const tr = track(bars, {
+    const tr = track(line, {
       ontime: t => dur.textContent = clock(t || buf.duration),
       onstate: on => { el.classList.toggle('is-playing', on), pp.classList.toggle('is-playing', on), pp.setAttribute('aria-label', `${on ? 'Pause' : 'Play'} voice message, ${clock(buf.duration)}`) }
     })
@@ -44,9 +53,10 @@ export function chat() {
   /** A message: text, a recording, or a bubble element. */
   const say = (body, out) => h('li', { className: 'msg ' + (out ? 'out' : 'in') },
     typeof body === 'string' ? h('div', { className: 'bubble textual', textContent: body }) : body.getChannelData ? bubble(body) : body)
+  // the thread holds whole messages: those that no longer fit leave from the top
+  const trim = () => { while (thread.children.length > 1 && thread.firstElementChild.offsetTop < 0) thread.firstElementChild.remove() }
   const add = li => {
-    li.classList.add('fresh'), thread.append(li)
-    thread.scrollTo({ top: thread.scrollHeight, behavior: still ? 'auto' : 'smooth' })
+    li.classList.add('fresh'), thread.append(li), settle(), trim()
     return li
   }
 
@@ -55,15 +65,15 @@ export function chat() {
   const reply = () => {
     if (answering) return answer()
     answering = true
-    const buf = voice(seed++, 2.5 + r() * 6, 150), n = count(buf), take = strip(buf, n, 18).text, bars = wave('', n)
-    const live = h('div', { className: 'bubble voice live' }, h('span', { className: 'rec' }), bars)
+    const buf = voice(seed++, 2.5 + r() * 6, 150), n = count(buf), take = strip(buf, n, 18).text, line = wave('', n)
+    const live = h('div', { className: 'bubble voice live' }, h('span', { className: 'rec' }), line)
     live.setAttribute('role', 'status'), live.setAttribute('aria-label', 'Recording a voice message')
     const li = add(say(live, false)), t0 = performance.now(), T = still ? 0 : buf.duration * 450
     const step = now => {
       const k = T ? Math.min(1, (now - t0) / T) : 1
-      bars.textContent = take.slice(0, Math.ceil(k * take.length))
+      line.textContent = take.slice(0, Math.ceil(k * take.length))
       if (k < 1) return requestAnimationFrame(step)
-      li.replaceWith(say(buf, false)), answering = false
+      li.replaceWith(say(buf, false)), settle(), trim(), answering = false
     }
     requestAnimationFrame(step)
   }
@@ -83,8 +93,11 @@ export function chat() {
     if (starting) return
     starting = true, playing()?.stop()
     try {
+      // the bubbles' bars: their pitch and weight
+      const pitch = fit(tape, 1, FILL, PITCH * parseFloat(getComputedStyle(tape).fontSize))
       recorder = await listen((lv, t) => {
-        tape.textContent = wf(lv.slice(-60).map(v => Math.max(4, v * 100))), ctime.textContent = clock(t)
+        // as many bars as the field holds
+        bars.textContent = wf(taper(lv, Math.max(1, Math.floor(tape.clientWidth / pitch)))), ctime.textContent = clock(t)
         if (t >= 60) end()
       })
       form.classList.add('is-on'), input.disabled = true, input.placeholder = 'Message', sync()
@@ -97,7 +110,7 @@ export function chat() {
     if (!recorder) return
     const buf = recorder.stop()
     recorder = null
-    form.classList.remove('is-on'), input.disabled = false, ctime.textContent = '', tape.textContent = '', sync()
+    form.classList.remove('is-on'), input.disabled = false, ctime.textContent = '', bars.textContent = '', sync()
     if (buf.duration < 0.3) return
     add(say(buf, true)), answer()
   }
@@ -113,6 +126,6 @@ export function chat() {
       say(voice(5, 9.4, 205), true),
       say(voice(8, 3.3, 150), false)
     )
-    thread.scrollTop = thread.scrollHeight
+    settle(), trim()
   })
 }

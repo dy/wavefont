@@ -60,12 +60,12 @@ test('wav: 16-bit PCM mono, header as the RIFF WAVE spec lays it out', async () 
   assert.deepEqual(Array.from({ length: data.length }, (_, i) => v.getInt16(44 + 2 * i, true)), [0, 16383, -16383, 32767, -32767, 32767], 'clipped past ±1')
 })
 
-const { tiles, art, ring: RING, om } = await import('./art-data.js')
-const { banded, ring } = await import('./art.js')
+const { tiles, art, ring: RING } = await import('./art-data.js')
+const { ring } = await import('./art.js')
 
 test('traced pieces: bars inside their slice, each line sorted and not overlapping', () => {
-  const pieces = [...tiles.filter(Boolean), ...Object.values(art).filter(p => p.slices), om]
-  assert.equal(pieces.length, 8 + 5 + 1)
+  const pieces = [...tiles.filter(Boolean), ...Object.values(art)]
+  assert.equal(pieces.length, 8 + 1)
   for (const p of pieces) for (const s of p.slices) {
     assert.ok(s.y >= 0 && s.y + s.h <= p.h + 1)
     for (const line of s.lines) {
@@ -78,18 +78,6 @@ test('traced pieces: bars inside their slice, each line sorted and not overlappi
       }
     }
   }
-})
-
-test('banded: image 3 as its eight measured bands of equal bars', () => {
-  const p = banded(art.bands)
-  assert.equal(p.slices.length, 8)
-  art.bands.bands.forEach(([top, bottom, w, pitch, x0], k) => {
-    const line = p.slices[k].lines[0]
-    assert.equal(p.slices[k].y, top), assert.equal(p.slices[k].h, bottom - top)
-    assert.equal(line[0], x0), assert.equal(line[1], w)
-    assert.ok(Math.abs(line[4] - line[0] - pitch) <= 1, 'bars repeat at the measured pitch')
-    assert.ok(line.at(-4) + w <= art.bands.w + 1)
-  })
 })
 
 test('ring: one bar per spoke, weights within the axis', () => {
@@ -151,11 +139,6 @@ test('motion: every piece, anywhere the pointer is, stays a set of bars inside i
   }
 })
 
-test('motion: slide and stairs at rest are the traced pieces', () => {
-  const bars = p => p.slices.flatMap(s => s.lines.flatMap(l => Array.from({ length: l.length / 4 }, (_, i) => l.slice(4 * i, 4 * i + 4)).filter(b => b[1] > 1).map(b => [s.y, ...b].join()))).sort()
-  for (const name of ['slide', 'stairs']) assert.deepEqual(bars(motion[name](art[name])(0, { x: 0.5, y: 0.5 })), bars(art[name]), name)
-})
-
 test('tiles in motion: at any time, bars inside their tile', () => {
   tileMotion.forEach((make, i) => {
     const at = make(tiles[i])
@@ -171,9 +154,16 @@ test('tiles in motion: at any time, bars inside their tile', () => {
   })
 })
 
-test('om: bars of one width at one pitch', () => {
-  const bars = om.slices.flatMap(s => s.lines.flatMap(l => Array.from({ length: l.length / 4 }, (_, k) => l.slice(4 * k, 4 * k + 4))))
-  assert.equal(new Set(bars.map(b => b[1])).size, 1, 'one width')
-  const xs = [...new Set(bars.map(b => b[0]))].sort((a, b) => a - b)
-  assert.ok(xs.slice(1).every((x, i) => Math.abs((x - xs[i]) % 5) < 1e-6 || Math.abs((x - xs[i]) % 5 - 5) < 1e-6), 'columns on a 5 px pitch')
+const { weight } = await import('./wave.js')
+
+test('weight: whole font units, the nearest to the width asked', () => {
+  // readme, variable axes: wght 100 ≙ 0.025em, 400 ≙ 0.1em, 1000 ≙ 0.25em – an advance of wght/4 units of 1000;
+  // Firefox rounds variable advances to whole units, so weights are multiples of 4
+  assert.equal(weight(0.025 * 40, 40), 100), assert.equal(weight(0.1 * 40, 40), 400), assert.equal(weight(0.25 * 40, 40), 1000)
+  for (const F of [13, 41.6, 120, 367.5]) for (let w = 0.25; w < 0.25 * F; w *= 1.37) {
+    const wg = weight(w, F)
+    assert.ok(wg % 4 === 0 && wg >= 4 && wg <= 1000, `${w} px at ${F} px: ${wg}`)
+    assert.ok(wg === 4 || Math.abs(wg / 4000 * F - w) <= F / 2000 + 1e-9, `${w} px at ${F} px: within half a unit`)
+  }
+  assert.equal(weight(0, 40), 4, 'at least the thinnest bar'), assert.equal(weight(99, 40), 1000, 'at most the widest')
 })

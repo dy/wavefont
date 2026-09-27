@@ -3,15 +3,14 @@
  * this script only decides which characters to write.
  */
 import wf, { char, bar, bars } from '../index.js'
-import { levels, song, play, CHAPTERS, BPM } from './sound.js'
-import { fit, highlight, copy } from './wave.js'
-import { draw, banded, ring, motion, tileMotion } from './art.js'
-import { tiles as TILES, ring as RING, art as ART, om as OM } from './art-data.js'
+import { fit, weight } from './wave.js'
+import { draw, ring, motion, tileMotion } from './art.js'
+import { tiles as TILES, ring as RING, art as ART } from './art-data.js'
 import { bench, weather, commits } from './data.js'
 import { $, $$, h, soon, seen, animate, noise, still, ease, swing } from './dom.js'
 import { chat } from './chat.js'
 import { memo } from './memo.js'
-import { playground } from './playground.js'
+import { om } from './om.js'
 
 /** Letter the bars: one centred cell per character of s. */
 const letter = (row, s) => row.replaceChildren(...Array.from(s, c => h('span', { textContent: c === ' ' ? ' ' : c })))
@@ -79,8 +78,8 @@ function values() {
     b.setAttribute('aria-label', `Value ${v}`), b.setAttribute('aria-pressed', 'false')
     return b
   })
-  // 0 and 127 stand on the lines of the first bar and the last
-  grid.replaceChildren(h('span', { className: 'edge from', textContent: '0' }), ...cells, h('span', { className: 'edge to', textContent: '127' }))
+  // 0 and 127 stand on the lines of the first bar and the last; the readout goes under the grid's first column
+  grid.replaceChildren(h('span', { className: 'edge from', textContent: '0' }), ...cells, h('span', { className: 'edge to', textContent: '127' }), $('.readout'))
 
   let current = 64
   const pick = v => {
@@ -124,7 +123,11 @@ function values() {
 /* ── latin+ core ─────────────────────────────────────────────────────────── */
 
 function keys() {
-  for (const dd of $$('.rosetta')) dd.replaceChildren(...Array.from(dd.dataset.keys, c => h('span', { className: 'k' }, h('b', { className: 'wf', textContent: c }), c)))
+  // each key's bar over its name; a mark is shown on a bar of its own, named by its spacing form
+  for (const set of $$('.rosetta[data-keys], .rosetta [data-keys]')) {
+    const base = set.dataset.base ?? '', names = set.dataset.names?.split(' ')
+    set.replaceChildren(...Array.from(set.dataset.keys, (c, i) => h('span', { className: 'k' }, h('b', { className: 'wf', textContent: base + c }), names?.[i] ?? c)))
+  }
 }
 
 
@@ -164,8 +167,8 @@ function axes() {
 /* ── textual semantics: a document, as in the article ────────────────────── */
 
 function textDoc() {
-  const sec = $('#text'), doc = $('.doc'), title = $('.doc-title'), body = $('.doc-body'), blocks = [title, body]
-  const box = $('.weights'), count = $('.doc-count'), hint = $('.doc-hint')
+  const doc = $('.doc'), title = $('.doc-title'), body = $('.doc-body'), blocks = [title, body]
+  const box = $('.weights'), count = $('.doc-count')
   const r = noise(11)
   const swell = (n, peak) => Array.from({ length: n }, (_, i) => Math.max(3, peak * Math.sin(Math.PI * (i + 0.5) / n) ** 0.8 * (0.55 + 0.45 * r())))
 
@@ -179,16 +182,16 @@ function textDoc() {
   // weights as a share of the pitch, the heaviest filling it: the pitch stays, so bolder bars stand closer
   const FILL = [1 / 7, 2 / 7, 1 / 2, 3 / 4, 1], PITCH = new Map([[title, 0.24], [body, 1 / 7]]), BASE = new Map([[title, 2], [body, 0]])
   const icons = FILL.map(() => h('span', { className: 'wf', textContent: wf(100, 100, 100, 100) }))
-  // pitch and every width on whole device pixels, so each bar of a weight draws alike
+  // pitch on whole device pixels, widths as near them as whole font units come, so each bar of a weight draws alike
   const crisp = (el, pitch) => {
     const px = dpx(), F = parseFloat(getComputedStyle(el).fontSize), P = Math.max(2 * px, Math.round(pitch * F / px) * px)
     FILL.forEach((f, k) => {
-      const wght = +(Math.min(P, Math.max(px, Math.round(f * P / px) * px)) / F * 4000).toFixed(2)
+      const wght = weight(Math.min(P, Math.max(px, Math.round(f * P / px) * px)), F)
       el.style.setProperty(`--w${k}`, wght), el.style.setProperty(`--s${k}`, `${(P - wght * F / 4000).toFixed(4)}px`)
     })
   }
   // font sizes follow the viewport: set the widths once the font is in, and again on every resize
-  const sharpen = () => { blocks.forEach(b => crisp(b, PITCH.get(b))), icons.forEach(i => crisp(i, 0.2)) }
+  const sharpen = () => { blocks.forEach(b => crisp(b, PITCH.get(b))), icons.forEach(i => crisp(i, 0.25)) }
   document.fonts.ready.then(sharpen), addEventListener('resize', sharpen)
 
   // a block is text, runs of it in spans of their weight: characters count across both
@@ -288,32 +291,18 @@ function textDoc() {
   // a new line is a character, as in any plain text
   doc.addEventListener('keydown', e => { if (e.key === 'Enter') e.preventDefault(), document.execCommand('insertText', false, '\n') })
   tally(), show(null)
-  // the keys that take words, as this system names them
-  const mac = /mac|iphone|ipad/i.test(navigator.userAgentData?.platform ?? navigator.platform)
-  $('.doc-hint .mod').textContent = mac ? '⌥' : 'Ctrl'
-  if (!matchMedia('(hover: hover)').matches) $('.hint-dbl').textContent = 'double-tap a word', $('.hint-keys').hidden = true
 
-  // on entering: the page edits itself, the hint lighting the keys it uses – a double-click, words taken with ⌥⇧→, a weight
-  const caret = h('div', { className: 'doc-caret', hidden: true })
-  sec.append(caret)
-  const mark = () => {
-    const rects = getSelection().getRangeAt(0).getClientRects(), last = rects[rects.length - 1], s = sec.getBoundingClientRect()
-    caret.style.cssText = `left:${last.right - s.left}px;top:${last.top - s.top - last.height * 0.1}px;height:${last.height * 1.2}px`
-    caret.hidden = false
-  }
+  // on entering: the page edits itself – a word selected, then set bold, and left selected as any selection is
   let touched = false, timer = 0
-  const hands = () => { touched = true, clearTimeout(timer), caret.hidden = true, hint.dataset.now = '' }
-  doc.addEventListener('pointerdown', hands), doc.addEventListener('keydown', hands), box.addEventListener('pointerdown', () => { touched = true, clearTimeout(timer) })
-  addEventListener('resize', () => caret.hidden = true)
+  const hands = () => { touched = true, clearTimeout(timer) }
+  doc.addEventListener('pointerdown', hands), doc.addEventListener('keydown', hands), box.addEventListener('pointerdown', hands)
   return () => {
     const sel = getSelection()
     if (still || touched || timer || !matchMedia('(hover: hover)').matches || (sel.rangeCount && !sel.isCollapsed)) return
     const w = [...read(body)[0].matchAll(/\p{L}+/gu)][24]
     const steps = [
-      () => { hint.dataset.now = 'dbl', sel.setBaseAndExtent(...point(body, w.index, true), ...point(body, w.index + w[0].length)), mark() },
-      () => { hint.dataset.now = 'keys', sel.modify('extend', 'forward', 'word'), mark() },
-      () => { sel.modify('extend', 'forward', 'word'), mark() },
-      () => { hint.dataset.now = '', box.children[3].classList.add('is-pressed'), apply(3), mark() },
+      () => sel.setBaseAndExtent(...point(body, w.index, true), ...point(body, w.index + w[0].length)),
+      () => { box.children[3].classList.add('is-pressed'), apply(3) },
       () => box.children[3].classList.remove('is-pressed')
     ]
     const next = (i = 0) => { if (touched || i >= steps.length) return; steps[i](), timer = setTimeout(() => next(i + 1), i ? 750 : 1100) }
@@ -322,7 +311,7 @@ function textDoc() {
 }
 
 
-/* ── bars by range: a year of weather, each day from its low to its high ─── */
+/* ── min–max bars: a year of weather, each day from its low to its high ─── */
 
 function rangeChart() {
   const chart = $('.temp-bars'), read = $('.temp-read'), { year, lo, hi } = weather
@@ -346,28 +335,36 @@ function rangeChart() {
     return `${from === to ? date(from) : `${date(from)}–${date(to)}`}: ${deg(l)} to ${deg(u)} °C`
   }
 
-  // the bar under the pointer, lit as a highlight: the text stays as it is
-  const lit = highlight('pick'), range = new Range()
+  // days a to b lifted by a box centred on their bars, half a gap either side
+  const box = $('.plot .lift')
+  const lift = (a, b) => {
+    box.hidden = a == null
+    if (a == null) return
+    const gap = parseFloat(getComputedStyle(chart).letterSpacing) || 0
+    box.style.left = `${(a * pitch - gap / 2).toFixed(2)}px`, box.style.width = `${((b - a + 1) * pitch).toFixed(2)}px`
+  }
   const pick = k => {
-    at = k
-    lit?.clear()
+    at = k, lift(k, k)
     if (k == null) return read.textContent = summary, chart.setAttribute('aria-valuetext', summary)
     read.textContent = say(k, k)
     chart.setAttribute('aria-valuenow', k + 1), chart.setAttribute('aria-valuetext', read.textContent)
-    // a range bar is one code point, two UTF-16 units
-    range.setStart(chart.firstChild, 2 * k), range.setEnd(chart.firstChild, 2 * k + 2), lit?.add(range)
   }
+  // the plot as wide as its bars on whole pixels, so the lines and months end where the year does
+  const fig = $('.temps'), stage = fig.parentNode
   new ResizeObserver(() => {
-    const n = chart.clientWidth / 365 >= 2.4 ? 365 : 52
+    const room = stage.clientWidth - fig.firstElementChild.offsetWidth - parseFloat(getComputedStyle(fig).columnGap), px = dpx()
+    const n = room / 365 >= 2.4 ? 365 : 52
     if (n !== set.length) set = group(n), chart.textContent = text(), chart.setAttribute('aria-valuemax', n), pick(null)
-    pitch = fit(chart, n, n === 365 ? 0.6 : 0.5) || pitch
-  }).observe(chart)
+    pitch = Math.max(2 * px, Math.floor(room / n / px) * px)
+    fig.style.setProperty('--plot-w', `${(n * pitch).toFixed(2)}px`)
+    fit(chart, n, n === 365 ? 0.6 : 0.5, n * pitch)
+  }).observe(stage)
   chart.addEventListener('pointermove', e => {
-    if (e.buttons) return
+    if (e.buttons || !getSelection().isCollapsed) return
     const b = chart.getBoundingClientRect()
     pick(Math.min(set.length - 1, Math.max(0, Math.floor((e.clientX - b.left) / pitch))))
   })
-  chart.addEventListener('pointerleave', () => getSelection().isCollapsed && pick(null))
+  chart.addEventListener('pointerleave', () => getSelection().isCollapsed ? pick(null) : sel())
   chart.addEventListener('keydown', e => {
     const d = { ArrowRight: 1, ArrowLeft: -1, PageDown: 7, PageUp: -7 }[e.key]
     if (d) e.preventDefault(), pick(Math.min(set.length - 1, Math.max(0, (at ?? (d > 0 ? -1 : set.length)) + d)))
@@ -375,12 +372,15 @@ function rangeChart() {
   })
   chart.addEventListener('blur', () => pick(null))
   // select days as text, and read what they held
-  document.addEventListener('selectionchange', () => {
-    const sel = getSelection(), node = chart.firstChild
-    if (!node || !sel.rangeCount || sel.isCollapsed || !chart.contains(sel.anchorNode)) return
-    const r = sel.getRangeAt(0), a = r.startContainer === node ? r.startOffset : 0, b = r.endContainer === node ? r.endOffset : node.length
-    if (b > a) lit?.clear(), read.textContent = say(a >> 1, (b >> 1) - 1)
-  })
+  const sel = () => {
+    const s = getSelection(), node = chart.firstChild
+    if (!node || !s.rangeCount || s.isCollapsed || !chart.contains(s.anchorNode)) return false
+    const r = s.getRangeAt(0), a = r.startContainer === node ? r.startOffset : 0, b = r.endContainer === node ? r.endOffset : node.length
+    // a range bar is one code point, two UTF-16 units
+    if (b > a) lift(a >> 1, (b >> 1) - 1), read.textContent = say(a >> 1, (b >> 1) - 1)
+    return b > a
+  }
+  document.addEventListener('selectionchange', () => sel() || at != null || lift(null))
 
   // on entering: the bars unfold from 0 °C to the day's range
   return () => {
@@ -452,70 +452,6 @@ function speed() {
 }
 
 
-/* ── audio player: black, a tape of hairlines starting under the middle ──── */
-
-function player() {
-  const strip = $('.strip'), tapes = $$('.strip .tape'), btn = $('.player .toggle')
-  let buf = null, where = [], pitch = 0, loopW = 0, handle = null, raf = 0, pos = 0, lap = 0, last = 0
-
-  // the song, quietly: one bar per sixteenth note, chapters apart, none at full height;
-  // three copies: the lap before, this one, the next
-  const ready = () => {
-    if (buf) return
-    buf = song(44100, 0.12)
-    const step = 60 / BPM / 4, n = Math.round(buf.duration / step), lv = levels(buf.getChannelData(0), n, 22)
-    const breaks = new Set(CHAPTERS.slice(1).map(([, b]) => Math.round(b * 16 * step / (buf.duration / n))))
-    let text = ''
-    for (let i = 0; i < n; i++) {
-      if (breaks.has(i)) text += ' '
-      where.push(text.length), text += char(Math.max(3, lv[i] * 86))
-    }
-    where.push(text.length)
-    tapes.forEach(t => t.textContent = text + text + text)
-    measure()
-  }
-  const measure = () => {
-    if (!buf) return
-    loopW = tapes[0].scrollWidth / 3, pitch = loopW / where.at(-1)
-    place(pos)
-  }
-  // time t sits in the middle: on the first lap the song starts there, with nothing before it;
-  // at rest the tape stands on whole device pixels, crisp – moving, it glides between them
-  const place = (t, moving) => {
-    if (t < last - 1) lap++
-    pos = last = t
-    const k = t / buf.duration * (where.length - 1), i = Math.min(where.length - 2, Math.floor(k))
-    const x = strip.clientWidth / 2 - (lap ? loopW : 0) - (where[i] + (k - i)) * pitch
-    tapes.forEach(el => el.style.setProperty('--x', `${(moving ? x : Math.round(x / dpx()) * dpx()).toFixed(3)}px`))
-    strip.setAttribute('aria-valuenow', Math.round(t))
-  }
-  const ui = on => { btn.classList.toggle('is-playing', on), btn.setAttribute('aria-label', on ? 'Pause' : 'Play') }
-  const stop = () => {
-    if (!handle) return
-    const was = handle
-    handle = null, pos = was.time(), was.stop(), cancelAnimationFrame(raf), place(pos), ui(false)
-  }
-  const start = () => {
-    ready()
-    const mine = handle = play(buf, { from: pos, loop: true })
-    mine.onend = () => { if (handle === mine) handle = null, cancelAnimationFrame(raf), place(pos), ui(false) }
-    const tick = () => { place(mine.time(), true), raf = requestAnimationFrame(tick) }
-    tick(), ui(true)
-  }
-  const toggle = () => handle ? stop() : start()
-  btn.addEventListener('click', toggle)
-  strip.addEventListener('click', toggle)
-  strip.addEventListener('keydown', e => {
-    ready()
-    const to = { ArrowRight: pos + 5, ArrowLeft: pos - 5 }[e.key]
-    if (to != null) { e.preventDefault(); const on = !!handle; stop(); last = to; place((to + buf.duration) % buf.duration); on && start() }
-    else if (e.key === ' ' || e.key === 'Enter') e.preventDefault(), toggle()
-  })
-  new ResizeObserver(measure).observe(strip)
-  soon(strip, ready)
-}
-
-
 /* ── renderings: the article's nine, set again, each moving as it suggests ─ */
 
 function renderings() {
@@ -545,7 +481,7 @@ function renderings() {
 // each artwork a screen of its own: it follows the pointer, and drifts on its own when left alone
 function artwork(sec) {
   const name = sec.dataset.piece, el = $('.piece', sec), at = motion[name](ART[name])
-  const rest = name === 'bands' ? banded(ART.bands) : ART[name]
+  const rest = ART[name]
   let p = { x: 0.5, y: 0.5 }, aim = null, t = 0, width = 0
   const frame = () => draw(el, still ? (aim ? at(0, aim) : rest) : at(t, p), width)
   sec.style.setProperty('--ar', (rest.w / rest.h).toFixed(4))
@@ -576,42 +512,37 @@ function journey() {
 }
 
 
-/* ── get: install, and the numbers ───────────────────────────────────────── */
+/* ── get: where it is ──────────────────────────────────────────────────────── */
 
 function get() {
-  for (const b of $$('.copy-code')) b.addEventListener('click', () => copy(b, $$('.code', b.parentNode).map(c => c.textContent).join('\n\n')))
-  fetch('package.json').then(r => r.json()).then(p => $('.s-version').textContent = p.version).catch(() => {})
-  // size of the variable woff2 this page uses, asked late: the preload is long used by then
-  soon($('#get'), () => fetch('fonts/variable/Wavefont[ROND,YELA,wght].woff2', { method: 'HEAD' })
-    .then(r => +r.headers.get('content-length'))
-    .then(n => n && ($('.s-size').textContent = `${(n / 1024).toFixed(1)} KB variable woff2`)).catch(() => {}))
+  // the version this page was built with, as the package says
+  soon($('#get'), () => fetch('package.json').then(r => r.json()).then(p => $('.s-version').textContent = p.version).catch(() => {}))
 }
 
-// ॐ, set in bars: the last screen, and a link
-function om() {
-  const el = $('#om .piece')
-  el.dataset.ar = el.style.aspectRatio = `${OM.w} / ${OM.h}`
-  new ResizeObserver(([e]) => draw(el, OM, e.contentRect.width)).observe(el)
+// the layout's grid, for tuning while building: g toggles it, ?grid opens with it
+const overlay = () => {
+  const root = document.documentElement
+  if (/[?&]grid\b/.test(location.search)) root.classList.add('grid-on')
+  addEventListener('keydown', e => { if (e.key === 'g' && !e.target.closest('input, textarea, [contenteditable]')) root.classList.toggle('grid-on') })
 }
 
 
 /* ── start ───────────────────────────────────────────────────────────────── */
 
+overlay()
 hero()
 keys()
 axes()
 speed()
 chat()
-player()
 soon($('#renderings'), renderings)
 for (const sec of $$('.work')) soon(sec, () => artwork(sec))
 memo()
-playground()
 journey()
 get()
-soon($('#om'), om)
+soon($('#om'), () => om($('#om')))
 
 // each slide's own motion runs when most of it is in view
 const onenter = { values: values(), text: textDoc(), range: rangeChart() }
 const once = new IntersectionObserver(entries => entries.forEach(e => e.isIntersecting && onenter[e.target.id]?.()), { threshold: 0.45 })
-$$('main > section').forEach(s => once.observe(s))
+$$('main > .slide').forEach(s => once.observe(s))

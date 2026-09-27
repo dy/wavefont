@@ -4,7 +4,7 @@
  */
 import wf from '../index.js'
 import { play, wav } from './sound.js'
-import { listen, micError, mark } from './wave.js'
+import { listen, micError, mark, weight } from './wave.js'
 import { $, h } from './dom.js'
 
 const RATE = 23.7, dt = 1 / RATE
@@ -37,8 +37,9 @@ export function memo() {
     if (!H) return
     pitch = Math.max(3, Math.min(8, H / 60))
     tape.style.fontSize = `${F.toFixed(1)}px`
-    tape.style.setProperty('--wght', (pitch / 2 / F * 4000).toFixed(1))
-    tape.style.letterSpacing = `${(pitch / 2).toFixed(3)}px`
+    const wght = weight(pitch / 2, F)
+    tape.style.setProperty('--wght', wght)
+    tape.style.letterSpacing = `${(pitch - wght * F / 4000).toFixed(4)}px`
     ruler(), place(pos)
   }
   // seconds along the ruler: from the start to a screen past the end

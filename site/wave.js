@@ -33,14 +33,21 @@ export const copy = async (btn, text) => {
 }
 
 /**
- * Fill an element's width with n bars, `fill` of each pitch inked. Pitch and bar width are whole device pixels,
- * so every bar draws alike wherever it falls; returns the pitch, px.
+ * wght of a bar w px wide at font size F px, on whole font units: a bar's advance is wght/4 units of 1000,
+ * and Firefox rounds variable advances to whole units – a weight between them would draw every bar of a line
+ * a little off, and the line drift by as much times its length.
  */
-export const fit = (el, n, fill = 0.55) => {
-  const W = el.clientWidth, F = parseFloat(getComputedStyle(el).fontSize)
+export const weight = (w, F) => 4 * Math.min(250, Math.max(1, Math.round(w / F * 1000)))
+
+/**
+ * Fill an element's width with n bars, `fill` of each pitch inked. The pitch is whole device pixels and the bars
+ * as near as whole font units come, so every bar draws alike wherever it falls; returns the pitch, px.
+ */
+export const fit = (el, n, fill = 0.55, W = el.clientWidth) => {
+  const F = parseFloat(getComputedStyle(el).fontSize)
   if (!W || !F) return 0
   const px = 1 / (globalThis.devicePixelRatio || 1), P = Math.max(2 * px, Math.floor(W / n / px) * px)
-  const wght = +Math.min(1000, Math.max(4, Math.max(px, Math.round(fill * P / px) * px) / F * 4000)).toFixed(2)
+  const wght = weight(Math.max(px, Math.round(fill * P / px) * px), F)
   el.style.setProperty('--wght', wght)
   el.style.setProperty('--gap', `${(P - wght * F / 4000).toFixed(4)}px`)
   return P
@@ -61,10 +68,10 @@ const offsetAt = (el, x, y) => {
 }
 
 /**
- * Make el's text a playable waveform: click a bar to play from it, select bars to play only them.
+ * Make el's text a playable waveform: click a bar to play from it, select bars to play only them (unless `pick` is off).
  * Progress paints as a highlight, so the DOM – and any selection – stays untouched.
  */
-export function track(el, { ontime, onstate } = {}) {
+export function track(el, { ontime, onstate, pick = true } = {}) {
   let tk, handle = null, pos = 0, rate = 1, raf = 0, last = ''
   const range = new Range()
   const chars = t => {
@@ -138,6 +145,7 @@ export function track(el, { ontime, onstate } = {}) {
     if (key !== last) last = key, setTimeout(() => last = '', 400), api.play(tk.at[a], tk.at[b])
     return true
   }
+  if (!pick) return api
   el.addEventListener('pointerup', () => setTimeout(selected))
   el.addEventListener('dblclick', () => setTimeout(selected))
   el.addEventListener('click', e => {
