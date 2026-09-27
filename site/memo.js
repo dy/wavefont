@@ -1,9 +1,9 @@
 /**
- * Voice Memos, fitted to the screen: record, pause, listen back while paused, drag the waveform to scrub.
+ * Voice Memos, fitted to the screen: record, pause, listen back while paused, drag the waveform to scrub, save.
  * The waveform is text set in Wavefont, one bar per 1/23.7 s as Voice Memos draws it.
  */
 import wf from '../index.js'
-import { play } from './sound.js'
+import { play, wav } from './sound.js'
 import { listen, micError, mark } from './wave.js'
 import { $, h } from './dom.js'
 
@@ -22,10 +22,14 @@ export function memo() {
   const heard = new Range()
   // clip: the audio to play – the finished recording, or what's recorded so far while paused
   let state = 'idle', lv = [], clip = null, recorder = null, starting = false, handle = null, raf = 0
-  let pos = 0, pitch = 4, ruled = '', drag = null
+  let pos = 0, pitch = 4, ruled = '', drag = null, began = 0, held = 0, heldAt = 0
 
   const length = () => lv.length * dt
   const pps = () => pitch * RATE
+  // while recording, the tape runs on the clock – seconds since the start, less the pauses – drawn every frame;
+  // bars join it as the microphone's chunks bring them, so it never jumps by a bar
+  const recorded = () => Math.max(0, (performance.now() - began - held) / 1000)
+  const run = () => { place(recorded()), ruler(), raf = requestAnimationFrame(run) }
 
   // a bar every 1/60 of the band's height, half of it ink, as Voice Memos draws them
   const fit = () => {
@@ -97,29 +101,36 @@ export function memo() {
   fwd.addEventListener('click', () => seek(pos + 15))
 
   rec.addEventListener('click', async () => {
-    if (state === 'recording') return recorder.pause(), state = 'paused', ui()
-    if (state === 'paused') return stop(), clip = null, recorder.resume(), state = 'recording', place(length()), ui()
+    if (state === 'recording') return cancelAnimationFrame(raf), recorder.pause(), heldAt = performance.now(), state = 'paused', place(length()), ui()
+    if (state === 'paused') return stop(), clip = null, recorder.resume(), held += performance.now() - heldAt, state = 'recording', ui(), run()
     if (starting) return
     starting = true, stop(), note.textContent = ''
     try {
+      // new bars are appended to the tape's text, not the whole tape set again
       const r = await listen((levels, t) => {
-        lv = levels, tape.textContent = text(lv), len.textContent = short(t)
-        if (state === 'recording') place(t), ruler()
+        const was = lv === levels ? tape.textContent.length : 0
+        lv = levels, was ? tape.firstChild.appendData(text(lv.slice(was))) : tape.textContent = text(lv), len.textContent = short(t)
       }, dt)
-      recorder = r, clip = null, lv = [], state = 'recording'
-      title.textContent = 'New Recording', date.textContent = today(), len.textContent = short(0), tape.textContent = ''
-      place(0), ruler(), ui()
+      recorder = r, clip = null, lv = [], state = 'recording', began = performance.now(), held = 0
+      date.textContent = today(), len.textContent = short(0), tape.textContent = ''
+      ui(), run()
     } catch (e) {
       note.textContent = micError(e)
     }
     starting = false
   })
+  // Done keeps the recording: a WAV file under the name above the waveform
   done.addEventListener('click', () => {
     if (state === 'idle') return
-    stop()
-    const buf = recorder.stop()
+    stop(), cancelAnimationFrame(raf)
+    const buf = recorder.stop(), name = title.value.trim() || 'New Recording'
     recorder = null, state = 'idle', clip = buf.duration > 0.2 ? buf : null
     if (!clip) lv = [], tape.textContent = ''
+    else {
+      const a = h('a', { href: URL.createObjectURL(wav(clip)), download: `${name}.wav` })
+      a.click(), setTimeout(() => URL.revokeObjectURL(a.href), 10000)
+      note.textContent = `Saved as ${name}.wav`
+    }
     len.textContent = short(length()), ruler(), place(0), ui()
   })
 

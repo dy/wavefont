@@ -154,24 +154,37 @@ const url = buf => {
 export function play(buf, { from = 0, to = buf.duration, rate = 1, loop = false } = {}) {
   current?.stop()
   const el = new Audio(url(buf))
-  let done = false, timer = 0
+  let done = false, timer = 0, anchor = from, since = 0, running = false, shown = from
   el.currentTime = from, el.playbackRate = rate, el.loop = loop
+  // the element's clock ticks coarsely in some browsers: between ticks, time runs on at the rate, leaning a little
+  // toward the element's time at every look, so it follows without a jump; a real jump (a loop's turn) it takes at once.
+  // Time runs one way: a small step back, the element catching up, is held
+  const now = () => {
+    let v = el.currentTime
+    if (running) {
+      const guess = anchor + (performance.now() - since) / 1000 * el.playbackRate
+      if (Math.abs(v - guess) > 0.25) anchor = v, since = performance.now()
+      else anchor += (v - guess) * 0.05, v = guess + (v - guess) * 0.05
+    }
+    return shown = v < shown && shown - v < 0.5 ? shown : v
+  }
   // stop at `to`: a timer set for when the element gets there at its rate, set again on every change
   const due = () => {
     clearTimeout(timer)
     if (!loop && !done) timer = setTimeout(() => el.currentTime >= to - 0.01 ? h.stop() : due(), (to - el.currentTime) / el.playbackRate * 1000)
   }
   const h = {
-    time: () => loop ? el.currentTime : Math.min(to, el.currentTime),
-    rate(r) { el.playbackRate = r, due() },
+    time: () => loop ? now() % buf.duration : Math.min(to, now()),
+    rate(r) { anchor = now(), since = performance.now(), el.playbackRate = r, due() },
     stop() {
       if (done) return
-      done = true, clearTimeout(timer), el.pause()
+      done = true, running = false, clearTimeout(timer), el.pause()
       if (current === h) current = null
       h.onend?.()
     }
   }
-  el.addEventListener('playing', due)
+  el.addEventListener('playing', () => { anchor = el.currentTime, since = performance.now(), running = true, due() })
+  el.addEventListener('waiting', () => running = false)
   el.addEventListener('ended', h.stop)
   el.addEventListener('error', h.stop)
   el.play().catch(h.stop)
@@ -196,60 +209,107 @@ const normalize = (x, peak) => {
   return x
 }
 
-// Vowel formants F1–F3 in Hz, a e i o u: Peterson & Barney (1952), adult male averages
-const VOWELS = [[730, 1090, 2440], [530, 1840, 2480], [270, 2290, 3010], [570, 840, 2410], [300, 870, 2240]]
-const TABLE = 2048
-
-/** One period of a sung vowel at pitch f0: harmonics weighted by formant resonances. */
-const vowel = (formants, f0) => {
-  const t = new Float32Array(TABLE), bw = [90, 110, 160], gain = [1, 0.55, 0.25]
-  for (let k = 1; k * f0 < 4000; k++) {
-    let a = 0.04
-    formants.forEach((f, i) => a += gain[i] / (1 + ((k * f0 - f) / bw[i]) ** 2))
-    a /= k ** 0.5
-    for (let j = 0; j < TABLE; j++) t[j] += a * Math.sin(2 * Math.PI * k * j / TABLE)
-  }
-  return normalize(t, 1)
+// Vowel formants F1–F3, Hz: Peterson & Barney (1952), "Control methods used in a study of the vowels",
+// adult male averages for heed hid head had hod hawed hood who'd hud heard
+const VOWELS = [[270, 2290, 3010], [390, 1990, 2550], [530, 1840, 2480], [660, 1720, 2410], [730, 1090, 2440],
+  [570, 840, 2410], [440, 1020, 2240], [300, 870, 2240], [640, 1190, 2390], [490, 1350, 1690]]
+// Consonants, roughly: [kind, F1–F3 or the formant loci a stop pulls toward, noise centre Hz, voiced]
+const CONSONANTS = {
+  m: ['nasal', [480, 1270, 2130]], n: ['nasal', [480, 1340, 2470]],
+  l: ['glide', [360, 1300, 2700]], r: ['glide', [310, 1060, 1380]], w: ['glide', [290, 610, 2150]], j: ['glide', [260, 2070, 3020]],
+  s: ['fric', [320, 1400, 2700], 5500], sh: ['fric', [300, 1840, 2750], 2800], f: ['fric', [340, 1100, 2080], 6500], h: ['fric', null, 1500],
+  z: ['fric', [320, 1400, 2700], 5500, true], v: ['fric', [340, 1100, 2080], 6500, true],
+  p: ['stop', [400, 800, 2200], 1000], t: ['stop', [400, 1800, 2600], 4000], k: ['stop', [400, 2300, 2600], 2200],
+  b: ['stop', [400, 800, 2200], 1000, true], d: ['stop', [400, 1800, 2600], 4000, true], g: ['stop', [400, 2300, 2600], 2200, true]
 }
+const ONSETS = 'ttddkkssnnmmllrrwwjhhbbppggfvz sh'.split(' ').join('').match(/sh|./g), CODAS = 'nnnmsstkld'.split('')
 
 /**
- * Wordless speech: vowel syllables with phrase intonation, soft enough to loop.
+ * Wordless speech as heard through a wall: a glottal pulse through moving vocal-tract resonances,
+ * syllables with their consonants, the pitch of a phrase falling (or asking), breath, then muffled.
  * @param {number} seed same seed, same take
  * @param {number} seconds length
- * @param {number} [f0] speaking pitch, Hz
+ * @param {number} [f0] speaking pitch, Hz; formants scale with it, as voices do
  */
 export function voice(seed, seconds, f0 = 140, sampleRate = 22050) {
-  const rnd = prng(seed), sr = sampleRate, out = new Float32Array(Math.round(seconds * sr))
-  const tables = VOWELS.map(v => vowel(v, f0))
-  let t = 0.15, phase = 0
-  while (t < seconds - 0.6) {
-    // plan a phrase: words of 1–3 syllables, then speak it along a falling (or asking) contour
-    const syl = [], ask = rnd() < 0.25
-    for (let w = 2 + rnd() * 4 | 0, s = 0; w--; s = 0) {
-      for (let n = 1 + rnd() * 3 | 0; n--; s++) syl.push({ d: 0.09 + rnd() * 0.11, amp: (s ? 0.62 : 1) * (0.65 + 0.35 * rnd()), gap: n ? 0.012 : 0.05 + rnd() * 0.09 })
-    }
-    const total = syl.reduce((a, s) => a + s.d + s.gap, 0)
-    let u = 0
-    for (const s of syl) {
-      if (t + s.d > seconds - 0.3) break
-      const va = tables[rnd() * 5 | 0], vb = tables[rnd() * 5 | 0], x0 = u / total, x1 = (u + s.d) / total
-      const contour = x => 2 - 5 * x + (ask && x > 0.7 ? (x - 0.7) * 22 : 0)
-      const p0 = contour(x0) + (rnd() - 0.5) * 1.6, p1 = contour(x1) + (rnd() - 0.5) * 0.8
-      const i0 = Math.round(t * sr), n = Math.round(s.d * sr), rise = 0.025 * sr, fall = 0.06 * sr
-      for (let i = 0; i < n; i++) {
-        const x = i / n, env = Math.sin(Math.PI / 2 * Math.min(1, i / rise, (n - i) / fall)) ** 2
-        const semis = p0 + (p1 - p0) * x + 0.18 * Math.sin(2 * Math.PI * 5.5 * (i0 + i) / sr)
-        phase = (phase + f0 * 2 ** (semis / 12) / sr) % 1
-        const p = phase * TABLE, j = p | 0, fr = p - j, k = (j + 1) % TABLE
-        const a = va[j] + (va[k] - va[j]) * fr, b = vb[j] + (vb[k] - vb[j]) * fr
-        out[i0 + i] += s.amp * env * (a + (b - a) * x)
+  const rnd = prng(seed), sr = sampleRate, n = Math.round(seconds * sr), out = new Float32Array(n)
+  const size = (f0 / 120) ** 0.33, pick = a => a[rnd() * a.length | 0]
+
+  // plan: phrases of syllables, each a list of segments with the vocal tract's targets, and the pitch's knots
+  const segs = [], knots = []
+  const seg = (dur, p) => { const t0 = segs.length ? segs.at(-1).t1 : 0.12; segs.push({ t0, t1: t0 + dur, ...p }) }
+  const quiet = (dur, F) => seg(dur, { F, B: [200, 250, 300], AV: 0, AH: 0, AF: 0 })
+  while ((segs.at(-1)?.t1 ?? 0) < seconds - 0.9) {
+    const count = 3 + rnd() * 7 | 0, ask = rnd() < 0.2, first = rnd() < 0.5 ? 0 : 1
+    for (let i = 0; i < count; i++) {
+      const stress = i % 2 === first, last = i === count - 1, V = pick(VOWELS)
+      const onset = rnd() < 0.75 && CONSONANTS[pick(ONSETS)]
+      if (onset) {
+        const [kind, F = V, freq, voiced] = onset
+        if (kind === 'stop') {
+          quiet(0.035 + rnd() * 0.025, F), segs.at(-1).AV = voiced ? 0.12 : 0
+          seg(0.012, { F, B: [300, 300, 400], AV: 0, AH: 0, AF: 0.9, FF: freq, FB: 2000 })
+          if (!voiced) seg(0.03, { F: V, B: [150, 200, 250], AV: 0, AH: 0.45, AF: 0 })
+        } else if (kind === 'fric') seg(0.06 + rnd() * 0.03, { F: F ?? V, B: [200, 250, 300], AV: voiced ? 0.35 : 0, AH: F ? 0 : 0.5, AF: F ? 0.7 : 0, FF: freq, FB: 1500 })
+        else seg(0.04 + rnd() * 0.03, { F, B: kind === 'nasal' ? [150, 300, 400] : [80, 110, 160], AV: kind === 'nasal' ? 0.45 : 0.8, AH: 0, AF: 0 })
       }
-      t += s.d + s.gap, u += s.d + s.gap
+      const dur = (stress ? 0.11 + rnd() * 0.06 : 0.065 + rnd() * 0.05) * (last ? 1.4 : 1)
+      seg(dur, { F: V, B: [70, 100, 150], AV: stress ? 1 : 0.72, AH: 0.02, AF: 0 })
+      // pitch at the vowel's middle: a falling line, stressed syllables lifted, the end falling or rising
+      const x = i / Math.max(1, count - 1), mid = segs.at(-1).t0 + dur / 2
+      knots.push([mid, 2.5 - 4.5 * x + (stress ? 2 + rnd() * 1.5 : rnd() * 0.6) + (last ? (ask ? 5 : -2.5) : 0)])
+      const coda = rnd() < 0.3 && CONSONANTS[pick(CODAS)]
+      if (coda) {
+        const [kind, F = V, freq] = coda
+        if (kind === 'stop') quiet(0.04, F), seg(0.01, { F, B: [300, 300, 400], AV: 0, AH: 0, AF: 0.6, FF: freq, FB: 2000 })
+        else seg(0.05, { F, B: kind === 'fric' ? [200, 250, 300] : [150, 300, 400], AV: kind === 'fric' ? 0 : 0.45, AH: 0, AF: kind === 'fric' ? 0.55 : 0, FF: freq, FB: 1500 })
+      }
     }
-    t += 0.28 + rnd() * 0.4
+    quiet(0.2 + rnd() * 0.3, segs.at(-1).F)
   }
-  // one-pole lowpass at ~3.2 kHz takes the edge off the harmonics
-  for (let i = 1, k = Math.exp(-2 * Math.PI * 3200 / sr); i < out.length; i++) out[i] = out[i] * (1 - k) + out[i - 1] * k
+
+  // render: parameters glide toward each segment's targets – the glides are coarticulation
+  const glide = (tau) => 1 - Math.exp(-1 / (tau * sr))
+  const kF = glide(0.02), kA = glide(0.006)
+  const F = [500, 1500, 2500], B = [80, 100, 150], R = [[0, 0], [0, 0], [0, 0]], C = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+  const fric = [0, 0], fc = [0, 0, 0]
+  let AV = 0, AH = 0, AF = 0, FF = 3000, FB = 1500, phase = 0, flow = 0, jit = 0, shim = 1, si = 0, ki = 0
+  const coef = (c, f, bw) => {
+    c[2] = -Math.exp(-2 * Math.PI * bw / sr), c[1] = 2 * Math.exp(-Math.PI * bw / sr) * Math.cos(2 * Math.PI * Math.min(f, sr * 0.45) / sr), c[0] = 1 - c[1] - c[2]
+  }
+  const res = (st, c, x) => { const y = c[0] * x + c[1] * st[0] + c[2] * st[1]; st[1] = st[0], st[0] = y; return y }
+  for (let i = 0; i < n; i++) {
+    const t = i / sr
+    while (si < segs.length - 1 && t >= segs[si].t1) si++
+    const s = segs[si] && t >= segs[si].t0 && t < segs[si].t1 ? segs[si] : null
+    const tF = s ? s.F : F, tB = s ? s.B : B
+    for (let k = 0; k < 3; k++) F[k] += (tF[k] * size - F[k]) * kF, B[k] += (tB[k] - B[k]) * kF
+    AV += ((s?.AV ?? 0) - AV) * kA, AH += ((s?.AH ?? 0) - AH) * kA, AF += ((s?.AF ?? 0) - AF) * kA
+    if (s?.FF) FF = s.FF, FB = s.FB
+    if (i % 16 === 0) { for (let k = 0; k < 3; k++) coef(C[k], F[k], B[k]); coef(fc, FF, FB) }
+    // pitch: between the knots, in semitones, with a little wandering
+    while (ki < knots.length - 1 && t >= knots[ki + 1][0]) ki++
+    const [ta, sa] = knots[ki] ?? [0, 0], [tb, sb] = knots[ki + 1] ?? [ta + 1, sa]
+    const semis = sa + (sb - sa) * Math.min(1, Math.max(0, (t - ta) / (tb - ta)))
+    phase += f0 * 2 ** ((semis + jit) / 12) / sr
+    if (phase >= 1) phase -= 1, jit = jit * 0.7 + (rnd() - 0.5) * 0.25, shim = 0.94 + rnd() * 0.12
+    // glottal flow opens for 60% of a period (KLGLOTT88 shape); its slope is what the lips radiate
+    const x = phase / 0.6, u = x < 1 ? 6.75 * x * x * (1 - x) : 0, g = u - flow
+    flow = u
+    const noise = rnd() * 2 - 1
+    const src = AV * shim * g * 40 + noise * (AH + AV * 0.04 * u)
+    let y = res(R[0], C[0], src)
+    y = res(R[1], C[1], y), y = res(R[2], C[2], y)
+    out[i] = y + res(fric, fc, noise * AF * 0.3)
+  }
+  // through a wall: a two-pole lowpass at 1.4 kHz, then a little room
+  const lp = [0, 0], lc = [0, 0, 0]
+  coef(lc, 0, 1.4e3 * Math.SQRT2)
+  let prev = 0
+  for (let i = 0; i < n; i++) { const y = res(lp, lc, out[i]); out[i] = 0.5 * (y + prev), prev = y }
+  const wet = room(out, sr)
+  normalize(wet, 0.12), normalize(out, 1)
+  for (let i = 0; i < n; i++) out[i] += wet[i]
   return buffer(normalize(out, 0.7), sr)
 }
 
@@ -341,6 +401,7 @@ export function song(sampleRate = 44100, peak = 0.89) {
   for (const [b, k, m] of tune) pluck(out, b * bar + k * beat, m, 0.5, sr, rnd, 3)
   const wet = room(out, sr), dry = normalize(out, 1)
   normalize(wet, 0.35)
-  for (let i = 0; i < out.length; i++) out[i] = dry[i] + wet[i]
+  // strings heard from across a room: the top rounded off by a one-pole lowpass at 2 kHz
+  for (let i = 0, k = Math.exp(-2 * Math.PI * 2000 / sr), y = 0; i < out.length; i++) out[i] = y = (dry[i] + wet[i]) * (1 - k) + y * k
   return buffer(normalize(out, peak), sr)
 }

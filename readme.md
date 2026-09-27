@@ -4,7 +4,7 @@ A typeface for rendering vertical bars data: waveforms, spectrums, diagrams, his
 
 <a href="https://dy.github.io/wavefont"><img src="./preview.png" width="640" alt="Text set in Wavefont: a title and paragraphs of bars, one word in bold, two words selected, a toolbar of weights"></a>
 
-[**Playground**](https://dy.github.io/wavefont/scripts)&nbsp;&nbsp;•&nbsp;&nbsp;[**Google fonts**](https://fonts.google.com/specimen/Wavefont)&nbsp;&nbsp;•&nbsp;&nbsp;[**V-fonts**](https://v-fonts.com/fonts/wavefont)&nbsp;&nbsp;•&nbsp;&nbsp;
+[**Playground**](https://dy.github.io/wavefont/#playground)&nbsp;&nbsp;•&nbsp;&nbsp;[**Google fonts**](https://fonts.google.com/specimen/Wavefont)&nbsp;&nbsp;•&nbsp;&nbsp;[**V-fonts**](https://v-fonts.com/fonts/wavefont)&nbsp;&nbsp;•&nbsp;&nbsp;
 [**Wavearea**](https://dy.github.io/wavearea?src=https://cdn.freesound.org/previews/147/147582_1728127-lq.mp3)
 
 ## Usage

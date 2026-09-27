@@ -30,5 +30,3 @@ export const animate = (el, frame) => {
 
 /** Deterministic noise, so every visit draws the same. */
 export const noise = seed => () => (seed = Math.imul(seed ^ seed >>> 15, 2246822507) + 0x9E3779B9 | 0, (seed >>> 0) / 4294967296)
-
-export const PLAY = '<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path class="i-play" d="M3.5 1.5v13l11-6.5z"/><path class="i-pause" d="M3 1.5h3.5v13H3zM9.5 1.5H13v13H9.5z"/></svg>'

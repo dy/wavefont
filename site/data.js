@@ -4,17 +4,18 @@
 
 /**
  * Render cost of one editor view of 1 hour of speech (155,039 bars), windowed, in ms of main thread through paint,
- * median of 5 runs, Apple M4 Max. wavearea bench/render, results/wavefont-3.8.1-summary.md (2026-09-26).
- * Per stack, per op; null where a stack wasn't measured on that browser.
+ * median of 5 runs, Apple M4 Max: wavearea bench/render, wavefont 3.8.1, results/<browser>.json (2026-09-26).
+ * wavefont is bars by range (range.window); svg, html per bar and canvas per line are the same view drawn otherwise.
+ * The iPhone profile is WebKit at the iPhone 13 viewport and pixel ratio on that machine, not a phone.
  */
 export const bench = {
   ops: ['load', 'paste 10 s', 'gain', 'resize', 'select'],
-  stacks: ['range', 'marks', 'marks 3.6', 'svg', 'html', 'canvas'],
-  text: [true, true, true, false, false, false],
+  stacks: ['wavefont', 'svg', 'html', 'canvas'],
+  text: [true, false, false, false],
   browsers: {
-    'safari 26.5': [[7.0, 4.9, 9.9, 15, 4.2], [74, 58, 87, 231, 25], [172, 140, 255, 548, 58], [14, 9.6, 15, 15, 2.6], [94, 57, 120, 225, 2.7], [2.0, 2.8, 4.8, 2.7, 1.5]],
-    'chrome 145': [[3.7, 3.1, 5.0, 4.6, 0.39], [9.6, 8.3, 11, 12, 0.39], [14, 12, 24, 20, 0.68], [3.9, 2.9, 6.1, 4.9, 0.43], null, [1.7, 1.1, 1.6, 2.5, 0.55]],
-    'iphone': [[4.0, 4.5, 5.2, 13, 1.1], [17, 23, 20, 67, 2.9], null, [2.8, 2.2, 3.5, 4.2, 0.76], null, [1.5, 2.0, 2.4, 2.7, 1.4]]
+    'safari 26.5': [[7.0, 4.9, 9.9, 15, 4.2], [14, 9.6, 15, 15, 2.6], [94, 57, 120, 225, 2.7], [2.0, 2.8, 4.8, 2.7, 1.5]],
+    'chrome 145': [[3.7, 3.1, 5.0, 4.6, 0.39], [3.9, 2.9, 6.1, 4.9, 0.43], [99, 67, 121, 182, 2.4], [1.7, 1.1, 1.6, 2.5, 0.55]],
+    'iphone': [[4.0, 4.5, 5.2, 13, 1.1], [2.8, 2.2, 3.5, 4.2, 0.76], [22, 25, 49, 74, 0.81], [1.5, 2.0, 2.4, 2.7, 1.4]]
   }
 }
 

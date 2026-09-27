@@ -60,12 +60,12 @@ test('wav: 16-bit PCM mono, header as the RIFF WAVE spec lays it out', async () 
   assert.deepEqual(Array.from({ length: data.length }, (_, i) => v.getInt16(44 + 2 * i, true)), [0, 16383, -16383, 32767, -32767, 32767], 'clipped past ±1')
 })
 
-const { tiles, art, ring: RING } = await import('./art-data.js')
+const { tiles, art, ring: RING, om } = await import('./art-data.js')
 const { banded, ring } = await import('./art.js')
 
 test('traced pieces: bars inside their slice, each line sorted and not overlapping', () => {
-  const pieces = [...tiles.filter(Boolean), ...Object.values(art).filter(p => p.slices)]
-  assert.equal(pieces.length, 8 + 5)
+  const pieces = [...tiles.filter(Boolean), ...Object.values(art).filter(p => p.slices), om]
+  assert.equal(pieces.length, 8 + 5 + 1)
   for (const p of pieces) for (const s of p.slices) {
     assert.ok(s.y >= 0 && s.y + s.h <= p.h + 1)
     for (const line of s.lines) {
@@ -111,18 +111,16 @@ test('weather: Montreal 2025, a low and a high every day, inside the chart', () 
   })
 })
 
-test('bench: every stack and op, and range text within a 60 Hz frame on every browser', () => {
-  // wavearea bench/render/results/wavefont-3.8.1-summary.md
+test('bench: every stack and op, and wavefont within a 60 Hz frame on every browser', () => {
+  // wavearea bench/render, wavefont 3.8.1: results/<browser>.json, window view medians
   const { ops, stacks, text, browsers } = bench
+  assert.deepEqual(stacks, ['wavefont', 'svg', 'html', 'canvas'])
   assert.equal(text.length, stacks.length)
   for (const [name, rows] of Object.entries(browsers)) {
     assert.equal(rows.length, stacks.length, name)
-    rows.forEach(r => r && assert.ok(r.length === ops.length && r.every(ms => ms > 0), name))
-    assert.ok(rows[0].every(ms => ms <= 1000 / 60), `${name}: range ${rows[0]}`)
+    rows.forEach(r => assert.ok(r.length === ops.length && r.every(ms => ms > 0), name))
+    assert.ok(rows[0].every(ms => ms <= 1000 / 60), `${name}: wavefont ${rows[0]}`)
   }
-  // the headline: in Safari, range text is 14–37× faster than wavefont 3.6 on edits and selection
-  const [range, , old] = browsers['safari 26.5']
-  range.forEach((ms, i) => assert.ok(old[i] / ms >= 13.8 && old[i] / ms <= 37, `${ops[i]} ${(old[i] / ms).toFixed(1)}×`))
 })
 
 test('commits: one count per month, August 2016 to September 2026', () => {
@@ -132,7 +130,7 @@ test('commits: one count per month, August 2016 to September 2026', () => {
   assert.ok(commits.months[0] > 0 && commits.months.at(-1) > 0, 'first and last month have commits')
 })
 
-const { motion } = await import('./art.js')
+const { motion, tileMotion } = await import('./art.js')
 
 test('motion: every piece, anywhere the pointer is, stays a set of bars inside its slices', () => {
   for (const [name, make] of Object.entries(motion)) {
@@ -156,4 +154,26 @@ test('motion: every piece, anywhere the pointer is, stays a set of bars inside i
 test('motion: slide and stairs at rest are the traced pieces', () => {
   const bars = p => p.slices.flatMap(s => s.lines.flatMap(l => Array.from({ length: l.length / 4 }, (_, i) => l.slice(4 * i, 4 * i + 4)).filter(b => b[1] > 1).map(b => [s.y, ...b].join()))).sort()
   for (const name of ['slide', 'stairs']) assert.deepEqual(bars(motion[name](art[name])(0, { x: 0.5, y: 0.5 })), bars(art[name]), name)
+})
+
+test('tiles in motion: at any time, bars inside their tile', () => {
+  tileMotion.forEach((make, i) => {
+    const at = make(tiles[i])
+    for (const t of [0, 0.4, 2.7, 13.1]) {
+      const p = at(t)
+      for (const s of p.slices) for (const line of s.lines) for (let k = 0; k < line.length; k += 4) {
+        const [x, w, top, bot] = line.slice(k, k + 4)
+        assert.ok(Number.isFinite(x) && w > 0 && x >= -1 && x + w <= p.w + 1, `tile ${i} at ${t}: x ${x} w ${w}`)
+        assert.ok(top >= 0 && bot > top && bot <= s.h + 1, `tile ${i} at ${t}: ${top}..${bot}`)
+        if (k) assert.ok(x >= line[k - 4] + line[k - 3] - 1e-9, `tile ${i}: bars of a line don't start inside each other`)
+      }
+    }
+  })
+})
+
+test('om: bars of one width at one pitch', () => {
+  const bars = om.slices.flatMap(s => s.lines.flatMap(l => Array.from({ length: l.length / 4 }, (_, k) => l.slice(4 * k, 4 * k + 4))))
+  assert.equal(new Set(bars.map(b => b[1])).size, 1, 'one width')
+  const xs = [...new Set(bars.map(b => b[0]))].sort((a, b) => a - b)
+  assert.ok(xs.slice(1).every((x, i) => Math.abs((x - xs[i]) % 5) < 1e-6 || Math.abs((x - xs[i]) % 5 - 5) < 1e-6), 'columns on a 5 px pitch')
 })

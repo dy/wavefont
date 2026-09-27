@@ -32,13 +32,18 @@ export const copy = async (btn, text) => {
   setTimeout(() => btn.textContent = was, 1400)
 }
 
-/** Fill an element's width with n bars: bar width is `fill` of each bar's pitch. */
+/**
+ * Fill an element's width with n bars, `fill` of each pitch inked. Pitch and bar width are whole device pixels,
+ * so every bar draws alike wherever it falls; returns the pitch, px.
+ */
 export const fit = (el, n, fill = 0.55) => {
-  const W = el.clientWidth, F = parseFloat(getComputedStyle(el).fontSize), P = W / n
-  if (!W || !F) return
-  const wght = Math.min(1000, Math.max(4, fill * P / F * 4000))
-  el.style.setProperty('--wght', wght.toFixed(1))
-  el.style.setProperty('--gap', `${(P - F * wght / 4000).toFixed(3)}px`)
+  const W = el.clientWidth, F = parseFloat(getComputedStyle(el).fontSize)
+  if (!W || !F) return 0
+  const px = 1 / (globalThis.devicePixelRatio || 1), P = Math.max(2 * px, Math.floor(W / n / px) * px)
+  const wght = +Math.min(1000, Math.max(4, Math.max(px, Math.round(fill * P / px) * px) / F * 4000)).toFixed(2)
+  el.style.setProperty('--wght', wght)
+  el.style.setProperty('--gap', `${(P - wght * F / 4000).toFixed(4)}px`)
+  return P
 }
 
 /** Audio as n even bars with no gaps, `range` dB tall: a message bubble. */

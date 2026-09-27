@@ -11,27 +11,31 @@ const SEAM = 0.4    // px: touching bars overlap by this much, so no hairline sh
 /**
  * Line box of `line-height: 1.28` spans levels 0 to 128 exactly (level L sits 10L − 140 units above the baseline),
  * so a line of font size F with its box bottom on the slice bottom puts level L at L·F/100 px above it.
+ * Bar edges land on device pixels (px, in CSS px): two bars of one width draw alike, wherever they are.
  * Returns the line's style and its spans, each [style, char].
  */
-const row = (line, slice, pieceH, s) => {
+const row = (line, slice, pieceH, s, px) => {
   let widest = 0
   for (let i = 1; i < line.length; i += 4) widest = Math.max(widest, line[i])
-  const F = Math.max(slice.h * s / 1.27, (widest * s + SEAM) / WIDEST)
+  const F = +Math.max(slice.h * s / 1.27, (widest * s + SEAM) / WIDEST).toFixed(3)
   const level = y => (slice.h - y) * s / F * 100
-  const spans = []
+  const edge = x => Math.round(x * s / px) * px
+  const parts = []
   for (let i = 0; i < line.length; i += 4) {
-    const x = line[i], w = line[i + 1], ch = bar(Math.floor(level(line[i + 3])), Math.ceil(level(line[i + 2])))
-    const next = i + 4 < line.length ? line[i + 4] : x + w, gap = (next - x - w) * s
-    const k = Math.ceil((w * s + SEAM) / (WIDEST * F)), part = w * s / k
-    for (let j = 0; j < k; j++) {
-      const overlap = j < k - 1 || gap < 1 ? SEAM : 0
-      const wght = Math.min(1000, Math.max(4, (part + overlap) / F * 4000))
-      const ls = (j < k - 1 ? 0 : gap) - overlap
-      spans.push([`--wght:${wght.toFixed(1)};letter-spacing:${ls.toFixed(2)}px`, ch])
-    }
+    const a = edge(line[i]), b = Math.max(a + px, edge(line[i] + line[i + 1]))
+    const ch = bar(Math.floor(level(line[i + 3])), Math.ceil(level(line[i + 2])))
+    const k = Math.ceil((b - a + SEAM) / (WIDEST * F))
+    for (let j = 0; j < k; j++) parts.push([a + (b - a) * j / k, (b - a) / k, ch, j < k - 1])
   }
+  // each span advances by its weight, and letter-spacing takes the pen to the next start exactly
+  const spans = parts.map(([x, w, ch, joined], i) => {
+    const next = parts[i + 1]?.[0] ?? x + w
+    const wide = w + (joined || next - x - w < px ? SEAM : 0) // touching bars overlap a little: no hairline between
+    const wght = +Math.min(1000, Math.max(4, wide / F * 4000)).toFixed(1)
+    return [`--wght:${wght};letter-spacing:${(next - x - wght * F / 4000).toFixed(4)}px`, ch]
+  })
   const bottom = (pieceH - slice.y - slice.h) * s
-  return { style: `font-size:${F.toFixed(2)}px;bottom:${bottom.toFixed(2)}px;left:${(line[0] * s).toFixed(2)}px`, spans }
+  return { style: `font-size:${F}px;bottom:${bottom.toFixed(2)}px;left:${parts[0][0].toFixed(4)}px`, spans }
 }
 
 /**
@@ -43,8 +47,8 @@ export function draw(el, piece, width = el.clientWidth) {
   if (!s) return
   const ar = `${piece.w} / ${piece.h}`
   if (el.dataset.ar !== ar) el.dataset.ar = el.style.aspectRatio = ar
-  const rows = []
-  for (const slice of piece.slices) for (const line of slice.lines) if (line.length) rows.push(row(line, slice, piece.h, s))
+  const rows = [], px = 1 / (globalThis.devicePixelRatio || 1)
+  for (const slice of piece.slices) for (const line of slice.lines) if (line.length) rows.push(row(line, slice, piece.h, s, px))
   const kids = el.children
   if (kids.length === rows.length && rows.every((r, i) => kids[i].children.length === r.spans.length)) {
     rows.forEach((r, i) => {
@@ -210,3 +214,78 @@ export const motion = {
     }
   }
 }
+
+
+/* ── the article's nine in motion: each moves the way its picture suggests; t in seconds ───── */
+
+// every bar of a one-slice piece, as [x, width, top, bottom]
+const every = piece => {
+  const out = []
+  for (const line of piece.slices[0].lines) for (let i = 0; i < line.length; i += 4) out.push(line.slice(i, i + 4))
+  return out
+}
+const wrap = (v, a, b) => ((v - a) % (b - a) + (b - a)) % (b - a) + a
+const extent = bs => [Math.min(...bs.map(b => b[2])), Math.max(...bs.map(b => b[3])), Math.min(...bs.map(b => b[0])), Math.max(...bs.map(b => b[0] + b[1]))]
+// a set's free ends as a loop over x: values between neighbours, the last running on into the first
+const loop = (set, end) => {
+  const pts = set.map(b => [b[0] + b[1] / 2, b[end]]).sort((a, b) => a[0] - b[0])
+  const x0 = pts[0][0], pitch = (pts.at(-1)[0] - x0) / (pts.length - 1)
+  return x => {
+    const u = wrap(x - x0, 0, pitch * pts.length) / pitch, i = Math.floor(u), f = u - i
+    return pts[i % pts.length][1] * (1 - f) + pts[(i + 1) % pts.length][1] * f
+  }
+}
+
+export const tileMotion = [
+  // a bar chart: bars rise and fall, each at its own pace
+  piece => {
+    const bs = every(piece)
+    return t => laid(piece, bs.map(([x, w, top, bot], i) => [x, w, bot - (bot - top) * (0.74 + 0.26 * Math.sin(t * (1.1 + i * 0.37 % 0.9) + i * 2.1)), bot]))
+  },
+  // hanging bars and standing bars: two arcs passing through each other
+  piece => {
+    const bs = every(piece), [top] = extent(bs), hangs = b => b[2] - top < 2
+    const hb = loop(bs.filter(hangs), 3), st = loop(bs.filter(b => !hangs(b)), 2)
+    return t => laid(piece, bs.map(([x, w, a, e]) => hangs([x, w, a, e]) ? [x, w, a, hb(x + w / 2 + 14 * t)] : [x, w, st(x + w / 2 - 14 * t), e]))
+  },
+  // tracks and faders: each fader's bar moves up and down its track
+  piece => {
+    const bs = every(piece), [top, floor] = extent(bs)
+    const tracks = bs.filter(b => b[2] - top < 2 && floor - b[3] < 2)
+    const near = b => tracks.reduce((k, l, i) => Math.abs(l[0] - b[0]) < Math.abs(tracks[k][0] - b[0]) ? i : k, 0)
+    return t => laid(piece, bs.map(b => {
+      if (tracks.includes(b)) return b
+      const [x, w, a, e] = b, k = near(b), h = (e - a) * (0.78 + 0.32 * Math.sin(t * (1.3 + k % 3 * 0.35) + k * 1.3))
+      return [x, w, Math.max(top + 2, e - h), e]
+    }))
+  },
+  // candlesticks: the chart runs left, the oldest dropping off as new ones come in
+  piece => {
+    const bs = every(piece), [, , x0, x1] = extent(bs), span = (x1 - x0) * 1.15
+    return t => laid(piece, bs.map(([x, w, a, e]) => [wrap(x - 9 * t, x0, x0 + span), w, a, e]).filter(([x, w]) => x + w <= x1))
+  },
+  // floating lines: a wave passes through them, lifting and lowering each
+  piece => {
+    const bs = every(piece)
+    return t => laid(piece, bs.map(([x, w, a, e]) => { const d = 13 * Math.sin(2 * Math.PI * x / 110 - 1.8 * t); return [x, w, a + d, e + d] }))
+  },
+  // three rows of bars, each running at its own speed, round like a belt
+  piece => {
+    const rows = []
+    for (const b of every(piece)) {
+      const r = rows.find(r => Math.abs(r[0][2] - b[2]) < 4 && Math.abs(r[0][3] - b[3]) < 4)
+      r ? r.push(b) : rows.push([b])
+    }
+    const belts = rows.map((r, k) => {
+      const xs = r.map(b => b[0]).sort((a, b) => a - b), steps = xs.slice(1).map((x, i) => x - xs[i]).sort((a, b) => a - b)
+      const pitch = steps[steps.length >> 1] || 1
+      return { r, x0: xs[0], span: pitch * Math.round((xs.at(-1) - xs[0]) / pitch + 1), v: [11, -7, 4][k % 3] }
+    })
+    return t => laid(piece, belts.flatMap(({ r, x0, span, v }) => r.map(([x, w, a, e]) => [wrap(x + v * t, x0, x0 + span), w, a, e])).filter(([x, w]) => x + w <= piece.w))
+  },
+  // blocks round a middle line: they thump, as a speaker does on the beat
+  piece => {
+    const bs = every(piece), [top, floor] = extent(bs), mid = (top + floor) / 2
+    return t => { const k = 1 + 0.09 * Math.exp(-5 * (t * 1.4 % 1)); return laid(piece, bs.map(([x, w, a, e]) => [x, w, mid + (a - mid) * k, mid + (e - mid) * k])) }
+  }
+]
