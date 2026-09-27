@@ -246,12 +246,6 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .status output, .status b { color: var(--fg); font-weight: inherit; font-variant-numeric: tabular-nums; }
 .status > :is(output, span, p, a) { margin-bottom: var(--sink); }
 
-/* a slide offering layouts to choose from: the switch in its top right cell. Narrower, they are one: the switch shows
-   where they differ */
-.variants { grid-area: 1 / 12 / 2 / 13; justify-self: end; align-self: center; display: none; gap: var(--space-2xs); font: var(--label); }
-.variants button { width: 2rem; height: 2rem; padding: 0; border: 1px solid var(--faint); border-radius: 50%; background: none; color: var(--dim); cursor: pointer; }
-.variants button[aria-pressed="true"] { border-color: var(--fg); color: var(--fg); }
-
 /* out of view, a slide's animations hold where they are, whatever sets them going */
 .slide.off, .slide.off * { animation-play-state: paused !important; }
 
@@ -443,95 +437,6 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 /* four bars on a quarter-em pitch: the heaviest fills it, a square */
 .weights .wf { --yela: 0; font-size: 1.5rem; line-height: 1; white-space: pre; }
 
-/* ── min–max bars: a year of weather, each day from its low to its high ── */
-
-/* the plot from the second column to the eleventh, the degrees in the first; seven rows from the top, a row for
-   every 10°; the months in the row under it */
-.range .stage { grid-column: 1 / -1; }
-.temps { --chart-h: calc(7 * var(--row)); --deg: var(--col); margin: 0; align-self: start; display: grid; grid-template-columns: var(--deg) var(--plot-w, minmax(0, 1fr)); grid-template-rows: var(--chart-h) var(--row); justify-content: start; }
-/* the degrees in the first column, the plot from the second */
-.degrees { position: relative; list-style: none; margin: 0; padding: 0; height: var(--chart-h); font: var(--label); color: var(--dim); font-variant-numeric: tabular-nums; text-align: right; }
-/* each label centred on its line, 10° apart */
-.degrees li { position: absolute; right: var(--space-md); top: calc(var(--k) / 7 * 100%); transform: translateY(-50%); }
-/* range bars ignore YELA: at line-height 1, level 14 is the floor and 114 the top: −30 °C to 40 °C, a line every 10° */
-.temp-bars {
-  font-size: var(--chart-h);
-  line-height: 1;
-  height: var(--chart-h);
-  white-space: pre;
-  outline-offset: 6px;
-  background:
-    linear-gradient(to top, transparent calc(300% / 7 - 1px), var(--dim) calc(300% / 7 - 1px) calc(300% / 7 + 1px), transparent calc(300% / 7 + 1px)),
-    repeating-linear-gradient(to top, var(--faint) 0 1px, transparent 1px calc(100% / 7));
-  box-shadow: inset 0 1px var(--faint);
-  cursor: crosshair;
-}
-/* selected or hovered days are lifted by a box centred on their bars: a character's own box
-   would take the space after the bar with it */
-.temp-bars::selection { background: transparent; color: var(--fg); }
-.plot { position: relative; }
-.plot .lift { position: absolute; top: 0; height: var(--chart-h); background: var(--tint); pointer-events: none; }
-.months { grid-column: 2; align-self: start; list-style: none; margin: var(--sink) 0 0; padding: var(--space-sm) 0 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); font: var(--label); color: var(--dim); }
-.range .status a { color: inherit; }
-
-/* ── 60 fps: what drawing an hour of speech costs, milliseconds on a log scale. Three layouts to choose from: 1 the
-   four ways for one operation; 2 every operation at once; 3 a table, each time with its bar ── */
-
-.speed .stage { grid-column: 1 / -1; }
-/* the chart on the eight rows from the second, two to a decade, 0.1 ms on the floor and 1 s at the top; each decade
-   named in the first column, centred on its line; a frame at 60 fps, 16.7 ms, the line that counts */
-.race { --chart-h: calc(8 * var(--row)); grid-row: 1 / 9; align-self: start; margin: 0; display: grid; grid-template-columns: subgrid; }
-.race > * { grid-row: 1; height: var(--chart-h); }
-.scale { grid-column: 2 / 12; position: relative; pointer-events: none; font: var(--label); color: var(--dim); }
-.scale > span { position: absolute; left: 0; right: 0; bottom: calc(var(--at) * 100%); border-bottom: 1px solid var(--faint); }
-.scale b { position: absolute; right: calc(100% + var(--space-md)); bottom: 0; transform: translateY(50%); font-weight: inherit; white-space: nowrap; font-variant-numeric: tabular-nums; }
-/* over the bars; a time over it cuts it out from behind itself */
-.scale .frame { border-bottom: 2px solid var(--fg); color: var(--fg); z-index: 1; }
-/* the frame's name at the end of its line, standing on it */
-.scale i { position: absolute; right: 0; bottom: var(--space-xs); margin-bottom: var(--sink); padding-left: 0.3em; background: var(--bg); font-style: normal; white-space: nowrap; }
-/* 1: the four ways in the eight columns from the third, two each; a bar in the middle of each, its time standing on
-   it, its name hanging from the floor */
-.lanes { grid-column: 3 / 11; position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.col { position: relative; display: grid; justify-items: center; align-content: end; height: var(--chart-h); }
-.glyph { font-size: var(--chart-h); line-height: 1; height: var(--chart-h); white-space: pre; letter-spacing: 0; color: var(--unplayed); }
-.is-ours .glyph, .glyph.is-ours { color: var(--accent); }
-.col .ms { position: absolute; z-index: 2; bottom: calc(var(--h, 0) * var(--chart-h) + var(--space-xs)); margin-bottom: var(--sink); padding: 0 0.3em; background: var(--bg); font: var(--label); color: var(--fg); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.col.is-ours .ms { color: var(--accent); font-weight: 700; }
-.col .name, .group .name { position: absolute; top: calc(100% + var(--space-sm) + var(--sink)); font: var(--label); color: var(--dim); white-space: nowrap; }
-.col.is-ours .name { color: var(--fg); }
-/* 2: every operation in the ten columns from the second, two each, its four bars a half column apart in the same
-   order, named under them */
-.multiples { grid-column: 2 / 12; display: none; grid-template-columns: repeat(5, minmax(0, 1fr)); }
-.group { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); justify-items: center; align-items: end; height: var(--chart-h); }
-.group .name { left: 0; right: 0; text-align: center; }
-/* 3: a table: the ways named in the first column, the operations over the ten from the second, two each; a row each,
-   each time standing on its row's line after its bar, a row high at 1 s; times past a frame dim */
-.bench { grid-area: 3 / 1 / 8 / -1; display: none; grid-template-columns: subgrid; grid-template-rows: subgrid; font: var(--label); font-variant-numeric: tabular-nums; }
-.bench [role="row"] { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: end; }
-.bench [role="rowheader"], .bench [role="columnheader"] { margin-bottom: var(--sink); font-weight: inherit; color: var(--dim); }
-.bench [role="rowheader"] { grid-column: 1; justify-self: end; padding-right: var(--space-md); }
-.bench .is-ours [role="rowheader"] { color: var(--fg); }
-.bench [role="columnheader"], .bench [role="cell"] { grid-column: span 2; }
-.bench [role="columnheader"]:nth-child(2), .bench [role="cell"]:nth-child(2) { grid-column: 2 / span 2; }
-.bench [role="cell"] { display: flex; align-items: flex-end; gap: var(--space-xs); color: var(--fg); }
-.bench [role="cell"] .wf { --yela: -100; --wght: 480; font-size: var(--row); line-height: 1; color: var(--unplayed); }
-.bench .is-ours [role="cell"] .wf { color: var(--accent); }
-.bench [role="cell"] span:last-child { margin-bottom: var(--sink); }
-.bench .over { color: var(--dim); }
-/* the tabs: their names on the band's line, the one picked in ink and underlined */
-.ops, .browsers, .legend { display: flex; flex-wrap: wrap; gap: 0 var(--space-lg); margin-bottom: var(--sink); font: var(--label); }
-.ops button, .browsers button {
-  padding: 0; border: 0; background: none; color: var(--dim); font: inherit; cursor: pointer;
-  text-decoration: underline 1px transparent; text-underline-offset: 0.35em;
-}
-@media (hover: hover) { .ops button:hover, .browsers button:hover { color: var(--fg); } }
-.ops button[aria-checked="true"], .browsers button[aria-checked="true"] { color: var(--fg); text-decoration-color: currentColor; }
-/* the second layout's key: the four ways, each after a bar of its colour */
-.legend { display: none; color: var(--dim); }
-.legend .wf { --yela: -100; --wght: 1000; font-size: 1em; line-height: 1; margin-right: 0.4em; color: var(--unplayed); }
-.legend .is-ours { color: var(--fg); }
-.legend .is-ours .wf { color: var(--accent); }
-
 /* ── voice messages: pills, round-capped bars close together, the time beside them – as the reference ── */
 
 /* the chat on the columns in the middle, as many as a phone's width needs: the thread in the rows above the band,
@@ -586,41 +491,6 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .composer.is-on .mic { background: var(--red); }
 /* the triangle and the pause bars have round corners, as the bars have round caps */
 .round { stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
-
-/* ── renderings: twenty-five – the article's nine, op-art traced for the site, scenes of other data – each moving
-   as it suggests while it's in hand; a tile two columns wide and two rows high, five to a row across the ten
-   columns and ten rows ── */
-
-.renderings .stage { grid-row: 2 / 12; }
-.tiles { --tile-cols: 2; --tile-rows: 2; --pad: calc(var(--row) * 0.15); align-self: stretch; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; }
-.tile { grid-column: span var(--tile-cols); grid-row: span var(--tile-rows); display: grid; place-items: center; padding: var(--pad); color: var(--fg); overflow: hidden; }
-.tile > * { grid-area: 1 / 1; }
-/* the art as large as its tile allows, keeping its proportions; what slides past its edges is cut there. Each box of
-   bars paints on a layer of its own: a moving tile repaints itself, not its neighbours */
-.tile .piece { width: min(100%, calc((var(--tile-rows) * var(--row) - 2 * var(--pad)) * var(--ar, 1))); overflow: hidden; }
-.tile .art-line { will-change: transform; }
-.tile svg { width: min(100%, calc(var(--tile-rows) * var(--row) - 2 * var(--pad))); height: auto; aspect-ratio: 1; }
-.tile svg text { fill: currentColor; }
-.tile svg.spin { transform-origin: 50% 50%; animation: spin 1s steps(20) infinite paused; }
-@keyframes spin { to { transform: rotate(1turn); } }
-.tile.playing .piece:not(.over) { color: var(--unplayed); }
-.tile .over { clip-path: inset(0 100% 0 0); animation: sweep 5s linear infinite paused; }
-/* in hand, the spinner turns and the waveform plays; the rest move by the script */
-.tile:hover .spin, .tile:hover .over { animation-play-state: running; }
-@keyframes sweep { to { clip-path: inset(0 0 0 0); } }
-
-/* ── the flower: the whole screen, edge to edge, its bars as traced; it covers the screen both ways, and drifts
-   slowly along the way it overflows – down on a wide screen, across on an upright one – and back ── */
-
-.work { display: block; height: 100svh; padding: 0; overflow: hidden; }
-.work .stage { display: block; }
-.work .piece { width: max(100cqw, calc(100svh * var(--ar, 1))); transform: translate(calc((100cqw - 100%) / 2), calc((100svh - 100%) / 2)); animation: pan 48s var(--ease-in-out) infinite alternate; }
-@keyframes pan { from { transform: translate(0, 0); } to { transform: translate(calc(100cqw - 100%), calc(100svh - 100%)); } }
-
-/* traced pieces: every line is text, each bar a character standing at its own x */
-.piece { position: relative; width: 100%; }
-.art-line { position: absolute; left: 0; height: 1.28em; line-height: 1.28; letter-spacing: 0; white-space: pre; }
-.art-line > span { position: absolute; top: 0; }
 
 /* ── Voice Memos, fitted to the screen: name, the waveform band under a fixed playhead, ruler, time, transport, record ── */
 
@@ -748,15 +618,10 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 
 @media (min-width: 36rem) {
   /* two columns, the second standing under the fifth bar – the f; a row each */
-  .facts { grid-template-columns: calc(4 * var(--pitch)) auto; grid-template-rows: repeat(3, var(--row)); grid-auto-flow: column; }
+  .facts { grid-template-columns: calc(4 * var(--pitch)) auto; grid-template-rows: repeat(2, var(--row)); grid-auto-flow: column; }
 }
 
 @media (min-width: 48rem) {
-  /* the speed slide's layouts differ from here: the switch shows */
-  .variants { display: flex; }
-  .speed[data-variant="2"] .lanes, .speed[data-variant="2"] .ops, .speed[data-variant="3"] .race, .speed[data-variant="3"] .ops { display: none; }
-  .speed[data-variant="2"] .multiples, .speed[data-variant="3"] .bench { display: grid; }
-  .speed[data-variant="2"] .legend { display: flex; }
   .chat { grid-column: 2 / 10; }
   .milestones time { grid-column: 1 / 2; }
   .milestones li > span { grid-column: 2 / -1; }
@@ -786,17 +651,11 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 @media (max-width: 40rem) {
   /* the name narrower than its rows: three of them */
   .mark { --bar-rows: 3; }
-  /* the status wraps to lines: it may take the row above it too, still standing on the eleventh's foot; the speed
-     chart a row shorter to leave it that row. The weights and the count on one line */
+  /* the status wraps to lines: it may take the row above it too, still standing on the eleventh's foot. The weights
+     and the count on one line */
   .status { grid-row: 10 / 12; column-gap: var(--space-md); }
-  .race { --chart-h: calc(7 * var(--row)); }
   .weights { gap: var(--space-2xs); }
   .weights button { width: 2.25rem; height: 2.25rem; }
-  /* the ways over the ten columns from the second; the decades' lines without their names, too wide for a column */
-  .lanes { grid-column: 2 / 12; }
-  .scale b { display: none; }
-  /* the degrees in two columns, where one is too narrow for them */
-  .temps { --deg: calc(2 * var(--col)); }
   .year-marks li:nth-child(even) { visibility: hidden; }
   /* the commits a row high; the milestones, wrapping to several lines, as long as they run, down to the foot */
   .years { grid-row: 1 / 4; }
@@ -805,13 +664,9 @@ input[type="range"]:focus-visible { outline-offset: 0; }
   .milestones { grid-row: 5 / -1; grid-template-rows: none; align-content: end; row-gap: var(--space-sm); }
 }
 
-/* upright screens: a row is tall for a line of text, so it takes two; a tile is four columns wide, three to a row
-   across all twelve: the first fifteen */
+/* upright screens: a row is tall for a line of text, so it takes two */
 @media (max-aspect-ratio: 1 / 1) {
   .doc-body { line-height: calc(var(--row) / 2); }
-  .renderings .stage { grid-column: 1 / -1; }
-  .tiles { --tile-cols: 4; }
-  .tile:nth-child(n + 16) { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

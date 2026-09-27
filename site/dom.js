@@ -20,13 +20,5 @@ export const soon = (el, fn) => new IntersectionObserver(([e], io) => { if (e.is
 /** on(true) as el comes into view, on(false) as it leaves. */
 export const seen = (el, on, threshold = 0) => new IntersectionObserver(([e]) => on(e.isIntersecting), { threshold }).observe(el)
 
-/** frame(now) on every animation frame while el is in view; nothing under reduced motion. */
-export const animate = (el, frame) => {
-  if (still) return
-  let raf = 0
-  const tick = now => { frame(now), raf = requestAnimationFrame(tick) }
-  seen(el, on => { cancelAnimationFrame(raf); if (on) raf = requestAnimationFrame(tick) })
-}
-
 /** Deterministic noise, so every visit draws the same. */
 export const noise = seed => () => (seed = Math.imul(seed ^ seed >>> 15, 2246822507) + 0x9E3779B9 | 0, (seed >>> 0) / 4294967296)

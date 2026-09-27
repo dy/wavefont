@@ -44,7 +44,6 @@
   .ctl { display: grid; grid-template-columns: 7rem minmax(0, 1fr) 6ch; align-items: center; gap: 0 var(--space-sm); }
   .ctl > span { font: var(--label); color: var(--dim); }
   .ctl output { font: var(--label); font-variant-numeric: tabular-nums; text-align: right; }
-  .off { opacity: 0.4; }
   .check { display: flex; align-items: center; gap: var(--space-xs); font: var(--label); color: var(--dim); cursor: pointer; }
   .check input { width: 1.1rem; height: 1.1rem; accent-color: var(--blue); }
   .is-drawing .for-audio { opacity: 0.4; pointer-events: none; }
@@ -108,20 +107,16 @@
 
     <fieldset class="for-audio">
       <legend class="label">bars</legend>
-      <div class="chips" role="radiogroup" aria-label="Drawing">
-        <label><input type="radio" name="mode" value="loudness" checked><span>loudness</span></label>
-        <label><input type="radio" name="mode" value="minmax"><span>min–max</span></label>
-      </div>
       <label class="ctl"><span>per second</span><input type="range" name="rate" min="1" max="100" value="20"><output></output></label>
-      <label class="ctl loud"><span>range</span><input type="range" name="range" min="12" max="72" value="42"><output></output></label>
-      <label class="check loud"><input type="checkbox" name="pauses" checked> pauses as spaces</label>
+      <label class="ctl"><span>range</span><input type="range" name="range" min="12" max="72" value="42"><output></output></label>
+      <label class="check"><input type="checkbox" name="pauses" checked> pauses as spaces</label>
     </fieldset>
 
     <fieldset>
       <legend class="label">axes</legend>
       <label class="ctl"><span title="wght">weight</span><input type="range" name="wght" min="4" max="1000" value="160"><output></output></label>
       <label class="ctl"><span title="ROND">roundness</span><input type="range" name="rond" min="0" max="100" value="0"><output></output></label>
-      <label class="ctl loud"><span title="YELA">alignment</span><input type="range" name="yela" min="-100" max="100" value="0"><output></output></label>
+      <label class="ctl"><span title="YELA">alignment</span><input type="range" name="yela" min="-100" max="100" value="0"><output></output></label>
       <label class="ctl"><span>size</span><input type="range" name="size" min="12" max="160" value="56"><output></output></label>
       <label class="ctl"><span>spacing</span><input type="range" name="gap" min="0" max="0.5" step="0.005" value="0.08"><output></output></label>
     </fieldset>

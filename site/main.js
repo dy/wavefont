@@ -2,13 +2,10 @@
  * Wavefont site. Every bar on the page is a character set in Wavefont;
  * this script only decides which characters to write.
  */
-import wf, { char, bar, bars } from '../index.js'
+import wf, { char } from '../index.js'
 import { fit, weight } from './wave.js'
-import { draw, ring, motion, tileMotion, banded, reach, crop } from './art.js'
-import { scene, W, H } from './scenes.js'
-import { tiles as TILES, ring as RING, art as ART } from './art-data.js'
-import { bench, weather, commits } from './data.js'
-import { $, $$, h, soon, seen, animate, noise, still, ease, swing } from './dom.js'
+import { commits } from './data.js'
+import { $, $$, h, soon, seen, noise, still, ease, swing } from './dom.js'
 import { chat } from './chat.js'
 import { memo } from './memo.js'
 
@@ -325,267 +322,6 @@ function textDoc() {
 }
 
 
-/* ── min–max bars: a year of weather, each day from its low to its high ─── */
-
-function rangeChart() {
-  const chart = $('.temp-bars'), read = $('.temp-read'), { year, lo, hi } = weather
-  // −30 °C sits on the baseline (level 14), 40 °C one em above it (level 114): 0.7 °C a level
-  const LOW = -30, HIGH = 40, level = c => 14 + (c - LOW) / (HIGH - LOW) * 100, zero = level(0)
-  const date = i => new Date(Date.UTC(year, 0, 1 + i)).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
-  const deg = c => `${c < 0 ? '−' : ''}${Math.abs(c).toFixed(1)}`
-  // the year as n bars: each from its days' lowest low to their highest high
-  const group = n => Array.from({ length: n }, (_, k) => {
-    const a = Math.round(k * lo.length / n), b = Math.round((k + 1) * lo.length / n)
-    return [Math.min(...lo.slice(a, b)), Math.max(...hi.slice(a, b)), a, b - 1]
-  })
-  let set = [], rise = 1, at = null, pitch = 1
-  const text = () => bars(set.map(([l]) => zero + (level(l) - zero) * rise), set.map(([, u]) => zero + (level(u) - zero) * rise))
-  const low = lo.indexOf(Math.min(...lo)), high = hi.indexOf(Math.max(...hi))
-  const summary = `lowest ${deg(lo[low])} °C on ${date(low)}, highest ${deg(hi[high])} °C on ${date(high)}`
-  // days a to b (bars, inclusive): when, and the lowest low to the highest high
-  const say = (a, b) => {
-    const days = set.slice(a, b + 1), l = Math.min(...days.map(d => d[0])), u = Math.max(...days.map(d => d[1]))
-    const from = days[0][2], to = days.at(-1)[3]
-    return `${from === to ? date(from) : `${date(from)}–${date(to)}`}: ${deg(l)} to ${deg(u)} °C`
-  }
-
-  // days a to b lifted by a box centred on their bars, half a gap either side
-  const box = $('.plot .lift')
-  const lift = (a, b) => {
-    box.hidden = a == null
-    if (a == null) return
-    const gap = parseFloat(getComputedStyle(chart).letterSpacing) || 0
-    box.style.left = `${(a * pitch - gap / 2).toFixed(2)}px`, box.style.width = `${((b - a + 1) * pitch).toFixed(2)}px`
-  }
-  const pick = k => {
-    at = k, lift(k, k)
-    if (k == null) return read.textContent = summary, chart.setAttribute('aria-valuetext', summary)
-    read.textContent = say(k, k)
-    chart.setAttribute('aria-valuenow', k + 1), chart.setAttribute('aria-valuetext', read.textContent)
-  }
-  // the plot between the degrees' column and as much again on the right: the least whole-pixel pitch that holds
-  // the year, at least 3 px, and as many bars at it as fill the room – a bar a day, or a few days where it's narrow
-  const fig = $('.temps'), stage = fig.parentNode
-  new ResizeObserver(() => {
-    const room = stage.clientWidth - 2 * fig.firstElementChild.offsetWidth, px = dpx()
-    pitch = Math.ceil(Math.max(3, room / lo.length) / px) * px
-    const n = Math.min(lo.length, Math.floor(room / pitch))
-    if (n !== set.length) set = group(n), chart.textContent = text(), chart.setAttribute('aria-valuemax', n), pick(null)
-    fig.style.setProperty('--plot-w', `${(n * pitch).toFixed(2)}px`)
-    fit(chart, n, pitch > 4 ? 0.5 : 0.6, n * pitch)
-  }).observe(stage)
-  chart.addEventListener('pointermove', e => {
-    if (e.buttons || !getSelection().isCollapsed) return
-    const b = chart.getBoundingClientRect()
-    pick(Math.min(set.length - 1, Math.max(0, Math.floor((e.clientX - b.left) / pitch))))
-  })
-  chart.addEventListener('pointerleave', () => getSelection().isCollapsed ? pick(null) : sel())
-  chart.addEventListener('keydown', e => {
-    const d = { ArrowRight: 1, ArrowLeft: -1, PageDown: 7, PageUp: -7 }[e.key]
-    if (d) e.preventDefault(), pick(Math.min(set.length - 1, Math.max(0, (at ?? (d > 0 ? -1 : set.length)) + d)))
-    else if (e.key === 'Escape') pick(null)
-  })
-  chart.addEventListener('blur', () => pick(null))
-  // select days as text, and read what they held
-  const sel = () => {
-    const s = getSelection(), node = chart.firstChild
-    if (!node || !s.rangeCount || s.isCollapsed || !chart.contains(s.anchorNode)) return false
-    const r = s.getRangeAt(0), a = r.startContainer === node ? r.startOffset : 0, b = r.endContainer === node ? r.endOffset : node.length
-    // a range bar is one code point, two UTF-16 units
-    if (b > a) lift(a >> 1, (b >> 1) - 1), read.textContent = say(a >> 1, (b >> 1) - 1)
-    return b > a
-  }
-  document.addEventListener('selectionchange', () => sel() || at != null || lift(null))
-
-  // on entering: the bars unfold from 0 °C to the day's range
-  return () => {
-    if (still) return
-    const t0 = performance.now()
-    const step = now => {
-      const x = Math.min(1, (now - t0) / 1200)
-      rise = ease(x), chart.textContent = text()
-      if (at != null) pick(at)
-      if (x < 1) requestAnimationFrame(step)
-    }
-    requestAnimationFrame(step)
-  }
-}
-
-
-/* ── 60 fps: what drawing an hour of speech costs, as text and otherwise ── */
-
-function speed() {
-  const sec = $('#speed'), lanes = $('.lanes'), multi = $('.multiples'), table = $('.bench'), opBox = $('.ops'), browserBox = $('.browsers')
-  const { ops: OPS, stacks: STACKS, text: TEXT, browsers: DATA } = bench, BROWSERS = Object.keys(DATA)
-  // milliseconds on a log scale: 0.1 on the floor, 1000 at the top
-  const height = ms => ms ? Math.min(1, Math.max(0, (Math.log10(ms) + 1) / 4)) : 0
-  const num = ms => ms < 1 ? ms.toFixed(2) : ms < 10 ? ms.toFixed(1) : String(Math.round(ms))
-  const ours = i => TEXT[i] ? 'is-ours' : ''
-  const role = (el, r) => (el.setAttribute('role', r), el)
-
-  // 1: a column a way, for one operation
-  const cols = STACKS.map((name, i) => {
-    const glyph = h('span', { className: 'glyph wf' }), ms = h('span', { className: 'ms' })
-    return { el: h('div', { className: 'col ' + ours(i) }, ms, glyph, h('span', { className: 'name', textContent: name })), glyph, ms, h: 0, from: 0, to: 0 }
-  })
-  lanes.replaceChildren(...cols.map(c => c.el))
-  // 2: every operation, its four bars in the same order
-  const bars = OPS.map(() => STACKS.map((_, i) => ({ glyph: h('span', { className: 'glyph wf ' + ours(i) }), h: 0, from: 0, to: 0 })))
-  multi.replaceChildren(...OPS.map((op, j) => h('div', { className: 'group' }, ...bars[j].map(b => b.glyph), h('span', { className: 'name', textContent: op }))))
-  $('.legend').replaceChildren(...STACKS.map((s, i) => h('span', { className: ours(i) }, h('span', { className: 'wf', textContent: char(100) }), s)))
-  // 3: a table, a row a way, a column an operation; a time after its bar
-  const cells = STACKS.map(() => OPS.map(() => {
-    const b = h('span', { className: 'wf' }), n = h('span')
-    b.setAttribute('aria-hidden', 'true')
-    return { el: role(h('div', {}, b, n), 'cell'), b, n }
-  }))
-  table.replaceChildren(
-    role(h('div', {}, role(h('div'), 'columnheader'), ...OPS.map(op => role(h('div', { textContent: op }), 'columnheader'))), 'row'),
-    ...STACKS.map((s, i) => role(h('div', { className: ours(i) }, role(h('div', { textContent: s }), 'rowheader'), ...cells[i].map(c => c.el)), 'row'))
-  )
-
-  let op = 0, browser = BROWSERS[0], auto = true, raf = 0, t0 = 0, timer = 0
-  const moving = [...cols, ...bars.flat()]
-  const tween = now => {
-    const k = still ? 1 : ease(Math.min(1, (now - t0) / 650))
-    for (const c of moving) {
-      c.h = c.from + (c.to - c.from) * k
-      c.glyph.textContent = c.h ? bar(14, 14 + 100 * c.h) : ''
-      c.el?.style.setProperty('--h', c.h.toFixed(4))
-    }
-    if (k < 1) raf = requestAnimationFrame(tween)
-  }
-  const show = () => {
-    const rows = DATA[browser]
-    cols.forEach((c, i) => { const ms = rows[i][op]; c.from = c.h, c.to = height(ms), c.ms.textContent = num(ms) })
-    bars.forEach((bs, j) => bs.forEach((b, i) => { b.from = b.h, b.to = height(rows[i][j]) }))
-    cells.forEach((cs, i) => cs.forEach((c, j) => {
-      const ms = rows[i][j]
-      c.b.textContent = char(Math.round(100 * height(ms))), c.n.textContent = num(ms), c.el.classList.toggle('over', ms > 1000 / 60)
-    }))
-    const said = j => STACKS.map((s, i) => `${s} ${rows[i][j]}`).join(', ')
-    lanes.setAttribute('aria-label', `${OPS[op]}, ${browser}, milliseconds: ${said(op)}`)
-    multi.setAttribute('aria-label', `${browser}, milliseconds: ` + OPS.map((o, j) => `${o}: ${said(j)}`).join('; '))
-    for (const b of opBox.children) b.setAttribute('aria-checked', b.textContent === OPS[op])
-    for (const b of browserBox.children) b.setAttribute('aria-checked', b.textContent === browser)
-    cancelAnimationFrame(raf), t0 = performance.now(), raf = requestAnimationFrame(tween)
-  }
-  const tabs = (box, names, pick) => box.replaceChildren(...names.map((n, i) => {
-    const b = role(h('button', { type: 'button', textContent: n }), 'radio')
-    b.addEventListener('click', () => { auto = false, clearInterval(timer), pick(i), show() })
-    return b
-  }))
-  tabs(opBox, OPS, i => op = i)
-  tabs(browserBox, BROWSERS, i => browser = BROWSERS[i])
-  // bar width: a quarter of a way's column, half of a bar's place in a group; whole device pixels, whole font units
-  const thick = (el, n, fill) => new ResizeObserver(() => {
-    const px = dpx(), F = el.clientHeight
-    if (F) el.style.setProperty('--wght', weight(Math.round(fill * el.clientWidth / n / px) * px, F))
-  }).observe(el)
-  thick(lanes, STACKS.length, 0.25), thick(multi, OPS.length * STACKS.length, 0.5)
-  show()
-  // while in view and untouched, it walks through the operations, or, where they're all shown, the browsers
-  seen(sec, on => {
-    clearInterval(timer)
-    if (on && auto && !still) timer = setInterval(() => {
-      if (opBox.offsetParent) op = (op + 1) % OPS.length
-      else browser = BROWSERS[(BROWSERS.indexOf(browser) + 1) % BROWSERS.length]
-      show()
-    }, 2800)
-  }, 0.4)
-}
-
-
-/* ── renderings: the article's nine, op-art traced for the site, scenes of other data – each moving in hand ─ */
-
-// five rows of five: the article's nine among the traced pictures (#) and three scenes of other data
-const RENDERINGS = [
-  0, '#circle', 1, 'ecg', 2,
-  '#blocks', 3, '#lens', 4, '#descent',
-  5, 'barcode', 6, '#stripes', 7,
-  '#globe', 8, 'lissajous', '#steps', '#comb',
-  '#checker', '#wedge', '#stairs', '#slide', '#bands'
-]
-
-function renderings() {
-  const sec = $('#renderings'), box = $('.tiles'), moving = [], still_ = []
-  const piece = t => {
-    const el = h('div', { className: 'piece' })
-    el.style.setProperty('--ar', (t.w / t.h).toFixed(4))
-    if (t.rond) el.style.setProperty('--rond', t.rond)
-    return el
-  }
-  const tile = k => {
-    const el = h('div', { className: 'tile' })
-    // a scene of the site's own
-    if (typeof k === 'string' && k[0] !== '#') {
-      const p = piece({ w: W, h: H })
-      return moving.push([p, scene(k)]), el.append(p), el
-    }
-    // a traced picture
-    if (typeof k === 'string') {
-      const name = k.slice(1), p = piece(name === 'bands' ? banded(ART.bands) : ART[name])
-      return moving.push([p, motion[name](ART[name])]), el.append(p), el
-    }
-    // one of the article's nine: the ring spins, a spoke a step
-    const t = TILES[k], make = tileMotion[k]
-    if (!t) return el.innerHTML = ring(RING), el.firstElementChild.classList.add('spin'), el
-    // cut to where its bars go as it moves, so it fills its tile
-    const cut = crop(t, reach(t, make?.(t))), p = piece(cut)
-    el.append(p)
-    // the waveform plays: its played part sweeps across it
-    if (!make) {
-      const over = piece(cut)
-      over.classList.add('over'), el.classList.add('playing'), el.append(over), still_.push([p, cut], [over, cut])
-    } else moving.push([p, make(cut)])
-    return el
-  }
-  box.replaceChildren(...RENDERINGS.map(tile))
-
-  // a tile moves while it's in hand: its time runs, from 5 s in, when every scene is under way, and a traced picture
-  // follows the pointer over it. Let go, it eases back to rest
-  const hand = new Map(), width = new Map()
-  for (const [el] of moving) {
-    const s = { x: 0.5, y: 0.5, k: 0, tx: 0.5, ty: 0.5, tk: 0, t: 5 }, tile = el.parentNode
-    hand.set(el, s)
-    const aim = (e, on) => {
-      const r = el.getBoundingClientRect()
-      s.tk = +on, s.tx = on ? Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)) : 0.5, s.ty = on ? Math.min(1, Math.max(0, (e.clientY - r.top) / r.height)) : 0.5
-    }
-    tile.addEventListener('pointerenter', e => aim(e, true)), tile.addEventListener('pointermove', e => aim(e, true))
-    tile.addEventListener('pointerleave', e => aim(e, false))
-  }
-  // each at its own width, read when the layout changes, not as it moves; a hidden one isn't drawn
-  const redraw = ([el, at]) => { const s = hand.get(el); width.get(el) && draw(el, at(s.t, s), width.get(el)) }
-  new ResizeObserver(() => {
-    for (const [el] of [...still_, ...moving]) width.set(el, el.clientWidth)
-    still_.forEach(([el, t]) => draw(el, t, width.get(el))), moving.forEach(redraw)
-  }).observe(box)
-  let last = null
-  animate(sec, now => {
-    const t = now / 1000, dt = Math.min(0.1, t - (last ?? t))
-    last = t
-    for (const m of moving) {
-      const s = hand.get(m[0])
-      if (!s.tk && !s.k && s.x === 0.5 && s.y === 0.5) continue
-      const f = Math.min(1, dt * 6)
-      s.x += (s.tx - s.x) * f, s.y += (s.ty - s.y) * f, s.k += (s.tk - s.k) * Math.min(1, dt * 4), s.t += dt * s.k
-      // near enough, at rest exactly: the picture as traced
-      if (!s.tk && s.k < 1e-3 && Math.abs(s.x - 0.5) < 1e-3 && Math.abs(s.y - 0.5) < 1e-3) s.x = s.y = 0.5, s.k = 0
-      redraw(m)
-    }
-  })
-}
-
-// the flower, the whole screen wide, its bars as traced: taller than the screen, it drifts from its top to its foot
-function artwork(sec) {
-  const rest = ART[sec.dataset.piece], el = $('.piece', sec)
-  el.dataset.ar = el.style.aspectRatio = `${rest.w} / ${rest.h}`
-  el.style.setProperty('--ar', (rest.w / rest.h).toFixed(4))
-  new ResizeObserver(([e]) => draw(el, rest, e.contentRect.width)).observe(el)
-}
-
-
 /* ── journey: ten years of commits, as a recording ───────────────────────── */
 
 function journey() {
@@ -652,14 +388,6 @@ function get() {
   }).observe(stage)
 }
 
-// a slide offering layouts to choose from: its switch sets which
-const variants = () => $$('.variants').forEach(box => {
-  const sec = box.closest('.slide'), buttons = $$('button', box)
-  buttons.forEach(b => b.addEventListener('click', () => {
-    sec.dataset.variant = b.textContent, buttons.forEach(x => x.setAttribute('aria-pressed', x === b))
-  }))
-})
-
 // the layout's grid, for tuning while building: the switch top right or g toggles it, ?grid opens with it
 const overlay = () => {
   const root = document.documentElement, button = $('.grid-toggle')
@@ -673,14 +401,10 @@ const overlay = () => {
 /* ── start ───────────────────────────────────────────────────────────────── */
 
 overlay()
-variants()
 hero()
 keys()
 axes()
-speed()
 chat()
-soon($('#renderings'), renderings)
-for (const sec of $$('.work')) soon(sec, () => artwork(sec))
 memo()
 journey()
 get()
@@ -691,6 +415,6 @@ const view = new IntersectionObserver(es => es.forEach(e => e.target.classList.t
 $$('main > .slide').forEach(s => view.observe(s))
 
 // each slide's own motion runs when most of it is in view
-const onenter = { values: values(), text: textDoc(), range: rangeChart() }
+const onenter = { values: values(), text: textDoc() }
 const once = new IntersectionObserver(entries => entries.forEach(e => e.isIntersecting && onenter[e.target.id]?.()), { threshold: 0.45 })
 $$('main > .slide').forEach(s => once.observe(s))

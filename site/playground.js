@@ -2,7 +2,7 @@
  * Playground: audio – a file, your voice, a sample – or bars drawn by hand, as a line of Wavefont text,
  * with the code that writes it. Nothing leaves the browser.
  */
-import wf, { bars } from '../index.js'
+import wf from '../index.js'
 import { levels, speech, decode, buffer, voice, song, playing } from './sound.js'
 import { clock, copy, track, listen, micError, fit } from './wave.js'
 import { colour } from './code.js'
@@ -41,21 +41,10 @@ export function playground() {
   // on the pad, a click draws: it doesn't pick a bar to play from
   const trDraw = track(pad, { ontime: t => $('.t-now').textContent = clock(t), onstate: ui, pick: false })
 
-  // ── audio → text: loudness per slice (pauses as spaces), or each slice from its lowest sample to its highest
+  // ── audio → text: loudness per slice (pauses as spaces)
   const drawn = () => {
     const d = source.getChannelData(0), n = Math.max(4, Math.min(20000, Math.round(source.duration * val('rate'))))
     const dt = source.duration / n, at = Array.from({ length: n + 1 }, (_, i) => i * dt)
-    if (val('mode') === 'minmax') {
-      let peak = 0
-      for (const x of d) peak = Math.max(peak, Math.abs(x))
-      const lo = new Float32Array(n), hi = new Float32Array(n)
-      for (let i = 0; i < n; i++) {
-        let a = 0, b = 0
-        for (let j = Math.floor(i * d.length / n), e = Math.floor((i + 1) * d.length / n); j < e; j++) a = Math.min(a, d[j]), b = Math.max(b, d[j])
-        lo[i] = 64 * (a / (peak || 1) + 1), hi[i] = 64 * (b / (peak || 1) + 1)
-      }
-      return { lo, hi, take: { buf: source, text: bars(lo, hi), at } }
-    }
     const lv = levels(d, n, val('range'))
     if (val('pauses')) return { lv, take: { buf: source, ...speech(lv, dt, false, 0.14, Math.max(2, Math.round(0.25 / dt))) } }
     return { lv, take: { buf: source, text: wf(Array.from(lv, v => v * 100)), at } }
@@ -118,8 +107,6 @@ export function playground() {
     preview.style.setProperty('--gap', val('gap') + 'em'), preview.style.fontSize = val('size') + 'px'
     const labels = { rate: v => `${v}/s`, range: v => `${v} dB`, wght: v => v, rond: v => v, yela: v => v, size: v => `${v}px`, gap: v => `${(+v).toFixed(3)}em` }
     for (const [k, f] of Object.entries(labels)) input(k).nextElementSibling.textContent = f(val(k))
-    const loud = val('mode') === 'loudness'
-    $$('.loud').forEach(e => e.classList.toggle('off', !loud)), $$('.loud input').forEach(i => i.disabled = !loud)
     if (drawing) fit(pad, drawing.length, 0.5)
     code()
   }
@@ -128,12 +115,10 @@ export function playground() {
   const code = () => {
     if (!result) return
     const t = result.take.text, ints = a => '[' + Array.from(a, v => Math.round(v)).join(', ') + ']'
-    const axes = `'wght' ${val('wght')}, 'ROND' ${val('rond')}` + (result.lo ? '' : `, 'YELA' ${val('yela')}`)
+    const axes = `'wght' ${val('wght')}, 'ROND' ${val('rond')}, 'YELA' ${val('yela')}`
     const css = `font: ${val('size')}px/1.25 wavefont; font-variation-settings: ${axes}; letter-spacing: ${val('gap')}em`
     const src = {
-      js: result.lo
-        ? `import { bars } from 'wavefont'\n\n// one bar per slice, from its lowest level to its highest (0–127, 64 the middle)\nel.textContent = bars(\n  ${ints(result.lo)},\n  ${ints(result.hi)}\n)`
-        : `import wf from 'wavefont'\n\n// ${drawing ? 'the bars drawn' : 'loudness per slice'}, 0–100\nel.textContent = wf(${ints(Array.from(result.lv, v => v * 100))})`,
+      js: `import wf from 'wavefont'\n\n// ${drawing ? 'the bars drawn' : 'loudness per slice'}, 0–100\nel.textContent = wf(${ints(Array.from(result.lv, v => v * 100))})`,
       html: `<style>\n@font-face { font-family: wavefont; font-display: block; src: url(${CDN}) format('woff2'); }\n</style>\n<span style="${css}">${t}</span>`,
       text: t
     }[tab]
@@ -182,7 +167,7 @@ export function playground() {
   $('.pg-play').addEventListener('click', () => { const tr = drawing ? trDraw : trAudio; tr.take && tr.toggle() })
   $('.pg-copy').addEventListener('click', e => copy(e.currentTarget, out.dataset.raw ?? ''))
   for (const i of $$('.pg-panel input:not([type=file]):not([name=sample])')) i.addEventListener('input', () => {
-    if (['rate', 'range', 'pauses', 'mode'].includes(i.name)) drawing ? paint() : analyse()
+    if (['rate', 'range', 'pauses'].includes(i.name)) drawing ? paint() : analyse()
     style()
   })
 
