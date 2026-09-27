@@ -34,8 +34,6 @@
           <li><a href="#values">127 values</a></li>
           <li><a href="#axes">3 axes</a></li>
           <li><a href="#text">textual semantics</a></li>
-          <li><a href="#range">min–max bars</a></li>
-          <li><a href="#speed">60 fps</a></li>
         </ul>
       </div>
     </div>
@@ -84,37 +82,6 @@
     </div>
   </section>
 
-  <section id="range" class="slide blue range" aria-label="Min–max bars">
-    <div class="stage">
-      <figure class="temps">
-        <ol class="degrees" aria-hidden="true"><li style="--k: 0">40°</li><li style="--k: 1">30°</li><li style="--k: 2">20°</li><li style="--k: 3">10°</li><li style="--k: 4">0°</li><li style="--k: 5">−10°</li><li style="--k: 6">−20°</li><li style="--k: 7">−30°</li></ol>
-        <div class="plot"><div class="temp-bars wf" role="slider" tabindex="0" aria-label="Montreal, 2025, daily low to high temperature" aria-valuemin="1" aria-valuemax="365"></div><div class="lift" hidden></div></div>
-        <ol class="months" aria-hidden="true"><li>j</li><li>f</li><li>m</li><li>a</li><li>m</li><li>j</li><li>j</li><li>a</li><li>s</li><li>o</li><li>n</li><li>d</li></ol>
-      </figure>
-    </div>
-    <div class="status">
-      <output class="temp-read" aria-live="polite"></output>
-      <span class="source">Montreal 2025, daily low to high, °C · <a href="https://open-meteo.com/">Open-Meteo</a></span>
-    </div>
-  </section>
-
-  <section id="speed" class="slide gray speed" data-variant="1" aria-label="60 fps: what drawing an hour of speech costs">
-    <div class="variants" role="group" aria-label="Layout of this slide"><button type="button" aria-pressed="true">1</button><button type="button" aria-pressed="false">2</button><button type="button" aria-pressed="false">3</button></div>
-    <div class="stage">
-      <figure class="race">
-        <div class="scale" aria-hidden="true"><span style="--at: 1"><b>1 s</b></span><span style="--at: .75"><b>100 ms</b></span><span style="--at: .5"><b>10 ms</b></span><span style="--at: .25"><b>1 ms</b></span><span style="--at: 0"><b>0.1 ms</b></span><span class="frame" style="--at: .5557"><i>16.7 ms, 60 fps</i></span></div>
-        <div class="lanes" role="img"></div>
-        <div class="multiples" role="img"></div>
-      </figure>
-      <div class="bench" role="table" aria-label="Milliseconds to draw an hour of speech"></div>
-    </div>
-    <div class="status">
-      <div class="ops" role="radiogroup" aria-label="Operation"></div>
-      <div class="legend" aria-hidden="true"></div>
-      <div class="browsers" role="radiogroup" aria-label="Browser"></div>
-    </div>
-  </section>
-
   <section id="messages" class="slide white messages" aria-label="Voice messages">
     <div class="stage">
       <div class="chat">
@@ -159,12 +126,6 @@
     </div>
   </section>
 
-  <section id="renderings" class="slide dark renderings" aria-label="Renderings">
-    <div class="stage"><div class="tiles"></div></div>
-  </section>
-
-  <section class="slide dark work" data-piece="figure" aria-label="A flower drawn by the widths of white lines on black"><div class="stage"><div class="piece"></div></div></section>
-
   <section id="journey" class="slide gray journey" aria-label="Journey">
     <div class="stage">
       <figure class="years">
@@ -178,7 +139,6 @@
         <li><time datetime="2021-02">2021</time><span><a class="tag" href="https://github.com/dy/wavefont/tree/fa6a3d461c368c97306c5d2b8861f7be2ff8e0ae">v2</a> finished: three axes – width, alignment, roundness – and accents that shift bars; <a href="https://github.com/dy/linefont">linefont</a> for lines</span></li>
         <li><time datetime="2022-11">2022</time><span><a class="tag" href="https://github.com/dy/wavefont/releases/tag/v3.1.1">v3</a> to Google Fonts’ standards: registered axes, Latin Core</span></li>
         <li><time datetime="2023-06">2023</time><span>on <a href="https://fonts.google.com/specimen/Wavefont">Google Fonts</a></span></li>
-        <li><time datetime="2026-09">2026</time><span><a href="https://github.com/dy/wavefont/releases/tag/v3.8.0">min–max bars</a>, one character each: 60 fps</span></li>
       </ol>
     </div>
   </section>
@@ -187,7 +147,7 @@
     <div class="stage">
       <div class="pad">
         <div class="pad-bars wf" role="img" aria-label="Bars drawn with the pencil: draw over them, or type their values under them"></div>
-        <label class="pad-values"><span class="sr">Values of the bars, 0 to 100</span><input type="text" inputmode="numeric" spellcheck="false" autocomplete="off"></label>
+        <label class="pad-values"><span class="sr">Values of the bars, 0 to 100</span><input type="text" spellcheck="false" autocomplete="off"></label>
         <button class="pad-copy" type="button" title="Copy the bars as text">copy</button>
       </div>
       <ul class="links">
@@ -199,7 +159,7 @@
       </ul>
     </div>
     <div class="status">
-      <p class="credits">Wavefont <span class="s-version">3.8.1</span> by <a href="https://github.com/dy">Dmitry Iv</a>, under the <a href="https://github.com/dy/wavefont/blob/master/OFL.txt">SIL Open Font License</a></p>
+      <p class="credits">Wavefont <span class="s-version">3.8.2</span> by <a href="https://github.com/dy">Dmitry Iv</a>, under the <a href="https://github.com/dy/wavefont/blob/master/OFL.txt">SIL Open Font License</a></p>
       <a class="om" href="https://github.com/krishnized/license/" aria-label="ॐ: the Krishnized license">ॐ</a>
     </div>
   </section>
