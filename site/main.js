@@ -4,7 +4,8 @@
  */
 import wf, { char, bar, bars } from '../index.js'
 import { fit, weight } from './wave.js'
-import { draw, ring, motion, tileMotion, drift } from './art.js'
+import { draw, ring, motion, tileMotion, drift, banded, reach, crop } from './art.js'
+import { scene, W, H } from './scenes.js'
 import { tiles as TILES, ring as RING, art as ART } from './art-data.js'
 import { bench, weather, commits } from './data.js'
 import { $, $$, h, soon, seen, animate, noise, still, ease, swing } from './dom.js'
@@ -119,54 +120,15 @@ function values() {
 }
 
 
-/* ── latin+ core: the keys that draw bars – four layouts to choose from ───── */
+/* ── latin+ core: the keys that draw bars – a to z, A to Z, then the digits, the blocks and the rest ──────── */
 
-const LOWER = 'abcdefghijklmnopqrstuvwxyz', UPPER = LOWER.toUpperCase(), DIGITS = '0123456789'
-const BLOCKS = '▁▂▃▄▅▆▇█', SYMBOLS = '|-–_.*', MARKS = [['\u0302', 'ˆ'], ['\u0301', '´'], ['\u0300', '`'], ['\u030C', 'ˇ']]
+// three lines of 26: the letters low to high, the capitals on up, the digits, blocks and symbols a key apart
+const KEYS = ['abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', '0123456789 ▁▂▃▄▅▆▇█ |-–_.*']
 
 function keys() {
-  const sec = $('#keys'), map = $('.keymap', sec), buttons = $$('.variants button', sec)
-  // a key: its bar over its name
-  const key = (glyph, name = glyph) => h('span', { className: 'k' }, h('b', { className: 'wf', textContent: glyph }), name)
-  const set = chars => h('span', { className: 'set' }, ...Array.from(chars, c => key(c)))
-  // a mark, shown on a bar of its own and named by its spacing form
-  const marks = () => h('span', { className: 'set marks' }, ...MARKS.map(([m, name]) => key('Ĩ' + m, name)))
-  const line = (...parts) => h('div', { className: 'line' }, ...parts)
-  const rest = () => [set(DIGITS), set(BLOCKS), set(SYMBOLS), marks()]
-  // a keyboard: the keys where the fingers find them, a column each; shift, or the Shift key, for the capitals
-  let flip = null
-  const keyboard = () => {
-    const shift = h('button', { type: 'button', className: 'k shift', textContent: 'shift' })
-    shift.setAttribute('aria-pressed', 'false')
-    const lines = ['1234567890', 'qwertyuiop', 'asdfghjkl', 'zxcvbnm'].map((r, i) => line(...(i === 3 ? [shift] : []), set(r)))
-    flip = up => {
-      shift.setAttribute('aria-pressed', up)
-      for (const k of lines.flatMap(l => [...l.querySelectorAll('.set .k')])) {
-        const c = up ? k.lastChild.data.toUpperCase() : k.lastChild.data.toLowerCase()
-        k.firstChild.textContent = k.lastChild.data = c
-      }
-    }
-    shift.addEventListener('click', () => flip(shift.getAttribute('aria-pressed') !== 'true'))
-    return lines
-  }
-  const LAYOUTS = {
-    // the letters low to high, the capitals on up, then the digits and the rest
-    1: () => [line(set(LOWER)), line(set(UPPER)), line(...rest())],
-    // one ramp, a to Z, then the rest
-    2: () => [line(set(LOWER + UPPER)), line(...rest())],
-    3: keyboard,
-    // each set named by what it draws
-    4: () => [['1 – 50', set(LOWER)], ['52 – 100', set(UPPER)], ['1 – 90', set(DIGITS)], ['1 – 100', set(BLOCKS)], ['100, 1', set(SYMBOLS)], ['±10, ±1', marks()]]
-      .map(([name, s]) => line(h('span', { className: 'name', textContent: name }), s))
-  }
-  const show = v => {
-    sec.dataset.variant = v, buttons.forEach(b => b.setAttribute('aria-pressed', b.textContent === v))
-    flip = null, map.replaceChildren(...LAYOUTS[v]())
-  }
-  buttons.forEach(b => b.addEventListener('click', () => show(b.textContent)))
-  // the Shift key, held, shows the capitals on the keyboard
-  for (const type of ['keydown', 'keyup']) addEventListener(type, e => { if (e.key === 'Shift' && flip) flip(type === 'keydown') })
-  show(sec.dataset.variant)
+  // a key: its bar standing on the line, its name under it; a space keeps a key's room empty
+  const key = c => c === ' ' ? h('span', { className: 'k' }) : h('span', { className: 'k' }, h('b', { className: 'wf', textContent: c }), h('i', { textContent: c }))
+  $('.keymap').replaceChildren(...KEYS.map(line => h('div', { className: 'line' }, ...Array.from(line, key))))
 }
 
 
@@ -220,7 +182,7 @@ function textDoc() {
   // words of speech; a quiet run is hyphens: dots that end a word the way a pause does
   const word = () => wf(swell(3 + r() * 14 | 0, 18 + r() * 52))
   const para = n => Array.from({ length: n }, () => word() + (r() < 0.3 ? '-'.repeat(1 + r() * 7 | 0) : '')).join(' ')
-  body.textContent = para(40) + '\n\n' + para(22)
+  body.textContent = para(37) + '\n\n' + para(17)
 
   // weights as a share of the pitch, the heaviest filling it: the pitch stays, so bolder bars stand closer
   const FILL = [1 / 7, 2 / 7, 1 / 2, 3 / 4, 1], PITCH = new Map([[title, 0.24], [body, 1 / 7]]), BASE = new Map([[title, 2], [body, 0]])
@@ -496,7 +458,16 @@ function speed() {
 }
 
 
-/* ── renderings: the article's nine, set again, each moving as it suggests ─ */
+/* ── renderings: the article's nine, pictures traced for the site, scenes of other data – each moving ─── */
+
+// five rows of five: the article's nine between scenes of other data, then the pictures (#) among the last
+const RENDERINGS = [
+  0, 'spectrum', 1, 'ecg', 2,
+  'histogram', 3, 'lissajous', 4, 'automaton',
+  5, 'barcode', 6, 'clock', 7,
+  'sorting', 8, 'halftone', '#steps', 'boxplot',
+  '#checker', 'rain', '#stairs', '#slide', '#bands'
+]
 
 function renderings() {
   const sec = $('#renderings'), box = $('.tiles'), moving = [], still_ = []
@@ -506,34 +477,58 @@ function renderings() {
     if (t.rond) el.style.setProperty('--rond', t.rond)
     return el
   }
-  const nine = TILES.map((t, i) => {
-    const tile = h('div', { className: 'tile' })
-    // the ring is a spinner: it turns, a spoke a step
-    if (!t) return tile.innerHTML = ring(RING), tile.firstElementChild.classList.add('spin'), tile
-    const el = piece(t)
-    tile.append(el)
+  // the tile at place i of the grid: row i / 5, column i % 5
+  const tile = (k, i) => {
+    const el = h('div', { className: 'tile' })
+    // a scene of the site's own
+    if (typeof k === 'string' && k[0] !== '#') {
+      const at = scene(k), p = piece({ w: W, h: H })
+      return moving.push([p, at, i]), el.append(p), el
+    }
+    // a traced picture, moving as it would under a pointer left alone
+    if (typeof k === 'string') {
+      const name = k.slice(1), at = motion[name](ART[name]), p = piece(name === 'bands' ? banded(ART.bands) : ART[name])
+      return moving.push([p, t => at(t, drift(t)), i]), el.append(p), el
+    }
+    // one of the article's nine: the ring spins, a spoke a step
+    const t = TILES[k], make = tileMotion[k]
+    if (!t) return el.innerHTML = ring(RING), el.firstElementChild.classList.add('spin'), el
+    // cut to where its bars go as it moves, so it fills its tile
+    const cut = crop(t, reach(t, make?.(t))), p = piece(cut)
+    el.append(p)
     // the waveform plays: its played part sweeps across it
-    if (!tileMotion[i]) {
-      const over = piece(t)
-      over.classList.add('over'), tile.classList.add('playing'), tile.append(over), still_.push([el, t], [over, t])
-    } else moving.push([el, tileMotion[i](t)])
-    return tile
-  })
-  // the traced pictures, moving as they would under a pointer left alone
-  const more = ['steps', 'checker', 'stairs'].map(name => {
-    const el = piece(ART[name]), at = motion[name](ART[name])
-    el.classList.add('pic'), moving.push([el, t => at(t, drift(t))])
-    return h('div', { className: 'tile' }, el)
-  })
-  box.replaceChildren(...nine, ...more)
-  // each at its own width, read when the layout changes, not as it moves
-  const width = new Map()
-  let time = 0
+    if (!make) {
+      const over = piece(cut)
+      over.classList.add('over'), el.classList.add('playing'), el.append(over), still_.push([p, cut], [over, cut])
+    } else moving.push([p, make(cut), i])
+    return el
+  }
+  box.replaceChildren(...RENDERINGS.map(tile))
+  // each at its own width, read when the layout changes, not as it moves; a hidden one isn't drawn. Each keeps its
+  // own time, from 5 s in, when every scene is under way: the histogram filled, the code printed
+  const width = new Map(), clock = new Map(), time = el => clock.get(el) ?? 5
+  const redraw = ([el, at]) => width.get(el) && draw(el, at(time(el)), width.get(el))
   new ResizeObserver(() => {
     for (const [el] of [...still_, ...moving]) width.set(el, el.clientWidth)
-    still_.forEach(([el, t]) => draw(el, t, width.get(el))), moving.forEach(([el, at]) => draw(el, at(time), width.get(el)))
+    still_.forEach(([el, t]) => draw(el, t, width.get(el))), moving.forEach(redraw)
   }).observe(box)
-  animate(sec, now => { time = now / 1000, moving.forEach(([el, at]) => draw(el, at(time), width.get(el))) })
+  // time runs through the grid as a wave, corner to corner every 10 s: a tile eases into motion as the wave reaches
+  // it and back to rest behind it, a third of them moving at once; the one under the pointer moves as well
+  const over = new Map(), near = new Map()
+  box.addEventListener('pointerover', e => over.set(e.target.closest('.tile'), 1))
+  box.addEventListener('pointerout', e => over.set(e.target.closest('.tile'), 0))
+  let last = null
+  animate(sec, now => {
+    const t = now / 1000, dt = Math.min(0.1, t - (last ?? t))
+    last = t
+    for (const m of moving) {
+      const [el, , i] = m, tile = el.parentNode, u = ((t / 10 - ((i / 5 | 0) + i % 5) / 9) % 1 + 1) % 1
+      const hand = (near.get(tile) ?? 0) + ((over.get(tile) ?? 0) - (near.get(tile) ?? 0)) * Math.min(1, dt * 4)
+      const v = Math.max(u < 0.35 ? Math.sin(Math.PI * u / 0.35) ** 2 : 0, hand)
+      near.set(tile, hand)
+      if (v > 1e-3) clock.set(el, time(el) + dt * v), redraw(m)
+    }
+  })
 }
 
 // the flower, the whole screen wide, its bars as traced: taller than the screen, it drifts from its top to its foot
@@ -551,7 +546,8 @@ function journey() {
   const el = $('.commits'), { months } = commits, top = Math.sqrt(Math.max(...months))
   // a bar per month, square-rooted so quiet months still show; a month with none is a dot
   el.textContent = wf(months.map(n => n ? 8 + 92 * Math.sqrt(n) / top : 1))
-  new ResizeObserver(() => fit(el, months.length, 0.5)).observe(el)
+  // the versions and the years start at their months' bars
+  new ResizeObserver(() => el.parentNode.style.setProperty('--pitch', `${fit(el, months.length, 0.5)}px`)).observe(el)
 }
 
 
@@ -560,7 +556,28 @@ function journey() {
 function get() {
   // the version this page was built with, as the package says
   soon($('#get'), () => fetch('package.json').then(r => r.json()).then(p => $('.s-version').textContent = p.version).catch(() => {}))
+  // each link's name, and the same name set in the font: its bars, shown where the layout draws them
+  const links = $$('.links a'), px = dpx()
+  for (const a of links) {
+    const bars = h('span', { className: 'wf', textContent: a.textContent })
+    bars.setAttribute('aria-hidden', 'true')
+    a.replaceChildren(bars, h('span', { className: 'name', textContent: a.textContent }))
+  }
+  // all on one pitch, whole device pixels: the longest name and a pitch more to two of the stage's ten columns
+  const stage = $('#get .stage')
+  new ResizeObserver(() => {
+    const most = Math.max(...links.map(a => a.lastChild.textContent.length)), P = Math.floor(stage.clientWidth / 5 / (most + 1) / px) * px
+    for (const a of links) { const b = a.firstChild; fit(b, b.textContent.length, 0.5, b.textContent.length * P) }
+  }).observe(stage)
 }
+
+// a slide offering layouts to choose from: its switch sets which
+const variants = () => $$('.variants').forEach(box => {
+  const sec = box.closest('.slide'), buttons = $$('button', box)
+  buttons.forEach(b => b.addEventListener('click', () => {
+    sec.dataset.variant = b.textContent, buttons.forEach(x => x.setAttribute('aria-pressed', x === b))
+  }))
+})
 
 // the layout's grid, for tuning while building: the switch top right or g toggles it, ?grid opens with it
 const overlay = () => {
@@ -575,6 +592,7 @@ const overlay = () => {
 /* ── start ───────────────────────────────────────────────────────────────── */
 
 overlay()
+variants()
 hero()
 keys()
 axes()
@@ -585,6 +603,11 @@ for (const sec of $$('.work')) soon(sec, () => artwork(sec))
 memo()
 journey()
 get()
+
+// a slide out of view holds its CSS animations: they would still cost frames there. In view is a pixel in, not
+// just touching the edge
+const view = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('off', !e.isIntersecting)), { rootMargin: '-1px' })
+$$('main > .slide').forEach(s => view.observe(s))
 
 // each slide's own motion runs when most of it is in view
 const onenter = { values: values(), text: textDoc(), range: rangeChart() }

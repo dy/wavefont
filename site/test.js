@@ -61,11 +61,12 @@ test('wav: 16-bit PCM mono, header as the RIFF WAVE spec lays it out', async () 
 })
 
 const { tiles, art, ring: RING } = await import('./art-data.js')
-const { ring } = await import('./art.js')
+const { ring, banded } = await import('./art.js')
 
 test('traced pieces: bars inside their slice, each line sorted and not overlapping', () => {
-  const pieces = [...tiles.filter(Boolean), ...Object.values(art)]
-  assert.equal(pieces.length, 8 + 4)
+  // the bands are measured, not traced: set as a piece
+  const pieces = [...tiles.filter(Boolean), ...Object.values(art).filter(p => p.slices), banded(art.bands)]
+  assert.equal(pieces.length, 8 + 5 + 1)
   for (const p of pieces) for (const s of p.slices) {
     assert.ok(s.y >= 0 && s.y + s.h <= p.h + 1)
     for (const line of s.lines) {
@@ -118,7 +119,7 @@ test('commits: one count per month, August 2016 to September 2026', () => {
   assert.ok(commits.months[0] > 0 && commits.months.at(-1) > 0, 'first and last month have commits')
 })
 
-const { motion, tileMotion } = await import('./art.js')
+const { motion, tileMotion, reach, crop } = await import('./art.js')
 
 test('motion: every piece, anywhere the pointer is, stays a set of bars inside its slices', () => {
   for (const [name, make] of Object.entries(motion)) {
@@ -152,6 +153,60 @@ test('tiles in motion: at any time, bars inside their tile', () => {
       }
     }
   })
+})
+
+test('motion: slide and stairs at rest are the traced pieces', () => {
+  const bars = p => p.slices.flatMap(s => s.lines.flatMap(l => Array.from({ length: l.length / 4 }, (_, i) => l.slice(4 * i, 4 * i + 4)).filter(b => b[1] > 1).map(b => [s.y, ...b].join()))).sort()
+  for (const name of ['slide', 'stairs']) assert.deepEqual(bars(motion[name](art[name])(0, { x: 0.5, y: 0.5 })), bars(art[name]), name)
+})
+
+test('tiles cut to where they move: at any time, bars inside the cut', () => {
+  tileMotion.forEach((make, i) => {
+    const cut = crop(tiles[i], reach(tiles[i], make(tiles[i]))), at = make(cut)
+    assert.ok(cut.w <= tiles[i].w && cut.h <= tiles[i].h && cut.w < tiles[i].w, `tile ${i}: ${cut.w} × ${cut.h}`)
+    for (const t of [0, 0.4, 2.7, 13.1, 61.3]) for (const line of at(t).slices[0].lines) for (let k = 0; k < line.length; k += 4) {
+      const [x, w, top, bot] = line.slice(k, k + 4)
+      assert.ok(x >= -1 && x + w <= cut.w + 1 && top >= -1 && bot <= cut.h + 1, `tile ${i} at ${t}: ${line.slice(k, k + 4)} of ${cut.w} × ${cut.h}`)
+    }
+  })
+})
+
+const { scenes, scene, W, H, CODE39, code39 } = await import('./scenes.js')
+
+test('scenes: at any time, bars inside their frame, each line a run of text', () => {
+  for (const name of Object.keys(scenes)) {
+    const at = scene(name)
+    for (const t of [0, 0.05, 0.4, 2.7, 9.99, 13.1, 61.3, 600.2]) {
+      const p = at(t)
+      assert.equal(p.w, W), assert.equal(p.h, H)
+      for (const line of p.slices[0].lines) for (let k = 0; k < line.length; k += 4) {
+        const [x, w, top, bot] = line.slice(k, k + 4)
+        assert.ok([x, w, top, bot].every(Number.isFinite) && w > 0 && x >= 0 && x + w <= W + 1e-9, `${name} at ${t}: x ${x} w ${w}`)
+        assert.ok(top >= 0 && bot > top && bot <= H + 1e-9, `${name} at ${t}: ${top}..${bot}`)
+        if (k) assert.ok(x >= line[k - 4] + line[k - 3] - 1e-9, `${name}: bars of a line don't start inside each other`)
+      }
+    }
+  }
+})
+
+test('code 39: WAVEFONT reads back from the bars the scene draws', () => {
+  // ISO/IEC 16388: nine elements a character, three wide; a narrow space between characters; * starts and stops.
+  // The table decodes with zxing-cpp, an independent reader: 43 characters and the star
+  for (const [c, p] of Object.entries(CODE39)) assert.ok(p.length === 9 && [...p].filter(e => e === 'w').length === 3, c)
+  assert.equal(new Set(Object.values(CODE39)).size, 43 + 1)
+  const { bars, width } = code39('WAVEFONT')
+  assert.equal(bars.length, 10 * 5)
+  assert.equal(width, 10 * (6 + 3 * 3) + 9, 'ten characters of fifteen modules, nine gaps')
+  // the bars drawn once it's printed, left to right; a module is the frame over the code and ten modules of quiet
+  // either side
+  const line = scene('barcode')(5).slices[0].lines.flat(), at = new Map()
+  for (let k = 0; k < line.length; k += 4) at.set(line[k], line[k + 1])
+  const xs = [...at].sort((a, b) => a[0] - b[0]), m = W / (width + 20), kind = v => v > 2 * m ? 'w' : 'n'
+  const els = xs.flatMap(([x, w], i) => i < xs.length - 1 ? [kind(w), kind(xs[i + 1][0] - x - w)] : [kind(w)])
+  const inverse = Object.fromEntries(Object.entries(CODE39).map(([c, p]) => [p, c]))
+  let text = ''
+  for (let i = 0; i < els.length; i += 10) text += inverse[els.slice(i, i + 9).join('')]
+  assert.equal(text, '*WAVEFONT*')
 })
 
 const { weight } = await import('./wave.js')

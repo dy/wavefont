@@ -1,71 +1,111 @@
 /**
  * Pictures as text: vertical bars traced from an image, set back in Wavefont as range bars.
  * A piece is horizontal slices; a slice is lines of bars `[x, width, top, bottom, …]` in pixels of the trace.
- * Each line is a line of text, one character a bar, its weight the bar's width.
+ * One character a bar, its weight the bar's width, each standing at its own x.
  */
 import { bar, char } from '../index.js'
 
 const WIDEST = 0.25 // em: the advance at wght 1000
-const SEAM = 0.4    // px: touching bars overlap by this much, so no hairline shows between them
 
 /**
- * Line box of `line-height: 1.28` spans levels 0 to 128 exactly (level L sits 10L − 140 units above the baseline),
- * so a line of font size F with its box bottom on the slice bottom puts level L at L·F/100 px above it.
- * F leaves the slice's top below level 127, the highest a bar reaches: a band meets the one above it, no hairline between.
- * Each bar stands at its own x, on a device pixel (px, in CSS px), rather than where the bars before it carry the pen:
- * engines round every run of text their own way – Blink up to 1/64 px, Firefox to whole font units – and along
- * a line of spans the roundings add up, until touching bars part.
- * Returns the line's style and its spans, each [style, char].
+ * Font size for a piece at scale s: one for all its slices, as each size and weight is a font of its own and
+ * engines keep a couple of hundred. It leaves every slice's top below level 127, the highest a bar reaches, so a
+ * band meets the one above it with no hairline between; and it lets the widest bar, and a device pixel of seam,
+ * be one character.
  */
-const row = (line, slice, pieceH, s, px) => {
-  let widest = 0
-  for (let i = 1; i < line.length; i += 4) widest = Math.max(widest, line[i])
-  const F = +Math.max(slice.h * s / 1.265, (widest * s + SEAM) / WIDEST).toFixed(3)
-  const level = y => (slice.h - y) * s / F * 100
-  const edge = x => Math.round(x * s / px) * px
-  const parts = []
-  for (let i = 0; i < line.length; i += 4) {
-    const a = edge(line[i]), b = Math.max(a + px, edge(line[i] + line[i + 1]))
-    const ch = bar(Math.floor(level(line[i + 3])), Math.ceil(level(line[i + 2])))
-    // a bar wider than a character's widest is set as several, each starting on a device pixel
-    const k = Math.ceil((b - a + SEAM) / (WIDEST * F)), cut = j => a + Math.round((b - a) * j / k / px) * px
-    for (let j = 0; j < k; j++) parts.push([cut(j), cut(j + 1), ch, j < k - 1])
+const size = (piece, s, px) => {
+  let F = 0
+  for (const slice of piece.slices) for (const line of slice.lines) {
+    if (line.length) F = Math.max(F, slice.h * s / 1.265)
+    for (let i = 1; i < line.length; i += 4) F = Math.max(F, (line[i] * s + px) / WIDEST)
   }
-  const spans = parts.map(([a, b, ch, joined], i) => {
-    // touching bars overlap a little: no hairline between
-    const w = b - a + (joined || (parts[i + 1]?.[0] ?? Infinity) - b < px ? SEAM : 0)
-    return [`--wght:${+Math.min(1000, Math.max(4, w / F * 4000)).toFixed(1)};left:${+a.toFixed(4)}px`, ch]
-  })
-  const bottom = (pieceH - slice.y - slice.h) * s
-  return { style: `font-size:${F}px;bottom:${bottom.toFixed(2)}px`, spans }
+  return +F.toFixed(3)
 }
 
 /**
- * Set a traced piece into el, at el's width. Drawn again with the same lines of the same number of bars,
- * only the styles and characters that changed are touched – so a piece in motion costs what moves.
+ * Line box of `line-height: 1.28` spans levels 0 to 128 exactly (level L sits 10L − 140 units above the baseline),
+ * so a slice's box of font size F with its bottom on the slice bottom puts level L at L·F/100 px above it.
+ * Each bar stands at its own x, on a device pixel (px, in CSS px), rather than where the bars before it carry the pen:
+ * engines round every run of text their own way – Blink up to 1/64 px, Firefox to whole font units – and along
+ * a line of spans the roundings add up, until touching bars part.
+ * Returns the slice's style and its bars, each [x, wght, char].
  */
+const row = (slice, pieceH, s, px, F) => {
+  const all = []
+  for (const line of slice.lines) for (let i = 0; i < line.length; i += 4) all.push(line.slice(i, i + 4))
+  all.sort((p, q) => p[0] - q[0])
+  const level = y => (slice.h - y) * s / F * 100
+  const edge = x => Math.round(x * s / px) * px
+  const parts = []
+  for (const [x, w, top, bottom] of all) {
+    const a = edge(x), b = Math.max(a + px, edge(x + w))
+    const ch = bar(Math.floor(level(bottom)), Math.ceil(level(top)))
+    // a bar wider than a character's widest is set as several, each starting on a device pixel
+    const k = Math.ceil((b - a + px) / (WIDEST * F)), cut = j => a + Math.round((b - a) * j / k / px) * px
+    for (let j = 0; j < k; j++) parts.push([cut(j), cut(j + 1), ch, j < k - 1])
+  }
+  const bars = parts.map(([a, b, ch, joined], i) => {
+    // touching bars overlap by a device pixel: no hairline between
+    const w = b - a + (joined || (parts[i + 1]?.[0] ?? Infinity) - b < px ? px : 0)
+    return [+a.toFixed(4), +Math.min(1000, Math.max(4, w / F * 4000)).toFixed(1), ch]
+  })
+  const bottom = (pieceH - slice.y - slice.h) * s
+  return { style: `font-size:${F}px;bottom:${bottom.toFixed(2)}px`, bars }
+}
+
+/**
+ * A slice's bars into its box. A bar drawn as one was – the same character at the same weight – takes that one's
+ * span and only moves; the others take the spans left over, or new ones. Text is shaped only for a bar that looks
+ * new, however many come and go, so a piece in motion costs what changes.
+ */
+const fill = (box, bars) => {
+  const had = new Map(), fresh = []
+  for (const span of box.children) had.has(span.key) ? had.get(span.key).push(span) : had.set(span.key, [span])
+  for (const b of bars) {
+    const span = had.get(b[1] + b[2])?.pop()
+    span ? move(span, b[0]) : fresh.push(b)
+  }
+  const spare = [...had.values()].flat()
+  for (const [x, wght, ch] of fresh) {
+    const span = spare.pop() ?? box.appendChild(document.createElement('span'))
+    span.key = wght + ch, span.style.setProperty('--wght', wght)
+    span.firstChild ? span.firstChild.data = ch : span.append(ch)
+    move(span, x)
+  }
+  for (const span of spare) span.remove()
+}
+const move = (span, x) => { if (span.x !== x) span.x = x, span.style.left = `${x}px` }
+
+/** Set a traced piece into el, at el's width: a box a slice, a span a bar. */
 export function draw(el, piece, width = el.clientWidth) {
   const s = width / piece.w
   if (!s) return
   const ar = `${piece.w} / ${piece.h}`
   if (el.dataset.ar !== ar) el.dataset.ar = el.style.aspectRatio = ar
-  const rows = [], px = 1 / (globalThis.devicePixelRatio || 1)
-  for (const slice of piece.slices) for (const line of slice.lines) if (line.length) rows.push(row(line, slice, piece.h, s, px))
-  const kids = el.children
-  if (kids.length === rows.length && rows.every((r, i) => kids[i].children.length === r.spans.length)) {
-    rows.forEach((r, i) => {
-      const div = kids[i]
-      if (div.getAttribute('style') !== r.style) div.setAttribute('style', r.style)
-      r.spans.forEach(([style, ch], j) => {
-        const span = div.children[j]
-        if (span.getAttribute('style') !== style) span.setAttribute('style', style)
-        if (span.firstChild.data !== ch) span.firstChild.data = ch
-      })
-    })
-    return
-  }
-  el.innerHTML = rows.map(r => `<div class="wf art-line" style="${r.style}">${r.spans.map(([style, ch]) => `<span style="${style}">${ch}</span>`).join('')}</div>`).join('')
+  const px = 1 / (globalThis.devicePixelRatio || 1), F = size(piece, s, px), slices = piece.slices.filter(sl => sl.lines.some(l => l.length))
+  while (el.children.length > slices.length) el.lastChild.remove()
+  slices.forEach((slice, i) => {
+    const { style, bars } = row(slice, piece.h, s, px, F)
+    const box = el.children[i] ?? el.appendChild(Object.assign(document.createElement('div'), { className: 'wf art-line' }))
+    if (box.getAttribute('style') !== style) box.setAttribute('style', style)
+    fill(box, bars)
+  })
 }
+
+/**
+ * Bands of equal bars, measured from a scan: [top, bottom, bar width, pitch, first bar x], as a traced piece.
+ * With shift, band k slides by shift[k] pixels: the same number of bars, from just before the left edge
+ * to past the right, the bars it pushes past one edge coming back at the other.
+ */
+export const banded = ({ w, h, bands }, shift) => ({
+  w, h,
+  slices: bands.map(([top, bottom, bw, pitch, x0], k) => {
+    const line = []
+    if (shift) for (let i = 0, x = ((x0 + shift[k]) % pitch + pitch) % pitch - pitch, n = Math.ceil(w / pitch) + 2; i < n; i++) line.push(x + i * pitch, bw, 0, bottom - top)
+    else for (let x = x0; x + bw <= w + 1; x += pitch) line.push(Math.round(x), bw, 0, bottom - top)
+    return { y: top, h: bottom - top, lines: [line] }
+  })
+})
 
 /**
  * Bars standing on a circle, one per spoke, clockwise from the top: SVG text on a circular path.
@@ -93,7 +133,7 @@ export function ring({ inner, outer, size, spokes }) {
 /* ── motion: each piece as a function of time t (s) and pointer p ({x, y}, 0..1 across it) ───── */
 
 /** One-slice piece of bars, laid into lines of text: each line a run of bars left to right, none starting inside another. */
-const laid = (piece, bars) => {
+export const laid = (piece, bars) => {
   const lines = []
   for (const b of bars.sort((a, b) => a[0] - b[0])) {
     const line = lines.find(l => l.at(-4) + l.at(-3) <= b[0])
@@ -140,6 +180,9 @@ const barsOf = piece => {
 }
 
 export const motion = {
+  // bands slide against each other, alternate ways: the moiré follows the pointer
+  bands: spec => (t, p) => banded(spec, spec.bands.map((_, k) => (k % 2 ? 1 : -1) * (p.x - 0.5) * 0.24 * spec.w)),
+
   // steps: the four bands slide apart as the pointer moves off the middle, and line up at it; each band its
   // full-height bars only – the trace's slivers at the joins would hang off them as they move
   steps: piece => {
@@ -153,6 +196,21 @@ export const motion = {
 
   // checker: rows shear in proportion to their height, as the pointer leans
   checker: piece => (t, p) => moved(piece, k => (p.x - 0.5) * (k - piece.slices.length / 2) * 7 + 2 * Math.sin(1.3 * t + 0.5 * k)),
+
+  // slide: every other bar hands over from the floor to the ceiling, where the pointer is
+  slide: piece => {
+    const H = piece.slices[0].h, all = barsOf(piece)
+    const full = b => b[2] <= 2 && b[3] >= H - 1
+    const walk = all.filter(b => !full(b)).map(([x, w, top, bot]) => [x + w / 2, top, bot])
+    // top and bottom of a walking bar at x, from the traced ones; flat past both ends
+    const at = x => {
+      const i = walk.findIndex(s => s[0] >= x)
+      if (i <= 0) return (walk[i] ?? walk.at(-1)).slice(1)
+      const [x0, t0, b0] = walk[i - 1], [x1, t1, b1] = walk[i], k = (x - x0) / (x1 - x0)
+      return [t0 + (t1 - t0) * k, b0 + (b1 - b0) * k]
+    }
+    return (t, p) => laid(piece, all.map(b => full(b) ? b : [b[0], b[1], ...at(b[0] + b[1] / 2 - (p.x - 0.5) * 0.9 * piece.w)]))
+  },
 
   // stairs: the white stair between floor and ceiling rides the pointer's height, and bends with its side
   stairs: piece => {
@@ -244,3 +302,23 @@ export const tileMotion = [
     return t => { const k = 1 + 0.09 * Math.exp(-5 * (t * 1.4 % 1)); return laid(piece, bs.map(([x, w, a, e]) => [x, w, mid + (a - mid) * k, mid + (e - mid) * k])) }
   }
 ]
+
+
+/* ── a piece in a tile: only the part its bars reach ───── */
+
+/** The box a one-slice piece's bars reach, [x0, y0, x1, y1], over a stretch of its motion if it moves. */
+export const reach = (piece, at) => {
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity
+  for (let t = 0; t < 12; t += at ? 0.1 : 12) for (const line of (at ? at(t) : piece).slices[0].lines) for (let i = 0; i < line.length; i += 4) {
+    x0 = Math.min(x0, line[i]), x1 = Math.max(x1, line[i] + line[i + 1]), y0 = Math.min(y0, line[i + 2]), y1 = Math.max(y1, line[i + 3])
+  }
+  return [x0, y0, x1, y1]
+}
+
+/** A one-slice piece cut to a box, and pad pixels round it where the piece has them. */
+export const crop = (piece, [x0, y0, x1, y1], pad = 6) => {
+  const s = piece.slices[0]
+  x0 = Math.max(0, x0 - pad), y0 = Math.max(0, y0 - pad), x1 = Math.min(piece.w, x1 + pad), y1 = Math.min(s.h, y1 + pad)
+  const lines = s.lines.map(line => line.map((v, i) => i % 4 === 0 ? v - x0 : i % 4 > 1 ? v - y0 : v))
+  return { ...piece, w: x1 - x0, h: y1 - y0, slices: [{ y: 0, h: y1 - y0, lines }] }
+}

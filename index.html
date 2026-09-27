@@ -41,10 +41,9 @@
     </div>
   </section>
 
-  <section id="keys" class="slide gray keys" data-variant="1" aria-label="Latin+ core: the keys that draw bars">
-    <div class="variants" role="group" aria-label="Layout of this slide"><button type="button" aria-pressed="true">1</button><button type="button" aria-pressed="false">2</button><button type="button" aria-pressed="false">3</button><button type="button" aria-pressed="false">4</button></div>
+  <section id="keys" class="slide gray keys" aria-label="Latin+ core: the keys that draw bars">
     <div class="stage">
-      <div class="keymap" role="img" aria-label="Keys and the bars they draw: a to z low to half, A to Z half to full, digits by tens, block elements, dashes and dots at the floor, a bar at the top, and accents that shift a bar"></div>
+      <div class="keymap" role="img" aria-label="Keys and the bars they draw: a to z low to half, A to Z half to full, digits by tens, block elements, dashes and dots at the floor, a bar at the top"></div>
     </div>
   </section>
 
@@ -99,6 +98,19 @@
     </div>
   </section>
 
+  <section id="speed" class="slide gray speed" aria-label="60 fps: what drawing an hour of speech costs">
+    <div class="stage">
+      <figure class="race">
+        <div class="scale" aria-hidden="true"><span style="--at: 1">1 s</span><span style="--at: .75">100 ms</span><span class="frame" style="--at: .5556">16.7 ms<span class="wide">, 60 fps</span></span><span style="--at: .5">10 ms</span><span style="--at: .25">1 ms</span></div>
+        <div class="lanes" role="img"></div>
+      </figure>
+    </div>
+    <div class="status">
+      <div class="ops" role="radiogroup" aria-label="Operation"></div>
+      <div class="browsers" role="radiogroup" aria-label="Browser"></div>
+    </div>
+  </section>
+
   <section id="messages" class="slide white messages" aria-label="Voice messages">
     <div class="stage">
       <div class="chat">
@@ -117,12 +129,6 @@
       </div>
     </div>
   </section>
-
-  <section id="renderings" class="slide dark renderings" aria-label="Renderings">
-    <div class="stage"><div class="tiles"></div></div>
-  </section>
-
-  <section class="slide dark work" data-piece="figure" aria-label="A flower drawn by the widths of white lines on black; a lens follows the pointer"><div class="stage"><div class="piece"></div></div></section>
 
   <section id="memo" class="slide dark memo" aria-label="Voice Memos">
     <div class="vm" data-state="idle">
@@ -149,37 +155,32 @@
     </div>
   </section>
 
-  <section id="speed" class="slide gray speed" aria-label="60 fps: what drawing an hour of speech costs">
-    <div class="stage">
-      <figure class="race">
-        <div class="scale" aria-hidden="true"><span style="--at: 1">1 s</span><span style="--at: .75">100 ms</span><span class="frame" style="--at: .5556">16.7 ms<span class="wide">, 60 fps</span></span><span style="--at: .5">10 ms</span><span style="--at: .25">1 ms</span></div>
-        <div class="lanes" role="img"></div>
-      </figure>
-    </div>
-    <div class="status">
-      <div class="ops" role="radiogroup" aria-label="Operation"></div>
-      <div class="browsers" role="radiogroup" aria-label="Browser"></div>
-    </div>
+  <section id="renderings" class="slide dark renderings" aria-label="Renderings">
+    <div class="stage"><div class="tiles"></div></div>
   </section>
+
+  <section class="slide dark work" data-piece="figure" aria-label="A flower drawn by the widths of white lines on black"><div class="stage"><div class="piece"></div></div></section>
 
   <section id="journey" class="slide gray journey" aria-label="Journey">
     <div class="stage">
       <figure class="years">
+        <ol class="marks version-marks" aria-hidden="true"><li style="--m: 0">v1</li><li style="--m: 54">v2</li><li style="--m: 75">v3</li></ol>
         <div class="commits wf" role="img" aria-label="Commits to wavefont, wavearea and linefont, one bar per month, August 2016 to September 2026"></div>
-        <ol class="year-marks" aria-hidden="true"><li style="--m: 5">2017</li><li style="--m: 17">2018</li><li style="--m: 29">2019</li><li style="--m: 41">2020</li><li style="--m: 53">2021</li><li style="--m: 65">2022</li><li style="--m: 77">2023</li><li style="--m: 89">2024</li><li style="--m: 101">2025</li><li style="--m: 113">2026</li></ol>
-        <figcaption class="sr">Commits per month: a burst in August 2016, silence until 2021, steady work through 2023, and a return in 2026.</figcaption>
+        <ol class="marks year-marks" aria-hidden="true"><li style="--m: 5">2017</li><li style="--m: 17">2018</li><li style="--m: 29">2019</li><li style="--m: 41">2020</li><li style="--m: 53">2021</li><li style="--m: 65">2022</li><li style="--m: 77">2023</li><li style="--m: 89">2024</li><li style="--m: 101">2025</li><li style="--m: 113">2026</li></ol>
+        <figcaption class="sr">Commits per month: a burst in August 2016, v1; silence until v2 in February 2021; v3 from November 2022, steady work through 2023, and a return in 2026.</figcaption>
       </figure>
       <ol class="milestones">
-        <li><time datetime="2016-08">2016</time><span><a href="https://www.npmjs.com/package/wavefont/v/1.2.2">an experiment</a>: bars as letters, for <a href="https://dy.github.io/wavearea">wavearea</a></span></li>
-        <li><time datetime="2021-05">2021</time><span><a href="https://github.com/dy/wavefont/tree/fa6a3d461c368c97306c5d2b8861f7be2ff8e0ae">finished</a>: three axes – width, alignment, roundness – and accents that shift bars; <a href="https://github.com/dy/linefont">linefont</a> for lines</span></li>
-        <li><time datetime="2022-12">2022</time><span><a href="https://github.com/dy/wavefont/releases/tag/v3.1.1">v3</a>, to Google Fonts’ standards: registered axes, Latin Core</span></li>
+        <li><time datetime="2016-08">2016</time><span><a href="https://www.npmjs.com/package/wavefont/v/1.2.2">v1</a>, an experiment: bars as letters, for <a href="https://dy.github.io/wavearea">wavearea</a></span></li>
+        <li><time datetime="2021-02">2021</time><span><a href="https://github.com/dy/wavefont/tree/fa6a3d461c368c97306c5d2b8861f7be2ff8e0ae">v2</a>, finished: three axes – width, alignment, roundness – and accents that shift bars; <a href="https://github.com/dy/linefont">linefont</a> for lines</span></li>
+        <li><time datetime="2022-11">2022</time><span><a href="https://github.com/dy/wavefont/releases/tag/v3.1.1">v3</a>, to Google Fonts’ standards: registered axes, Latin Core</span></li>
         <li><time datetime="2023-06">2023</time><span>on <a href="https://fonts.google.com/specimen/Wavefont">Google Fonts</a></span></li>
         <li><time datetime="2026-09">2026</time><span><a href="https://github.com/dy/wavefont/releases/tag/v3.8.0">min–max bars</a>, one character each: 60 fps</span></li>
       </ol>
     </div>
   </section>
 
-  <section id="get" class="slide dark get" aria-label="Get Wavefont">
+  <section id="get" class="slide dark get" data-variant="1" aria-label="Get Wavefont">
+    <div class="variants" role="group" aria-label="Layout of this slide"><button type="button" aria-pressed="true">1</button><button type="button" aria-pressed="false">2</button><button type="button" aria-pressed="false">3</button></div>
     <div class="stage">
       <ul class="links">
         <li><a href="https://fonts.google.com/specimen/Wavefont">Google Fonts</a></li>
