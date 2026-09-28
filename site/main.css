@@ -252,12 +252,12 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 /* what's on it: left-aligned, centred in its height, unless placed */
 .stage > * { grid-column: 1 / -1; grid-row: 1 / -1; align-self: center; min-width: 0; }
 /* the status line: what the slide reports, in the eleventh row, a cell in, standing on its foot */
-.status { grid-area: 11 / 2 / 12 / 12; align-self: end; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-sm) var(--space-xl); font: var(--label); color: var(--dim); }
+.status { grid-area: 11 / 2 / 12 / 12; align-self: end; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-lg) var(--space-xl); font: var(--label); color: var(--dim); }
 .status output, .status b { color: var(--fg); font-weight: inherit; font-variant-numeric: tabular-nums; }
 .status > :is(output, span, p, a) { margin-bottom: var(--sink); }
 /* tabs: their names on the band's line, the one picked (or on) in ink and underlined – heavier and lower than a
    link's line, a mark under a word rather than a way out; wrapped, the lines keep clear of the marks above them */
-.tabs { display: flex; flex-wrap: wrap; gap: var(--space-xs) var(--space-lg); margin-bottom: var(--sink); font: var(--label); }
+.tabs { display: flex; flex-wrap: wrap; gap: var(--space-md) var(--space-lg); margin-bottom: var(--sink); font: var(--label); }
 .tabs button {
   padding: 0; border: 0; background: none; color: var(--dim); font: inherit; cursor: pointer;
   text-decoration: underline 2px transparent; text-underline-offset: 0.55em;
@@ -517,7 +517,7 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .col .name { position: absolute; top: calc(100% + var(--space-sm) + var(--sink)); font: var(--label); color: var(--dim); white-space: nowrap; }
 .col.is-text .name { color: var(--fg); }
 /* names wider than their columns: every other one a line lower */
-.col:nth-child(even) .name { margin-top: 1lh; }
+.col:nth-child(even) .name { margin-top: calc(1lh + var(--space-xs)); }
 
 /* ── voice messages: pills, round-capped bars close together, the time beside them – as the reference ── */
 
@@ -544,7 +544,7 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .msg.out .bubble { --played: var(--white); background: var(--blue); color: var(--white); }
 .msg.fresh .bubble { animation: arrive var(--dur-long) var(--ease-out); }
 @keyframes arrive { from { opacity: 0; transform: translateY(calc(0.5 * var(--u))); } }
-.bubble.textual { padding: calc(0.65 * var(--u)) calc(1.1 * var(--u)); border-radius: calc(1.35 * var(--u)); max-width: calc(20 * var(--u)); font-size: calc(1.0625 * var(--u)); line-height: 1.4; overflow-wrap: anywhere; }
+.bubble.textual { padding: calc(0.65 * var(--u)) calc(1.1 * var(--u)); border-radius: calc(1.35 * var(--u)); max-width: calc(22 * var(--u)); font-size: calc(1.0625 * var(--u)); line-height: 1.4; overflow-wrap: anywhere; }
 .bubble .pp { display: grid; place-items: center; width: calc(1.4 * var(--u)); height: calc(2.5 * var(--u)); flex: none; padding: 0; border: 0; background: none; color: inherit; font-size: calc(1.25 * var(--u)); cursor: pointer; }
 .bubble .wave, .composer-tape { --yela: 0; font-size: calc(2.6 * var(--u)); line-height: 1; white-space: pre; letter-spacing: var(--gap); }
 .bubble .wave { color: inherit; cursor: pointer; min-width: 0; overflow: hidden; }
@@ -640,27 +640,27 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 /* a note from the second column of the other slides, standing on the floor beside the record button, clear of it */
 .vm-note { --lead: calc(var(--pad-x) + (100cqw - 2 * var(--pad-x)) / 12); grid-row: 11; align-self: end; justify-self: start; max-width: calc(50% - var(--rec) - var(--lead)); margin: 0 0 var(--sink) var(--lead); font: var(--label); color: var(--dim); }
 
-/* ── journey: ten years of commits, set as a recording ── */
+/* ── journey: the years in a line down the stage – those that brought something in blue, with what they brought, the
+   rest in gray between – each year a row, its months' commits beside it, a bar each from the screen's right edge ── */
 
-/* the versions standing over the months they began, the commits two rows high under them, the years hanging from
-   their foot; the milestones in the five rows at the bottom, a row each */
+.journey { --edge: calc(var(--pad-x) + var(--col)); }
 .journey .stage { grid-row: 2 / 12; }
-.years { grid-row: 1 / 5; align-self: stretch; margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: subgrid; }
-.commits { --yela: 0; grid-row: 2 / 4; font-size: calc(2 * var(--row)); line-height: 1; white-space: pre; color: var(--fg); }
-/* each mark starts at its month's bar: the script sets the bars' pitch */
-.marks { position: relative; list-style: none; margin: 0; padding: 0; height: 1lh; font: var(--label); font-variant-numeric: tabular-nums; }
-.marks li { position: absolute; top: 0; left: calc(var(--m) * var(--pitch, 0.82%)); }
-/* a version is a tag: white on blue, clear of the bars by as much as the years hang under them */
+/* the years share the stage's height: each what it takes, and the rest in equal parts; the stage grows only when
+   they take more than it has */
+.milestones { grid-row: 1 / -1; align-self: stretch; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: subgrid; }
+/* a line of text at least, a year alone as tall as one with a line to say, so the years step evenly */
+.milestones li { position: relative; grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-content: start; align-items: baseline; min-height: calc(1lh + var(--space-sm)); padding-bottom: var(--space-sm); }
+.milestones time { grid-column: 1 / 3; margin-top: var(--sink); font: var(--label); color: var(--dim); }
+.milestones li:has(> span) time { color: var(--accent); }
+.milestones li > span { grid-column: 3 / -1; margin-top: var(--sink); }
+/* a year's months, in the blue of the years that brought something, bars standing on the screen's edge and reaching
+   to the stage's, less a gap: a line set on its side, turned so its floor is to the right; the script centres the
+   twelve on their year */
+.months { --yela: -100; position: absolute; right: calc(-1 * var(--edge)); writing-mode: vertical-lr; text-orientation: sideways; scale: -1 1; font-size: calc(var(--edge) - var(--space-md)); line-height: 1; white-space: pre; color: var(--accent); }
+.milestones a { text-decoration-color: color-mix(in oklab, currentColor 35%, transparent); }
+/* a version is a tag: white on blue */
 .tag { display: inline-block; padding: 0 0.4em; border-radius: 2px; background: var(--accent); color: var(--white); font: var(--label); text-decoration: none; }
 @media (hover: hover) { a.tag:hover { background: var(--fg); } }
-.version-marks { grid-row: 1; align-self: end; height: 1lh; margin-bottom: var(--space-sm); line-height: 1.4; }
-.year-marks { grid-row: 4; align-self: start; margin-top: calc(var(--sink) + var(--space-sm)); color: var(--dim); }
-/* each year in the first column, what happened from the next, its baseline on the row's foot */
-.milestones { grid-row: 6 / 11; align-self: stretch; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; }
-.milestones li { grid-column: 1 / -1; align-self: end; display: grid; grid-template-columns: subgrid; align-items: baseline; }
-.milestones time { grid-column: 1 / 3; font: var(--label); color: var(--accent); }
-.milestones li > span { grid-column: 3 / -1; margin-bottom: var(--sink); }
-.milestones a { text-decoration-color: color-mix(in oklab, currentColor 35%, transparent); }
 
 /* ── get: bars of your own, and where the font is. A wave to take or draw on with a pencil, the screen's width: its
    bars standing on the fourth row's foot, four rows high, or hanging from it as deep; play and copy in the slide's top
@@ -689,7 +689,8 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .links li { margin-bottom: var(--sink); }
 .links a { display: inline-flex; align-items: center; gap: 0.6em; text-decoration: none; white-space: nowrap; }
 @media (hover: hover) { .links a:hover { color: var(--accent); } }
-.credits { margin: 0; }
+/* who and under what, at the band's right end */
+.credits { margin: 0 0 0 auto; }
 .credits a { color: var(--fg); }
 /* the sign itself, after the license, as quiet as the credits' words */
 .credits .om { color: var(--dim); text-decoration: none; }
@@ -699,6 +700,13 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 @media (min-width: 36rem) {
   /* two columns, the second standing under the fifth bar – the f; a row each */
   .facts { grid-template-columns: calc(4 * var(--pitch)) auto; grid-template-rows: repeat(3, var(--row)); grid-auto-flow: column; }
+}
+
+/* tablets: the links two and two, where four don't make one line – the font's first, Google Fonts and Download, then
+   the code's, GitHub and npm */
+@media (40rem < width < 72rem) {
+  .links { display: grid; grid-template-columns: auto auto; justify-content: start; }
+  .links li:is(:nth-child(2), :nth-child(3)) { order: 1; }
 }
 
 @media (min-width: 48rem) {
@@ -732,6 +740,8 @@ input[type="range"]:focus-visible { outline-offset: 0; }
      for a column */
   .plot { --chart-h: calc(7 * var(--row)); }
   .scale b { display: none; }
+  /* the operations only, on one line: the browsers' tabs would wrap under them */
+  .speed .browsers { display: none; }
   /* the waves' readout wrapping up from the band */
   .shifts .readout { grid-row: 10 / 12; align-self: end; }
   /* the status wraps to lines: it may take the row above it too, still standing on the eleventh's foot. The weights
@@ -739,13 +749,6 @@ input[type="range"]:focus-visible { outline-offset: 0; }
   .status { grid-row: 10 / 12; column-gap: var(--space-md); }
   .weights { gap: var(--space-2xs); }
   .weights button { width: 2.25rem; height: 2.25rem; }
-  /* every other year named; the commits a row high; the milestones, wrapping to several lines, as long as they run,
-     down to the foot */
-  .year-marks li:nth-child(even) { visibility: hidden; }
-  .years { grid-row: 1 / 4; }
-  .commits { grid-row: 2 / 3; font-size: var(--row); }
-  .year-marks { grid-row: 3; }
-  .milestones { grid-row: 5 / -1; grid-template-rows: none; align-content: end; row-gap: var(--space-sm); }
 }
 
 /* upright screens: a row is tall for a line of text, so it takes two */

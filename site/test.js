@@ -148,6 +148,19 @@ test('hero: the name before the script runs is lettered as the script letters it
   assert.match(css, /font-display: block/)
 })
 
+test('journey: a row a year, each from the first commit\'s to the last\'s, in order and as its time says; a year that brought something the month it did, one with commits', async () => {
+  const html = await readFile(new URL('../index.html', import.meta.url), 'utf8'), { from: [y0, m0], months } = commits
+  const list = html.match(/<ol class="milestones">(.*?)<\/ol>/s)[1], rows = [...list.matchAll(/<li><time datetime="(\d{4})(?:-(\d\d))?">(\d{4})<\/time>(<span>)?/g)]
+  assert.equal(rows.length, [...list.matchAll(/<li>/g)].length, 'every row a year')
+  const last = y0 + Math.floor((m0 - 1 + months.length - 1) / 12)
+  assert.deepEqual(rows.map(r => +r[3]), Array.from({ length: last - y0 + 1 }, (_, k) => y0 + k))
+  for (const [, at, month, year, said] of rows) {
+    assert.equal(at, year)
+    assert.equal(!!month, !!said, `${year}: a month with what it brought, none without`)
+    if (month) assert.ok(months[(year - y0) * 12 + (month - m0)] > 0, `${year}-${month}: commits that month`)
+  }
+})
+
 test('peaks: up to N bars as they are; more, N, each what its share covers, lowest foot to highest top', () => {
   const bars = Array.from({ length: N }, (_, i) => [0, i])
   assert.equal(peaks(bars), bars), assert.deepEqual(peaks([]), [])

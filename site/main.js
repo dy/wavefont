@@ -3,9 +3,9 @@
  * this script only decides which characters to write.
  */
 import wf, { char } from '../index.js'
-import { fit, weight } from './wave.js'
+import { weight } from './wave.js'
 import { bench, commits } from './data.js'
-import { $, $$, h, soon, seen, noise, still, ease, swing, wander, copyable, dpx } from './dom.js'
+import { $, $$, h, seen, noise, still, ease, swing, wander, copyable, dpx } from './dom.js'
 import { chat } from './chat.js'
 import { memo } from './memo.js'
 import { shifts } from './shifts.js'
@@ -368,24 +368,32 @@ function speed() {
 }
 
 
-/* ── journey: ten years of commits, as a recording ───────────────────────── */
+/* ── journey: the years in a line, each with its months' commits ───────── */
 
 function journey() {
-  const el = $('.commits'), { months } = commits, top = Math.sqrt(Math.max(...months))
-  // a bar per month, square-rooted so quiet months still show; a month with none is a dot
-  el.textContent = wf(months.map(n => n ? 8 + 92 * Math.sqrt(n) / top : 1))
-  // the versions and the years start at their months' bars
-  new ResizeObserver(() => el.parentNode.style.setProperty('--pitch', `${fit(el, months.length, 0.5)}px`)).observe(el)
+  const list = $('.milestones'), { from: [y0, m0], months } = commits, top = Math.sqrt(Math.max(...months))
+  // a bar per month, square-rooted so quiet months still show; a month with none is a dot, one before the first nothing
+  const bar = n => n ? wf(8 + 92 * Math.sqrt(n) / top) : wf(1)
+  const rows = $$('li', list).map(li => {
+    const y = +li.querySelector('time').dateTime.slice(0, 4), at = (y - y0) * 12 - (m0 - 1)
+    const el = h('div', { className: 'months wf', textContent: Array.from({ length: 12 }, (_, m) => at + m < 0 ? ' ' : at + m < months.length ? bar(months[at + m]) : '').join('') })
+    el.setAttribute('aria-hidden', 'true'), li.append(el)
+    return el
+  })
+  // each year's twelve months centred on its year, from halfway to the year before to halfway to the next, so a month
+  // is nearest its own year; one weight for every bar, half the pitch of the tightest year, on whole device pixels
+  const place = () => {
+    const px = dpx(), F = parseFloat(getComputedStyle(rows[0]).fontSize), c = rows.map(el => { const li = el.parentNode, t = li.firstElementChild; return li.offsetTop + t.offsetTop + t.offsetHeight / 2 })
+    const n = c.length, edge = k => k <= 0 ? c[0] - (c[1] - c[0]) / 2 : k >= n ? c[n - 1] + (c[n - 1] - c[n - 2]) / 2 : (c[k - 1] + c[k]) / 2
+    const P = rows.map((_, k) => (edge(k + 1) - edge(k)) / 12)
+    if (!F || !P[0]) return
+    const wght = weight(Math.max(px, Math.round(0.5 * Math.min(...P) / px) * px), F)
+    list.style.setProperty('--wght', wght)
+    rows.forEach((el, k) => Object.assign(el.style, { top: `${edge(k) - el.parentNode.offsetTop}px`, height: `${12 * P[k]}px`, letterSpacing: `${(P[k] - wght * F / 4000).toFixed(4)}px` }))
+  }
+  new ResizeObserver(place).observe(list), document.fonts.ready.then(place)
 }
 
-
-/* ── get: bars of your own, and where the font is ────────────────────────── */
-
-function get() {
-  // the version this page was built with, as the package says
-  soon($('#get'), () => fetch('package.json').then(r => r.json()).then(p => $('.s-version').textContent = p.version).catch(() => {}))
-  pad()
-}
 
 // the layout's grid, for tuning while building: g toggles it, ?grid opens with it
 const overlay = () => {
@@ -407,7 +415,7 @@ speed()
 chat()
 memo()
 journey()
-get()
+pad()
 flappy()
 
 // the slide in view is the address's hash, so a reload or a link lands where you are; the first is the bare address

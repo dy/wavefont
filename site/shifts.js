@@ -80,9 +80,13 @@ export function shifts() {
   }).observe(box)
 
   // the bar picked, as the 127 values' grid has it: lit, and read out – its character and marks, and their code
-  // points, each selectable and a click to copy
-  let cur = null
-  const show = () => { outs.char.textContent = text(cur), outs.code.textContent = spell(cur.hi - cur.lo, cur.lo) }
+  // points, each selectable and a click to copy. Under a drag the code points wait till the hand rests: they grow and
+  // shrink as a run of marks comes and goes, and would shake the copy button after them
+  let cur = null, settle = 0
+  const show = (now = true) => {
+    const code = () => outs.code.textContent = spell(cur.hi - cur.lo, cur.lo)
+    outs.char.textContent = text(cur), clearTimeout(settle), now ? code() : settle = setTimeout(code, 150)
+  }
   const pick = b => { cur?.el.classList.remove('is-lit'), cur = b, b.el.classList.add('is-lit'), show() }
   // the line's floor, px down the viewport
   const floor = () => box.getBoundingClientRect().bottom - base
@@ -91,7 +95,7 @@ export function shifts() {
   const move = (b, lo) => {
     const s = sec.getBoundingClientRect(), v = b.hi - b.lo
     lo = clamp(lo, Math.max(-100, Math.ceil((floor() - s.bottom) / F * 100)), Math.min(100, Math.floor((floor() - s.top) / F * 100) - v))
-    if (lo !== b.lo) b.hi = lo + v, b.lo = lo, b.el.textContent = lead(text(b)), b === cur && show()
+    if (lo !== b.lo) b.hi = lo + v, b.lo = lo, b.el.textContent = lead(text(b)), b === cur && show(!drag?.on)
   }
   // the bar the pointer is on, or nearest it within a few pixels
   const at = e => {
@@ -121,7 +125,7 @@ export function shifts() {
     }
     move(drag.b, drag.lo + Math.round((drag.y - e.clientY) / F * 100))
   })
-  const drop = () => { drag = null, sec.classList.remove('is-dragging') }
+  const drop = () => { if (drag?.on) show(); drag = null, sec.classList.remove('is-dragging') }
   sec.addEventListener('pointerup', drop), sec.addEventListener('pointercancel', drop)
   box.addEventListener('keydown', e => {
     const k = e.key, i = bars.indexOf(cur)
