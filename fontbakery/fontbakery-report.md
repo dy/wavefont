@@ -79,37 +79,49 @@ Please read <a href="https://github.com/fonttools/fonttools/issues/3014">https:/
 
 
 * ⚠️ **WARN** <p>Interpolation issues were found in the font:</p>
-<pre><code>- Contour 0 start point differs in glyph '_19.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
+<pre><code>- Contour 0 start point differs in glyph '_14.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
 
-- Contour 0 start point differs in glyph '_19.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
+- Contour 0 start point differs in glyph '_14.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
 
-- Contour order differs in glyph '_16': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+- Contour 0 start point differs in glyph '_14.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
 
-- Contour order differs in glyph '_16': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+- Contour 0 start point differs in glyph '_14.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
 
-- Contour order differs in glyph '_16': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+- Contour 0 start point differs in glyph '_6.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
 
-- Contour order differs in glyph '_16': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+- Contour 0 start point differs in glyph '_6.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
 
-- Contour order differs in glyph '_33': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
+- Contour 0 start point differs in glyph '_6.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
 
-- Contour order differs in glyph '_33': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
+- Contour 0 start point differs in glyph '_6.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
 
-- Contour order differs in glyph '_33': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
+- Contour order differs in glyph '_7': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
 
-- Contour order differs in glyph '_33': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
+- Contour order differs in glyph '_7': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
 
-- Contour 0 start point differs in glyph '_22.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
+- Contour order differs in glyph '_7': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
 
-- Contour 0 start point differs in glyph '_22.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
+- Contour order differs in glyph '_7': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
 
-- Contour order differs in glyph '_27': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
+- Contour 0 start point differs in glyph '_5.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
 
-- Contour order differs in glyph '_27': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
+- Contour 0 start point differs in glyph '_5.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
 
-- Contour order differs in glyph '_27': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
+- Contour 0 start point differs in glyph '_5.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
 
-- Contour order differs in glyph '_27': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
+- Contour 0 start point differs in glyph '_5.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
+
+- Contour order differs in glyph '_35': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_35': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_35': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_35': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
+
+- Contour 0 start point differs in glyph '_24.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
+
+- Contour 0 start point differs in glyph '_24.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
 
 - Contour 0 start point differs in glyph '_13.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
 
@@ -119,33 +131,149 @@ Please read <a href="https://github.com/fonttools/fonttools/issues/3014">https:/
 
 - Contour 0 start point differs in glyph '_13.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
 
-- Contour 0 start point differs in glyph '_1.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
+- Contour 0 start point differs in glyph '_2' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
 
-- Contour 0 start point differs in glyph '_1.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
+- Contour 0 start point differs in glyph '_2' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
 
-- Contour 0 start point differs in glyph '_17.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
+- Contour order differs in glyph '_2': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
 
-- Contour 0 start point differs in glyph '_17.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
+- Contour 0 start point differs in glyph '_2' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
 
-- Contour 0 start point differs in glyph '_17.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
+- Contour 0 start point differs in glyph '_2' between location ROND=100,YELA=100,wght=1000 and location ROND=0,YELA=100,wght=4
 
-- Contour 0 start point differs in glyph '_17.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
+- Contour 0 start point differs in glyph '_20.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
 
-- Contour order differs in glyph '_4': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+- Contour 0 start point differs in glyph '_20.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
 
-- Contour order differs in glyph '_4': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+- Contour 0 start point differs in glyph '_8.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
 
-- Contour order differs in glyph '_4': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+- Contour 0 start point differs in glyph '_8.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
 
-- Contour order differs in glyph '_4': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
+- Contour 0 start point differs in glyph '_8.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
 
-- Contour order differs in glyph '_35': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
+- Contour 0 start point differs in glyph '_8.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
 
-- Contour order differs in glyph '_35': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
+- Contour order differs in glyph '_12': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
 
-- Contour order differs in glyph '_35': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
+- Contour order differs in glyph '_12': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
 
-- Contour order differs in glyph '_35': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
+- Contour order differs in glyph '_12': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_12': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+
+- Contour order differs in glyph '_38': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_38': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 1, 0] in ROND=0,YELA=100,wght=4.
+
+- Contour 0 start point differs in glyph '_23.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
+
+- Contour 0 start point differs in glyph '_23.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
+
+- Contour 0 start point differs in glyph '_4.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
+
+- Contour 0 start point differs in glyph '_4.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
+
+- Contour 0 start point differs in glyph '_4.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
+
+- Contour order differs in glyph '_21': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_21': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_21': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_21': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+
+- Contour order differs in glyph '_16': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_16': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_16': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_16': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+
+- Contour order differs in glyph '_27': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_27': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_27': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_27': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
+
+- Contour order differs in glyph '_5': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_5': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_5': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_5': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+
+- Contour order differs in glyph '_29': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_29': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_29': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_29': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
+
+- Contour order differs in glyph '_15': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_15': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_15': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_15': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+
+- Contour order differs in glyph '_36': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_36': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_36': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_36': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
+
+- Contour order differs in glyph '_30': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_30': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_30': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_30': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
+
+- Contour order differs in glyph '_28': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_28': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_28': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_28': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
+
+- Contour order differs in glyph '_14': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_14': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_14': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_14': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+
+- Contour 0 start point differs in glyph '_18.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
+
+- Contour 0 start point differs in glyph '_18.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
+
+- Contour 0 start point differs in glyph '_18.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
+
+- Contour 0 start point differs in glyph '_18.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
+
+- Contour order differs in glyph '_6': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_6': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_6': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_6': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+
+- Contour 0 start point differs in glyph '_19.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
+
+- Contour 0 start point differs in glyph '_19.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
 
 - Contour 0 start point differs in glyph '_21.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
 
@@ -159,185 +287,13 @@ Please read <a href="https://github.com/fonttools/fonttools/issues/3014">https:/
 
 - Contour order differs in glyph '_8': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
 
-- Contour order differs in glyph '_22': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+- Contour 0 start point differs in glyph '_17.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
 
-- Contour order differs in glyph '_22': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+- Contour 0 start point differs in glyph '_17.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
 
-- Contour order differs in glyph '_22': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+- Contour 0 start point differs in glyph '_17.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
 
-- Contour order differs in glyph '_22': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
-
-- Contour order differs in glyph '_28': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
-
-- Contour order differs in glyph '_28': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
-
-- Contour order differs in glyph '_28': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
-
-- Contour order differs in glyph '_28': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
-
-- Contour order differs in glyph '_29': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
-
-- Contour order differs in glyph '_29': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
-
-- Contour order differs in glyph '_29': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
-
-- Contour order differs in glyph '_29': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
-
-- Contour 0 start point differs in glyph '_16.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
-
-- Contour 0 start point differs in glyph '_16.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
-
-- Contour 0 start point differs in glyph '_16.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
-
-- Contour 0 start point differs in glyph '_16.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
-
-- Contour order differs in glyph '_37': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
-
-- Contour order differs in glyph '_37': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 1, 0] in ROND=0,YELA=100,wght=4.
-
-- Contour 0 start point differs in glyph '_12.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
-
-- Contour 0 start point differs in glyph '_12.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
-
-- Contour 0 start point differs in glyph '_12.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
-
-- Contour 0 start point differs in glyph '_12.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
-
-- Contour order differs in glyph '_14': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
-
-- Contour order differs in glyph '_14': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
-
-- Contour order differs in glyph '_14': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
-
-- Contour order differs in glyph '_14': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
-
-- Contour order differs in glyph '_15': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
-
-- Contour order differs in glyph '_15': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
-
-- Contour order differs in glyph '_15': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
-
-- Contour order differs in glyph '_15': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
-
-- Contour order differs in glyph '_21': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
-
-- Contour order differs in glyph '_21': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
-
-- Contour order differs in glyph '_21': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
-
-- Contour order differs in glyph '_21': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
-
-- Contour order differs in glyph '_6': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
-
-- Contour order differs in glyph '_6': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
-
-- Contour order differs in glyph '_6': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
-
-- Contour order differs in glyph '_6': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
-
-- Contour order differs in glyph '_25': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
-
-- Contour order differs in glyph '_25': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
-
-- Contour order differs in glyph '_25': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
-
-- Contour order differs in glyph '_25': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
-
-- Contour 0 start point differs in glyph '_10.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
-
-- Contour 0 start point differs in glyph '_10.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
-
-- Contour 0 start point differs in glyph '_10.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
-
-- Contour 0 start point differs in glyph '_10.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
-
-- Contour order differs in glyph '_24': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
-
-- Contour 0 start point differs in glyph '_24' between location ROND=100,YELA=-100,wght=1000 and location ROND=0,YELA=100,wght=100
-
-- Contour order differs in glyph '_24': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
-
-- Contour order differs in glyph '_24': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
-
-- Contour order differs in glyph '_34': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
-
-- Contour order differs in glyph '_34': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
-
-- Contour order differs in glyph '_34': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
-
-- Contour order differs in glyph '_34': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
-
-- Contour 0 start point differs in glyph '_8.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
-
-- Contour 0 start point differs in glyph '_8.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
-
-- Contour 0 start point differs in glyph '_8.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
-
-- Contour 0 start point differs in glyph '_8.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
-
-- Contour order differs in glyph '_36': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
-
-- Contour order differs in glyph '_36': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
-
-- Contour order differs in glyph '_36': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
-
-- Contour order differs in glyph '_36': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
-
-- Contour order differs in glyph '_12': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
-
-- Contour order differs in glyph '_12': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
-
-- Contour order differs in glyph '_12': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
-
-- Contour order differs in glyph '_12': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
-
-- Contour order differs in glyph '_26': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
-
-- Contour order differs in glyph '_26': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
-
-- Contour order differs in glyph '_26': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
-
-- Contour order differs in glyph '_26': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
-
-- Contour 0 start point differs in glyph '_20.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
-
-- Contour 0 start point differs in glyph '_20.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
-
-- Contour order differs in glyph '_38': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
-
-- Contour order differs in glyph '_38': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 1, 0] in ROND=0,YELA=100,wght=4.
-
-- Contour 0 start point differs in glyph '_4.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
-
-- Contour 0 start point differs in glyph '_4.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
-
-- Contour 0 start point differs in glyph '_4.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
-
-- Contour 0 start point differs in glyph '_14.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
-
-- Contour 0 start point differs in glyph '_14.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
-
-- Contour 0 start point differs in glyph '_14.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
-
-- Contour 0 start point differs in glyph '_14.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
-
-- Contour 0 start point differs in glyph '_7.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
-
-- Contour 0 start point differs in glyph '_7.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
-
-- Contour 0 start point differs in glyph '_7.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
-
-- Contour 0 start point differs in glyph '_7.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
-
-- Contour order differs in glyph '_13': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
-
-- Contour order differs in glyph '_13': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
-
-- Contour order differs in glyph '_13': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
-
-- Contour order differs in glyph '_13': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
-
-- Contour order differs in glyph '_39': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 1, 0] in ROND=0,YELA=100,wght=4.
+- Contour 0 start point differs in glyph '_17.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
 
 - Contour order differs in glyph '_19': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
 
@@ -347,18 +303,6 @@ Please read <a href="https://github.com/fonttools/fonttools/issues/3014">https:/
 
 - Contour order differs in glyph '_19': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
 
-- Contour 0 start point differs in glyph '_2.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
-
-- Contour 0 start point differs in glyph '_2.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
-
-- Contour 0 start point differs in glyph '_6.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
-
-- Contour 0 start point differs in glyph '_6.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
-
-- Contour 0 start point differs in glyph '_6.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
-
-- Contour 0 start point differs in glyph '_6.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
-
 - Contour 0 start point differs in glyph '_3' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
 
 - Contour order differs in glyph '_3': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
@@ -366,6 +310,26 @@ Please read <a href="https://github.com/fonttools/fonttools/issues/3014">https:/
 - Contour 0 start point differs in glyph '_3' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
 
 - Contour 0 start point differs in glyph '_3' between location ROND=100,YELA=100,wght=1000 and location ROND=0,YELA=100,wght=4
+
+- Contour order differs in glyph '_9': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_9': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_9': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_9': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+
+- Contour order differs in glyph '_37': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_37': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 1, 0] in ROND=0,YELA=100,wght=4.
+
+- Contour 0 start point differs in glyph '_11.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
+
+- Contour 0 start point differs in glyph '_11.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
+
+- Contour 0 start point differs in glyph '_11.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
+
+- Contour 0 start point differs in glyph '_11.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
 
 - Contour order differs in glyph '_31': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
 
@@ -375,9 +339,37 @@ Please read <a href="https://github.com/fonttools/fonttools/issues/3014">https:/
 
 - Contour order differs in glyph '_31': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
 
-- Contour 0 start point differs in glyph '_24.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
+- Contour 0 start point differs in glyph '_9.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
 
-- Contour 0 start point differs in glyph '_24.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
+- Contour 0 start point differs in glyph '_9.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
+
+- Contour 0 start point differs in glyph '_9.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
+
+- Contour 0 start point differs in glyph '_9.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
+
+- Contour order differs in glyph '_10': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_10': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_10': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_10': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+
+- Contour order differs in glyph '_22': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_22': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_22': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_22': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+
+- Contour order differs in glyph '_18': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_18': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_18': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_18': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
 
 - Contour 0 start point differs in glyph '_3.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
 
@@ -387,17 +379,49 @@ Please read <a href="https://github.com/fonttools/fonttools/issues/3014">https:/
 
 - Contour 0 start point differs in glyph '_3.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
 
-- Contour 0 start point differs in glyph '_5.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
+- Contour 0 start point differs in glyph '_16.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
 
-- Contour 0 start point differs in glyph '_5.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
+- Contour 0 start point differs in glyph '_16.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
 
-- Contour 0 start point differs in glyph '_5.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
+- Contour 0 start point differs in glyph '_16.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
 
-- Contour 0 start point differs in glyph '_5.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
+- Contour 0 start point differs in glyph '_16.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
 
-- Contour 0 start point differs in glyph '_23.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
+- Contour 0 start point differs in glyph '_15.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
 
-- Contour 0 start point differs in glyph '_23.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
+- Contour 0 start point differs in glyph '_15.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
+
+- Contour 0 start point differs in glyph '_15.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
+
+- Contour 0 start point differs in glyph '_15.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
+
+- Contour order differs in glyph '_23': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_23': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_23': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_23': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+
+- Contour order differs in glyph '_20': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_20': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_20': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_20': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+
+- Contour 0 start point differs in glyph '_1.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
+
+- Contour 0 start point differs in glyph '_1.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
+
+- Contour order differs in glyph '_33': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
+
+- Contour order differs in glyph '_33': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
+
+- Contour order differs in glyph '_33': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
+
+- Contour order differs in glyph '_33': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
 
 - Contour order differs in glyph '_11': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
 
@@ -406,32 +430,6 @@ Please read <a href="https://github.com/fonttools/fonttools/issues/3014">https:/
 - Contour order differs in glyph '_11': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
 
 - Contour order differs in glyph '_11': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
-
-- Contour order differs in glyph '_5': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
-
-- Contour order differs in glyph '_5': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
-
-- Contour order differs in glyph '_5': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
-
-- Contour order differs in glyph '_5': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
-
-- Contour 0 start point differs in glyph '_2' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
-
-- Contour 0 start point differs in glyph '_2' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
-
-- Contour order differs in glyph '_2': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
-
-- Contour 0 start point differs in glyph '_2' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
-
-- Contour 0 start point differs in glyph '_2' between location ROND=100,YELA=100,wght=1000 and location ROND=0,YELA=100,wght=4
-
-- Contour order differs in glyph '_9': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
-
-- Contour order differs in glyph '_9': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
-
-- Contour order differs in glyph '_9': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
-
-- Contour order differs in glyph '_9': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
 
 - Contour 0 start point differs in glyph '_1' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
 
@@ -443,37 +441,37 @@ Please read <a href="https://github.com/fonttools/fonttools/issues/3014">https:/
 
 - Contour order differs in glyph '_1': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
 
-- Contour 0 start point differs in glyph '_15.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
+- Contour order differs in glyph '_13': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
 
-- Contour 0 start point differs in glyph '_15.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
+- Contour order differs in glyph '_13': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
 
-- Contour 0 start point differs in glyph '_15.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
+- Contour order differs in glyph '_13': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
 
-- Contour 0 start point differs in glyph '_15.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
+- Contour order differs in glyph '_13': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
 
-- Contour order differs in glyph '_17': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+- Contour 0 start point differs in glyph '_7.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
 
-- Contour order differs in glyph '_17': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+- Contour 0 start point differs in glyph '_7.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
 
-- Contour order differs in glyph '_17': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+- Contour 0 start point differs in glyph '_7.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
 
-- Contour order differs in glyph '_17': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+- Contour 0 start point differs in glyph '_7.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
 
-- Contour order differs in glyph '_10': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+- Contour order differs in glyph '_25': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
 
-- Contour order differs in glyph '_10': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+- Contour order differs in glyph '_25': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
 
-- Contour order differs in glyph '_10': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+- Contour order differs in glyph '_25': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
 
-- Contour order differs in glyph '_10': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+- Contour order differs in glyph '_25': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
 
-- Contour order differs in glyph '_18': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+- Contour order differs in glyph '_26': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
 
-- Contour order differs in glyph '_18': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+- Contour order differs in glyph '_26': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
 
-- Contour order differs in glyph '_18': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+- Contour order differs in glyph '_26': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
 
-- Contour order differs in glyph '_18': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+- Contour order differs in glyph '_26': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
 
 - Contour order differs in glyph '_32': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
 
@@ -483,61 +481,63 @@ Please read <a href="https://github.com/fonttools/fonttools/issues/3014">https:/
 
 - Contour order differs in glyph '_32': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
 
-- Contour order differs in glyph '_23': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+- Contour order differs in glyph '_24': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
 
-- Contour order differs in glyph '_23': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+- Contour 0 start point differs in glyph '_24' between location ROND=100,YELA=-100,wght=1000 and location ROND=0,YELA=100,wght=100
 
-- Contour order differs in glyph '_23': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+- Contour order differs in glyph '_24': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
 
-- Contour order differs in glyph '_23': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+- Contour order differs in glyph '_24': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
 
-- Contour 0 start point differs in glyph '_18.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
+- Contour order differs in glyph '_17': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
 
-- Contour 0 start point differs in glyph '_18.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
+- Contour order differs in glyph '_17': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
 
-- Contour 0 start point differs in glyph '_18.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
+- Contour order differs in glyph '_17': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
 
-- Contour 0 start point differs in glyph '_18.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
+- Contour order differs in glyph '_17': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
 
-- Contour 0 start point differs in glyph '_11.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
+- Contour 0 start point differs in glyph '_2.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
 
-- Contour 0 start point differs in glyph '_11.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
+- Contour 0 start point differs in glyph '_2.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
 
-- Contour 0 start point differs in glyph '_11.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
+- Contour 0 start point differs in glyph '_22.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
 
-- Contour 0 start point differs in glyph '_11.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
+- Contour 0 start point differs in glyph '_22.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
 
-- Contour order differs in glyph '_30': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
+- Contour order differs in glyph '_4': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
 
-- Contour order differs in glyph '_30': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
+- Contour order differs in glyph '_4': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
 
-- Contour order differs in glyph '_30': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
+- Contour order differs in glyph '_4': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
 
-- Contour order differs in glyph '_30': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
+- Contour order differs in glyph '_4': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
 
-- Contour order differs in glyph '_20': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+- Contour order differs in glyph '_34': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 0, 2] in ROND=100,YELA=-100,wght=1000.
 
-- Contour order differs in glyph '_20': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+- Contour order differs in glyph '_34': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 2, 0] in ROND=0,YELA=100,wght=100.
 
-- Contour order differs in glyph '_20': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+- Contour order differs in glyph '_34': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 0, 2] in ROND=100,YELA=100,wght=1000.
 
-- Contour order differs in glyph '_20': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+- Contour order differs in glyph '_34': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=4.
 
-- Contour order differs in glyph '_7': [0, 1, 2] in ROND=100,YELA=-100,wght=4, [1, 2, 0] in ROND=100,YELA=-100,wght=1000.
+- Contour 0 start point differs in glyph '_10.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
 
-- Contour order differs in glyph '_7': [0, 1, 2] in ROND=100,YELA=-100,wght=1000, [1, 0, 2] in ROND=0,YELA=100,wght=100.
+- Contour 0 start point differs in glyph '_10.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
 
-- Contour order differs in glyph '_7': [0, 1, 2] in ROND=100,YELA=100,wght=4, [1, 2, 0] in ROND=100,YELA=100,wght=1000.
+- Contour 0 start point differs in glyph '_10.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
 
-- Contour order differs in glyph '_7': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 0, 1] in ROND=0,YELA=100,wght=4.
+- Contour 0 start point differs in glyph '_10.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
 
-- Contour 0 start point differs in glyph '_9.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
+- Contour order differs in glyph '_39': [0, 1, 2] in ROND=100,YELA=100,wght=1000, [2, 1, 0] in ROND=0,YELA=100,wght=4.
 
-- Contour 0 start point differs in glyph '_9.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
+- Contour 0 start point differs in glyph '_12.clip' between location ROND=100,YELA=-100,wght=100 and location ROND=0,YELA=-100,wght=100
 
-- Contour 0 start point differs in glyph '_9.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
+- Contour 0 start point differs in glyph '_12.clip' between location ROND=100,YELA=-100,wght=4 and location ROND=100,YELA=-100,wght=1000
 
-- Contour 0 start point differs in glyph '_9.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
+- Contour 0 start point differs in glyph '_12.clip' between location ROND=0,YELA=-100,wght=1000 and location ROND=100,YELA=100,wght=4
+
+- Contour 0 start point differs in glyph '_12.clip' between location ROND=100,YELA=100,wght=4 and location ROND=100,YELA=100,wght=1000
 </code></pre>
  [code: interpolation-issues]
 
@@ -652,13 +652,13 @@ definitions.</p>
 <li>U+000C : try adding symbols</li>
 <li>U+0085 : try adding symbols</li>
 <li>U+02CD MODIFIER LETTER LOW MACRON: try adding lisu</li>
-<li>U+02D8 BREVE: try adding one of: canadian-aboriginal, yi</li>
-<li>U+02D9 DOT ABOVE: try adding one of: canadian-aboriginal, yi</li>
-<li>U+02DB OGONEK: try adding one of: canadian-aboriginal, yi</li>
-<li>U+0302 COMBINING CIRCUMFLEX ACCENT: try adding one of: cherokee, math, coptic, tifinagh</li>
+<li>U+02D8 BREVE: try adding one of: yi, canadian-aboriginal</li>
+<li>U+02D9 DOT ABOVE: try adding one of: yi, canadian-aboriginal</li>
+<li>U+02DB OGONEK: try adding one of: yi, canadian-aboriginal</li>
+<li>U+0302 COMBINING CIRCUMFLEX ACCENT: try adding one of: cherokee, tifinagh, math, coptic</li>
 <li>U+0306 COMBINING BREVE: try adding one of: tifinagh, old-permic</li>
-<li>U+0307 COMBINING DOT ABOVE: try adding one of: hebrew, old-permic, todhri, tai-le, duployan, syriac, malayalam, canadian-aboriginal, math, coptic, tifinagh</li>
-<li>U+030A COMBINING RING ABOVE: try adding one of: duployan, syriac</li>
+<li>U+0307 COMBINING DOT ABOVE: try adding one of: hebrew, math, todhri, malayalam, syriac, coptic, old-permic, duployan, tifinagh, canadian-aboriginal, tai-le</li>
+<li>U+030A COMBINING RING ABOVE: try adding one of: syriac, duployan</li>
 <li>U+030B COMBINING DOUBLE ACUTE ACCENT: try adding one of: cherokee, osage</li>
 <li>U+030C COMBINING CARON: try adding one of: cherokee, tai-le</li>
 <li>U+0312 COMBINING TURNED COMMA ABOVE: try adding math</li>
@@ -676,12 +676,12 @@ definitions.</p>
 <li>U+2007 FIGURE SPACE: try adding symbols2</li>
 <li>U+2008 PUNCTUATION SPACE: try adding symbols2</li>
 <li>U+200A HAIR SPACE: try adding symbols2</li>
-<li>U+200C ZERO WIDTH NON-JOINER: try adding one of: buhid, manichaean, syloti-nagri, khmer, sharada, malayalam, mahajani, thaana, psalter-pahlavi, yi, chakma, mongolian, gunjala-gondi, kayah-li, cham, sundanese, hebrew, avestan, batak, tamil, phags-pa, buginese, newa, devanagari, duployan, syriac, zanabazar-square, khudawadi, masaram-gondi, tibetan, gurmukhi, meetei-mayek, tagbanwa, gujarati, new-tai-lue, tai-tham, javanese, bengali, lepcha, dogra, hanunoo, rejang, tai-le, kannada, arabic, grantha, saurashtra, warang-citi, takri, sogdian, sinhala, lao, tifinagh, bhaiksuki, oriya, tai-viet, pahawh-hmong, myanmar, khojki, siddham, mandaic, hanifi-rohingya, kaithi, thai, nko, balinese, limbu, tagalog, hatran, telugu, tirhuta, modi, kharoshthi, brahmi</li>
-<li>U+200D ZERO WIDTH JOINER: try adding one of: old-hungarian, buhid, manichaean, syloti-nagri, khmer, sharada, malayalam, mahajani, thaana, psalter-pahlavi, yi, chakma, mongolian, gunjala-gondi, kayah-li, cham, sundanese, hebrew, avestan, batak, tamil, phags-pa, buginese, newa, devanagari, duployan, syriac, zanabazar-square, khudawadi, masaram-gondi, tibetan, gurmukhi, meetei-mayek, tagbanwa, gujarati, new-tai-lue, tai-tham, javanese, bengali, lepcha, dogra, hanunoo, rejang, tai-le, kannada, arabic, grantha, saurashtra, warang-citi, takri, sogdian, sinhala, tifinagh, bhaiksuki, oriya, tai-viet, pahawh-hmong, myanmar, khojki, siddham, mandaic, hanifi-rohingya, kaithi, thai, nko, balinese, limbu, tagalog, lao, telugu, tirhuta, modi, kharoshthi, brahmi</li>
+<li>U+200C ZERO WIDTH NON-JOINER: try adding one of: zanabazar-square, kayah-li, javanese, kharoshthi, khudawadi, oriya, syriac, telugu, lao, tai-viet, tirhuta, balinese, duployan, masaram-gondi, tamil, yi, chakma, newa, hanifi-rohingya, bengali, gunjala-gondi, modi, sogdian, new-tai-lue, tibetan, lepcha, dogra, mahajani, brahmi, kannada, tagbanwa, hebrew, khojki, malayalam, khmer, arabic, thaana, pahawh-hmong, limbu, meetei-mayek, phags-pa, buhid, devanagari, bhaiksuki, hanunoo, kaithi, rejang, myanmar, thai, cham, tai-le, hatran, sinhala, gurmukhi, manichaean, tagalog, syloti-nagri, takri, warang-citi, grantha, siddham, buginese, psalter-pahlavi, tai-tham, batak, mongolian, nko, sundanese, mandaic, tifinagh, avestan, gujarati, sharada, saurashtra</li>
+<li>U+200D ZERO WIDTH JOINER: try adding one of: zanabazar-square, kayah-li, javanese, kharoshthi, khudawadi, oriya, syriac, telugu, lao, tai-viet, tirhuta, balinese, duployan, masaram-gondi, tamil, yi, thaana, chakma, newa, hanifi-rohingya, bengali, gunjala-gondi, modi, sogdian, new-tai-lue, tibetan, lepcha, dogra, mahajani, brahmi, kannada, tagbanwa, hebrew, khojki, malayalam, khmer, arabic, old-hungarian, pahawh-hmong, limbu, meetei-mayek, phags-pa, buhid, devanagari, bhaiksuki, hanunoo, kaithi, rejang, myanmar, thai, cham, tai-le, sinhala, gurmukhi, manichaean, tagalog, syloti-nagri, takri, warang-citi, grantha, siddham, buginese, psalter-pahlavi, tai-tham, batak, mongolian, nko, sundanese, mandaic, tifinagh, avestan, gujarati, sharada, saurashtra</li>
 <li>U+2015 HORIZONTAL BAR: try adding adlam</li>
 <li>U+2028 LINE SEPARATOR: not included in any glyphset definition</li>
 <li>U+2029 PARAGRAPH SEPARATOR: not included in any glyphset definition</li>
-<li>U+202F NARROW NO-BREAK SPACE: try adding one of: mongolian, yi, phags-pa</li>
+<li>U+202F NARROW NO-BREAK SPACE: try adding one of: yi, mongolian, phags-pa</li>
 <li>U+205F MEDIUM MATHEMATICAL SPACE: try adding math</li>
 <li>U+2060 WORD JOINER: not included in any glyphset definition</li>
 <li>U+2061 FUNCTION APPLICATION: not included in any glyphset definition</li>
@@ -694,7 +694,7 @@ definitions.</p>
 <li>U+2586 LOWER THREE QUARTERS BLOCK: try adding symbols2</li>
 <li>U+2587 LOWER SEVEN EIGHTHS BLOCK: try adding symbols2</li>
 <li>U+2588 FULL BLOCK: try adding symbols2</li>
-<li>U+3000 IDEOGRAPHIC SPACE: try adding one of: chinese-simplified, phags-pa, yi, chinese-traditional, nushu, japanese, chinese-hongkong</li>
+<li>U+3000 IDEOGRAPHIC SPACE: try adding one of: chinese-simplified, nushu, japanese, yi, chinese-hongkong, phags-pa, chinese-traditional</li>
 </ul>
 <p>Or you can add the above codepoints to one of the subsets supported by the font: <code>latin</code>, <code>latin-ext</code></p>
  [code: unreachable-subsetting]
