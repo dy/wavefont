@@ -1,9 +1,25 @@
 /**
  * Waveform text: audio in, characters out, and back – click a bar to play from it, select bars to play them.
- * Shared by the site and the playground.
  */
 import wf from '../index.js'
 import { levels, record, play, audio } from './sound.js'
+
+/**
+ * Value a character draws, as the font maps it: U+0100–U+017F are 0–127, digits step 10, a–z and A–Z step 2 (Y is
+ * 99), the block elements their eighths, | the full bar, dashes, dots and stars the floor's; undefined where it
+ * draws nothing.
+ */
+const BLOCKS = [0, 14, 28, 42, 56, 72, 86, 100]
+export const valueOf = c => {
+  const k = c.charCodeAt(0)
+  if (k >= 0x100 && k <= 0x17f) return k - 0x100
+  if (k >= 48 && k <= 57) return (k - 48) * 10
+  if (k >= 97 && k <= 122) return (k - 97) * 2
+  if (k >= 65 && k <= 90) return c === 'Y' ? 99 : Math.min(100, 52 + (k - 65) * 2)
+  if (k >= 0x2581 && k <= 0x2588) return BLOCKS[k - 0x2581]
+  if (c === '|' || c === 'ƀ') return 100
+  if ('-–—―_.*ˍ'.includes(c)) return 0
+}
 
 /** Seconds as m:ss. */
 export const clock = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`
@@ -22,14 +38,6 @@ export const mark = range => {
   if (!played) return
   played.delete(range)
   if (!range.collapsed) played.add(range)
-}
-
-/** Copy text, then say so on the button for a moment. */
-export const copy = async (btn, text) => {
-  const was = btn.textContent
-  try { await navigator.clipboard.writeText(text), btn.textContent = 'Copied' }
-  catch { btn.textContent = 'Copy failed' }
-  setTimeout(() => btn.textContent = was, 1400)
 }
 
 /**
@@ -157,13 +165,15 @@ export function track(el, { ontime, onstate, pick = true } = {}) {
 }
 
 /**
- * Microphone to loudness levels, live: onlive(levels, seconds) runs as audio arrives, one level per dt seconds.
+ * Microphone to loudness levels, live: onlive(levels, seconds) runs as audio arrives, one level per dt seconds;
+ * seconds is the audio kept so far, to the sample – the recording's own clock.
  * Resolves to the recorder: pause(), resume(), and stop() for the AudioBuffer.
  */
 export async function listen(onlive, dt = 0.05) {
-  const lv = [], frame = Math.round(audio().sampleRate * dt)
-  let acc = 0, count = 0
+  const lv = [], sr = audio().sampleRate, frame = Math.round(sr * dt)
+  let acc = 0, count = 0, n = 0
   return record(chunk => {
+    n += chunk.length
     for (const v of chunk) {
       acc += v * v
       if (++count < frame) continue
@@ -171,7 +181,7 @@ export async function listen(onlive, dt = 0.05) {
       lv.push(Math.min(1, Math.max(0, 1 + (10 * Math.log10(acc / count + 1e-10) + 14) / 42)))
       acc = count = 0
     }
-    onlive(lv, lv.length * dt)
+    onlive(lv, n / sr)
   })
 }
 

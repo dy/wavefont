@@ -28,3 +28,4 @@ venv
 *.ninja
 out/
 sources/instance_ufos/
+/.errs-profile

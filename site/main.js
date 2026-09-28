@@ -5,34 +5,24 @@
 import wf, { char } from '../index.js'
 import { fit, weight } from './wave.js'
 import { bench, commits } from './data.js'
-import { $, $$, h, soon, seen, noise, still, ease, swing } from './dom.js'
+import { $, $$, h, soon, seen, noise, still, ease, swing, wander, copy, copyable, dpx } from './dom.js'
 import { chat } from './chat.js'
 import { memo } from './memo.js'
+import { shifts, range } from './shifts.js'
+import { flappy } from './flappy.js'
+import { icon, tab } from './icon.js'
 
 /** Letter the bars: one centred cell per character of s. */
 const letter = (row, s) => row.replaceChildren(...Array.from(s, c => h('span', { textContent: c === ' ' ? ' ' : c })))
-
-/** Value a keyboard character draws, as the font maps it: 0–9 step 10, a–z A–Z step 2. */
-const valueOf = c => {
-  const k = c.charCodeAt(0)
-  if (k >= 48 && k <= 57) return Math.max(1, (k - 48) * 10)
-  if (k >= 97 && k <= 122) return Math.max(1, (k - 97) * 2)
-  if (k >= 65 && k <= 90) return Math.min(100, 52 + (k - 65) * 2)
-  if (k >= 0x100 && k < 0x180) return k - 0x100
-  return 1
-}
-
-/** A device pixel, in CSS px: bars whose edges land on these draw crisp and alike. */
-const dpx = () => 1 / (devicePixelRatio || 1)
 
 
 /* ── hero: the name, set in itself ───────────────────────────────────────── */
 
 function hero() {
   const field = $('.mark-bars'), letters = $('.mark-letters'), box = $('.mark')
-  const NAME = 'Wavefont', MAX = 20
-  let typing = 0
+  const MAX = 20
 
+  // the name stands as the page sets it; an edit re-letters the bars, and the tab shows them
   const sync = () => {
     let s = field.textContent.replace(/[\r\n]/g, '')
     if (s.length > MAX) {
@@ -40,34 +30,17 @@ function hero() {
       getSelection().collapse(field.firstChild, s.length)
     }
     box.style.setProperty('--n', Math.max(8, s.length))
-    letter(letters, s)
+    letter(letters, s), tab(field)
   }
   field.addEventListener('keydown', e => e.key === 'Enter' && e.preventDefault())
   field.addEventListener('input', sync)
-  field.addEventListener('focus', () => { if (typing) cancelAnimationFrame(typing), typing = 0, field.textContent = NAME, sync() })
-
-  if (still) return sync()
-  // type the name in: each bar grows from nothing to its letter, then the letter lands under it
-  field.textContent = '', letter(letters, '')
-  const t0 = performance.now() + 350, per = 150
-  const step = now => {
-    const t = (now - t0) / per, i = Math.floor(t)
-    if (i >= NAME.length) return typing = 0, field.textContent = NAME, sync()
-    if (i >= 0) {
-      const done = NAME.slice(0, i)
-      field.textContent = done + char(ease(Math.min(1, t - i)) * valueOf(NAME[i]))
-      letter(letters, done)
-    }
-    typing = requestAnimationFrame(step)
-  }
-  typing = requestAnimationFrame(step)
 }
 
 
 /* ── 127 values: pick a bar, copy its value, character or code ──────────── */
 
 function values() {
-  const grid = $('.grid'), outs = { value: $('.r-value'), char: $('.r-char'), code: $('.r-code') }
+  const sec = $('#values'), grid = $('.grid', sec), outs = { value: $('.r-value', sec), char: $('.r-char', sec), code: $('.r-code', sec) }
   const code = v => 'U+' + (0x100 + v).toString(16).toUpperCase().padStart(4, '0')
   const cells = Array.from({ length: 128 }, (_, v) => {
     const b = h('button', { type: 'button', className: 'cell', textContent: char(v), tabIndex: -1 })
@@ -76,7 +49,7 @@ function values() {
     return b
   })
   // 0 and 127 stand on the lines of the first bar and the last; the readout goes under the grid's first column
-  grid.replaceChildren(h('span', { className: 'edge from', textContent: '0' }), ...cells, h('span', { className: 'edge to', textContent: '127' }), $('.readout'))
+  grid.replaceChildren(h('span', { className: 'edge from', textContent: '0' }), ...cells, h('span', { className: 'edge to', textContent: '127' }), $('.readout', sec))
 
   let current = 64
   const pick = v => {
@@ -92,12 +65,7 @@ function values() {
     if (!d) return
     e.preventDefault(), pick(Math.min(127, Math.max(0, current + d))), cells[current].focus()
   })
-  // each readout copies itself; its label says so for a moment
-  for (const [name, b] of Object.entries(outs)) b.addEventListener('click', async () => {
-    const dt = b.closest('div').querySelector('dt')
-    try { await navigator.clipboard.writeText(b.textContent), dt.textContent = 'copied' } catch { dt.textContent = 'copy failed' }
-    setTimeout(() => dt.textContent = name, 1200)
-  })
+  copyable($('.readout', sec), outs.char)
 
   // on entering: every bar rises to its value, a diagonal wave across the grid
   return () => {
@@ -143,29 +111,18 @@ function axes() {
   }
   inputs.forEach(i => set(i.name, +i.value))
 
-  // a walk through what the axes do: weight by weight, the extremes first and closing in – 100, 900, 200, 800, …, 500;
-  // at each weight, square, half round and round, there and back in turn; at each roundness, the same three moves:
-  // down to the floor, up to the ceiling, back to the middle. Each move changes one axis, a longer one taking longer;
-  // a new weight holds longest, a new roundness less, an alignment least. Twice through the weights, the roundness
-  // comes back where it began
-  const WGHT = [100, 900, 200, 800, 300, 700, 400, 600, 500], ROND = [0, 50, 100], YELA = [-100, 100, 0]
-  const INTO = [['wght', 100]], ROUND = []
-  let r = 0
-  for (const [i, w] of [...WGHT, ...WGHT].entries()) {
-    if (i) ROUND.push(['wght', w])
-    for (const rv of i % 2 ? [...ROND].reverse() : ROND) {
-      if (rv !== r) ROUND.push(['rond', rv]), r = rv
-      for (const yv of YELA) ROUND.push(['yela', yv])
-    }
-  }
-  ROUND.push(['wght', 100])
-  const SPAN = { wght: 950, rond: 100, yela: 200 }, HOLD = { wght: 1100, rond: 550, yela: 250 }
-  let raf = 0, k = 0, t0 = null, from = 0, move = 0
+  // a walk through what the axes do: each move, an axis picked at random – never one a third time running – goes to
+  // one of its stops other than where it is: a weight in hundreds or either end, 50 and 950; square, half round or
+  // round; floor, middle or ceiling. A longer move takes longer; a new weight holds longest, a roundness less, an
+  // alignment least
+  const STOPS = { wght: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950], rond: [0, 50, 100], yela: [-100, 0, 100] }
+  const SPAN = { wght: 900, rond: 100, yela: 200 }, HOLD = { wght: 1100, rond: 550, yela: 350 }
+  const next = wander(STOPS, name => +input(name).value)
+  let raf = 0, t0 = null, name, to, from = 0, move = 0
   const step = now => {
-    const [name, to] = k < INTO.length ? INTO[k] : ROUND[(k - INTO.length) % ROUND.length]
-    if (t0 === null) t0 = now, from = +input(name).value, move = 300 + 600 * Math.abs(to - from) / SPAN[name]
+    if (t0 === null) [name, to] = next(), t0 = now, from = +input(name).value, move = 300 + 600 * Math.abs(to - from) / SPAN[name]
     set(name, from + (to - from) * swing(Math.min(1, (now - t0) / move)))
-    if (now - t0 >= move + HOLD[name]) k++, t0 = null
+    if (now - t0 >= move + HOLD[name]) t0 = null
     raf = requestAnimationFrame(step)
   }
   const run = on => { cancelAnimationFrame(raf), t0 = null; if (on && !still) raf = requestAnimationFrame(step) }
@@ -303,20 +260,52 @@ function textDoc() {
   doc.addEventListener('keydown', e => { if (e.key === 'Enter') e.preventDefault(), document.execCommand('insertText', false, '\n') })
   tally(), show(null)
 
-  // on entering: the page edits itself – a word selected, then set bold, and left selected as any selection is
-  let touched = false, timer = 0
-  const hands = () => { touched = true, clearTimeout(timer) }
+  // on entering, once: the page edits itself as a hand would – a few words selected and deleted, the caret gone to the
+  // next paragraph, and the words typed there a character at a time. Through the text's own runs, weights kept, and
+  // with a caret of its own: focusing the text for a real one would take the keys that scroll the page
+  let touched = false, timer = 0, done = false
+  const caret = h('span', { className: 'caret', hidden: true }), slide = doc.closest('.slide')
+  slide.append(caret)
+  const put = at => {
+    const rg = document.createRange(), r = slide.getBoundingClientRect()
+    rg.setStart(...point(body, at, true))
+    const c = rg.getClientRects()[0] ?? rg.getBoundingClientRect()
+    Object.assign(caret.style, { left: `${c.left - r.left}px`, top: `${c.top - r.top}px`, height: `${c.height}px` }), caret.hidden = false
+  }
+  const hands = () => { touched = true, clearTimeout(timer), caret.hidden = true }
   doc.addEventListener('pointerdown', hands), doc.addEventListener('keydown', hands), box.addEventListener('pointerdown', hands)
   return () => {
     const sel = getSelection()
-    if (still || touched || timer || !matchMedia('(hover: hover)').matches || (sel.rangeCount && !sel.isCollapsed)) return
-    const w = [...read(body)[0].matchAll(/\p{L}+/gu)][24]
+    if (still || touched || timer || done || !matchMedia('(hover: hover)').matches || (sel.rangeCount && !sel.isCollapsed)) return
+    done = true
+    const words = () => [...read(body)[0].matchAll(/\p{L}+/gu)]
+    // three words from the first paragraph, and what parts them from the next
+    const [a, , , z] = words().slice(9, 13).map(m => m.index)
+    let cut = '', weights = [], at = 0
     const steps = [
-      () => sel.setBaseAndExtent(...point(body, w.index, true), ...point(body, w.index + w[0].length)),
-      () => { box.children[3].classList.add('is-pressed'), apply(3) },
-      () => box.children[3].classList.remove('is-pressed')
+      // a selection set in editable text focuses it in some engines: let it go, so the keys still scroll the page
+      [() => { sel.setBaseAndExtent(...point(body, a, true), ...point(body, z)), doc.blur() }, 1100],
+      [() => {
+        const [s, ws] = read(body)
+        cut = s.slice(a, z), weights = ws.slice(a, z)
+        write(body, s.slice(0, a) + s.slice(z), [...ws.slice(0, a), ...ws.slice(z)]), sel.removeAllRanges(), put(a), tally()
+      }, 700],
+      // before the fifth word of the second paragraph
+      [() => { const p = read(body)[0].indexOf('\n\n'); at = words().filter(m => m.index > p)[4]?.index ?? p + 2, put(at) }, 600]
     ]
-    const next = (i = 0) => { if (touched || i >= steps.length) return; steps[i](), timer = setTimeout(() => next(i + 1), i ? 750 : 1100) }
+    const type = i => {
+      if (touched) return
+      if (i >= cut.length) return timer = setTimeout(() => { caret.hidden = true, timer = 0 }, 1600)
+      const [s, ws] = read(body)
+      write(body, s.slice(0, at + i) + cut[i] + s.slice(at + i), [...ws.slice(0, at + i), weights[i], ...ws.slice(at + i)]), put(at + i + 1)
+      timer = setTimeout(() => type(i + 1), 55)
+    }
+    const next = (i = 0) => {
+      if (touched) return
+      if (i >= steps.length) return tally(), type(0)
+      const [step, wait] = steps[i]
+      step(), timer = setTimeout(() => next(i + 1), wait)
+    }
     timer = setTimeout(next, 600)
   }
 }
@@ -325,94 +314,57 @@ function textDoc() {
 /* ── 60 fps: what drawing an hour of speech costs, as text and otherwise ── */
 
 function speed() {
-  const sec = $('#speed'), lanes = $('.lanes'), multi = $('.multiples'), table = $('.bench'), opBox = $('.ops'), browserBox = $('.browsers')
+  const sec = $('#speed'), lanes = $('.lanes'), opBox = $('.ops'), browserBox = $('.browsers')
   const { ops: OPS, stacks: STACKS, text: TEXT, browsers: DATA } = bench, BROWSERS = Object.keys(DATA)
   // milliseconds on a log scale: 0.1 on the floor, 1000 at the top
   const height = ms => ms ? Math.min(1, Math.max(0, (Math.log10(ms) + 1) / 4)) : 0
   const num = ms => ms < 1 ? ms.toFixed(2) : ms < 10 ? ms.toFixed(1) : String(Math.round(ms))
-  const ours = i => TEXT[i] ? 'is-ours' : ''
-  const role = (el, r) => (el.setAttribute('role', r), el)
 
-  // 1: a column a way, for one operation
+  // a column a way, for one operation, its time standing on its bar: the first ours, the font's other ways text too
   const cols = STACKS.map((name, i) => {
     const glyph = h('span', { className: 'glyph wf' }), ms = h('span', { className: 'ms' })
-    return { el: h('div', { className: 'col ' + ours(i) }, ms, glyph, h('span', { className: 'name', textContent: name })), glyph, ms, h: 0, from: 0, to: 0 }
+    return { el: h('div', { className: 'col' + (i ? '' : ' is-ours') + (TEXT[i] ? ' is-text' : '') }, ms, glyph, h('span', { className: 'name', textContent: name })), glyph, ms, h: 0, from: 0, to: 0 }
   })
   lanes.replaceChildren(...cols.map(c => c.el))
-  // 2: every operation, its four bars in the same order
-  const bars = OPS.map(() => STACKS.map((_, i) => ({ glyph: h('span', { className: 'glyph wf ' + ours(i) }), h: 0, from: 0, to: 0 })))
-  multi.replaceChildren(...OPS.map((op, j) => h('div', { className: 'group' }, ...bars[j].map(b => b.glyph), h('span', { className: 'name', textContent: op }))))
-  $('.legend').replaceChildren(...STACKS.map((s, i) => h('span', { className: ours(i) }, h('span', { className: 'wf', textContent: char(100) }), s)))
-  // 3: a table, a row a way, a column an operation; a time after its bar
-  const cells = STACKS.map(() => OPS.map(() => {
-    const b = h('span', { className: 'wf' }), n = h('span')
-    b.setAttribute('aria-hidden', 'true')
-    return { el: role(h('div', {}, b, n), 'cell'), b, n }
-  }))
-  table.replaceChildren(
-    role(h('div', {}, role(h('div'), 'columnheader'), ...OPS.map(op => role(h('div', { textContent: op }), 'columnheader'))), 'row'),
-    ...STACKS.map((s, i) => role(h('div', { className: ours(i) }, role(h('div', { textContent: s }), 'rowheader'), ...cells[i].map(c => c.el)), 'row'))
-  )
 
   let op = 0, browser = BROWSERS[0], auto = true, raf = 0, t0 = 0, timer = 0
-  const moving = [...cols, ...bars.flat()]
   const tween = now => {
     const k = still ? 1 : ease(Math.min(1, (now - t0) / 650))
-    for (const c of moving) {
+    for (const c of cols) {
       c.h = c.from + (c.to - c.from) * k
       c.glyph.textContent = c.h ? char(100 * c.h) : ''
-      c.el?.style.setProperty('--h', c.h.toFixed(4))
+      c.el.style.setProperty('--h', c.h.toFixed(4))
     }
     if (k < 1) raf = requestAnimationFrame(tween)
   }
   const show = () => {
     const rows = DATA[browser]
     cols.forEach((c, i) => { const ms = rows[i][op]; c.from = c.h, c.to = height(ms), c.ms.textContent = num(ms) })
-    bars.forEach((bs, j) => bs.forEach((b, i) => { b.from = b.h, b.to = height(rows[i][j]) }))
-    cells.forEach((cs, i) => cs.forEach((c, j) => {
-      const ms = rows[i][j]
-      c.b.textContent = char(Math.round(100 * height(ms))), c.n.textContent = num(ms), c.el.classList.toggle('over', ms > 1000 / 60)
-    }))
-    const said = j => STACKS.map((s, i) => `${s} ${rows[i][j]}`).join(', ')
-    lanes.setAttribute('aria-label', `${OPS[op]}, ${browser}, milliseconds: ${said(op)}`)
-    multi.setAttribute('aria-label', `${browser}, milliseconds: ` + OPS.map((o, j) => `${o}: ${said(j)}`).join('; '))
+    lanes.setAttribute('aria-label', `${OPS[op]}, ${browser}, milliseconds: ` + STACKS.map((s, i) => `${s} ${rows[i][op]}`).join(', '))
     for (const b of opBox.children) b.setAttribute('aria-checked', b.textContent === OPS[op])
     for (const b of browserBox.children) b.setAttribute('aria-checked', b.textContent === browser)
     cancelAnimationFrame(raf), t0 = performance.now(), raf = requestAnimationFrame(tween)
   }
   const tabs = (box, names, pick) => box.replaceChildren(...names.map((n, i) => {
-    const b = role(h('button', { type: 'button', textContent: n }), 'radio')
+    const b = h('button', { type: 'button', textContent: n })
+    b.setAttribute('role', 'radio')
     b.addEventListener('click', () => { auto = false, clearInterval(timer), pick(i), show() })
     return b
   }))
   tabs(opBox, OPS, i => op = i)
   tabs(browserBox, BROWSERS, i => browser = BROWSERS[i])
-  // bar width: a quarter of a way's column, half of a bar's place in a group; whole device pixels, whole font units
-  const thick = (el, n, fill) => new ResizeObserver(() => {
-    const px = dpx(), F = el.clientHeight
-    if (F) el.style.setProperty('--wght', weight(Math.round(fill * el.clientWidth / n / px) * px, F))
-  }).observe(el)
-  thick(lanes, STACKS.length, 0.25), thick(multi, OPS.length * STACKS.length, 0.5)
+  // bars a quarter of a way's column wide: whole device pixels, whole font units
+  new ResizeObserver(() => {
+    const px = dpx(), F = lanes.clientHeight
+    if (F) lanes.style.setProperty('--wght', weight(Math.round(lanes.clientWidth / STACKS.length / 4 / px) * px, F))
+  }).observe(lanes)
   show()
-  // while in view and untouched, it walks through the operations, or, where they're all shown, the browsers
+  // while in view and untouched, it walks through the operations
   seen(sec, on => {
     clearInterval(timer)
-    if (on && auto && !still) timer = setInterval(() => {
-      if (opBox.offsetParent) op = (op + 1) % OPS.length
-      else browser = BROWSERS[(BROWSERS.indexOf(browser) + 1) % BROWSERS.length]
-      show()
-    }, 2800)
+    if (on && auto && !still) timer = setInterval(() => { op = (op + 1) % OPS.length, show() }, 2800)
   }, 0.4)
 }
-
-
-// a slide offering layouts to choose from: its switch sets which
-const variants = () => $$('.variants').forEach(box => {
-  const sec = box.closest('.slide'), buttons = $$('button', box)
-  buttons.forEach(b => b.addEventListener('click', () => {
-    sec.dataset.variant = b.textContent, buttons.forEach(x => x.setAttribute('aria-pressed', x === b))
-  }))
-})
 
 
 /* ── journey: ten years of commits, as a recording ───────────────────────── */
@@ -428,20 +380,25 @@ function journey() {
 
 /* ── get: bars of your own, and where the font is ────────────────────────── */
 
-/** A line of bars across the screen to draw on with a pencil; copy takes them as text. */
+/**
+ * A line of bars across the screen to draw on with a pencil: over the line they stand on it, under it they hang from
+ * it – bars shifted down; copy takes them as text.
+ */
 function pad() {
   const line = $('.pad-bars'), btn = $('.pad-copy'), N = 48
   // to begin with, a word of speech: it swells and fades
   const values = Array.from({ length: N }, (_, i) => Math.round(4 + 88 * Math.sin(Math.PI * (i + 0.5) / N) ** 1.2 * (0.55 + 0.45 * Math.abs(Math.sin(i * 1.9)))))
-  let P = 0
-  const show = () => { line.textContent = wf(values), P = fit(line, N, 0.5) }
+  const text = () => values.map(v => v < 0 ? range(v, 0) : range(0, v)).join('')
+  let P = 0, F = 0
+  // shown after a blank, out of view a pitch to the left: a line starting with a moved bar is moved whole in WebKit
+  const show = () => { line.textContent = ' ' + text(), P = fit(line, N, 0.5), F = parseFloat(getComputedStyle(line).fontSize), line.style.textIndent = `${-P}px` }
   new ResizeObserver(show).observe(line)
-  // the pencil: the bar under its tip as high as the tip is over the line's foot; a stroke fills the bars it passes
-  // between two moves
+  // the pencil: the bar under its tip reaches from the line – a line-height down from the box's top – to the tip, as
+  // far under the line as the box goes; a stroke fills the bars it passes between two moves
   let last = null
   const at = e => {
-    const r = line.getBoundingClientRect()
-    return [Math.min(N - 1, Math.max(0, Math.floor((e.clientX - r.left) / P))), Math.min(100, Math.max(0, Math.round((r.bottom - e.clientY) / r.height * 100)))]
+    const r = line.getBoundingClientRect(), v = Math.round((r.top + F - e.clientY) / F * 100)
+    return [Math.min(N - 1, Math.max(0, Math.floor((e.clientX - r.left) / P))), Math.min(100, Math.max(Math.round((F - r.height) / F * 100), v))]
   }
   const stroke = ([i, v]) => {
     const [i0, v0] = last ?? [i, v]
@@ -452,10 +409,7 @@ function pad() {
   line.addEventListener('pointermove', e => line.hasPointerCapture(e.pointerId) && stroke(at(e)))
   line.addEventListener('pointerup', () => last = null)
   // a tick for a moment when copied; the title says if it wasn't
-  btn.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(wf(values)), btn.classList.add('is-done') } catch { btn.title = 'Copy failed' }
-    setTimeout(() => (btn.classList.remove('is-done'), btn.title = 'Copy the bars as text'), 1200)
-  })
+  btn.addEventListener('click', () => copy(btn, text()))
 }
 
 function get() {
@@ -464,12 +418,10 @@ function get() {
   pad()
 }
 
-// the layout's grid, for tuning while building: the switch top right or g toggles it, ?grid opens with it
+// the layout's grid, for tuning while building: g toggles it, ?grid opens with it
 const overlay = () => {
-  const root = document.documentElement, button = $('.grid-toggle')
-  const show = on => { root.classList.toggle('grid-on', on), button.setAttribute('aria-pressed', on) }
+  const root = document.documentElement, show = on => root.classList.toggle('grid-on', on)
   show(/[?&]grid\b/.test(location.search))
-  button.addEventListener('click', () => show(!root.classList.contains('grid-on')))
   addEventListener('keydown', e => { if (e.key === 'g' && !e.target.closest('input, textarea, [contenteditable]')) show(!root.classList.contains('grid-on')) })
 }
 
@@ -477,15 +429,17 @@ const overlay = () => {
 /* ── start ───────────────────────────────────────────────────────────────── */
 
 overlay()
-variants()
+icon()
 hero()
 keys()
 axes()
+shifts()
+speed()
 chat()
 memo()
-speed()
 journey()
 get()
+flappy()
 
 // the slide in view is the address's hash, so a reload or a link lands where you are; the first is the bare address
 const where = new IntersectionObserver(es => es.forEach(e => e.isIntersecting &&

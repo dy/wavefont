@@ -25,8 +25,8 @@ jobs:
     - name: gen zip file name
       id: zip-name
       shell: bash
-      # Set the archive name to repo name + "-assets" e.g "MavenPro-assets"
-      run: echo "ZIP_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')-fonts" >> $GITHUB_ENV
+      # The archive named as the repo: wavefont.zip
+      run: echo "ZIP_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
     - name: Bump release
       if: github.event_name == 'release'
       run: |
@@ -45,8 +45,6 @@ jobs:
       run: npm test && make test
     - name: proof
       run: make proof
-    - name: setup site
-      run: cp scripts/index.html out/index.html
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v4
       if: ${{ github.ref == 'refs/heads/master' }}

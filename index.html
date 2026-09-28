@@ -8,17 +8,16 @@
 <meta property="og:description" content="A typeface for rendering vertical bars data: waveforms, spectrums, diagrams, histograms, columns etc.">
 <meta property="og:image" content="https://dy.github.io/wavefont/article-wavefont_1x1-1.png">
 <meta name="theme-color" content="#202025">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%235775aa'><rect x='1.5' y='2' width='3' height='12'><animate attributeName='y' from='14' to='2' dur='.3s' fill='freeze'/><animate attributeName='height' from='0' to='12' dur='.3s' fill='freeze'/></rect><rect x='6.5' y='12' width='3' height='2'><animate attributeName='y' from='14' to='12' begin='.15s' dur='.3s' fill='freeze'/><animate attributeName='height' from='0' to='2' begin='.15s' dur='.3s' fill='freeze'/></rect><rect x='11.5' y='6' width='3' height='8'><animate attributeName='y' from='14' to='6' begin='.3s' dur='.3s' fill='freeze'/><animate attributeName='height' from='0' to='8' begin='.3s' dur='.3s' fill='freeze'/></rect></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23202025'><style>@media (prefers-color-scheme: dark) { svg { fill: %23ecedf0 } }</style><rect x='1' y='2.48' width='1.5' height='11.52'/><rect x='3.5' y='13' width='1.5' height='1'/><rect x='6' y='8.96' width='1.5' height='5.04'/><rect x='8.5' y='12.8' width='1.5' height='1.2'/><rect x='11' y='10.64' width='1.5' height='3.36'/><rect x='13.5' y='9.44' width='1.5' height='4.56'/></svg>">
 <link rel="preload" href="fonts/variable/Wavefont[ROND,YELA,wght].woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&display=block">
 <link rel="stylesheet" href="site/main.css">
 <script type="module" src="site/main.js"></script>
 
 <body>
 
-<button class="grid-toggle" type="button" aria-pressed="false" title="Layout grid (g)">grid</button>
 
 <main>
 
@@ -28,12 +27,13 @@
       <div class="mark">
         <div class="mark-bars wf" contenteditable="plaintext-only" spellcheck="false" autocorrect="off" autocapitalize="off"
           role="textbox" aria-label="Type letters to set bars">Wavefont</div>
-        <div class="mark-letters" aria-hidden="true">Wavefont</div>
+        <div class="mark-letters" aria-hidden="true"><span>W</span><span>a</span><span>v</span><span>e</span><span>f</span><span>o</span><span>n</span><span>t</span></div>
         <ul class="facts" aria-label="Features">
           <li><a href="#keys">latin+ core</a></li>
           <li><a href="#values">127 values</a></li>
           <li><a href="#axes">3 axes</a></li>
           <li><a href="#text">textual semantics</a></li>
+          <li><a href="#shifts">vertical shifts</a></li>
           <li><a href="#speed">60 fps</a></li>
         </ul>
       </div>
@@ -49,11 +49,12 @@
   <section id="values" class="slide dark values" aria-label="127 values">
     <div class="stage">
       <div class="grid" role="group" aria-label="The bars 0 to 127: pick one">
-        <dl class="readout">
-          <div><dt>value</dt><dd><button class="r-value" type="button" title="Copy the value">64</button></dd></div>
-          <div><dt>char</dt><dd><button class="r-char" type="button" title="Copy the character">ŀ</button></dd></div>
-          <div><dt>code</dt><dd><button class="r-code" type="button" title="Copy the code point">U+0140</button></dd></div>
-        </dl>
+        <div class="readout">
+          <span class="r-value" tabindex="0" role="button" title="Copy the value">64</span>
+          <span class="r-char" tabindex="0" role="button" title="Copy the character">ŀ</span>
+          <span class="r-code" tabindex="0" role="button" title="Copy the code point">U+0140</span>
+          <button class="copy" type="button" title="Copy the character" aria-label="Copy the character"></button>
+        </div>
       </div>
     </div>
   </section>
@@ -62,8 +63,8 @@
     <div class="stage">
       <div class="specimen wf" aria-hidden="true"></div>
       <div class="sliders">
-        <label class="axis"><span class="name" title="wght">weight</span><input type="range" name="wght" min="50" max="1000" value="120"><output>120</output></label>
-        <label class="axis"><span class="name" title="ROND">roundness</span><input type="range" name="rond" min="0" max="100" value="0"><output>0</output></label>
+        <label class="axis"><span class="name" title="wght">weight</span><input type="range" name="wght" min="50" max="1000" value="525"><output>525</output></label>
+        <label class="axis"><span class="name" title="ROND">roundness</span><input type="range" name="rond" min="0" max="100" value="50"><output>50</output></label>
         <label class="axis"><span class="name" title="YELA">alignment</span><input type="range" name="yela" min="-100" max="100" value="0"><output>0</output></label>
       </div>
     </div>
@@ -83,20 +84,27 @@
     </div>
   </section>
 
-  <section id="speed" class="slide dark speed" data-variant="1" aria-label="60 fps: what drawing an hour of speech costs">
-    <div class="variants" role="group" aria-label="Layout of this slide"><button type="button" aria-pressed="true">1</button><button type="button" aria-pressed="false">2</button><button type="button" aria-pressed="false">3</button></div>
+  <section id="shifts" class="slide dark shifts" aria-label="Vertical shifts: marks after a bar move it up or down">
     <div class="stage">
-      <figure class="race">
+      <div class="waves" tabindex="0" role="application" aria-roledescription="bars" aria-label="Two waves in one line of characters, each bar lifted by the marks after it: the first rises from its floor to the top and thins as it goes, the second, lower, follows it, widening and rounding. Press a bar to read it, drag it up or down to move it; left and right pick the next, up and down move it"><div class="wave wf"></div></div>
+    </div>
+    <div class="readout">
+      <span class="r-char" tabindex="0" role="button" title="Copy the character and its marks"></span>
+      <span class="r-code" tabindex="0" role="button" title="Copy the code points"></span>
+      <button class="copy" type="button" title="Copy the character and its marks" aria-label="Copy the character and its marks"></button>
+    </div>
+  </section>
+
+  <section id="speed" class="slide gray speed" aria-label="60 fps: what drawing an hour of speech costs">
+    <div class="stage">
+      <figure class="plot">
         <div class="scale" aria-hidden="true"><span style="--at: 1"><b>1 s</b></span><span style="--at: .75"><b>100 ms</b></span><span style="--at: .5"><b>10 ms</b></span><span style="--at: .25"><b>1 ms</b></span><span style="--at: 0"><b>0.1 ms</b></span><span class="frame" style="--at: .5557"><i>16.7 ms, 60 fps</i></span></div>
         <div class="lanes" role="img"></div>
-        <div class="multiples" role="img"></div>
       </figure>
-      <div class="bench" role="table" aria-label="Milliseconds to draw an hour of speech"></div>
     </div>
     <div class="status">
-      <div class="ops" role="radiogroup" aria-label="Operation"></div>
-      <div class="legend" aria-hidden="true"></div>
-      <div class="browsers" role="radiogroup" aria-label="Browser"></div>
+      <div class="tabs ops" role="radiogroup" aria-label="Operation"></div>
+      <div class="tabs browsers" role="radiogroup" aria-label="Browser"></div>
     </div>
   </section>
 
@@ -153,8 +161,8 @@
         <figcaption class="sr">Commits per month: a burst in August 2016, v1; silence until v2 in February 2021; v3 from November 2022, steady work through 2023, and a return in 2026.</figcaption>
       </figure>
       <ol class="milestones">
-        <li><time datetime="2016-08">2016</time><span><a class="tag" href="https://www.npmjs.com/package/wavefont/v/1.2.2">v1</a> an experiment: bars as letters, for <a href="https://dy.github.io/wavearea">wavearea</a></span></li>
-        <li><time datetime="2021-02">2021</time><span><a class="tag" href="https://github.com/dy/wavefont/tree/fa6a3d461c368c97306c5d2b8861f7be2ff8e0ae">v2</a> finished: three axes – width, alignment, roundness – and accents that shift bars; <a href="https://github.com/dy/linefont">linefont</a> for lines</span></li>
+        <li><time datetime="2016-08">2016</time><span><a class="tag" href="https://www.npmjs.com/package/wavefont/v/1.2.2">v1</a> an experiment for <a href="https://dy.github.io/wavearea">wavearea</a>: alternative rendering bars as letters</span></li>
+        <li><time datetime="2021-02">2021</time><span><a class="tag" href="https://github.com/dy/wavefont/tree/fa6a3d461c368c97306c5d2b8861f7be2ff8e0ae">v2</a> three axes: width, alignment, roundness; accents to shift bars; <a href="https://github.com/dy/linefont">linefont</a> for lines</span></li>
         <li><time datetime="2022-11">2022</time><span><a class="tag" href="https://github.com/dy/wavefont/releases/tag/v3.1.1">v3</a> to Google Fonts’ standards: registered axes, Latin Core</span></li>
         <li><time datetime="2023-06">2023</time><span>on <a href="https://fonts.google.com/specimen/Wavefont">Google Fonts</a></span></li>
       </ol>
@@ -164,20 +172,26 @@
   <section id="get" class="slide dark get" aria-label="Get Wavefont">
     <div class="pad">
       <div class="pad-bars wf" role="img" aria-label="Bars drawn with the pencil"></div>
-      <button class="pad-copy" type="button" aria-label="Copy the bars as text" title="Copy the bars as text"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path class="i-copy" d="M5.5 5.5h7v8h-7zM3.5 10.5V2.5h7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path class="i-done" d="M3 8.5l3.2 3.2L13 4.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </div>
+    <button class="pad-copy copy" type="button" aria-label="Copy the bars as text" title="Copy the bars as text"></button>
     <div class="stage">
       <ul class="links">
-        <li><a href="https://fonts.google.com/specimen/Wavefont">Google Fonts</a></li>
-        <li><a href="scripts/">Playground</a></li>
-        <li><a href="https://github.com/dy/wavefont">GitHub</a></li>
-        <li><a href="https://www.npmjs.com/package/wavefont">npm</a></li>
-        <li><a href="https://github.com/dy/wavefont/releases/latest/download/wavefont-fonts.zip">Download</a></li>
+        <li><a href="https://fonts.google.com/specimen/Wavefont"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M.5 14 5.5 3l5 11z"/><circle cx="12.5" cy="11.5" r="2.5"/></svg>Google Fonts</a></li>
+        <li><a href="https://github.com/dy/wavefont"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a></li>
+        <li><a href="https://www.npmjs.com/package/wavefont"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M1 1h14v14H1zM4 4v8h4V6.5h2V12h2V4z"/></svg>npm</a></li>
+        <li><a href="https://github.com/dy/wavefont/releases/latest/download/wavefont.zip"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.75 14A1.75 1.75 0 0 1 1 12.25v-2.5a.75.75 0 0 1 1.5 0v2.5c0 .14.11.25.25.25h10.5a.25.25 0 0 0 .25-.25v-2.5a.75.75 0 0 1 1.5 0v2.5A1.75 1.75 0 0 1 13.25 14zM7.25 7.69V2a.75.75 0 0 1 1.5 0v5.69l1.97-1.97a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 6.78a.75.75 0 1 1 1.06-1.06z"/></svg>Download</a></li>
       </ul>
     </div>
     <div class="status">
-      <p class="credits">Wavefont <span class="s-version">3.8.2</span> by <a href="https://github.com/dy">Dmitry Iv</a>, under the <a href="https://github.com/dy/wavefont/blob/master/OFL.txt">SIL Open Font License</a></p>
-      <a class="om" href="https://github.com/krishnized/license/" aria-label="ॐ: the Krishnized license">ॐ</a>
+      <p class="credits">Wavefont <span class="s-version">3.8.2</span> by <a href="https://github.com/dy">Dmitry Iv</a>, under the <a href="https://github.com/dy/wavefont/blob/master/OFL.txt">SIL Open Font License</a><!--, <a class="om" href="https://github.com/krishnized/license/" aria-label="ॐ: the Krishnized license">ॐ</a>--></p>
+    </div>
+  </section>
+
+  <section id="game" class="slide gray game" aria-label="A game in bars">
+    <div class="stage">
+      <figure class="plot flappy">
+        <div class="bars" tabindex="0" role="application" aria-roledescription="game" aria-label="A bird between pipes, every pipe a bar hanging from the ceiling or lifted to stand on the floor, each heavier than the last; click, tap or press space to fly"><div class="end" hidden><div class="om wf" aria-hidden="true"></div><a class="prize" href="https://github.com/krishnized/license/" aria-label="ॐ: the Krishnized license"></a></div><div class="line wf"></div><div class="line wf"></div><div class="line wf is-lit"></div><output class="score"></output></div>
+      </figure>
     </div>
   </section>
 
