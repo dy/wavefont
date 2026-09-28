@@ -352,3 +352,27 @@ test('flappy prize: a bar is nothing till its turn, grows, then its ink glows fo
   assert.ok(Math.max(...t.map(t => grown(Math.max(...full), 0, t))) < 100, 'the stripes never meet')
 })
 
+
+const { packet } = await import('./pad.js')
+// lobes: runs of one sign among the bars a twentieth of the reach or more
+const lobes = y => y.filter(v => Math.abs(v) >= 5).reduce((n, v, i, a) => n + (i && Math.sign(v) !== Math.sign(a[i - 1])), 1)
+
+test('packet: at rest the logo – a lobe up, then its mirror down, the window\'s ends under half a step, dots', () => {
+  const y = packet(0, 48)
+  y.forEach((v, i) => assert.ok(Math.abs(v + y[47 - i]) < 1e-9, `bar ${i}: ${v}, its mirror ${y[47 - i]}`))
+  assert.ok(y.slice(0, 24).every(v => v >= 0), 'the left lobe up')
+  assert.ok(Math.max(...y) > 60, 'and tall')
+  assert.ok(Math.abs(y[0]) < 0.5 && Math.abs(y[47]) < 0.5, 'the ends round to the line')
+})
+
+test('packet: within a bar\'s reach, ±100 – the pencil\'s and the marks\' – however long it runs', () => {
+  let most = 0
+  for (let t = 0; t < 600; t += 0.05) for (const v of packet(t, 48)) most = Math.max(most, Math.abs(v))
+  assert.ok(most <= 100 && most > 95, `${most}`)
+})
+
+test('packet: its cycles breathe – two lobes at rest, three times as many half a breath in, two again a breath on', () => {
+  assert.equal(lobes(packet(0, 48)), 2)
+  assert.equal(lobes(packet(20, 48)), 6)
+  assert.equal(lobes(packet(40, 48)), 2)
+})

@@ -5,10 +5,11 @@
 import wf, { char } from '../index.js'
 import { fit, weight } from './wave.js'
 import { bench, commits } from './data.js'
-import { $, $$, h, soon, seen, noise, still, ease, swing, wander, copy, copyable, dpx } from './dom.js'
+import { $, $$, h, soon, seen, noise, still, ease, swing, wander, copyable, dpx } from './dom.js'
 import { chat } from './chat.js'
 import { memo } from './memo.js'
-import { shifts, range } from './shifts.js'
+import { shifts } from './shifts.js'
+import { pad } from './pad.js'
 import { flappy } from './flappy.js'
 import { icon, tab } from './icon.js'
 
@@ -379,38 +380,6 @@ function journey() {
 
 
 /* ── get: bars of your own, and where the font is ────────────────────────── */
-
-/**
- * A line of bars across the screen to draw on with a pencil: over the line they stand on it, under it they hang from
- * it – bars shifted down; copy takes them as text.
- */
-function pad() {
-  const line = $('.pad-bars'), btn = $('.pad-copy'), N = 48
-  // to begin with, a word of speech: it swells and fades
-  const values = Array.from({ length: N }, (_, i) => Math.round(4 + 88 * Math.sin(Math.PI * (i + 0.5) / N) ** 1.2 * (0.55 + 0.45 * Math.abs(Math.sin(i * 1.9)))))
-  const text = () => values.map(v => v < 0 ? range(v, 0) : range(0, v)).join('')
-  let P = 0, F = 0
-  // shown after a blank, out of view a pitch to the left: a line starting with a moved bar is moved whole in WebKit
-  const show = () => { line.textContent = ' ' + text(), P = fit(line, N, 0.5), F = parseFloat(getComputedStyle(line).fontSize), line.style.textIndent = `${-P}px` }
-  new ResizeObserver(show).observe(line)
-  // the pencil: the bar under its tip reaches from the line – a line-height down from the box's top – to the tip, as
-  // far under the line as the box goes; a stroke fills the bars it passes between two moves
-  let last = null
-  const at = e => {
-    const r = line.getBoundingClientRect(), v = Math.round((r.top + F - e.clientY) / F * 100)
-    return [Math.min(N - 1, Math.max(0, Math.floor((e.clientX - r.left) / P))), Math.min(100, Math.max(Math.round((F - r.height) / F * 100), v))]
-  }
-  const stroke = ([i, v]) => {
-    const [i0, v0] = last ?? [i, v]
-    for (let k = Math.min(i0, i); k <= Math.max(i0, i); k++) values[k] = i === i0 ? v : Math.round(v0 + (v - v0) * (k - i0) / (i - i0))
-    last = [i, v], show()
-  }
-  line.addEventListener('pointerdown', e => { line.setPointerCapture(e.pointerId), last = null, stroke(at(e)) })
-  line.addEventListener('pointermove', e => line.hasPointerCapture(e.pointerId) && stroke(at(e)))
-  line.addEventListener('pointerup', () => last = null)
-  // a tick for a moment when copied; the title says if it wasn't
-  btn.addEventListener('click', () => copy(btn, text()))
-}
 
 function get() {
   // the version this page was built with, as the package says

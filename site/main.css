@@ -201,11 +201,11 @@ button, code { font: inherit; color: inherit; }
 .btn:active { background: var(--tint); }
 
 .i { width: 1em; height: 1em; fill: currentColor; flex: none; }
-/* a copy button: its icon, quiet till hovered; a tick for a moment once done */
-.copy { display: grid; place-items: center; width: 3rem; height: 3rem; padding: 0; border: 0; border-radius: var(--radius-sm); background: none; color: var(--dim); font-size: 2rem; cursor: pointer; transition: color var(--dur-micro) var(--ease-out); }
+/* a tool's button – copy, play: its icon, quiet till hovered; copy's a tick for a moment once done */
+.copy, .play { display: grid; place-items: center; width: 3rem; height: 3rem; padding: 0; border: 0; border-radius: var(--radius-sm); background: none; color: var(--dim); font-size: 2rem; cursor: pointer; transition: color var(--dur-micro) var(--ease-out); }
 .copy::after { content: ""; width: 1em; height: 1em; background: currentColor; mask: var(--i-copy) center / contain no-repeat; }
 .copy.is-done::after { mask-image: var(--i-done); }
-@media (hover: hover) { .copy:hover { color: var(--fg); } }
+@media (hover: hover) { :is(.copy, .play):hover { color: var(--fg); } }
 .i-pause { display: none; }
 .is-playing .i-play { display: none; }
 .is-playing .i-pause { display: inline; }
@@ -662,27 +662,27 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .milestones li > span { grid-column: 3 / -1; margin-bottom: var(--sink); }
 .milestones a { text-decoration-color: color-mix(in oklab, currentColor 35%, transparent); }
 
-/* ── get: bars of your own, and where the font is. A line to draw on with a pencil, the screen's width: its bars
-   standing on the fifth row's foot, five rows high, or hanging from it, two rows deep; copy in the slide's top right
-   cell; the links under it, as the features on the first slide; the credits and ॐ in the band ── */
+/* ── get: bars of your own, and where the font is. A wave to take or draw on with a pencil, the screen's width: its
+   bars standing on the fourth row's foot, four rows high, or hanging from it as deep; play and copy in the slide's top
+   right cell; the links under it, as the features on the first slide; the credits and ॐ in the band ── */
 
-.pad { --rows: 5; --under: 2; grid-area: 1 / 1 / 8 / -1; position: relative; margin-inline: calc(-1 * var(--pad-x)); }
+.pad { --rows: 4; grid-area: 1 / 1 / 9 / -1; position: relative; margin-inline: calc(-1 * var(--pad-x)); }
 /* the pencil draws the bar under its tip from the line to the tip, over the line or under it */
 .pad-bars {
   --yela: -100;
-  height: calc((var(--rows) + var(--under)) * var(--row));
+  height: calc(2 * var(--rows) * var(--row));
   font-size: calc(var(--rows) * var(--row)); line-height: 1; white-space: pre; letter-spacing: var(--gap);
   touch-action: none; user-select: none; -webkit-user-select: none;
   cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M3 21l1.3-5L16.4 3.9a1.9 1.9 0 0 1 2.7 0l1 1a1.9 1.9 0 0 1 0 2.7L8 19.7z' fill='white' stroke='black' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cpath d='M14.6 5.7l3.7 3.7M4.3 16l3.7 3.7' stroke='black' stroke-width='1.2'/%3E%3C/svg%3E") 3 21, crosshair;
 }
-/* copy: an icon in the top right cell, as a slide's switch is, its ink on the grid's edge; a tick for a moment when done */
-/* over the pencil's line, which reaches the top row too */
-.pad-copy { position: relative; z-index: 1; grid-area: 1 / 12 / 2 / 13; justify-self: end; align-self: center; margin-right: -0.9rem; }
+/* play and copy: icons in the top right cell, as a slide's switch is, copy's ink on the grid's edge; over the pencil's
+   line, which reaches the top row too */
+.pad-tools { position: relative; z-index: 1; grid-area: 1 / 12 / 2 / 13; justify-self: end; align-self: center; display: flex; margin-right: -0.9rem; }
 
-/* the links: one line standing on the ninth row, bold and spaced as the first slide's features, each after its icon;
+/* the links: one line standing on the tenth row, bold and spaced as the first slide's features, each after its icon;
    on a phone, a line each */
 .links {
-  grid-row: 8 / 9; align-self: end; list-style: none; margin: 0; padding: 0;
+  grid-row: 9 / 10; align-self: end; list-style: none; margin: 0; padding: 0;
   display: flex; flex-wrap: wrap; align-content: flex-end; gap: var(--space-md) var(--space-2xl);
   font: 700 var(--text-lead)/1 var(--font-sans); letter-spacing: 0.3em;
 }
@@ -725,9 +725,9 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 @media (max-width: 40rem) {
   /* the name narrower than its rows: three of them */
   .mark { --bar-rows: 3; }
-  /* the pencil's line a row shorter; the links a line each under it, clear of the credits wrapping above the band */
-  .pad { --rows: 4; grid-row: 1 / 7; }
-  .links { grid-row: 6 / 8; flex-flow: column nowrap; justify-content: flex-end; row-gap: var(--space-sm); }
+  /* the wave a row shorter either way; the links a line each under it, clear of the credits wrapping above the band */
+  .pad { --rows: 3; grid-row: 1 / 7; }
+  .links { grid-row: 7 / 9; flex-flow: column nowrap; justify-content: flex-end; row-gap: var(--space-sm); }
   /* the charts a row shorter, to leave the status its row above; the scales' lines without their names, too wide
      for a column */
   .plot { --chart-h: calc(7 * var(--row)); }
