@@ -306,19 +306,18 @@ test('flappy: won, the world goes on and the bird, free, rises out of the field'
   assert.ok(s.x > x + 9, 'the world went on'), assert.ok(s.y > 105, `the bird is out of the top: ${s.y.toFixed(1)}`)
 })
 
-test('flappy prize: ॐ laid out for the field – four fifths of it high at most, stripes to its right edge, bars down it', () => {
-  // a desktop's field and a phone's, at their pixel ratios
+test('flappy prize: ॐ laid out past the last pipe – in the middle of the stripes, which run to the right edge, bars down it', () => {
+  // a desktop's field and a phone's, at their pixel ratios, the last pipe five columns of forty
   for (const [w, h, px] of [[1440, 900, 1 / 2], [390, 844, 1 / 3], [820, 1180, 1 / 2]]) {
-    const L = layout(w, h, px), at = `${w}×${h}`
-    assert.ok(L.gh <= .8 * h + 1e-9 && L.gw <= .84 * w + 1e-9, `${at}: the glyph within four fifths of the field`)
-    assert.ok(Math.abs(L.gy + L.gh / 2 - h / 2) < 1e-9, `${at}: its middle at the field's`)
+    const wall = w / 8, L = layout(w, h, px, wall), at = `${w}×${h}`
+    assert.ok(L.gh <= .8 * h + 1e-9 && L.gw <= .84 * (w - wall) + 1e-9, `${at}: the glyph within four fifths of the field and the stripes`)
+    assert.ok(Math.abs(L.gx + L.gw / 2 - (w - wall) / 2) < 1e-9 && Math.abs(L.gy + L.gh / 2 - h / 2) < 1e-9, `${at}: in their middle`)
     assert.ok(Math.abs(L.gw / L.p - 36) < 1, `${at}: 36 stripes across the glyph, ${L.gw / L.p}`)
     for (const v of [L.p, L.a]) assert.ok(Math.abs(v / px - Math.round(v / px)) < 1e-9, `${at}: ${v} on whole device pixels`)
-    assert.equal(L.gx, 3 * L.p, `${at}: three stripes before the glyph`)
-    assert.ok(L.S * L.p - L.gx - L.gw / 2 >= w / 2, `${at}: with the glyph in the field's middle, stripes to its right edge`)
+    assert.ok(L.S * L.p >= w - wall && (L.S - 1) * L.p < w - wall, `${at}: stripes from the pipe to the right edge`)
     assert.ok(L.M * L.a >= h, `${at}: bars down its height`)
-    assert.equal(L.F, 2 * L.p, `${at}: set at two pitches`)
-    assert.ok(L.a >= px && L.a + px <= L.F / 4 + 1e-9 && L.a > L.p / 3, `${at}: a bar and a pixel over within the widest a bar comes, a quarter of the size – near half a pitch`)
+    assert.equal(L.F, 6 * L.p, `${at}: set at six pitches`)
+    assert.ok(L.a + px <= L.F / 4 + 1e-9 && L.a > L.p, `${at}: a bar and a pixel over within the widest a bar comes, a quarter of the size – longer than a pitch`)
   }
 })
 
@@ -339,13 +338,15 @@ test('flappy prize: a stripe thin clear of the glyph, thick within it, swelling 
   assert.ok(w.every(v => v >= 14 - 1e-6 && v <= 86 + 1e-6), 'never thinner than a hairline, never touching the next')
 })
 
-test('flappy prize: a bar is nothing till its turn, grows, then glows for good – never so bold its stripe meets the next', () => {
+test('flappy prize: a bar is nothing till its turn, grows, then its ink glows for good – never so bold its stripe meets the next', () => {
   assert.equal(grown(86, 500, 0), 0, 'before its turn, nothing'), assert.equal(grown(86, 500, 500), 0, 'at its turn, still nothing')
   assert.ok(grown(86, 500, 700) > 0 && grown(86, 500, 700) < grown(86, 500, 1200), 'then growing')
   // grown, over a breath and long after: bolder and thinner by turns, as much either way
   const t = Array.from({ length: 280 }, (_, k) => 60000 + 10 * k), g = t.map(t => grown(86, 500, t))
   assert.ok(g.every(Number.isFinite), 'a width at every moment')
   assert.ok(Math.max(...g) > 86 * 1.1 && Math.min(...g) < 86 * .9, `still glowing a minute on: ${Math.min(...g).toFixed(1)} to ${Math.max(...g).toFixed(1)}`)
+  // a hairline, clear of the glyph, stays one
+  assert.ok(t.every(t => Math.abs(grown(14, 500, t) - 14) < 1e-9), 'the hairlines still')
   // the boldest a stripe comes, deep in the glyph and at the glow's height, leaves a gap to the next
   const full = widths(new Float32Array(1 * 9).fill(1), 1, 9, 12, 3)
   assert.ok(Math.max(...t.map(t => grown(Math.max(...full), 0, t))) < 100, 'the stripes never meet')

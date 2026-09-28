@@ -107,21 +107,22 @@ export const pilot = (s, dt) => {
 /* ── the prize: ॐ as op art draws it, past the last pipe – stripes the field's height swelling into the glyph, each
    a line of bars set vertically, as Japanese is, every bar turned on its side: its height the stripe's width there ── */
 
-// stripes across the glyph, and before it; a stripe's width, hundredths of its pitch: THIN clear of the glyph, THICK
-// within it; the font size, pitches, so a bar – the widest a quarter of it – may be as wide as half a pitch
-const LINES = 36, LEAD = 3, THIN = 14, THICK = 86, SIZE = 2
+// stripes across the glyph; a stripe's width, hundredths of its pitch: THIN clear of the glyph, THICK within it; the
+// font size, pitches, so a bar – the widest a quarter of it – may be a pitch and a half long: a character each, seen as
+// one
+const LINES = 36, THIN = 14, THICK = 86, SIZE = 6
 
 /**
- * The prize in a field w × h px, px a device pixel: the glyph four fifths of the field high at most, and as much of its
- * width; LINES stripes to the glyph's width, p whole device pixels apart, set at SIZE pitches, F; bars down each a
- * pixel short of the widest a bar comes, a quarter of F, so that a pixel over they meet without a seam. The stripes
- * start LEAD pitches before the glyph and run on to the field's right edge once the glyph stands in its middle: S of
- * them, M bars down each, the glyph gx, gy from their top left.
+ * The prize in a field w × h px, its first `wall` px the last pipe's, px a device pixel: stripes over the rest, to the
+ * right edge – S of them, LINES to the glyph's width, p whole device pixels apart, set at SIZE pitches, F; M bars down
+ * each, a pixel short of the widest a bar comes, a quarter of F, so that a pixel over they meet without a seam. The
+ * glyph in the middle of the stripes, four fifths of the field high at most and of their width, gx, gy from their top
+ * left.
  */
-export const layout = (w, h, px) => {
-  const k = Math.min(.8 * h / om.h, .84 * w / om.w), gw = om.w * k, gh = om.h * k
-  const p = Math.max(4 * px, Math.round(gw / LINES / px) * px), F = SIZE * p, a = Math.max(px, Math.floor((F / 4 - px) / px) * px), gx = LEAD * p
-  return { k, p, F, a, S: Math.ceil((w / 2 + gw / 2 + gx) / p), M: Math.ceil(h / a), gx, gy: (h - gh) / 2, gw, gh }
+export const layout = (w, h, px, wall) => {
+  const room = w - wall, k = Math.min(.8 * h / om.h, .84 * room / om.w), gw = om.w * k, gh = om.h * k
+  const p = Math.max(4 * px, Math.round(gw / LINES / px) * px), F = SIZE * p, a = Math.max(px, Math.floor((F / 4 - px) / px) * px)
+  return { k, p, F, a, S: Math.ceil(room / p), M: Math.ceil(h / a), gx: (room - gw) / 2, gy: (h - gh) / 2, gw, gh }
 }
 
 /**
@@ -139,13 +140,16 @@ export const widths = (cover, S, M, p, a) => {
   return out
 }
 
-// the bars grow from the glyph's middle out, the farthest BLOOM ms after the middle, each over GROW ms; then it glows
-// for as long as it's there, every bar GLOW bolder and thinner by turns, BREATH ms a breath, the swell spreading from
-// the middle out
+// the bars grow from the glyph's middle out, the farthest BLOOM ms after the middle, each over GROW ms; then the glyph
+// glows for as long as it's there, its ink GLOW bolder and thinner by turns, BREATH ms a breath, the swell spreading
+// from the middle out – the hairlines about it still
 const BLOOM = 1400, GROW = 700, GLOW = .15, BREATH = 2800
 
-/** A bar t ms into the prize, v wide once grown, starting to grow at `from`: nothing before, then growing, glowing. */
-export const grown = (v, from, t) => v * ease(clamp((t - from) / GROW, 0, 1)) * (1 + GLOW * Math.sin(2 * Math.PI * t / BREATH - Math.PI * from / BLOOM))
+/**
+ * A bar t ms into the prize, hundredths of the pitch: v once grown, starting to grow at `from` – nothing before, then
+ * growing; what ink it has over a hairline glowing.
+ */
+export const grown = (v, from, t) => ease(clamp((t - from) / GROW, 0, 1)) * (THIN + (v - THIN) * (1 + GLOW * Math.sin(2 * Math.PI * t / BREATH - Math.PI * from / BLOOM)))
 
 export function flappy() {
   const sec = $('#game'), box = $('.bars', sec), [low, high, bird] = $$('.line', box), score = $('.score', box), r = noise(21)
@@ -175,9 +179,9 @@ export function flappy() {
   }
 
   // the prize laid out for the field as it is now, from the last pipe on: the glyph drawn a cell a pixel, as much of
-  // each as it covers; the stripes set, the link over the glyph; the world to stop with the glyph in its middle
+  // each as it covers; the stripes set, the link over the glyph; the world to stop with that pipe alone in view
   const crown = (c0 = s.from + WIN * EVERY) => {
-    const fw = box.clientWidth, fh = box.clientHeight, px = dpx(), L = layout(fw, fh, px), { S, M, p, F, a } = L
+    const fw = box.clientWidth, fh = box.clientHeight, px = dpx(), L = layout(fw, fh, px, EVERY * P), { S, M, p, F, a } = L
     const c = h('canvas', { width: S, height: M }), x = c.getContext('2d', { willReadFrequently: true })
     x.setTransform(L.k / p, 0, 0, L.k / a, L.gx / p, L.gy / a), x.fill(new Path2D(om.d))
     const ink = x.getImageData(0, 0, S, M).data, cover = new Float32Array(S * M)
@@ -191,18 +195,17 @@ export function flappy() {
     stripes.style.setProperty('--wght', wght)
     Object.assign(link.style, { left: `${L.gx}px`, top: `${L.gy}px`, width: `${L.gw}px`, height: `${L.gh}px` })
     end.hidden = false
-    return { c0, stop: c0 + (L.gx + L.gw / 2) / P - N / 2, S, M, v: widths(cover, S, M, p, a).map(v => v / SIZE), from }
+    return { c0, stop: c0 - EVERY, S, M, v: widths(cover, S, M, p, a), from }
   }
-  // the stripes as grown by now, glowing – grown, twenty times a second: a breath is slow, and a paint of every bar
-  // dear; with less motion asked for, grown and still, once
+  // the stripes as grown by now, glowing; with less motion asked for, grown and still, once
   const paint = now => {
-    if (still ? prize.done : now - prize.t0 > BLOOM + GROW && now - prize.at < 50) return
+    if (still && prize.done) return
     const { S, M, v, from, t0 } = prize, t = now - t0, line = new Float32Array(M), lines = []
     for (let i = 0; i < S; i++) {
-      for (let m = 0; m < M; m++) line[m] = still ? v[i * M + m] : grown(v[i * M + m], from[i * M + m], t)
+      for (let m = 0; m < M; m++) line[m] = (still ? v[i * M + m] : grown(v[i * M + m], from[i * M + m], t)) / SIZE
       lines.push(wf(line))
     }
-    stripes.textContent = lines.join('\n'), prize.done = true, prize.at = now
+    stripes.textContent = lines.join('\n'), prize.done = true
   }
 
   // the view forty columns wide at least – more on a wide screen, so the widest pipe, a pitch, stays within a bar's
