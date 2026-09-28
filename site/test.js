@@ -225,6 +225,16 @@ test('spell: a bar\'s characters as code points, a run of one mark counted', () 
   }
 })
 
+test('spell: the longest code points the waves\' readout can show are the characters its one line is sized for', async () => {
+  // a bar anywhere the marks take it: 0 to 127, lifted or lowered up to 100
+  let most = 0
+  for (let v = 0; v <= 127; v++) for (let s = -100; s <= 100; s++) most = Math.max(most, spell(v, s).length)
+  assert.equal(most, 26)
+  // the readout's --ems: the character with its marks, the code points, and the two gaps (main.css)
+  const css = await readFile(new URL('./main.css', import.meta.url), 'utf8')
+  assert.match(css, new RegExp(`\\.shifts \\.readout \\{ --ems: calc\\(${most + 1} \\* 0\\.632 \\+ 2 \\* 1\\.2\\)`))
+})
+
 const { wander, noise } = await import('./dom.js')
 
 test('wander: a name at random, never one three times running, to another of its stops', () => {
@@ -388,4 +398,177 @@ test('packet: its cycles breathe – two lobes at rest, three times as many half
   assert.equal(lobes(packet(0, 48)), 2)
   assert.equal(lobes(packet(20, 48)), 6)
   assert.equal(lobes(packet(40, 48)), 2)
+})
+
+const { arrive } = await import('./shifts.js')
+
+test('arrive: every bar where it set off before the way in, where it stands after, and not before; the last setting off a third in', () => {
+  const n = 40
+  for (let k = 0; k < n; k++) assert.equal(arrive(100, 20, 0, k, n), 100), assert.equal(arrive(-80, 20, 1, k, n), 20), assert.ok(arrive(100, 20, 0.8, k, n) > 20, `${k} in place early`)
+  assert.equal(arrive(100, 20, 1 / 3, n - 1, n), 100), assert.ok(arrive(100, 20, 0.5, n - 1, n) < 100)
+  // each bar goes one way, and one never passes the one before it
+  for (let k = 0; k < n; k++) for (let i = 1; i <= 100; i++) {
+    const w = i / 100
+    assert.ok(arrive(100, 20, w, k, n) <= arrive(100, 20, w - 0.01, k, n), `${k} at ${w}`)
+    if (k) assert.ok(arrive(100, 20, w, k, n) >= arrive(100, 20, w, k - 1, n), `${k} behind ${k - 1} at ${w}`)
+  }
+})
+
+const { clock } = await import('./memo.js')
+
+test('memo clock: nothing till audio comes; then the wall\'s speed, never past the audio, whether chunks come evenly or in bursts', () => {
+  // 1024 samples a chunk at 48 kHz, heard 30 ms after they're spoken
+  const C = 1024 / 48000, run = (arrive, ms) => {
+    const c = clock(), out = []
+    let got = 0, next = 0
+    for (let now = 0; now < ms; now++) {
+      while (next < arrive.length && arrive[next] <= now) got += C, c.hear(got, arrive[next++])
+      out.push([now, c.at(now), got])
+    }
+    return out
+  }
+  const even = run(Array.from({ length: 90 }, (_, i) => 30 + (i + 1) * C * 1000), 1500)
+  const burst = run(Array.from({ length: 90 }, (_, i) => 30 + Math.ceil((i + 1) / 4) * 4 * C * 1000), 1500)
+  for (const out of [even, burst]) {
+    assert.equal(out[0][1], -Infinity)
+    for (const [now, t, got] of out) assert.ok(t <= got, `${now} ms: ${t} past ${got}`)
+    // once going, a millisecond a millisecond, but where it waits for audio
+    const going = out.filter(([, t, got]) => t > 0.1 && t < got)
+    assert.ok(going.length > 900)
+    for (let i = 1; i < going.length; i++) if (going[i][0] - going[i - 1][0] === 1) assert.ok(Math.abs(going[i][1] - going[i - 1][1] - 0.001) < 1e-9)
+  }
+  // bursts keep it a burst behind at most: four chunks
+  for (const [, t, got] of burst.slice(300)) assert.ok(got - t < 4 * C + 1e-9)
+})
+
+test('memo clock: after a pause it waits for the audio to come again, then goes on from it, a chunk behind', () => {
+  // chunks of 20 ms, each 30 ms after it's spoken
+  const c = clock(), near = (a, b) => Math.abs(a - b) < 1e-9
+  for (let i = 1; i <= 50; i++) c.hear(i * 0.02, 30 + i * 20)
+  assert.ok(near(c.at(1030), 0.98), `${c.at(1030)}`)
+  c.again()
+  assert.equal(c.at(9000), -Infinity)
+  for (let i = 1; i <= 50; i++) c.hear(1 + i * 0.02, 9000 + i * 20)
+  assert.ok(near(c.at(10000), 1.98), `${c.at(10000)}`)
+})
+
+/**
+ * An <audio> element as WebKit plays one (measured in Playwright's WebKit 26): 'playing' START ms after play(), its
+ * clock still for LATE ms more, and 'ended' TAIL ms after its clock has run through. Its clock is the wall's; a sound
+ * is the WAV behind its URL. It logs when a clock starts and when it ends, by URL; `deny` refuses a play(), `stuck`
+ * sounds shorter than it never end. Timers run late under load: what's asserted is against the log, not the constants.
+ */
+const blobs = new Map()
+URL.createObjectURL = b => { const u = `blob:${blobs.size}`; blobs.set(u, b); return u }
+URL.revokeObjectURL = () => {}
+globalThis.requestAnimationFrame ??= f => setTimeout(() => f(performance.now()), 16)
+globalThis.cancelAnimationFrame ??= clearTimeout
+class Fake extends EventTarget {
+  static START = 10; static LATE = 60; static TAIL = 80; static log = []; static deny = false; static stuck = 0
+  playbackRate = 1; loop = false; ended = false; duration = NaN; pos = 0; t0 = 0; go = 0; timers = []
+  constructor() { super(), Fake.last = this }
+  get currentTime() { return this.t0 ? Math.min(this.duration, this.pos + (performance.now() - this.t0) / 1000 * this.playbackRate) : this.pos }
+  set currentTime(t) { this.pos = t }
+  set src(u) { this.pause(), this.url = u, this.pos = 0, this.ended = false }
+  get src() { return this.url }
+  emit(type) { this.dispatchEvent(new Event(type)), this['on' + type]?.() }
+  after(ms, f) { this.timers.push(setTimeout(f, ms)) }
+  async play() {
+    Fake.log.push(['play', this.url, performance.now()])
+    const go = ++this.go, v = new DataView(await blobs.get(this.url).arrayBuffer())
+    if (Fake.deny) throw new DOMException('refused', 'NotAllowedError')
+    if (go !== this.go) throw new DOMException('paused', 'AbortError')
+    this.duration = v.getUint32(40, true) / 2 / v.getUint32(24, true)
+    return new Promise(ok => this.after(Fake.START, () => {
+      this.emit('playing'), ok()
+      this.after(Fake.LATE, () => {
+        this.t0 = performance.now(), Fake.log.push(['clock', this.url, this.t0 - this.pos / this.playbackRate * 1000])
+        if (this.duration >= Fake.stuck) this.after((this.duration - this.pos) / this.playbackRate * 1000 + Fake.TAIL, () => {
+          this.pause(), this.pos = this.duration, this.ended = true, Fake.log.push(['ended', this.url, performance.now()]), this.emit('ended')
+        })
+      })
+    }))
+  }
+  pause() { this.pos = this.currentTime, this.t0 = 0, this.go++, this.timers.forEach(clearTimeout), this.timers = [] }
+}
+globalThis.Audio = Fake
+// a fresh sound.js: its delay not yet measured
+let fresh = 0
+const sound = () => import(`./sound.js?${fresh++}`)
+const sleep = ms => new Promise(ok => setTimeout(ok, ms))
+// the log's entries of a kind since an index, and for a URL: [url, ms]
+const logged = (kind, from = 0) => Fake.log.slice(from).filter(e => e[0] === kind).map(e => e.slice(1))
+// a sound played to its stop: what time() said and when, when it stopped, and what it said then
+const follow = h => new Promise(ok => {
+  const seen = [], look = () => { seen.push([performance.now(), h.time()]); if (!h.done) setTimeout(look, 4) }
+  h.onend = () => { h.done = true, ok({ seen, stop: performance.now(), last: h.time() }) }
+  look()
+})
+const S = s => new Float32Array(s * 48000)
+
+test('play: nothing heard till its clock moves; then its clock, the delay a silence measured behind; done as it ends, at `to`', async () => {
+  const { play, buffer } = await sound(), n = Fake.log.length, { seen, stop, last } = await follow(play(buffer(S(0.3), 48000)))
+  const [[, silence], [url, clock]] = logged('clock', n), [[, quiet], [, end]] = logged('ended', n)
+  // the silence: a tenth of a second, then what's still to be heard, TAIL and whatever the timers were late by
+  const lag = (quiet - silence) / 1000 - 0.1
+  assert.ok(lag >= Fake.TAIL / 1000 && lag < 0.2, `${lag}`)
+  for (const [ms, x] of seen) if (ms < clock) assert.equal(x, 0)
+  for (const [ms, x] of seen) if (x > 0 && x < 0.3) assert.ok(Math.abs(x - ((ms - clock) / 1000 - lag)) < 0.02, `${ms - clock} ms: ${x}`)
+  assert.equal(last, 0.3)
+  assert.ok(stop >= end && stop - end < 40, `stopped ${stop - end} ms after it ended`)
+  assert.equal(logged('play', n).length, 2, 'the silence, then the sound')
+})
+
+test('play: the delay measured again at each end – a sound played through, then another, each done as it ends', async () => {
+  const { play, buffer } = await sound(), a = buffer(S(0.2), 48000)
+  await follow(play(a))
+  const n = Fake.log.length, { seen, stop, last } = await follow(play(a))
+  const [[, clock]] = logged('clock', n), [[, end]] = logged('ended', n)
+  assert.equal(logged('play', n).length, 1, 'measured once, before the first sound')
+  assert.equal(last, 0.2), assert.ok(stop >= end && stop - end < 40)
+  // the first moment heard is as far after the clock started as the one before took to end
+  const first = seen.find(([, x]) => x > 0)[0] - clock
+  assert.ok(first > Fake.TAIL - 5 && first < Fake.TAIL + 60, `${first} ms`)
+})
+
+test('play: A while playing, then B – A stops where it was heard to, once; B plays to its end', async () => {
+  const { play, buffer } = await sound(), a = buffer(S(0.4), 48000), b = buffer(S(0.25), 48000)
+  await follow(play(a))
+  const first = follow(play(a))
+  await sleep(250)
+  const [x, y] = await Promise.all([first, follow(play(b))])
+  assert.ok(x.last > 0 && x.last < 0.4, `${x.last}`), assert.equal(y.last, 0.25)
+})
+
+test('play: part of a sound, from..to, heard to its end – the element runs the delay past it, then stops', async () => {
+  const { play, buffer } = await sound(), buf = buffer(S(0.5), 48000)
+  await follow(play(buf))
+  const n = Fake.log.length, el = Fake.last, { seen, last } = await follow(play(buf, { from: 0.1, to: 0.3 }))
+  assert.equal(last, 0.3), assert.ok(seen.every(([, x]) => x >= 0.1 && x <= 0.3))
+  assert.equal(logged('ended', n).length, 0, 'stopped before its end')
+  assert.ok(el.pos > 0.3 + Fake.TAIL / 1000 - 0.01 && el.pos < 0.3 + Fake.TAIL / 1000 + 0.08, `paused at ${el.pos}`)
+})
+
+test('play: stopped before it\'s heard, or refused – done at once, where it was to start, and the sound never plays', async () => {
+  let { play, buffer } = await sound()
+  const buf = buffer(S(0.2), 48000), n = Fake.log.length, h = play(buf, { from: 0.05 }), end = follow(h)
+  h.stop()
+  assert.equal((await end).last, 0.05)
+  await sleep(400)
+  assert.equal(logged('play', n).length, 1, 'the silence only')
+  ;({ play } = await sound()), Fake.deny = true
+  try { assert.equal((await follow(play(buf))).last, 0) } finally { Fake.deny = false }
+})
+
+test('play: a silence that never ends measures no delay – the sound plays after a second, heard as its clock goes', async () => {
+  const { play, buffer } = await sound(), n = Fake.log.length
+  Fake.stuck = 0.15
+  try {
+    const { seen, last } = await follow(play(buffer(S(0.2), 48000)))
+    const [, [, clock]] = logged('clock', n), [[, played]] = logged('play', n)
+    assert.equal(last, 0.2)
+    assert.ok(clock - played > 1000, 'a second for the silence')
+    const first = seen.find(([, x]) => x > 0)[0] - clock
+    assert.ok(first < 25, `${first} ms`)
+  } finally { Fake.stuck = 0 }
 })

@@ -7,10 +7,10 @@
  * median of 5 runs, Apple M4 Max, Playwright headless (Chromium 145, WebKit 26, WebKit at the iPhone 13 viewport and
  * pixel ratio – not a phone): wavearea bench/render with wavefont 3.8.2 as plain values, a bar a character, centred
  * (values.window), and as values with shift marks, as wavearea encodes them (font.window), in one run (2026-09-27).
- * svg, html per bar and canvas per line are the same view drawn otherwise.
+ * svg, html per bar and canvas per line are the same view drawn otherwise. paste is of 10 s of audio.
  */
 export const bench = {
-  ops: ['load', 'paste 10 s', 'gain', 'resize', 'select'],
+  ops: ['load', 'paste', 'gain', 'resize', 'select'],
   stacks: ['wavefont', 'wavefont marks', 'svg', 'html', 'canvas'],
   text: [true, true, false, false, false],
   browsers: {

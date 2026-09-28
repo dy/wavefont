@@ -5,7 +5,7 @@
 import wf from '../index.js'
 import { voice, playing } from './sound.js'
 import { clock, strip, track, listen, fit } from './wave.js'
-import { $, h, soon, noise, still } from './dom.js'
+import { $, h, soon, noise } from './dom.js'
 
 // a triangle and two bars with round corners, as the bars have round caps
 const PLAY = '<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path class="i-play round" d="M4 2.6v10.8L13.4 8z"/><path class="i-pause round" d="M3.6 2.5h2.8v11H3.6zM9.6 2.5h2.8v11H9.6z"/></svg>'
@@ -60,7 +60,8 @@ export function chat() {
     return li
   }
 
-  // a while after your last message, the other side records an answer: its bars come in as it's spoken
+  // a while after your last message, the other side records an answer: its bars come in as it's spoken, as long as
+  // it takes to say
   const answer = () => { clearTimeout(pending), pending = setTimeout(reply, 1400) }
   const reply = () => {
     if (answering) return answer()
@@ -68,9 +69,9 @@ export function chat() {
     const buf = voice(seed++, 2.5 + r() * 6, 150), n = count(buf), take = strip(buf, n, 18).text, line = wave('', n)
     const live = h('div', { className: 'bubble voice live' }, h('span', { className: 'rec' }), line)
     live.setAttribute('role', 'status'), live.setAttribute('aria-label', 'Recording a voice message')
-    const li = add(say(live, false)), t0 = performance.now(), T = still ? 0 : buf.duration * 450
+    const li = add(say(live, false)), t0 = performance.now(), T = buf.duration * 1000
     const step = now => {
-      const k = T ? Math.min(1, (now - t0) / T) : 1
+      const k = Math.min(1, (now - t0) / T)
       line.textContent = take.slice(0, Math.ceil(k * take.length))
       if (k < 1) return requestAnimationFrame(step)
       li.replaceWith(say(buf, false)), settle(), trim(), answering = false

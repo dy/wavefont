@@ -59,8 +59,9 @@ export function pad() {
   play.addEventListener('click', () => turn(!on))
 
   // the pencil: the bar under its tip reaches from the line – a line-height down from the box's top – to the tip, as
-  // far under the line as the box goes; a stroke fills the bars it passes between two moves
-  let from = null
+  // far under the line as the box goes; a stroke fills the bars it passes between two moves. A finger draws once it
+  // taps or goes across: going up or down, it's scrolling the page, and the wave goes on
+  let from = null, press = null, drawing = false
   const at = e => {
     const r = line.getBoundingClientRect(), v = Math.round((r.top + F - e.clientY) / F * 100)
     return [Math.min(N - 1, Math.max(0, Math.floor((e.clientX - r.left) / P))), Math.min(100, Math.max(Math.round((F - r.height) / F * 100), v))]
@@ -70,9 +71,17 @@ export function pad() {
     for (let k = Math.min(i0, i); k <= Math.max(i0, i); k++) values[k] = i === i0 ? v : Math.round(v0 + (v - v0) * (k - i0) / (i - i0))
     from = [i, v], show()
   }
-  line.addEventListener('pointerdown', e => { turn(false), line.setPointerCapture(e.pointerId), from = null, stroke(at(e)) })
-  line.addEventListener('pointermove', e => line.hasPointerCapture(e.pointerId) && stroke(at(e)))
-  line.addEventListener('pointerup', () => from = null)
+  const begin = e => { press = null, drawing = true, turn(false), from = null, stroke(at(e)) }
+  line.addEventListener('pointerdown', e => { if (e.pointerType === 'touch') press = e; else line.setPointerCapture(e.pointerId), begin(e) })
+  line.addEventListener('pointermove', e => {
+    if (press) {
+      const dx = Math.abs(e.clientX - press.clientX), dy = Math.abs(e.clientY - press.clientY)
+      if (Math.max(dx, dy) >= 4) dx > dy ? (line.setPointerCapture(e.pointerId), begin(press)) : press = null
+    }
+    if (drawing) stroke(at(e))
+  })
+  line.addEventListener('pointerup', () => { if (press) begin(press); from = press = null, drawing = false })
+  line.addEventListener('pointercancel', () => { from = press = null, drawing = false })
   // what's copied is what shows: the wave holds. A tick for a moment when copied; the title says if it wasn't
   btn.addEventListener('click', () => { turn(false), copy(btn, text()) })
 }

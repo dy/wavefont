@@ -5,7 +5,7 @@
  */
 import { char, shift } from '../index.js'
 import { weight } from './wave.js'
-import { $, h, copyable } from './dom.js'
+import { $, h, copyable, swing, still, seen } from './dom.js'
 
 const clamp = (x, a, b) => Math.min(b, Math.max(a, x))
 
@@ -46,25 +46,49 @@ export const wave = (w, i, n) => {
 export const order = n => [...Array.from({ length: n }, (_, i) => [0, i, i]), ...Array.from({ length: n }, (_, j) => [1, j, j + 2.5])]
   .sort((a, b) => a[2] - b[2]).map(([w, i]) => [w, i])
 
+/**
+ * Bar k of n's lift on the way in, `into` 0 to 1: from `from` to `to`, setting off one after another along the line –
+ * the first at once, the last a third in – and all in place at the end, each easing in and out.
+ */
+export const arrive = (from, to, into, k, n) => { const s = k / (n - 1) / 3; return Math.round(from + (to - from) * swing(clamp((into - s) / (1 - s), 0, 1))) }
+
 export function shifts() {
   const sec = $('#shifts'), box = $('.waves', sec), row = $('.wave', box)
   const outs = { char: $('.r-char', sec), code: $('.r-code', sec) }
   // two waves of twenty, one line of characters: each bar its value lifted, its own width and roundness; a unit of
-  // width at least .12 of the height, a gap .06 of a unit
+  // width at least .12 of the height, a gap .06 of a unit. A bar's lift is lo where it stands, y where it's drawn
   const N = 20, UNIT = .12, GAP = .06
   const text = b => char(b.hi - b.lo) + shift(b.lo)
-  const bars = order(N).map(([w, i]) => {
-    const [lo, hi, fill, rond] = wave(w, i, N), b = { lo, hi, fill, el: h('span'), x: 0, w: 0 }
+  const bars = order(N).map(([w, i], k) => {
+    const [lo, hi, fill, rond] = wave(w, i, N), b = { lo, hi, y: lo, fill, k, down: !w, el: h('span'), x: 0, w: 0 }
     b.el.textContent = lead(text(b)), b.el.style.setProperty('--rond', rond)
     return b
   })
   row.replaceChildren(...bars.map(b => b.el))
 
+  // on the way in, the bars come to where they stand as the slide does, by their marks: the first wave's down from
+  // the slide's top, the second's up from its foot, while they're in sight. The way in is 0 as the slide's top comes a
+  // fifth of the screen up – the waves showing – and 1 once its foot is on the screen's: scrolled to its end. Looked at
+  // while the slide is in view, and once more as it leaves
+  let into = 1, near = false, raf = 0
+  const way = () => {
+    if (still) return 1
+    const r = sec.getBoundingClientRect(), from = 0.8 * innerHeight, to = innerHeight - r.height
+    return clamp((from - r.top) / (from - to), 0, 1)
+  }
+  const draw = b => {
+    const [a, z] = reach(b), y = arrive(b.down ? z : a, b.lo, into, b.k, bars.length)
+    if (y !== b.y) b.y = y, b.el.textContent = lead(char(b.hi - b.lo) + shift(y))
+  }
+  const enter = () => { raf = 0; const w = way(); if (w !== into) into = w, bars.forEach(draw) }
+  addEventListener('scroll', () => near && (raf ||= requestAnimationFrame(enter)), { passive: true })
+  seen(sec, v => { near = v, enter() })
+
   // across the box, edge to edge, as the axes' specimen is: the unit what the bars and their gaps share of its width;
   // as high as the box, or, where the box is narrow, as high as a unit is a share of, in its middle. A step a
   // hundredth of that. Each bar on whole device pixels, and one gap after each – the margin after a bar takes the next
-  // to its place
-  let F = 0, base = 0
+  // to its place. The slide's top and foot, steps over the line's floor: how far a bar may go
+  let F = 0, base = 0, top = 100, foot = -100
   new ResizeObserver(() => {
     const px = 1 / (devicePixelRatio || 1), W = box.clientWidth, whole = v => Math.max(px, Math.round(v / px) * px)
     const U = W / (bars.reduce((t, b) => t + b.fill, 0) + (bars.length - 1) * GAP), g = whole(GAP * U)
@@ -77,6 +101,9 @@ export function shifts() {
       b.x = x, x += b.w + g, b.el.style.setProperty('--wght', wght)
       b.el.style.marginRight = i < bars.length - 1 ? `${(b.w + g - wght * F / 4000).toFixed(4)}px` : '0'
     })
+    const s = sec.getBoundingClientRect()
+    top = (floor() - s.top) / F * 100, foot = (floor() - s.bottom) / F * 100
+    into = way(), bars.forEach(draw)
   }).observe(box)
 
   // the bar picked, as the 127 values' grid has it: lit, and read out – its character and marks, and their code
@@ -90,31 +117,35 @@ export function shifts() {
   const pick = b => { cur?.el.classList.remove('is-lit'), cur = b, b.el.classList.add('is-lit'), show() }
   // the line's floor, px down the viewport
   const floor = () => box.getBoundingClientRect().bottom - base
-  // a bar moves up or down as far as the marks go, a hundred steps either way, and the slide's edges let it: its marks
-  // change, its value doesn't
+  // how far a bar may lift, lowest to highest: as far as the marks go, a hundred steps either way, and the slide's
+  // edges let it
+  const reach = b => [Math.max(-100, Math.ceil(foot)), Math.min(100, Math.floor(top) - (b.hi - b.lo))]
+  // a bar moves up or down: its marks change, its value doesn't
   const move = (b, lo) => {
-    const s = sec.getBoundingClientRect(), v = b.hi - b.lo
-    lo = clamp(lo, Math.max(-100, Math.ceil((floor() - s.bottom) / F * 100)), Math.min(100, Math.floor((floor() - s.top) / F * 100) - v))
-    if (lo !== b.lo) b.hi = lo + v, b.lo = lo, b.el.textContent = lead(text(b)), b === cur && show(!drag?.on)
+    const v = b.hi - b.lo
+    lo = clamp(lo, ...reach(b))
+    if (lo !== b.lo) b.hi = lo + v, b.lo = lo, draw(b), b === cur && show(!drag?.on)
   }
-  // the bar the pointer is on, or nearest it within a few pixels
+  // the bar the pointer is on, as it's drawn, or nearest it within a few pixels
   const at = e => {
     const x = e.clientX - box.getBoundingClientRect().left, y = (floor() - e.clientY) / F * 100
     let near = null, d = 6
     for (const b of bars) {
-      const dx = Math.max(0, b.x - x, x - b.x - b.w), dy = Math.max(0, b.lo - y, y - Math.max(b.hi, b.lo + 1)) * F / 100
+      const v = b.hi - b.lo, dx = Math.max(0, b.x - x, x - b.x - b.w), dy = Math.max(0, b.y - y, y - b.y - Math.max(v, 1)) * F / 100
       if (Math.hypot(dx, dy) <= d) near = b, d = Math.hypot(dx, dy)
     }
     return near
   }
   // press a bar to pick it – anywhere on the slide it's been moved to, but the readout; drag it up or down to lift or
-  // lower it, or across to select the bars as text – whichever way it first goes. The arrows pick the next or move it
-  // a step, ten with shift
+  // lower it, or across to select the bars as text – whichever way it first goes. A finger on a bar holds the page
+  // still; anywhere else it scrolls. The arrows pick the next or move it a step, ten with shift
   let drag = null
+  const held = e => !e.target.closest('.readout') && at(e)
   sec.addEventListener('pointerdown', e => {
-    const b = !e.target.closest('.readout') && at(e)
+    const b = held(e)
     if (b) pick(b), drag = { b, x: e.clientX, y: e.clientY, lo: b.lo, on: false }
   })
+  sec.addEventListener('touchstart', e => { if (e.touches.length === 1 && held(e.touches[0])) e.preventDefault() }, { passive: false })
   sec.addEventListener('pointermove', e => {
     if (!drag) return sec.classList.toggle('is-over', !e.target.closest('.readout') && !!at(e))
     if (!drag.on) {

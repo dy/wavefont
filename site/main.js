@@ -93,8 +93,14 @@ const KEYS = ['abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', '01234
 
 function keys() {
   // a key: its bar standing on the line, its name under it; a space keeps a key's room empty
-  const key = c => c === ' ' ? h('span', { className: 'k' }) : h('span', { className: 'k' }, h('b', { className: 'wf', textContent: c }), h('i', { textContent: c }))
-  $('.keymap').replaceChildren(...KEYS.map(line => h('div', { className: 'line' }, ...Array.from(line, key))))
+  const map = $('.keymap'), key = c => c === ' ' ? h('span', { className: 'k' }) : h('span', { className: 'k' }, h('b', { className: 'wf', textContent: c }), h('i', { textContent: c }))
+  map.replaceChildren(...KEYS.map(line => h('div', { className: 'line' }, ...Array.from(line, key))))
+  // a bar a third of its key's pitch where the keys are close, on whole device pixels; 300 where they're far apart
+  const bar = $('b', map)
+  new ResizeObserver(() => {
+    const px = dpx(), F = parseFloat(getComputedStyle(bar).fontSize), P = bar.parentNode.clientWidth
+    if (F && P) map.style.setProperty('--wght', Math.min(300, weight(Math.max(px, Math.round(P / 3 / px) * px), F)))
+  }).observe(map)
 }
 
 
@@ -139,17 +145,20 @@ function textDoc() {
   const doc = $('.doc'), title = $('.doc-title'), body = $('.doc-body'), blocks = [title, body]
   const box = $('.weights'), count = $('.doc-count')
   const r = noise(11)
-  const swell = (n, peak) => Array.from({ length: n }, (_, i) => Math.max(3, peak * Math.sin(Math.PI * (i + 0.5) / n) ** 0.8 * (0.55 + 0.45 * r())))
+  const swell = (n, peak) => Array.from({ length: n }, (_, i) => Math.max(5, peak * Math.sin(Math.PI * (i + 0.5) / n) ** 0.8 * (0.55 + 0.45 * r())))
 
   // a title that swells and fades; hyphens draw as the dashes at its ends
   title.textContent = '--' + wf(Array.from({ length: 19 }, (_, i) => 6 + 92 * Math.sin(Math.PI * (i + 0.5) / 19) ** 1.3)) + '--'
-  // words of speech; a quiet run is hyphens: dots that end a word the way a pause does
-  const word = () => wf(swell(3 + r() * 14 | 0, 18 + r() * 52))
+  // words of speech, loud – a quarter of the most a bar reaches, 127, to all of it: the text is set small enough for
+  // its lines to hold a selection, and its words stand as tall as ever; a quiet run is hyphens: dots that end a word
+  // the way a pause does
+  const word = () => wf(swell(3 + r() * 14 | 0, 33 + r() * 94))
   const para = n => Array.from({ length: n }, () => word() + (r() < 0.3 ? '-'.repeat(1 + r() * 7 | 0) : '')).join(' ')
   body.textContent = para(37) + '\n\n' + para(17)
 
-  // weights as a share of the pitch, the heaviest filling it: the pitch stays, so bolder bars stand closer
-  const FILL = [1 / 7, 2 / 7, 1 / 2, 3 / 4, 1], PITCH = new Map([[title, 0.24], [body, 1 / 7]]), BASE = new Map([[title, 2], [body, 0]])
+  // weights as a share of the pitch, the heaviest filling it: the pitch stays, so bolder bars stand closer. The text's
+  // pitch as wide for its size as its words are tall
+  const FILL = [1 / 7, 2 / 7, 1 / 2, 3 / 4, 1], PITCH = new Map([[title, 0.24], [body, 0.26]]), BASE = new Map([[title, 2], [body, 0]])
   const icons = FILL.map(() => h('span', { className: 'wf', textContent: wf(100, 100, 100, 100) }))
   // pitch on whole device pixels, widths as near them as whole font units come, so each bar of a weight draws alike
   const crisp = (el, pitch) => {
@@ -380,16 +389,16 @@ function journey() {
     el.setAttribute('aria-hidden', 'true'), li.append(el)
     return el
   })
-  // each year's twelve months centred on its year, from halfway to the year before to halfway to the next, so a month
-  // is nearest its own year; one weight for every bar, half the pitch of the tightest year, on whole device pixels
+  // the months evenly down the years, from halfway before the first to halfway past the last: one pitch for every
+  // month, whatever a year has to say – a year with lines of text doesn't space its months out. One weight for every
+  // bar, half the pitch, on whole device pixels
   const place = () => {
     const px = dpx(), F = parseFloat(getComputedStyle(rows[0]).fontSize), c = rows.map(el => { const li = el.parentNode, t = li.firstElementChild; return li.offsetTop + t.offsetTop + t.offsetHeight / 2 })
-    const n = c.length, edge = k => k <= 0 ? c[0] - (c[1] - c[0]) / 2 : k >= n ? c[n - 1] + (c[n - 1] - c[n - 2]) / 2 : (c[k - 1] + c[k]) / 2
-    const P = rows.map((_, k) => (edge(k + 1) - edge(k)) / 12)
-    if (!F || !P[0]) return
-    const wght = weight(Math.max(px, Math.round(0.5 * Math.min(...P) / px) * px), F)
+    const n = c.length, a = c[0] - (c[1] - c[0]) / 2, P = (c[n - 1] + (c[n - 1] - c[n - 2]) / 2 - a) / (12 * n)
+    if (!F || !P) return
+    const wght = weight(Math.max(px, Math.round(0.5 * P / px) * px), F)
     list.style.setProperty('--wght', wght)
-    rows.forEach((el, k) => Object.assign(el.style, { top: `${edge(k) - el.parentNode.offsetTop}px`, height: `${12 * P[k]}px`, letterSpacing: `${(P[k] - wght * F / 4000).toFixed(4)}px` }))
+    rows.forEach((el, k) => Object.assign(el.style, { top: `${a + 12 * k * P - el.parentNode.offsetTop}px`, height: `${12 * P}px`, letterSpacing: `${(P - wght * F / 4000).toFixed(4)}px` }))
   }
   new ResizeObserver(place).observe(list), document.fonts.ready.then(place)
 }

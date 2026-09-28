@@ -111,48 +111,92 @@ const url = buf => {
   return u
 }
 
+// every sound plays through one element: iOS lets an element a gesture has played play again without one, so the
+// first sound can wait while the delay is measured, then start
+let el, lag, probe
+const element = () => el ??= new Audio()
+
+/**
+ * How long a sound is still to be heard once its element's clock has run through it, s: an iPhone's clock runs that
+ * far ahead of its voice, and Safari reports no output latency (AudioContext.outputLatency) to say so. Before the
+ * first sound, a tenth of a second of silence tells: from when its clock starts to 'ended', less its length – as
+ * wavearea measured it (2023); none, if it doesn't end within a second. Every sound that plays to its end tells again.
+ */
+const measure = () => probe ??= new Promise(done => {
+  const a = element(), src = URL.createObjectURL(wav(buffer(new Float32Array(4800), 48000)))
+  let t0 = 0, raf = 0
+  // when the clock was at 0, by where it is at the first look that finds it moving
+  const watch = () => { if (a.currentTime > 0) t0 = performance.now() - a.currentTime * 1000; else raf = requestAnimationFrame(watch) }
+  const end = s => { lag = s, a.onended = null, cancelAnimationFrame(raf), clearTimeout(timer), URL.revokeObjectURL(src), done() }
+  const timer = setTimeout(() => end(0), 1000)
+  a.onended = () => end(t0 ? Math.max(0, (performance.now() - t0) / 1000 - a.duration) : 0)
+  a.src = src, a.play().then(watch, () => end(0))
+})
+
 /**
  * Play buf from..to seconds, or round and round with loop; stops whatever played before.
- * An <audio> element plays it, so a faster rate keeps the voice's pitch, as messengers do.
+ * An <audio> element plays it, so a faster rate keeps the voice's pitch, as messengers do. Its time is what's heard:
+ * the element's clock, the output's delay behind.
  * @returns {{time: () => number, rate: (r: number) => void, stop: () => void, onend?: () => void}}
  */
 export function play(buf, { from = 0, to = buf.duration, rate = 1, loop = false } = {}) {
   current?.stop()
-  const el = new Audio(url(buf))
-  let done = false, timer = 0, anchor = from, since = 0, running = false, shown = from
-  el.currentTime = from, el.playbackRate = rate, el.loop = loop
-  // the element's clock ticks coarsely in some browsers: between ticks, time runs on at the rate, leaning a little
-  // toward the element's time at every look, so it follows without a jump; a real jump (a loop's turn) it takes at once.
-  // Time runs one way: a small step back, the element catching up, is held
+  const el = element(), off = new AbortController(), on = (type, f) => el.addEventListener(type, f, { signal: off.signal })
+  let done = false, started = false, playing = false, running = false, timer = 0, anchor = from, since = 0, shown = from, last = null
+  // when the clock was at `from`, and whether it's run on since, unstalled at one rate: at the end, it tells the delay
+  let t0 = 0, even = true
+  // the element's clock, from when its time first moves: WebKit says 'playing' a fifth of a second before. It ticks
+  // coarsely in some browsers: between ticks, time runs on at the rate, leaning a little toward the element's time at
+  // every look, so it follows without a jump; a real jump (a loop's turn) it takes at once. At the end the element's
+  // time stops – a while before it says 'ended' – and this runs on. Time runs one way: a small step back, the element
+  // catching up, is held
   const now = () => {
     let v = el.currentTime
+    if (playing && !running && v !== anchor) anchor = v, since = performance.now(), running = true, t0 ||= since - (v - from) / el.playbackRate * 1000
     if (running) {
       const guess = anchor + (performance.now() - since) / 1000 * el.playbackRate
-      if (Math.abs(v - guess) > 0.25) anchor = v, since = performance.now()
+      if (el.ended || v >= el.duration - 0.005) v = guess
+      else if (Math.abs(v - guess) > 0.25) anchor = v, since = performance.now()
       else anchor += (v - guess) * 0.05, v = guess + (v - guess) * 0.05
     }
     return shown = v < shown && shown - v < 0.5 ? shown : v
   }
-  // stop at `to`: a timer set for when the element gets there at its rate, set again on every change
+  // what's heard: nothing till the element plays, then its clock, lag behind
+  const time = () => !playing ? from : loop ? ((now() - lag) % buf.duration + buf.duration) % buf.duration : Math.min(to, Math.max(from, now() - lag))
+  // stop once `to` is heard: a timer for when the element is lag past it, at its rate, set again on every change.
+  // Where that's past the end, the element ends first, and the timer waits there for the rest to be heard
+  const heard = () => { last = to, h.stop() }
   const due = () => {
     clearTimeout(timer)
-    if (!loop && !done) timer = setTimeout(() => el.currentTime >= to - 0.01 ? h.stop() : due(), (to - el.currentTime) / el.playbackRate * 1000)
+    if (!loop && !done && to + lag < buf.duration) timer = setTimeout(() => el.currentTime >= to + lag - 0.01 ? heard() : due(), (to + lag - el.currentTime) / el.playbackRate * 1000)
   }
   const h = {
-    time: () => loop ? now() % buf.duration : Math.min(to, now()),
-    rate(r) { anchor = now(), since = performance.now(), el.playbackRate = r, due() },
+    time: () => last ?? time(),
+    rate(r) { anchor = now(), since = performance.now(), even = false, el.playbackRate = r, due() },
     stop() {
       if (done) return
-      done = true, running = false, clearTimeout(timer), el.pause()
+      last ??= time(), done = true, running = false, clearTimeout(timer), off.abort()
+      if (started) el.pause()
       if (current === h) current = null
       h.onend?.()
     }
   }
-  el.addEventListener('playing', () => { anchor = el.currentTime, since = performance.now(), running = true, due() })
-  el.addEventListener('waiting', () => running = false)
-  el.addEventListener('ended', h.stop)
-  el.addEventListener('error', h.stop)
-  el.play().catch(h.stop)
+  const start = () => {
+    if (done) return
+    started = true
+    on('playing', () => { playing = true, running = false, anchor = el.currentTime, due() })
+    // a stall once the clock runs: its end no longer tells the delay
+    on('waiting', () => { if (running) even = false; running = false })
+    // ended: what's still to be heard is known now, and the waveform finishes as the sound does
+    on('ended', () => {
+      if (t0 && even) lag = Math.min(1, Math.max(0, (performance.now() - t0) / 1000 - (buf.duration - from) / el.playbackRate))
+      clearTimeout(timer), timer = setTimeout(heard, Math.max(0, to - time()) / el.playbackRate * 1000)
+    })
+    on('error', h.stop)
+    el.src = url(buf), el.currentTime = from, el.playbackRate = rate, el.loop = loop
+    el.play().catch(h.stop)
+  }
+  lag === undefined ? measure().then(start) : start()
   return current = h
 }
 

@@ -15,6 +15,22 @@ const short = s => `${two(s / 60)}:${two(s % 60)}`
 const text = lv => wf(Array.from(lv, v => Math.max(3, v * 100)))
 const today = () => new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 
+/**
+ * The tape's clock while recording, s: the wall's speed from when the audio began, never past the audio. A microphone
+ * starts late and its chunks come unevenly, some a burst at once: each chunk – t seconds of audio in by `now`, ms –
+ * says when the audio would have begun had it come at once. The earliest of those is when it did, and the clock keeps
+ * as far behind as a chunk has come late, and a chunk more: so it runs on between chunks without running out.
+ * -Infinity till one comes; again() for audio picking up after a pause, the wall having moved on.
+ */
+export const clock = () => {
+  let got = 0, early = Infinity, late = 0
+  return {
+    hear(t, now) { const at = now - t * 1000; early = Math.min(early, at), late = Math.max(late, at - early + (t - got) * 1000), got = t },
+    at: now => Math.min(got, (now - early - late) / 1000),
+    again() { early = Infinity, late = 0 }
+  }
+}
+
 export function memo() {
   const vm = $('.vm'), wave = $('.vm-wave'), tape = $('.vm-bars'), scale = $('.vm-scale'), time = $('.vm-time')
   const title = $('.vm-title'), date = $('.vm-date'), len = $('.vm-len'), note = $('.vm-note')
@@ -22,20 +38,19 @@ export function memo() {
   const heard = new Range()
   // clip: the audio to play – the finished recording, or what's recorded so far while paused
   let state = 'idle', lv = [], clip = null, recorder = null, starting = false, handle = null, raf = 0
-  let pos = 0, pitch = 4, ruled = '', drag = null, got = 0, zero = 0, anchored = false
+  let pos = 0, pitch = 4, ruled = '', drag = null, clk = clock()
 
   const length = () => lv.length * dt
   const pps = () => pitch * RATE
-  // while recording, the tape runs on the recording's clock – the audio the microphone has brought – not the wall's:
-  // a microphone starts late, and its chunks come unevenly. Between chunks the tape runs at real speed from when the
-  // audio would have begun (zero), each chunk nudging that a tenth of the way to where it says; never a bar past the
-  // audio, never back. The newest bar stays at the playhead, and a pause holds it there
-  const hear = t => {
-    const at = performance.now() - t * 1000
-    got = t, zero = anchored ? zero + (at - zero) * 0.1 : at, anchored = true
+  // while recording, the tape runs on its clock, never back; a bar is written as the playhead reaches its time: the
+  // newest stands at the playhead, and a pause holds it there
+  const recorded = () => Math.max(pos, clk.at(performance.now()))
+  // the tape's text: the bars up to n, new ones appended rather than the whole tape set again
+  const write = n => {
+    const k = tape.textContent.length
+    if (n > k) k ? tape.firstChild.appendData(text(lv.slice(k, n))) : tape.textContent = text(lv.slice(0, n))
   }
-  const recorded = () => Math.max(pos, Math.min(got + dt, (performance.now() - zero) / 1000))
-  const run = () => { place(recorded()), ruler(), raf = requestAnimationFrame(run) }
+  const run = () => { const t = recorded(); write(Math.floor(t / dt)), place(t), ruler(), raf = requestAnimationFrame(run) }
 
   // a bar every 1/60 of the band's height, half of it ink, as Voice Memos draws them
   const fit = () => {
@@ -107,19 +122,17 @@ export function memo() {
   back.addEventListener('click', () => seek(pos - 15))
   fwd.addEventListener('click', () => seek(pos + 15))
 
+  // recording stopped, paused or done, the bars still to come are written, and the playhead goes to the end
+  const hold = () => { cancelAnimationFrame(raf), write(lv.length), place(length()) }
   rec.addEventListener('click', async () => {
-    if (state === 'recording') return cancelAnimationFrame(raf), recorder.pause(), state = 'paused', place(pos), ui()
-    // the audio picks up where it stopped; the wall has moved on: the clock anchors again on the first chunk
-    if (state === 'paused') return stop(), clip = null, recorder.resume(), zero = performance.now() - got * 1000, anchored = false, state = 'recording', ui(), run()
+    if (state === 'recording') return recorder.pause(), state = 'paused', hold(), ui()
+    // the audio picks up where it stopped: the clock anchors again on the chunks to come
+    if (state === 'paused') return stop(), clip = null, recorder.resume(), clk.again(), state = 'recording', ui(), run()
     if (starting) return
     starting = true, stop(), note.textContent = ''
     try {
-      // new bars are appended to the tape's text, not the whole tape set again
-      const r = await listen((levels, t) => {
-        const was = lv === levels ? tape.textContent.length : 0
-        lv = levels, was ? tape.firstChild.appendData(text(lv.slice(was))) : tape.textContent = text(lv), len.textContent = short(t), hear(t)
-      }, dt)
-      recorder = r, clip = null, lv = [], state = 'recording', got = 0, zero = performance.now(), anchored = false
+      const r = await listen((levels, t) => { lv = levels, len.textContent = short(t), clk.hear(t, performance.now()) }, dt)
+      recorder = r, clip = null, lv = [], state = 'recording', clk = clock()
       date.textContent = today(), len.textContent = short(0), tape.textContent = ''
       place(0), ui(), run()
     } catch (e) {
@@ -127,10 +140,12 @@ export function memo() {
     }
     starting = false
   })
-  // Done keeps the recording: a WAV file under the name above the waveform
+  // Done keeps the recording: a WAV file under the name above the waveform. The playhead stays where it is: at the
+  // end, done while recording
   done.addEventListener('click', () => {
     if (state === 'idle') return
-    stop(), cancelAnimationFrame(raf)
+    stop()
+    if (state === 'recording') hold()
     const buf = recorder.stop(), name = title.value.trim() || 'New Recording'
     recorder = null, state = 'idle', clip = buf.duration > 0.2 ? buf : null
     if (!clip) lv = [], tape.textContent = ''
@@ -138,7 +153,7 @@ export function memo() {
       const a = h('a', { href: URL.createObjectURL(wav(clip)), download: `${name}.wav` })
       a.click(), setTimeout(() => URL.revokeObjectURL(a.href), 10000)
     }
-    len.textContent = short(length()), ruler(), place(0), ui()
+    len.textContent = short(length()), ruler(), place(Math.min(pos, length())), ui()
   })
 
   // drag the waveform under the playhead to scrub, as in Voice Memos; playback picks up where it's let go
