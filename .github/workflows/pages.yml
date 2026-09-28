@@ -1,0 +1,40 @@
+name: pages
+
+# The site: master as it is, with the build's reports (kept on gh-pages) under out/.
+# On every push, and again once the build has refreshed the reports.
+on:
+  push:
+    branches: [master]
+  workflow_run:
+    workflows: [build]
+    types: [completed]
+    branches: [master]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        path: _site
+    - uses: actions/checkout@v7
+      with:
+        ref: gh-pages
+        path: _site/out
+    - uses: actions/upload-pages-artifact@v5
+      with:
+        path: _site
+    - id: deploy
+      uses: actions/deploy-pages@v5

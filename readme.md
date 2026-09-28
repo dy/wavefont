@@ -2,7 +2,7 @@
 
 A typeface for rendering vertical bars data: waveforms, spectrums, diagrams, histograms, columns etc.
 
-<a href="https://dy.github.io/wavefont"><img src="./site/preview.png" width="640" alt="Text set in Wavefont: a title and two paragraphs of bars, one word selected and set bold, a toolbar of weights"></a>
+<a href="https://dy.github.io/wavefont"><img src="./site/preview.png" width="640" alt="Wavefont: the name drawn as bars, and its features: latin+ core, 127 values, 3 axes, textual semantics, vertical shifts, 60 fps"></a>
 
 [**Site**](https://dy.github.io/wavefont)&nbsp;&nbsp;•&nbsp;&nbsp;[**Google fonts**](https://fonts.google.com/specimen/Wavefont)&nbsp;&nbsp;•&nbsp;&nbsp;[**V-fonts**](https://v-fonts.com/fonts/wavefont)&nbsp;&nbsp;•&nbsp;&nbsp;
 [**Wavearea**](https://dy.github.io/wavearea?src=https://cdn.freesound.org/previews/147/147582_1728127-lq.mp3)
@@ -96,9 +96,9 @@ char(64) + shift(-13) // bar 64 shifted 13 steps down
 `make build`
 
 * [Tests](https://dy.github.io/wavefont/out/fontbakery/fontbakery-report)
-* [Glyphs](https://dy.github.io/wavefont/out/proof/glyphs)
-* [Text](https://dy.github.io/wavefont/out/proof/text)
-* [Waterfall](https://dy.github.io/wavefont/out/proof/waterfall)
+* [Glyphs](https://dy.github.io/wavefont/out/proof/Regular-diffbrowsers_glyphs)
+* [Text](https://dy.github.io/wavefont/out/proof/Regular-diffbrowsers_text)
+* [Waterfall](https://dy.github.io/wavefont/out/proof/Regular-diffbrowsers_waterfall)
 
 ## See also
 

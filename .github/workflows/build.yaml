@@ -45,7 +45,8 @@ jobs:
       run: npm test && make test
     - name: proof
       run: make proof
-    - name: Deploy
+    # to gh-pages, from where pages.yml serves them under out/
+    - name: Publish reports
       uses: peaceiris/actions-gh-pages@v4
       if: ${{ github.ref == 'refs/heads/master' }}
       with:
