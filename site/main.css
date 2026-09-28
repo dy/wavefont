@@ -448,11 +448,11 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 /* four bars on a quarter-em pitch: the heaviest fills it, a square */
 .weights .wf { --yela: 0; font-size: 1.5rem; line-height: 1; white-space: pre; }
 
-/* ── a chart, as the 60 fps slide and the game draw one: eight rows from the second over the ten inner columns,
-   its scale's lines across them, each named in the first column, centred on its line; a line that counts in ink,
-   named at its end ── */
+/* ── a chart, as the 60 fps slide and the game draw one: seven rows from the second over the ten inner columns –
+   eight where what's under it keeps to a line – its scale's lines across them, each named in the first column,
+   centred on its line; a line that counts in ink, named at its end ── */
 
-.plot { --chart-h: calc(8 * var(--row)); grid-row: 1 / 9; align-self: start; margin: 0; display: grid; grid-template-columns: subgrid; }
+.plot { --chart-h: calc(7 * var(--row)); grid-row: 1 / 9; align-self: start; margin: 0; display: grid; grid-template-columns: subgrid; }
 .plot > * { grid-row: 1; height: var(--chart-h); }
 .scale { grid-column: 2 / 12; position: relative; pointer-events: none; font: var(--label); color: var(--dim); }
 .scale > span { position: absolute; left: 0; right: 0; bottom: calc(var(--at) * 100%); border-bottom: 1px solid var(--faint); }
@@ -722,8 +722,9 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 
 @media (min-width: 64rem) {
   .chat { grid-column: 3 / 9; }
-  /* the ways' names on one line */
+  /* the ways' names on one line, the band's tabs on one: the chart a row taller */
   .col:nth-child(even) .name { margin-top: 0; }
+  .plot { --chart-h: calc(8 * var(--row)); }
 }
 
 @media (min-width: 90rem) {
@@ -736,11 +737,12 @@ input[type="range"]:focus-visible { outline-offset: 0; }
   /* the wave a row shorter either way; the links a line each under it, clear of the credits wrapping above the band */
   .pad { --rows: 3; grid-row: 1 / 7; }
   .links { grid-row: 7 / 9; flex-flow: column nowrap; justify-content: flex-end; row-gap: var(--space-sm); }
-  /* the charts a row shorter, to leave the status its row above; the scales' lines without their names, too wide
-     for a column */
-  .plot { --chart-h: calc(7 * var(--row)); }
+  /* Google Fonts and Download first, GitHub last */
+  .links li:nth-child(2) { order: 2; }
+  .links li:nth-child(3) { order: 1; }
+  /* the scales' lines without their names, too wide for a column */
   .scale b { display: none; }
-  /* the operations only, on one line: the browsers' tabs would wrap under them */
+  /* the operations only: with the browsers' tabs the band would take three lines */
   .speed .browsers { display: none; }
   /* the waves' readout wrapping up from the band */
   .shifts .readout { grid-row: 10 / 12; align-self: end; }
