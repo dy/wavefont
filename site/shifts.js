@@ -106,15 +106,15 @@ export function shifts() {
     into = way(), bars.forEach(draw)
   }).observe(box)
 
-  // the bar picked, as the 127 values' grid has it: lit, and read out – its character and marks, and their code
-  // points, each selectable and a click to copy. Under a drag the code points wait till the hand rests: they grow and
-  // shrink as a run of marks comes and goes, and would shake the copy button after them
+  // the bar picked, as the 127 values' grid has it, is read out – its character and marks, and their code points, each
+  // selectable and a click to copy. Under a drag the code points wait till the hand rests: they grow and shrink as a
+  // run of marks comes and goes, and would shake the copy button after them
   let cur = null, settle = 0
   const show = (now = true) => {
     const code = () => outs.code.textContent = spell(cur.hi - cur.lo, cur.lo)
     outs.char.textContent = text(cur), clearTimeout(settle), now ? code() : settle = setTimeout(code, 150)
   }
-  const pick = b => { cur?.el.classList.remove('is-lit'), cur = b, b.el.classList.add('is-lit'), show() }
+  const pick = b => (cur = b, show())
   // the line's floor, px down the viewport
   const floor = () => box.getBoundingClientRect().bottom - base
   // how far a bar may lift, lowest to highest: as far as the marks go, a hundred steps either way, and the slide's

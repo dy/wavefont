@@ -29,6 +29,10 @@
   --font-sans: "Atkinson Hyperlegible Next", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Atkinson Hyperlegible Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
+  /* the weight of the bars on the slides that lead in – the keys, the values, and where the axes set off from – in whole
+     font units: narrower on a phone, but not too narrow, wider as the screen is */
+  --wght-bars: 400;
+
   /* type: every size of text on the page is one of these */
   --text-label: 1rem;                                  /* labels, values, captions: status lines, axes, readouts */
   --text-body: 1.0625rem;                              /* running text */
@@ -313,6 +317,9 @@ input[type="range"]:focus-visible { outline-offset: 0; }
   outline: none;
   cursor: text;
 }
+/* the bars don't show at their height first, to fall to the floor and rise: where a script is to set the intro going,
+   they wait for it */
+@media (scripting: enabled) { .mark:not(.is-set) .mark-bars { color: transparent; } }
 /* a selection dims the bars it takes: the page's blue would fill the whole line box, taller than the bars */
 .mark-bars::selection { background: none; color: var(--dim); }
 /* one cell per bar, centred under it: cells start half a gap left of the first bar */
@@ -342,15 +349,17 @@ input[type="range"]:focus-visible { outline-offset: 0; }
    rest do: one row of bars is theirs ── */
 
 .keys .stage { grid-row: 2 / 12; }
-/* a bar a third of its key's pitch at most – the script sets it where the keys are close – 300 at most */
-.keymap { --wght: 300; align-self: start; display: grid; grid-template-rows: calc(2 * var(--row)) var(--row) calc(3 * var(--row)) var(--row) calc(3 * var(--row)); }
+/* the bars in the deck's weight, two rows high – or, where the keys are close, no taller than a bar of that weight
+   three quarters of a key's pitch wide is: a pitch is ten columns over twenty-six keys, and a bar of a weight is
+   wght/4000 of its size wide */
+.keymap { --wght: var(--wght-bars); --pitch: calc(10 * var(--col) / 26); align-self: start; display: grid; grid-template-rows: calc(2 * var(--row)) var(--row) calc(3 * var(--row)) var(--row) calc(3 * var(--row)); }
 .keymap .line:nth-child(2) { grid-row: 3; }
 .keymap .line:nth-child(3) { grid-row: 5; }
 .keymap .line:first-child { grid-template-rows: var(--row) var(--row); }
 .keymap .line { display: grid; grid-template-columns: repeat(26, minmax(0, 1fr)); grid-template-rows: calc(2 * var(--row)) var(--row); }
 .keymap .k { grid-row: 1 / -1; display: grid; grid-template-rows: subgrid; justify-items: center; }
 /* at line-height 1 a bar standing on the floor stands on the foot of its box */
-.keymap .k b { --yela: -100; align-self: end; font-weight: normal; font-size: calc(2 * var(--row)); line-height: 1; }
+.keymap .k b { --yela: -100; align-self: end; font-weight: normal; font-size: min(calc(2 * var(--row)), calc(3000 * var(--pitch) / var(--wght))); line-height: 1; }
 .keymap .k i { align-self: start; margin-top: var(--sink); padding-top: var(--space-sm); font: var(--label); font-style: normal; color: var(--fg); }
 
 /* ── 127 values: every bar in a grid across the ten inner columns, sixteen to a row of the slide's; 0 and 127 in
@@ -371,7 +380,7 @@ input[type="range"]:focus-visible { outline-offset: 0; }
   align-items: end;
 }
 .grid .cell {
-  --wght: 280;
+  --wght: var(--wght-bars);
   --yela: -100;
   display: grid; place-items: end center;
   height: 100%;
@@ -484,8 +493,8 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 
 /* ── vertical shifts: marks after a bar move it up or down, a step or ten, so a bar stands anywhere: a range, a note,
    a value either side of a line. The slide: two waves in one line of characters, every bar of its own height, lift,
-   width and roundness, across the slide on the six rows in its middle; a bar pressed is lit and
-   read out in the band, as the 127 values' grid reads one, and dragged, moves ── */
+   width and roundness, across the slide on the six rows in its middle; a bar pressed is read out in the band, as the
+   127 values' grid reads one, and dragged, moves ── */
 
 .shifts .stage { grid-column: 1 / -1; }
 /* the waves on the six rows in the slide's middle, across all twelve columns: the script sizes and places their bars.
@@ -494,7 +503,6 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .shifts.is-over { cursor: grab; }
 .shifts.is-dragging { cursor: grabbing; user-select: none; -webkit-user-select: none; }
 .waves .wave { --yela: -100; position: absolute; bottom: 0; line-height: 1; white-space: pre; letter-spacing: 0; }
-.waves .is-lit { color: var(--accent); }
 /* the readout in the band: the character with its marks stacked over it, then its code points – the longest, a bar
    and nine marks of each kind, 'U+0164 U+0302 ×9 U+0301 ×9' */
 .shifts .readout { --ems: calc(27 * 0.632 + 2 * 1.2); grid-area: 11 / 2 / 12 / 12; }
@@ -522,15 +530,15 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .speed .stage { grid-column: 1 / -1; }
 /* two rows to a decade, 0.1 ms on the floor and 1 s at the top; the frame at 60 fps, 16.7 ms, the line that counts,
    named by its rate.
-   The five ways over the scale's ten columns, two each; a bar in the middle of each, its time standing on it, its
-   name hanging from the floor. Each bar in its name's colour – wavefont's in ink, the others dim – but its plain
-   values in the accent */
+   The five ways over the scale's ten columns, two each; a bar in the middle of each, its time standing on it, a couple
+   of pixels clear so the fill behind the time never touches the bar, its name hanging from the floor. Each bar in
+   its name's colour – wavefont's in ink, the others dim – but its plain values in the accent */
 .lanes { grid-column: 2 / 12; position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
 .col { position: relative; display: grid; justify-items: center; align-content: end; height: var(--chart-h); }
 .glyph { --yela: -100; font-size: var(--chart-h); line-height: 1; height: var(--chart-h); white-space: pre; letter-spacing: 0; color: var(--dim); }
 .is-text .glyph { color: var(--fg); }
 .is-ours .glyph { color: var(--accent); }
-.col .ms { position: absolute; z-index: 2; bottom: calc(var(--h, 0) * var(--chart-h) + var(--space-xs)); margin-bottom: var(--sink); padding: 0 0.3em; background: var(--bg); font: var(--label); color: var(--fg); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.col .ms { position: absolute; z-index: 2; bottom: calc(var(--h, 0) * var(--chart-h) + var(--space-xs) + 2px); margin-bottom: var(--sink); padding: 0 0.3em; background: var(--bg); font: var(--label); color: var(--fg); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .col.is-ours .ms { color: var(--accent); font-weight: 700; }
 .col .name { position: absolute; top: calc(100% + var(--space-sm) + var(--sink)); font: var(--label); color: var(--dim); white-space: nowrap; }
 .col.is-text .name { color: var(--fg); }
@@ -659,24 +667,26 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 .vm-note { --lead: calc(var(--pad-x) + (100cqw - 2 * var(--pad-x)) / 12); grid-row: 11; align-self: end; justify-self: start; max-width: calc(50% - var(--rec) - var(--lead)); margin: 0 0 var(--sink) var(--lead); font: var(--label); color: var(--dim); }
 
 /* ── journey: the years in a line down the stage – those that brought something in blue, with what they brought, the
-   rest in gray between – each year a row, and down the screen's right edge the months' commits, a bar each ── */
+   rest in gray between – each year a row, and down the screen's left edge, beside them, the months' commits, a bar
+   each ── */
 
 .journey { --edge: calc(var(--pad-x) + var(--col)); }
 .journey .stage { grid-row: 2 / 12; }
 /* the years share the stage's height: each what it takes, and the rest in equal parts; the stage grows only when
    they take more than it has */
 .milestones { grid-row: 1 / -1; align-self: stretch; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); }
-/* a line of text at least, a year alone as tall as one with a line to say, so the years step evenly. A year the
-   margin's column and the stage's first, what it brought the rest – columns as long as the slide's, not a subgrid of
-   them: WebKit sizes a subgrid's row in a subgrid for its text a line shorter than it wraps to */
-.milestones li { position: relative; display: grid; grid-template-columns: calc(2 * var(--col)) minmax(0, 1fr); margin-left: calc(-1 * var(--col)); align-content: start; align-items: baseline; min-height: calc(1lh + var(--space-sm)); padding-bottom: var(--space-sm); }
-.milestones time { margin-top: var(--sink); font: var(--label); color: var(--dim); }
+/* the years and what they brought in the one label, as the other slides' small text is. A line of it at least, a year
+   alone as tall as one with a line to say, so the years step evenly. A year the stage's first column – its first two on
+   a phone, where its four digits are wider than one – what it brought the rest: columns as long as the slide's, not a
+   subgrid of them: WebKit sizes a subgrid's row in a subgrid for its text a line shorter than it wraps to */
+.milestones li { position: relative; display: grid; grid-template-columns: calc(2 * var(--col)) minmax(0, 1fr); align-content: start; align-items: baseline; font: var(--label); min-height: calc(1lh + var(--space-sm)); padding-bottom: var(--space-sm); }
+.milestones time { margin-top: var(--sink); color: var(--dim); }
 .milestones li:has(> span) time { color: var(--accent); }
 .milestones li > span { grid-column: 2; margin-top: var(--sink); }
 /* a year's months, in the blue of the years that brought something, bars standing on the screen's edge and reaching
-   to the stage's, less a gap: a line set on its side, turned so its floor is to the right; the script spaces the
-   months evenly down the years */
-.months { --yela: -100; position: absolute; right: calc(-1 * var(--edge)); writing-mode: vertical-lr; text-orientation: sideways; scale: -1 1; font-size: calc(var(--edge) - var(--space-md)); line-height: 1; white-space: pre; color: var(--accent); }
+   to the stage's, less a gap: a line set on its side, its floor to the left, as text turned a quarter goes; the script
+   spaces the months evenly down the years */
+.months { --yela: -100; position: absolute; left: calc(-1 * var(--edge)); writing-mode: vertical-lr; text-orientation: sideways; font-size: calc(var(--edge) - var(--space-md)); line-height: 1; white-space: pre; color: var(--accent); }
 .milestones a { text-decoration-color: color-mix(in oklab, currentColor 35%, transparent); }
 /* a version is a tag: white on blue */
 .tag { display: inline-block; padding: 0 0.4em; border-radius: 2px; background: var(--accent); color: var(--white); font: var(--label); text-decoration: none; }
@@ -700,14 +710,17 @@ input[type="range"]:focus-visible { outline-offset: 0; }
    line, which reaches the top row too */
 .pad-tools { position: relative; z-index: 1; grid-area: 1 / 12 / 2 / 13; justify-self: end; align-self: center; display: flex; margin-right: -0.9rem; }
 
-/* the links: one line standing on the tenth row, bold and spaced as the first slide's features, each after its icon;
-   on a phone, a line each */
+/* the links, as the first slide's features are: bold and spaced, each after its icon – on a phone, a column, a line
+   each as far apart as the features are; on a wider screen, two columns, a row each, standing on the tenth row
+   above the credits: the font's first, Google Fonts and Download, then the code's, GitHub and npm */
 .links {
-  grid-row: 9 / 10; align-self: end; list-style: none; margin: 0; padding: 0;
-  display: flex; flex-wrap: wrap; align-content: flex-end; gap: var(--space-md) var(--space-2xl);
+  grid-row: 8 / 10; align-self: end; list-style: none; margin: 0; padding: 0;
+  display: grid; align-items: end; justify-items: start; row-gap: var(--space-lg);
   font: 700 var(--text-lead)/1 var(--font-sans); letter-spacing: 0.3em;
 }
 .links li { margin-bottom: var(--sink); }
+.links li:nth-child(2) { order: 2; }
+.links li:nth-child(3) { order: 1; }
 /* a link reaches a little above and below its line, for a finger, in no room of its own */
 .links a { display: inline-flex; align-items: center; gap: 0.6em; padding-block: var(--space-sm); margin-block: calc(-1 * var(--space-sm)); text-decoration: none; white-space: nowrap; }
 @media (hover: hover) { .links a:hover { color: var(--accent); } }
@@ -724,17 +737,16 @@ input[type="range"]:focus-visible { outline-offset: 0; }
   .facts { grid-template-columns: calc(4 * var(--pitch)) auto; grid-template-rows: repeat(3, var(--row)); grid-auto-flow: column; row-gap: 0; }
 }
 
-/* tablets: the links two and two, where four don't make one line – the font's first, Google Fonts and Download, then
-   the code's, GitHub and npm */
-@media (40rem < width < 72rem) {
-  .links { display: grid; grid-template-columns: auto auto; justify-content: start; }
+@media (width > 40rem) {
+  .links { grid-template-columns: auto auto; grid-template-rows: repeat(2, var(--row)); justify-content: start; gap: 0 var(--space-2xl); }
   .links li:is(:nth-child(2), :nth-child(3)) { order: 1; }
 }
 
 @media (min-width: 48rem) {
+  :root { --wght-bars: 500; }
   .chat { grid-column: 2 / 10; }
   /* a year its column on the stage */
-  .milestones li { grid-template-columns: var(--col) minmax(0, 1fr); margin-left: 0; }
+  .milestones li { grid-template-columns: var(--col) minmax(0, 1fr); }
   /* sliders on the middle eight columns: names in two, values in one */
   .sliders { grid-column: 3 / 11; }
   .axis .name { grid-column: 1 / 3; }
@@ -750,19 +762,17 @@ input[type="range"]:focus-visible { outline-offset: 0; }
 }
 
 @media (min-width: 90rem) {
+  :root { --wght-bars: 600; }
   .chat { grid-column: 4 / 8; }
 }
 
 @media (max-width: 40rem) {
   /* the name narrower than its rows: three of them */
   .mark { --bar-rows: 3; }
-  /* the wave a row shorter either way; the links a line each under it, clear of the credits wrapping above the band,
-     far enough apart for a finger */
+  /* the wave a row shorter either way; the links a column under it, clear of the credits wrapping above the band, far
+     enough apart for a finger */
   .pad { --rows: 3; grid-row: 1 / 7; }
-  .links { grid-row: 7 / 9; flex-flow: column nowrap; justify-content: flex-end; row-gap: var(--space-lg); }
-  /* Google Fonts and Download first, GitHub last */
-  .links li:nth-child(2) { order: 2; }
-  .links li:nth-child(3) { order: 1; }
+  .links { grid-row: 7 / 9; }
   /* the chart a column narrower, its scale's lines named in the two columns left of it; the ways' times off it,
      the scale reads them */
   .scale, .lanes { grid-column: 3 / 12; }

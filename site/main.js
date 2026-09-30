@@ -3,9 +3,9 @@
  * this script only decides which characters to write.
  */
 import wf, { char } from '../index.js'
-import { weight } from './wave.js'
+import { weight, lift } from './wave.js'
 import { bench, commits } from './data.js'
-import { $, $$, h, seen, noise, still, ease, swing, wander, copyable, dpx } from './dom.js'
+import { $, $$, h, seen, rise, rising, noise, still, ease, swing, wander, copyable, dpx } from './dom.js'
 import { chat } from './chat.js'
 import { memo } from './memo.js'
 import { shifts } from './shifts.js'
@@ -20,7 +20,7 @@ const letter = (row, s) => row.replaceChildren(...Array.from(s, c => h('span', {
 /* ── hero: the name, set in itself ───────────────────────────────────────── */
 
 function hero() {
-  const field = $('.mark-bars'), letters = $('.mark-letters'), box = $('.mark')
+  const sec = $('#wavefont'), field = $('.mark-bars'), letters = $('.mark-letters'), box = $('.mark')
   const MAX = 20
 
   // the name stands as the page sets it; an edit re-letters the bars, and the tab shows them
@@ -35,6 +35,35 @@ function hero() {
   }
   field.addEventListener('keydown', e => e.key === 'Enter' && e.preventDefault())
   field.addEventListener('input', sync)
+
+  // the intro: the bars stand at the floor, then rise to the values their letters draw, a letter after a letter – the
+  // field's own characters, the font's values, not moved by CSS – and the caret comes to the field once they're up. A
+  // hand on the field, before that, takes them to their letters at once
+  const name = field.textContent, text = field.firstChild, delays = Array.from(name, (_, i) => 35 * i)
+  const bars = xs => Array.from(name, (c, i) => lift(c, xs[i])).join('')
+  let live = !still, inView = false, began = false, stop = () => {}
+  if (live) text.data = bars(delays.map(() => 0))
+  box.classList.add('is-set')
+  const settle = () => { if (live) live = false, stop(), text.data = name }
+  field.addEventListener('pointerdown', settle), field.addEventListener('focus', settle)
+  // the caret: where there's a keyboard to type on, not a touch screen to raise its own over the page
+  const caret = () => {
+    if (!inView || !matchMedia('(hover: hover)').matches) return
+    field.focus({ preventScroll: true })
+    getSelection().selectAllChildren(field), getSelection().collapseToEnd()
+  }
+  const begin = async () => {
+    if (!live) return caret()
+    await document.fonts.load('1em wavefont').catch(() => {})
+    if (live) stop = rise(delays, xs => (text.data = bars(xs), xs.every(x => x === 1) && (live = false, caret())), 300)
+  }
+  // on first coming into view it begins; out of view the field lets go of the keys, so Space and the arrows scroll the
+  // page again
+  seen(sec, on => {
+    inView = on
+    if (!on) return field.blur()
+    if (!began) began = true, begin()
+  }, 0.45)
 }
 
 
@@ -69,20 +98,7 @@ function values() {
   copyable($('.readout', sec), outs.char)
 
   // on entering: every bar rises to its value, a diagonal wave across the grid
-  return () => {
-    if (still) return
-    const t0 = performance.now()
-    const step = now => {
-      let busy = false
-      cells.forEach((b, v) => {
-        const x = Math.min(1, Math.max(0, (now - t0 - ((v % 16) + (v >> 4)) * 28) / 500))
-        if (x < 1) busy = true
-        b.textContent = char(v * ease(x))
-      })
-      if (busy) requestAnimationFrame(step)
-    }
-    requestAnimationFrame(step)
-  }
+  return rising(sec, cells.map((_, v) => ((v % 16) + (v >> 4)) * 14), xs => cells.forEach((b, v) => b.textContent = char(v * xs[v])))
 }
 
 
@@ -93,14 +109,15 @@ const KEYS = ['abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', '01234
 
 function keys() {
   // a key: its bar standing on the line, its name under it; a space keeps a key's room empty
-  const map = $('.keymap'), key = c => c === ' ' ? h('span', { className: 'k' }) : h('span', { className: 'k' }, h('b', { className: 'wf', textContent: c }), h('i', { textContent: c }))
-  map.replaceChildren(...KEYS.map(line => h('div', { className: 'line' }, ...Array.from(line, key))))
-  // a bar a third of its key's pitch where the keys are close, on whole device pixels; 300 where they're far apart
-  const bar = $('b', map)
-  new ResizeObserver(() => {
-    const px = dpx(), F = parseFloat(getComputedStyle(bar).fontSize), P = bar.parentNode.clientWidth
-    if (F && P) map.style.setProperty('--wght', Math.min(300, weight(Math.max(px, Math.round(P / 3 / px) * px), F)))
-  }).observe(map)
+  const map = $('.keymap'), bars = []
+  map.replaceChildren(...KEYS.map((line, r) => h('div', { className: 'line' }, ...Array.from(line, (c, i) => {
+    if (c === ' ') return h('span', { className: 'k' })
+    const b = h('b', { className: 'wf', textContent: c })
+    bars.push({ b, c, delay: 10 * i + 45 * r })
+    return h('span', { className: 'k' }, b, h('i', { textContent: c }))
+  }))))
+  // on entering: every bar rises to its key's value, a wave across each line, the lines a little apart
+  return rising($('#keys'), bars.map(k => k.delay), xs => bars.forEach((k, j) => k.b.textContent = lift(k.c, xs[j])))
 }
 
 
@@ -110,6 +127,8 @@ function axes() {
   const sec = $('#axes'), spec = $('.specimen'), inputs = $$('.axes input')
   const input = name => inputs.find(i => i.name === name)
   spec.textContent = wf(4, 12, 24, 40, 58, 74, 88, 98, 88, 74, 58, 40, 24, 12, 4)
+  // the tour sets off from the weight the slides before it draw their bars in
+  input('wght').value = +getComputedStyle(document.documentElement).getPropertyValue('--wght-bars')
 
   const set = (name, v) => {
     v = Math.round(v)
@@ -271,9 +290,12 @@ function textDoc() {
   tally(), show(null)
 
   // on entering, once: the page edits itself as a hand would – a few words selected and deleted, the caret gone to the
-  // next paragraph, and the words typed there a character at a time. Through the text's own runs, weights kept, and
-  // with a caret of its own: focusing the text for a real one would take the keys that scroll the page
+  // next paragraph, and the words typed there a character at a time, the last of them left selected. Through the
+  // text's own runs, weights kept, and with a caret of its own: focusing the text for a real one would take the keys
+  // that scroll the page. So the text isn't editable meanwhile, nor after, till a hand comes to it or focus does: a
+  // selection set in editable text focuses it in some engines, WebKit drops it with the focus, and types over it
   let touched = false, timer = 0, done = false
+  const mode = doc.getAttribute('contenteditable'), editable = on => doc.setAttribute('contenteditable', on ? mode : 'false')
   const caret = h('span', { className: 'caret', hidden: true }), slide = doc.closest('.slide')
   slide.append(caret)
   const put = at => {
@@ -282,19 +304,19 @@ function textDoc() {
     const c = rg.getClientRects()[0] ?? rg.getBoundingClientRect()
     Object.assign(caret.style, { left: `${c.left - r.left}px`, top: `${c.top - r.top}px`, height: `${c.height}px` }), caret.hidden = false
   }
-  const hands = () => { touched = true, clearTimeout(timer), caret.hidden = true }
-  doc.addEventListener('pointerdown', hands), doc.addEventListener('keydown', hands), box.addEventListener('pointerdown', hands)
+  const hands = () => { touched = true, clearTimeout(timer), caret.hidden = true, editable(true) }
+  doc.addEventListener('pointerdown', hands), doc.addEventListener('focus', hands), doc.addEventListener('keydown', hands), box.addEventListener('pointerdown', hands)
   return () => {
     const sel = getSelection()
     if (still || touched || timer || done || !matchMedia('(hover: hover)').matches || (sel.rangeCount && !sel.isCollapsed)) return
     done = true
+    editable(false)
     const words = () => [...read(body)[0].matchAll(/\p{L}+/gu)]
     // three words from the first paragraph, and what parts them from the next
     const [a, , , z] = words().slice(9, 13).map(m => m.index)
     let cut = '', weights = [], at = 0
     const steps = [
-      // a selection set in editable text focuses it in some engines: let it go, so the keys still scroll the page
-      [() => { sel.setBaseAndExtent(...point(body, a, true), ...point(body, z)), doc.blur() }, 1100],
+      [() => sel.setBaseAndExtent(...point(body, a, true), ...point(body, z)), 1100],
       [() => {
         const [s, ws] = read(body)
         cut = s.slice(a, z), weights = ws.slice(a, z)
@@ -303,9 +325,15 @@ function textDoc() {
       // before the fifth word of the second paragraph
       [() => { const p = read(body)[0].indexOf('\n\n'); at = words().filter(m => m.index > p)[4]?.index ?? p + 2, put(at) }, 600]
     ]
+    // once typed, the last word of it is selected, as a double click takes one: the caret gives way to the selection
+    const end = () => {
+      const m = [...read(body)[0].slice(at, at + cut.length).matchAll(/\p{L}+/gu)].at(-1)
+      if (m) sel.setBaseAndExtent(...point(body, at + m.index, true), ...point(body, at + m.index + m[0].length))
+      caret.hidden = true, timer = 0
+    }
     const type = i => {
       if (touched) return
-      if (i >= cut.length) return timer = setTimeout(() => { caret.hidden = true, timer = 0 }, 1600)
+      if (i >= cut.length) return timer = setTimeout(end, 500)
       const [s, ws] = read(body)
       write(body, s.slice(0, at + i) + cut[i] + s.slice(at + i), [...ws.slice(0, at + i), weights[i], ...ws.slice(at + i)]), put(at + i + 1)
       timer = setTimeout(() => type(i + 1), 55)
@@ -342,8 +370,10 @@ function speed() {
     const k = still ? 1 : ease(Math.min(1, (now - t0) / 650))
     for (const c of cols) {
       c.h = c.from + (c.to - c.from) * k
-      c.glyph.textContent = c.h ? char(100 * c.h) : ''
-      c.el.style.setProperty('--h', c.h.toFixed(4))
+      // a bar is whole steps of a hundredth of the chart: its time stands on the bar as drawn, not where it would be unrounded
+      const v = Math.round(100 * c.h)
+      c.glyph.textContent = c.h ? char(v) : ''
+      c.el.style.setProperty('--h', v / 100)
     }
     if (k < 1) raf = requestAnimationFrame(tween)
   }
@@ -417,7 +447,6 @@ const overlay = () => {
 overlay()
 icon()
 hero()
-keys()
 axes()
 shifts()
 speed()
@@ -438,6 +467,6 @@ const view = new IntersectionObserver(es => es.forEach(e => e.target.classList.t
 $$('main > .slide').forEach(s => view.observe(s))
 
 // each slide's own motion runs when most of it is in view
-const onenter = { values: values(), text: textDoc() }
+const onenter = { keys: keys(), values: values(), text: textDoc() }
 const once = new IntersectionObserver(entries => entries.forEach(e => e.isIntersecting && onenter[e.target.id]?.()), { threshold: 0.45 })
 $$('main > .slide').forEach(s => once.observe(s))

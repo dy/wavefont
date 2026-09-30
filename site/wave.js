@@ -1,7 +1,7 @@
 /**
  * Waveform text: audio in, characters out, and back – click a bar to play from it, select bars to play them.
  */
-import wf from '../index.js'
+import wf, { char } from '../index.js'
 import { levels, record, play, audio } from './sound.js'
 
 /**
@@ -19,6 +19,15 @@ export const valueOf = c => {
   if (k >= 0x2581 && k <= 0x2588) return BLOCKS[k - 0x2581]
   if (c === '|' || c === 'ƀ') return 100
   if ('-–—―_.*ˍ'.includes(c)) return 0
+}
+
+/**
+ * A character's bar x of the way up its value, 0 to 1, written as the font's own character for that share of it; the
+ * character itself once it's all the way up, or where it draws no bar.
+ */
+export const lift = (c, x) => {
+  const v = valueOf(c)
+  return v === undefined || x >= 1 ? c : char(v * x)
 }
 
 /** Seconds as m:ss. */

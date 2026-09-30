@@ -66,7 +66,7 @@ test('bench: every stack and op in each browser, wavefont ahead of its marks, an
   }
 })
 
-const { weight, valueOf } = await import('./wave.js')
+const { weight, valueOf, lift } = await import('./wave.js')
 
 test('valueOf: every character the font maps, the bar it draws', async () => {
   // the font's own cmap, format 4 as the OpenType spec lays it out: a character draws value v when it maps to the
@@ -91,6 +91,27 @@ test('valueOf: every character the font maps, the bar it draws', async () => {
   }
   // a character the font leaves out draws nothing either
   assert.equal(valueOf('ж'), undefined), assert.equal(valueOf(' '), undefined)
+})
+
+test('lift: a bar x of the way up its value – the bar of that share, drawn by the font\'s own character – and itself when all the way up or where it draws none', () => {
+  // the keys the site sets: a–z, A–Z, the digits, the blocks, | and the floor's marks; valueOf is the bar a character
+  // draws, held to the font's cmap above
+  for (const c of 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789▁▂▃▄▅▆▇█|-–_.*') {
+    const v = valueOf(c)
+    assert.equal(lift(c, 1), c), assert.equal(lift(c, 1.5), c)
+    for (const x of [0, 0.1, 0.25, 0.5, 0.75, 0.99]) assert.equal(valueOf(lift(c, x)), Math.round(v * x), `${c} at ${x}`)
+    assert.equal(valueOf(lift(c, 0)), 0, `${c} on the floor`)
+  }
+  // a bar the font draws nothing for, or moves: as it is
+  for (const c of [' ', 'ж', '́']) assert.equal(lift(c, 0.4), c)
+  // below the floor is the floor
+  assert.equal(valueOf(lift('z', -1)), 0)
+  // the hero's name: its bars 96, 0, 42, 8, 10, 28, 26, 38 – W the capitals' 52 + 2 × 22, then twice a letter's place from
+  // a – half way up at half of each, and the letters themselves at the top
+  const name = x => Array.from('Wavefont', c => lift(c, x)).join('')
+  assert.deepEqual([...name(1)].map(valueOf), [96, 0, 42, 8, 10, 28, 26, 38]), assert.equal(name(1), 'Wavefont')
+  assert.deepEqual([...name(0.5)].map(valueOf), [48, 0, 21, 4, 5, 14, 13, 19])
+  assert.deepEqual([...name(0)].map(valueOf), Array(8).fill(0))
 })
 
 const { N, line, peaks, place } = await import('./icon.js')
@@ -146,6 +167,21 @@ test('hero: the name before the script runs is lettered as the script letters it
   // no stand-in font shows first: the letters' fonts and the bars' block until they're in
   assert.match(html.match(/fonts\.googleapis\.com\/css2[^"]*/)[0], /display=block/)
   assert.match(css, /font-display: block/)
+  // and the bars don't show at their height before the script sets them at the floor to rise, where there's a script
+  // to (CSS Conditional Rules 5: the scripting media feature)
+  assert.match(css, /@media \(scripting: enabled\) \{ \.mark:not\(\.is-set\) \.mark-bars \{ color: transparent; \} \}/)
+})
+
+test('wght-bars: the lead-in slides\' bars in one weight – 400 on a phone, wider with the screen, 600 at most – in whole font units, as the keys and the values set them', async () => {
+  const css = await readFile(new URL('./main.css', import.meta.url), 'utf8')
+  // :root's, the phone's, then a step at each min-width up (main.css)
+  const ws = [...css.matchAll(/--wght-bars: (\d+);/g)].map(m => +m[1])
+  assert.equal(ws[0], 400), assert.equal(ws.at(-1), 600)
+  // a weight is an advance of wght/4 font units, and Firefox rounds variable advances to whole units: multiples of 4
+  // (weight() above)
+  ws.forEach((w, i) => assert.ok(w % 4 === 0 && (!i || w > ws[i - 1]), `${w}`))
+  assert.match(css, /\.keymap \{ --wght: var\(--wght-bars\);/)
+  assert.match(css, /\.grid \.cell \{\s*--wght: var\(--wght-bars\);/)
 })
 
 test('journey: a row a year, each from the first commit\'s to the last\'s, in order and as its time says; a year that brought something the month it did, one with commits', async () => {
@@ -235,10 +271,129 @@ test('spell: the longest code points the waves\' readout can show are the charac
   assert.match(css, new RegExp(`\\.shifts \\.readout \\{ --ems: calc\\(${most + 1} \\* 0\\.632 \\+ 2 \\* 1\\.2\\)`))
 })
 
-const { wander, noise } = await import('./dom.js')
+const { wander, noise, rise, rising, seen, soon, ease } = await import('./dom.js')
+
+// a clock of the test's own, for what runs on frames: frame(ms) runs the frame last asked for, at ms; asked says if
+// there is one
+const frames = () => {
+  const raf = globalThis.requestAnimationFrame, caf = globalThis.cancelAnimationFrame, own = Object.getOwnPropertyDescriptor(performance, 'now')
+  let t = 0, next = null, asks = 0
+  globalThis.requestAnimationFrame = f => (next = f, ++asks)
+  globalThis.cancelAnimationFrame = () => { next = null }
+  performance.now = () => t
+  return {
+    at: ms => { t = ms },
+    frame: ms => { t = ms; const f = next; next = null; f(ms) },
+    get asked() { return next !== null },
+    get asks() { return asks },
+    done() {
+      globalThis.requestAnimationFrame = raf, globalThis.cancelAnimationFrame = caf
+      if (own) Object.defineProperty(performance, 'now', own); else delete performance.now
+    }
+  }
+}
+
+// an IntersectionObserver of the test's own: report(...states) tells the one built last what came into view or left, as
+// one delivery
+const observer = () => {
+  const IO = globalThis.IntersectionObserver, io = { report() {}, disconnected: false }
+  globalThis.IntersectionObserver = class {
+    constructor(cb) { io.report = (...on) => cb(on.map(isIntersecting => ({ isIntersecting })), this) }
+    observe() {}
+    disconnect() { io.disconnected = true }
+  }
+  return Object.assign(io, { done() { globalThis.IntersectionObserver = IO } })
+}
+
+test('rise: every bar from the floor to where it stands, easing out, each from its own moment; all up on the last frame; a stop holds it', () => {
+  const clk = frames()
+  try {
+    const seen = []
+    rise([0, 50, 100], xs => seen.push(xs), 100)
+    const frame = ms => (clk.frame(ms), seen.at(-1))
+    // on the floor to begin; the bars set off in turn – the second at 50 ms, the third at 100 – each over 100 ms
+    assert.deepEqual(frame(0), [0, 0, 0])
+    assert.deepEqual(frame(25), [ease(0.25), 0, 0])
+    assert.deepEqual(frame(75), [ease(0.75), ease(0.25), 0])
+    assert.deepEqual(frame(150), [1, 1, ease(0.5)])
+    // easing out, as CSS's ease-out and Penner's easeOutCubic: the way up is quickest at the start – further in a
+    // quarter of the time than a quarter of the way – and each next step smaller
+    const first = [0, 25, 50, 75, 100].map(ms => ease(ms / 100))
+    assert.ok(first[1] > 0.25 && first.every((x, i) => !i || x > first[i - 1]))
+    first.forEach((x, i) => assert.ok(i < 2 || x - first[i - 1] < first[i - 1] - first[i - 2], `step ${i}`))
+    // all up on the last frame, and no frame asked for after it
+    assert.deepEqual(frame(200), [1, 1, 1])
+    assert.equal(clk.asked, false)
+    // stopped, it draws no more
+    const drawn = []
+    rise([0], xs => drawn.push(xs), 100)()
+    assert.equal(clk.asked, false), assert.equal(drawn.length, 0)
+    // nothing to raise: a frame with nothing in it, and no more
+    const none = []
+    rise([], xs => none.push(xs))
+    clk.frame(0)
+    assert.deepEqual(none, [[]]), assert.equal(clk.asked, false)
+  } finally { clk.done() }
+})
+
+test('rising: at the floor while out of view; up, once a visit, as it comes in; at the floor again once it has gone', () => {
+  const clk = frames(), io = observer()
+  try {
+    const drawn = [], last = () => drawn.at(-1), enter = rising({}, [0, 50], xs => drawn.push(xs))
+    // built at the floor, asking for no frame
+    assert.deepEqual(drawn, [[0, 0]]), assert.equal(clk.asked, false)
+    // reported out of view, it stays there
+    io.report(false)
+    assert.deepEqual(last(), [0, 0])
+    // in: it rises, over rise's 250 ms, the second bar 50 ms after the first
+    clk.at(1000), enter()
+    clk.frame(1000), assert.deepEqual(last(), [0, 0])
+    clk.frame(1100), assert.deepEqual(last(), [ease(100 / 250), ease(50 / 250)])
+    // in again while it rises, as the way in is crossed back and forth: no second rise, no fall to the floor
+    const n = drawn.length, asks = clk.asks
+    enter(), enter()
+    assert.equal(drawn.length, n), assert.equal(clk.asks, asks)
+    clk.frame(1400), assert.deepEqual(last(), [1, 1]), assert.equal(clk.asked, false)
+    // out of view, it's at the floor; in again, it rises again
+    io.report(false), assert.deepEqual(last(), [0, 0])
+    clk.at(2000), enter()
+    clk.frame(2000), clk.frame(2125), assert.deepEqual(last(), [ease(125 / 250), ease(75 / 250)])
+    // gone mid-rise: the rise is dropped, no frame left to draw, and it's at the floor – to rise whole on the next visit
+    io.report(false)
+    assert.deepEqual(last(), [0, 0]), assert.equal(clk.asked, false)
+    clk.at(3000), enter(), clk.frame(3000), clk.frame(3050)
+    assert.deepEqual(last(), [ease(50 / 250), 0])
+    // still in view at the last of several reports, it stays up; out of view at the last, it falls
+    io.report(false, true), assert.deepEqual(last(), [ease(50 / 250), 0])
+    io.report(true, false), assert.deepEqual(last(), [0, 0])
+  } finally { clk.done(), io.done() }
+})
+
+test('rising: where the page is to keep still, no floor and no rise – the bars as they were built', async () => {
+  globalThis.matchMedia = () => ({ matches: true })
+  try {
+    const { rising: still } = await import('./dom.js?still'), drawn = []
+    assert.equal(still({}, [0, 50], xs => drawn.push(xs)), undefined), assert.deepEqual(drawn, [])
+  } finally { delete globalThis.matchMedia }
+})
+
+test('seen, soon: what a busy frame brings several reports of, as it stands at the last; soon runs once, if it was near at any', () => {
+  const io = observer()
+  try {
+    const calls = []
+    seen({}, on => calls.push(on))
+    io.report(true), io.report(false), io.report(true, false), io.report(false, true), io.report(false, true, false)
+    assert.deepEqual(calls, [true, false, false, true, false])
+    let ran = 0
+    soon({}, () => ran++)
+    io.report(false), assert.equal(ran, 0), assert.equal(io.disconnected, false)
+    io.report(false, true, false)
+    assert.equal(ran, 1), assert.equal(io.disconnected, true)
+  } finally { io.done() }
+})
 
 test('wander: a name at random, never one three times running, to another of its stops', () => {
-  // the axes slide's stops; it starts off them, at the slider's 120
+  // the axes slide's stops; here it starts off them, at 120
   const STOPS = { wght: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950], rond: [0, 50, 100], yela: [-100, 0, 100] }
   const at = { wght: 120, rond: 0, yela: 0 }, next = wander(STOPS, n => at[n], noise(3)), names = [], hit = new Set()
   for (let i = 0; i < 3000; i++) {
