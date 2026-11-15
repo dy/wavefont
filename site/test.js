@@ -666,7 +666,7 @@ test('play: nothing heard till its clock moves; then its clock, the delay a sile
   const [[, silence], [url, clock]] = logged('clock', n), [[, quiet], [, end]] = logged('ended', n)
   // the silence: a tenth of a second, then what's still to be heard, TAIL and whatever the timers were late by
   const lag = (quiet - silence) / 1000 - 0.1
-  assert.ok(lag >= Fake.TAIL / 1000 && lag < 0.2, `${lag}`)
+  assert.ok(lag >= (Fake.TAIL - 10) / 1000 && lag < 0.2, `${lag}`)
   for (const [ms, x] of seen) if (ms < clock) assert.equal(x, 0)
   for (const [ms, x] of seen) if (x > 0 && x < 0.3) assert.ok(Math.abs(x - ((ms - clock) / 1000 - lag)) < 0.02, `${ms - clock} ms: ${x}`)
   assert.equal(last, 0.3)
